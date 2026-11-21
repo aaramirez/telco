@@ -18,10 +18,10 @@
 <main>
 
 <header class="hero">
-  <span class="eyebrow">Curso para quienes trabajan en telecomunicaciones</span>
+  <span class="eyebrow">Curso para introducirte en el mundo de las telecomunicaciones</span>
   <h1>Qué pasa entre tu clic y la página que se abre</h1>
-  <p class="lede">Cuando alguien abre una página desde su celular, en menos de un segundo participan decenas de máquinas de un operador. Este curso sigue ese viaje tramo por tramo, y en el camino explica cómo se construye, se opera y se cobra una red de telecomunicaciones. Toca un tramo para ver en qué parte se explica.</p>
-  <div class="trip" aria-label="El viaje de un clic: celular, Wi-Fi, equipo de la casa, fibra, central, núcleo de la red, Internet y el servidor">
+  <p class="lede">Cuando una persona abre una página desde su celular, en menos de un segundo participan decenas de máquinas y equipos de un operador. Este curso sigue ese viaje tramo por tramo, y en el camino explicamos cómo se construye, se opera y se cobra una red de telecomunicaciones. Toca uno de los tramos para ver en qué parte se explica.</p>
+  <div class="trip" aria-label="Qué pasa entre tu clic y la página que se abre: Tu celular, Wi-Fi, ONT, Fibra, OLT y BNG, Core, Internet">
     <a class="hop" href="#parte-1"><b>Tu celular</b><small>capas y protocolos</small></a><span class="arr" aria-hidden="true">→</span>
     <a class="hop" href="#parte-2"><b>Wi-Fi</b><small>calidad en casa</small></a><span class="arr" aria-hidden="true">→</span>
     <a class="hop" href="#parte-2"><b>ONT</b><small>equipo de la casa</small></a><span class="arr" aria-hidden="true">→</span>
@@ -29,22 +29,19 @@
     <a class="hop" href="#parte-2"><b>OLT y BNG</b><small>la central</small></a><span class="arr" aria-hidden="true">→</span>
     <a class="hop" href="#parte-2"><b>Core</b><small>el corazón de la red</small></a><span class="arr" aria-hidden="true">→</span>
     <a class="hop" href="#parte-1"><b>Internet</b><small>el servidor responde</small></a>
-    <p class="train">Mientras tanto, otros sistemas trabajan sin que el cliente los vea: los que <a href="#parte-3">vigilan y configuran la red</a>, los que <a href="#parte-4">conocen al cliente y le facturan</a>, los <a href="#parte-5">procesos</a> que juntan todo y la <a href="#parte-6">cadena de valor</a> que convierte la red en un negocio.</p>
+    <p class="train">Detrás de cámara es mucho el trabajo que se realiza, mientras tanto, otros sistemas, aplicaciones o plataformas trabajan sin que el cliente los vea: los que <a href="#parte-3">vigilan y configuran la red</a>, los que <a href="#parte-4">conocen al cliente y le facturan</a>, los <a href="#parte-5">procesos</a> que orquestan todo y la <a href="#parte-6">cadena de valor</a> que convierte la red en un proveedor de servicios y convenientemente en un negocio.</p>
   </div>
 </header>
 
 <section>
   <h2>Cómo usar este material</h2>
-  <div class="prose">
-    <p>Son 49 capítulos cortos en seis partes, pensados para recorrerse en orden: cada uno se apoya en los anteriores. No hace falta saber de redes. Cada concepto empieza con una <b>analogía</b> de la vida diaria y termina con un recuadro <b>«En la práctica»</b> que cuenta para qué le sirve a alguien que trabaja en un telco, aunque no toque un equipo.</p>
-    <p>Los capítulos tendrán <b>laboratorios interactivos</b>, casos reales y preguntas para probarte. Por ahora está publicada la ruta completa; los capítulos se irán abriendo a medida que estén listos.</p>
-  </div>
+  <div class="prose"><p>Son 49 capítulos cortos en seis partes, pensados para recorrerse en orden: cada uno se apoya en los anteriores. No hace falta saber de redes. Cada concepto empieza con una <b>analogía</b> de la vida diaria y termina con un recuadro <b>«En la práctica»</b> que cuenta para qué le sirve a alguien que trabaja en un telco, aunque no toque un equipo.</p><p>Te darás cuenta que justo de las analogías con otros procesos que existen en tu día a día se inspiran y se toman las ideas para desarrollar esta tecnología.</p><p>Cada capítulo contará con diagramas, <b>laboratorios interactivos</b>, casos reales y preguntas para probarte. Al final están los apéndices para consultar: glosario, fichas de protocolos, respuestas, lecturas, herramientas, rutas de estudio y otros temas más tecnológicos o profundos.</p></div>
 </section>
 
 <div class="stage" id="parte-1">
   <h2><span class="pn">Parte 1</span> Las bases: cómo se hablan las máquinas</h2>
   <div class="mods">
-    <a class="mod" data-id="01-el-viaje-de-un-clic" href="01-el-viaje-de-un-clic.html"><span class="n">01</span><b>El viaje de un clic</b><p>Abrir una página web dispara en menos de un segundo una cadena de pasos entre decenas de máquinas, y entender esa cadena es entender casi todo lo que hace un telco.</p></a>
+    <a class="mod" data-id="01-el-viaje-de-un-clic" href="01-el-viaje-de-un-clic.html"><span class="n">01</span><b>El viaje de un clic</b><p>Abrir una página web dispara en menos de un segundo una cadena de pasos entre decenas de máquinas y equipos, y entender esa cadena es entender casi todo lo que hace un telco.</p></a>
     <a class="mod" data-id="02-senales-bits-y-medios" href="02-senales-bits-y-medios.html"><span class="n">02</span><b>Señales, bits y medios: cobre, radio y fibra</b><p>Toda comunicación es convertir información en ceros y unos y esos ceros y unos en algo físico que viaja (electricidad, ondas de radio o luz), y cada medio tiene límites distintos de distancia, velocidad y ruido.</p></a>
     <a class="mod" data-id="03-capas" href="03-capas.html"><span class="n">03</span><b>Capas: el modelo OSI y TCP/IP</b><p>Las redes funcionan porque el problema se divide en capas que se ocupan cada una de una sola cosa, y cada capa confía en que la de abajo hace su trabajo.</p></a>
     <a class="mod" data-id="04-ethernet-y-switching" href="04-ethernet-y-switching.html"><span class="n">04</span><b>Ethernet y switching: MAC, tramas y VLAN</b><p>Dentro de una misma red local, los equipos se encuentran por una dirección física (la MAC) y un switch aprende quién está en cada puerto para entregar cada mensaje solo a quien corresponde.</p></a>

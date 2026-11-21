@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>El viaje de un clic · Cómo funciona un telco</title>
-<meta name="description" content="Abrir una página web dispara en menos de un segundo una cadena de pasos entre decenas de máquinas, y entender esa cadena es entender casi todo lo que hace un telco.">
+<meta name="description" content="Abrir una página web dispara en menos de un segundo una cadena de pasos entre decenas de máquinas y equipos, y entender esa cadena es entender casi todo lo que hace un telco.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
@@ -41,8 +41,8 @@
 <div class="layout">
 <nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
 <main>
-<header class="page-head"><span class="num">CAPÍTULO 01 DE 49</span><h1>El viaje de un clic</h1><p class="lede">Abrir una página web dispara en menos de un segundo una cadena de pasos entre decenas de máquinas, y entender esa cadena es entender casi todo lo que hace un telco.</p></header>
-<section><div class="prose"><p>Este libro empieza con un gesto que todos hacemos decenas de veces al día: tocar un enlace en el celular. Entre ese toque y la página que aparece pasa menos de un segundo. En ese tiempo, el pedido sale del teléfono, cruza la casa, viaja por una fibra, entra a la red del operador, sale a Internet, llega a un servidor que puede estar en otro continente y vuelve con la respuesta. Cada tramo lo resuelve una máquina distinta, con reglas propias, y casi todas esas máquinas las construye, las opera o las cobra un telco.</p><p>Seguir ese viaje es la mejor forma de entender de qué se trata el trabajo de un operador de telecomunicaciones. Por eso es el hilo de todo el libro.</p></div><div class="analogia"><b>Imagínalo así</b><p>Mandar una carta a otro país: la escribes, le pones la dirección, la recoge el cartero, pasa por la oficina de correos, sube a un avión, cruza la aduana y otro cartero la entrega del otro lado. Nadie en esa cadena conoce el camino completo; cada uno solo sabe a quién pasársela después. Internet funciona igual.</p></div><figure class="fig fig-capas" id="01-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: este capítulo recorre las cinco capas y todos los tramos del viaje, de la casa del cliente a Internet">
+<header class="page-head"><span class="num">CAPÍTULO 01 DE 49</span><h1>El viaje de un clic</h1><p class="lede">Abrir una página web dispara en menos de un segundo una cadena de pasos entre decenas de máquinas y equipos, y entender esa cadena es entender casi todo lo que hace un telco.</p></header>
+<section><div class="prose"><p>Este viaje empieza con un gesto que todos hacemos decenas de veces al día: tocar un enlace en el celular. Entre ese toque y la página que aparece pasa menos de un segundo; es lo que todos esperamos. En ese tiempo, la solicitud sale del teléfono, cruza la casa, viaja por una fibra, entra a la red del operador, sale a <b>Internet</b>, que muchos llaman <b>la Nube</b> (<i>the cloud</i>), llega a un servidor que puede estar en otro continente y vuelve con la respuesta. Cada tramo lo resuelve un equipo distinto, con reglas propias, y casi todos esos equipos los instala, los opera o los cobra un telco.</p><p>Seguir ese viaje es la mejor forma de entender de qué se trata el trabajo de un operador de telecomunicaciones. Por eso es el hilo de todo el libro.</p></div><div class="analogia"><b>Imagínalo así</b><p>Mandar una carta a otro país: la escribes, le pones la dirección, la recoge el cartero, pasa por la oficina de correos, sube a un avión, cruza la aduana y otro cartero la entrega del otro lado. Nadie en esa cadena conoce el camino completo; cada uno solo sabe a quién pasársela después. Internet funciona igual.</p></div><figure class="fig fig-capas" id="01-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: este capítulo recorre las cinco capas y todos los tramos del viaje, de la casa del cliente a Internet">
   <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
   <rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text>
   <rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text>
@@ -73,7 +73,7 @@
   <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
   <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: todas las capas y todos los tramos</text>
 </svg></div><figcaption><b>Dónde estamos.</b> Este capítulo recorre todas las capas y todos los tramos del viaje de una vez, sin detenerse en ninguno. Los capítulos siguientes encienden uno o dos cuadros de este mapa y los explican a fondo.</figcaption></figure></section>
-<section><h2>Tocas un enlace</h2><div class="prose"><p>Imagina que estás en la sala de tu casa y tocas un enlace a <code>www.ejemplo.com</code>. Para ti es un solo gesto. Para el teléfono es el comienzo de una lista de tareas:</p><ol class="steps"><li><span>Averiguar <b>dónde queda</b> ese sitio, porque las máquinas no se buscan por nombre sino por número.</span></li><li><span>Mandar el pedido <b>por el aire</b> hasta el equipo Wi-Fi de la casa.</span></li><li><span>Que ese equipo lo pase <b>a la fibra</b> que entra a la casa.</span></li><li><span>Que la red del operador lo lleve <b>hasta la salida a Internet</b>.</span></li><li><span>Que Internet lo entregue <b>al servidor</b> del sitio.</span></li><li><span>Que el servidor <b>responda</b> y la respuesta haga todo el camino de vuelta.</span></li></ol><p>El diagrama de abajo muestra ese recorrido. Cada estación es un equipo distinto, y debajo de cada una está el capítulo donde se explica. Las tres franjas de colores son las tres «propiedades» por las que pasa el pedido: la casa del cliente, la red del operador e Internet.</p></div><figure class="fig fig-esquema" id="01-diagrama-2"><div class="lienzo"><svg viewBox="0 0 960 250" style="min-width:760px" role="img" aria-label="El viaje de un clic: celular, router Wi-Fi y ONT en la casa; splitter, OLT, BNG y core en la red del operador; Internet y el servidor del sitio">
+<section><h2>Tocas un enlace</h2><div class="prose"><p>Imagina que estás en la sala de tu casa y tocas un enlace a <code>www.ejemplo.com</code>. Para ti es un solo gesto. Para el teléfono es el comienzo de una lista de tareas:</p><ol class="steps"><li><span>Averiguar <b>dónde queda</b> ese sitio, porque las máquinas no se buscan por nombre sino por dirección (un número).</span></li><li><span>Mandar el pedido <b>por el aire</b> hasta el equipo Wi-Fi de la casa.</span></li><li><span>Que ese equipo lo pase <b>a la fibra</b> que entra a la casa.</span></li><li><span>Que la red del operador lo lleve <b>hasta la salida a Internet</b>.</span></li><li><span>Que Internet lo entregue <b>al servidor</b> del sitio.</span></li><li><span>Que el servidor <b>responda</b> y la respuesta haga todo el camino de vuelta.</span></li></ol></div><div class="analogia"><b>Imagínalo así</b><p>Para que alguien llegue a tu casa necesita tu dirección. Con una página web pasa lo mismo: también se encuentra por una dirección, en este caso una que es válida en Internet, la <b>dirección IP</b>.</p></div><div class="prose"><p>El diagrama de abajo muestra ese recorrido. Cada estación es un equipo distinto, y debajo de cada una está el capítulo donde se explica. Las tres franjas de colores son las tres «etapas» por las que pasa el pedido: la casa del cliente, la red del operador e Internet.</p></div><figure class="fig fig-esquema" id="01-diagrama-2"><div class="lienzo"><svg viewBox="0 0 960 250" style="min-width:760px" role="img" aria-label="El viaje de un clic: celular, router Wi-Fi y ONT en la casa; splitter, OLT, BNG y core en la red del operador; Internet y el servidor del sitio">
   <rect x="10" y="14" width="300" height="222" rx="12" class="d-casa"/>
   <rect x="320" y="14" width="420" height="222" rx="12" class="d-oper"/>
   <rect x="750" y="14" width="200" height="222" rx="12" class="d-inet"/>
@@ -129,11 +129,347 @@
   <circle r="7" class="pkt" cx="60" cy="196">
     <animateMotion dur="7s" repeatCount="indefinite" path="M0 0H840H0" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="linear"/>
   </circle>
-</svg></div><figcaption><b>El viaje de un clic.</b> El punto naranja es tu pedido. Va del celular al router Wi-Fi, a la ONT, por la fibra hasta la OLT, al BNG y al core del operador, sale a Internet y llega al servidor. Toca cualquier estación para ir al capítulo que la explica.</figcaption></figure></section>
-<section><h2>Tu celular pregunta dónde queda el sitio (DNS)</h2><div class="prose"><p>En Internet cada máquina tiene una dirección numérica, la <b>dirección IP</b>, algo como <code>203.0.113.10</code>. Las personas recordamos nombres; las máquinas, números. Por eso, antes de pedir la página, el celular hace una pregunta: «¿cuál es la dirección de <code>www.ejemplo.com</code>?».</p><p>La respuesta la da un servicio llamado <b>DNS</b>, que funciona como una guía telefónica gigante y repartida por todo el mundo. Normalmente el celular le pregunta al servidor DNS del operador, que ya conoce la respuesta de los sitios más visitados porque alguien más la pidió hace poco. Si no la conoce, la averigua preguntando a otros servidores DNS, y la guarda un rato para la próxima vez.</p><p>Este paso es tan rápido que nadie lo nota, pero cuando falla el cliente dice «no tengo Internet» aunque la conexión esté perfecta: el teléfono tiene camino, pero no sabe a dónde ir. El capítulo 8 explica el DNS en detalle.</p></div></section>
-<section><h2>El Wi-Fi y el equipo de la casa</h2><div class="prose"><p>Con la dirección en la mano, el celular arma el pedido y lo manda <b>por radio</b> al router Wi-Fi de la casa. El Wi-Fi es el tramo más corto del viaje, apenas unos metros, pero también el más frágil: las paredes, la distancia, el microondas y los Wi-Fi de los vecinos le quitan velocidad. Muchas quejas de «Internet lento» se originan en estos pocos metros.</p><p>El router Wi-Fi suele vivir dentro de la <b>ONT</b>, el equipo que el operador instala en la casa, o conectado a ella por un cable. La ONT es la frontera: de un lado la red de la casa, que es del cliente; del otro, la fibra, que es del operador. La ONT convierte el pedido, que hasta ahí eran señales eléctricas o de radio, en <b>pulsos de luz</b>.</p></div></section>
-<section><h2>La fibra hasta la central del operador</h2><div class="prose"><p>La fibra que sale de la casa es un hilo de vidrio más delgado que un cabello. Por dentro viaja luz que se enciende y se apaga millones de veces por segundo: cada destello es un pedacito de información.</p><p>Esa fibra no va directo a la central. En una caja en el poste o en la acera se junta con las fibras de los vecinos mediante un <b>splitter</b>, un divisor de luz sin electricidad. Así, una sola fibra que sale de la central llega a decenas de casas. A esa red de vidrio y divisores se le llama <b>PON</b> (red óptica pasiva), y es la base de la fibra hasta el hogar (<b>FTTH</b>).</p><p>En la central espera la <b>OLT</b>, el equipo que habla con todas las ONT de una zona. La OLT ordena quién transmite y cuándo, para que las luces de los vecinos no choquen. Los capítulos 17 y 18 cuentan cómo funciona este reparto.</p></div></section>
-<section><h2>Del operador a Internet y de vuelta</h2><div class="prose"><p>Detrás de la OLT el pedido llega a un equipo que reconoce al cliente: el <b>BNG</b>. Es el portero de la red: sabe quién eres, qué plan pagaste y a qué velocidad puedes navegar, porque se lo dice otro sistema llamado <b>RADIUS</b>. Si la cuenta está suspendida, el BNG es el que te manda a la página de pago en vez de dejarte salir.</p><p>Superado el portero, el pedido entra al <b>core</b>, el corazón de la red del operador: routers muy potentes que deciden por dónde mandar cada paquete. Algunos destinos están dentro de la propia red, porque los grandes sitios de video y redes sociales dejan copias de su contenido muy cerca del cliente. El resto sale a Internet por enlaces que el operador paga a otros operadores más grandes o que intercambia con ellos.</p><p>Al final del camino está el <b>servidor</b> de <code>www.ejemplo.com</code>. Antes de entregar la página, el celular y el servidor hacen dos saludos: uno para confirmar que los dos están listos para conversar (<b>TCP</b>) y otro para ponerse de acuerdo en una clave secreta y que nadie en el camino pueda leer lo que se dicen (<b>TLS</b>, el candado del navegador). Recién entonces el celular pide la página (<b>HTTP</b>) y el servidor la manda. El diagrama de flujo muestra esa conversación en orden.</p></div><figure class="fig fig-flujo" id="01-diagrama-5"><div class="lienzo"><svg viewBox="0 0 860 560" style="min-width:660px" role="img" aria-label="Flujo de un clic: consulta DNS y respuesta; saludo TCP de tres pasos; saludo TLS; pedido GET y respuesta 200 OK con la página">
+</svg></div><figcaption><b>El viaje de un clic.</b> El punto naranja es tu pedido. Va del celular al router Wi-Fi, a la ONT, por la fibra hasta la OLT, al BNG y al core del operador, sale a Internet y llega al servidor. Toca cualquier estación para ir al capítulo que la explica. Más abajo, cada tramo tiene su propio diagrama.</figcaption></figure></section>
+<section><h2>La Nube: dos operadores y muchas redes en el medio</h2><div class="prose"><p>Cuando decimos que algo «está en la Nube», queremos decir que está en algún servidor al que llegamos por Internet, sin saber ni importarnos dónde queda. La palabra viene de los diagramas de los ingenieros, que dibujaban Internet como una nube para no tener que dibujar todo lo que hay dentro.</p><p>Lo que hay dentro es más ordenado de lo que parece. Tu celular no se conecta «a Internet» en abstracto: se conecta a <b>tu operador</b>, el proveedor de acceso a Internet o <b>ISP</b> (<i>Internet Service Provider</i>, proveedor de servicios de Internet), que es el telco al que le pagas el plan. El servidor del sitio hace lo mismo del otro lado: vive en un <b>centro de datos</b> (<i>data center</i>) y tiene <b>su propio operador</b>, que le da acceso a la Nube. Entre los dos operadores hay otras redes, de otros operadores, que se pasan el tráfico entre sí.</p><p>Normalmente no vemos esos detalles porque los damos por parte de la Nube. Pero un telco <b>es</b> uno de esos operadores: es la puerta de entrada a la Nube para sus clientes. Y del lado del servidor hay otro telco haciendo un trabajo muy parecido.</p></div><figure class="fig fig-arquitectura" id="01-diagrama-12"><div class="lienzo"><svg viewBox="0 0 960 330" style="min-width:760px" role="img" aria-label="Arriba, cómo lo vemos: cliente, la Nube y el servidor. Abajo, lo que hay dentro: el operador del cliente, muchas redes de Internet y el operador del servidor">
+  <text x="20" y="26" class="t t-xs t-b t-m">CÓMO LO VEMOS</text>
+  <line x1="228" y1="78" x2="400" y2="78" class="ln"/><line x1="560" y1="78" x2="732" y2="78" class="ln"/>
+  <rect x="132" y="30" width="96" height="96" rx="10" class="caja"/>
+  <use href="#i-celular" x="162" y="38" width="36" height="36" class="ico"/>
+  <text x="180" y="94" text-anchor="middle" class="t t-s t-b">Cliente</text>
+  <text x="180" y="110" text-anchor="middle" class="t t-xs t-m">tu celular</text>
+  <rect x="400" y="34" width="160" height="88" rx="44" class="d-inet"/>
+  <use href="#i-nube" x="460" y="42" width="40" height="40" class="ico"/>
+  <text x="480" y="102" text-anchor="middle" class="t t-b k-inet">la Nube</text>
+  <rect x="732" y="30" width="96" height="96" rx="10" class="caja"/>
+  <use href="#i-servidor" x="762" y="38" width="36" height="36" class="ico"/>
+  <text x="780" y="94" text-anchor="middle" class="t t-s t-b">Servidor</text>
+  <text x="780" y="110" text-anchor="middle" class="t t-xs t-m">www.ejemplo.com</text>
+  <path d="M400 122 L262 190 M560 122 L698 190" class="ln ln-d"/>
+  <text x="20" y="166" class="t t-xs t-b t-m">LO QUE HAY DENTRO</text>
+  <rect x="20" y="180" width="140" height="140" rx="12" class="d-casa"/><text x="90" y="198" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <rect x="170" y="180" width="180" height="140" rx="12" class="d-oper"/><text x="260" y="198" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR DEL CLIENTE</text>
+  <rect x="360" y="180" width="240" height="140" rx="12" class="d-inet"/><text x="480" y="198" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET: MUCHAS REDES</text>
+  <rect x="610" y="180" width="180" height="140" rx="12" class="d-oper"/><text x="700" y="198" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR DEL SERVIDOR</text>
+  <rect x="800" y="180" width="140" height="140" rx="12" class="d-casa"/><text x="870" y="198" text-anchor="middle" class="t t-xs t-b k-casa">DATA CENTER</text>
+  <line x1="138" y1="258" x2="212" y2="258" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="308" y1="258" x2="392" y2="258" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="568" y1="258" x2="652" y2="258" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="748" y1="258" x2="822" y2="258" class="ln"/>
+  <rect x="44" y="210" width="92" height="96" rx="10" class="caja"/>
+  <use href="#i-celular" x="72" y="218" width="36" height="36" class="ico"/>
+  <text x="90" y="274" text-anchor="middle" class="t t-s t-b">Cliente</text>
+  <text x="90" y="290" text-anchor="middle" class="t t-xs t-m">Wi-Fi + ONT</text>
+  <rect x="212" y="210" width="96" height="96" rx="10" class="caja"/>
+  <use href="#i-router-core" x="242" y="218" width="36" height="36" class="ico"/>
+  <text x="260" y="274" text-anchor="middle" class="t t-s t-b">Su operador</text>
+  <text x="260" y="290" text-anchor="middle" class="t t-xs t-m">OLT, BNG, core</text>
+  <rect x="392" y="214" width="56" height="88" rx="8" class="caja"/><use href="#i-router-core" x="404" y="226" width="32" height="32" class="ico"/><text x="420" y="282" text-anchor="middle" class="t t-xs t-m">red A</text>
+  <rect x="452" y="214" width="56" height="88" rx="8" class="caja"/><use href="#i-router-core" x="464" y="226" width="32" height="32" class="ico"/><text x="480" y="282" text-anchor="middle" class="t t-xs t-m">red B</text>
+  <rect x="512" y="214" width="56" height="88" rx="8" class="caja"/><use href="#i-router-core" x="524" y="226" width="32" height="32" class="ico"/><text x="540" y="282" text-anchor="middle" class="t t-xs t-m">red C</text>
+  <rect x="652" y="210" width="96" height="96" rx="10" class="caja"/>
+  <use href="#i-router-core" x="682" y="218" width="36" height="36" class="ico"/>
+  <text x="700" y="274" text-anchor="middle" class="t t-s t-b">Su operador</text>
+  <text x="700" y="290" text-anchor="middle" class="t t-xs t-m">del data center</text>
+  <rect x="824" y="210" width="92" height="96" rx="10" class="caja"/>
+  <use href="#i-servidor" x="852" y="218" width="36" height="36" class="ico"/>
+  <text x="870" y="274" text-anchor="middle" class="t t-s t-b">Servidor</text>
+  <text x="870" y="290" text-anchor="middle" class="t t-xs t-m">el sitio</text>
+</svg></div><figcaption><b>La Nube por dentro.</b> Arriba, cómo lo vemos: un cliente, la Nube y un servidor. Abajo, lo que hay dentro: la casa del cliente y su operador; varias redes de Internet que se pasan el tráfico; y, del otro lado, el operador del servidor y el data center donde vive. Las dos puntas son simétricas: cada extremo tiene su propio operador.</figcaption></figure><div class="analogia"><b>Imagínalo así</b><p>El correo internacional: tú solo ves «el correo», pero tu carta pasa por la oficina de tu ciudad, por aerolíneas de otros países y por la oficina de correos del destinatario. Cada una cobra su parte y entrega a la siguiente. Tu operador es tu oficina de correos; el del servidor, la del destinatario.</p></div></section>
+<section><h2>Cliente y servidor: la arquitectura que popularizó Internet</h2><div class="prose"><p>Con Internet se popularizó una forma de organizar las aplicaciones que hoy está en casi todas partes: la <b>arquitectura cliente-servidor</b> (<i>client-server architecture</i>). Tiene dos papeles:</p><ul><li>El <b>cliente</b> (<i>client</i>) es el programa que <b>pide</b>: el navegador de tu celular, la app del banco, la app de video del televisor. Arranca la conversación cuando tú haces algo.</li><li>El <b>servidor</b> (<i>server</i>) es el programa que <b>responde</b>: está siempre encendido, espera pedidos y atiende a miles de clientes a la vez. También se le dice servidor a la máquina donde corre ese programa.</li></ul></div><div class="analogia"><b>Imagínalo así</b><p>Un restaurante: el comensal (el cliente) mira la carta y pide; la cocina (el servidor) está siempre lista, prepara el plato y lo devuelve. La cocina no sale a ofrecer platos: espera que se los pidan, y atiende muchas mesas a la vez.</p></div><figure class="fig fig-esquema" id="01-diagrama-13"><div class="lienzo"><svg viewBox="0 0 760 300" style="min-width:600px" role="img" aria-label="Arquitectura cliente-servidor: varios clientes (celular, computadora, televisor y la ONT) envían pedidos a un servidor, que responde a cada uno">
+  <rect x="20" y="20" width="170" height="56" rx="10" class="caja"/>
+  <use href="#i-celular" x="30" y="30" width="36" height="36" class="ico"/>
+  <text x="76" y="45" class="t t-s t-b">Celular</text><text x="76" y="62" class="t t-xs t-m">navegador o app</text>
+  <line x1="192" y1="42" x2="500" y2="138" class="ln s-apl" marker-end="url(#fl-apl)"/>
+  <line x1="500" y1="146" x2="192" y2="56" class="ln ln-d s-tra" marker-end="url(#fl-tra)"/>
+  <rect x="20" y="88" width="170" height="56" rx="10" class="caja"/>
+  <use href="#i-monitor" x="30" y="98" width="36" height="36" class="ico"/>
+  <text x="76" y="113" class="t t-s t-b">Computadora</text><text x="76" y="130" class="t t-xs t-m">navegador</text>
+  <line x1="192" y1="110" x2="500" y2="146" class="ln s-apl" marker-end="url(#fl-apl)"/>
+  <line x1="500" y1="154" x2="192" y2="124" class="ln ln-d s-tra" marker-end="url(#fl-tra)"/>
+  <rect x="20" y="156" width="170" height="56" rx="10" class="caja"/>
+  <use href="#i-monitor" x="30" y="166" width="36" height="36" class="ico"/>
+  <text x="76" y="181" class="t t-s t-b">Televisor</text><text x="76" y="198" class="t t-xs t-m">app de video</text>
+  <line x1="192" y1="178" x2="500" y2="154" class="ln s-apl" marker-end="url(#fl-apl)"/>
+  <line x1="500" y1="162" x2="192" y2="192" class="ln ln-d s-tra" marker-end="url(#fl-tra)"/>
+  <rect x="20" y="224" width="170" height="56" rx="10" class="caja"/>
+  <use href="#i-ont" x="30" y="234" width="36" height="36" class="ico"/>
+  <text x="76" y="249" class="t t-s t-b">ONT</text><text x="76" y="266" class="t t-xs t-m">cliente del ACS</text>
+  <line x1="192" y1="246" x2="500" y2="162" class="ln s-apl" marker-end="url(#fl-apl)"/>
+  <line x1="500" y1="170" x2="192" y2="260" class="ln ln-d s-tra" marker-end="url(#fl-tra)"/>
+  <rect x="510" y="84" width="150" height="132" rx="12" class="caja"/>
+  <use href="#i-servidor" x="561" y="96" width="48" height="48" class="ico"/>
+  <text x="585" y="168" text-anchor="middle" class="t t-b">Servidor</text>
+  <text x="585" y="186" text-anchor="middle" class="t t-xs t-m">siempre encendido,</text>
+  <text x="585" y="200" text-anchor="middle" class="t t-xs t-m">espera pedidos</text>
+  <g class="t t-s"><line x1="250" y1="284" x2="290" y2="284" class="ln s-apl" marker-end="url(#fl-apl)"/><text x="298" y="288">el cliente pide</text>
+  <line x1="420" y1="284" x2="460" y2="284" class="ln ln-d s-tra" marker-end="url(#fl-tra)"/><text x="468" y="288">el servidor responde</text></g>
+</svg></div><figcaption><b>Arquitectura cliente-servidor.</b> Varios clientes (un celular, una computadora, un televisor y hasta la ONT de la casa) mandan pedidos a un mismo servidor (flecha llena), y el servidor responde a cada uno (flecha punteada). El cliente siempre empieza; el servidor espera.</figcaption></figure><div class="prose"><p>Muchos de los desarrollos y aplicaciones de hoy siguen ese patrón, también los sistemas internos de un telco:</p><div class="tbl"><table><thead><tr><th>Cliente (pide)</th><th>Servidor (responde)</th><th>Qué se piden</th></tr></thead><tbody><tr><td>Navegador del celular</td><td>Servidor web de <code>www.ejemplo.com</code></td><td>Páginas (HTTP)</td></tr><tr><td>App del banco o de la tienda</td><td><b>API</b> (<i>Application Programming Interface</i>, interfaz de programación) del banco</td><td>Datos: saldo, compras, pagos</td></tr><tr><td>Programa de correo</td><td>Servidor de correo</td><td>Mensajes nuevos, envíos</td></tr><tr><td>Celular, al conectarse</td><td>Servidor <b>DNS</b> del operador</td><td>La dirección IP de un nombre</td></tr><tr><td>ONT de la casa</td><td><b>ACS</b> (<i>Auto Configuration Server</i>, servidor de autoconfiguración)</td><td>Su configuración y sus actualizaciones</td></tr><tr><td>BNG del operador</td><td>Servidor <b>RADIUS</b></td><td>Si el cliente puede navegar y con qué plan</td></tr></tbody></table></div><p>La idea tiene variantes: a veces el servidor es un conjunto de servidores repartidos por el mundo, o un mismo programa es cliente de uno y servidor de otro. Y hay modelos distintos, como el <b>entre pares</b> (<i>peer-to-peer</i>), donde todos piden y responden a la vez. El capítulo 9 los compara y el capítulo 11 cuenta dónde viven los servidores.</p></div></section>
+<section><h2>Qué es un protocolo</h2><div class="prose"><p>Para que un cliente y un servidor se entiendan, no basta con que el mensaje llegue: los dos tienen que hablar el mismo idioma y seguir las mismas reglas de turno. Ese acuerdo se llama <b>protocolo</b> (<i>protocol</i>): un conjunto de reglas escritas que dicen qué mensajes existen, en qué orden se mandan, qué forma tiene cada uno y qué hacer si algo sale mal.</p></div><div class="analogia"><b>Imagínalo así</b><p>Una llamada telefónica tiene su protocolo, aunque nadie lo haya escrito: suena, alguien contesta «¿aló?», el otro se presenta, hablan por turnos y al final se despiden antes de colgar. Si uno de los dos no sigue esas reglas (no contesta, o habla sin parar), la conversación no funciona.</p></div><div class="prose"><p>Los protocolos de Internet están publicados en documentos abiertos, los <b>RFC</b> (<i>Request for Comments</i>, solicitud de comentarios), para que cualquier fabricante los implemente y sus equipos se entiendan con los de otros. Cada protocolo resuelve una sola parte del problema, y se apilan en capas, como se ve al final del capítulo. Estos son los que aparecen en un solo clic y los más comunes en general:</p><div class="tbl"><table><thead><tr><th>Protocolo</th><th>En inglés</th><th>En español</th><th>Para qué sirve</th></tr></thead><tbody><tr><td><b>Wi-Fi</b></td><td><i>IEEE 802.11 wireless LAN</i></td><td>Red local inalámbrica</td><td>Mover datos por radio dentro de la casa</td></tr><tr><td><b>Ethernet</b></td><td><i>IEEE 802.3</i></td><td>Red local cableada</td><td>Mover datos por cable o fibra entre equipos vecinos</td></tr><tr><td><b>IP</b></td><td><i>Internet Protocol</i></td><td>Protocolo de Internet</td><td>Poner dirección de origen y destino a cada paquete</td></tr><tr><td><b>DHCP</b></td><td><i>Dynamic Host Configuration Protocol</i></td><td>Protocolo de configuración dinámica</td><td>Darle una dirección IP a cada equipo que se conecta</td></tr><tr><td><b>DNS</b></td><td><i>Domain Name System</i></td><td>Sistema de nombres de dominio</td><td>Traducir nombres como <code>www.ejemplo.com</code> a direcciones IP</td></tr><tr><td><b>TCP</b></td><td><i>Transmission Control Protocol</i></td><td>Protocolo de control de transmisión</td><td>Que la conversación llegue completa y en orden</td></tr><tr><td><b>UDP</b></td><td><i>User Datagram Protocol</i></td><td>Protocolo de datagramas de usuario</td><td>Mandar rápido, sin confirmar (video en vivo, voz, DNS)</td></tr><tr><td><b>TLS</b></td><td><i>Transport Layer Security</i></td><td>Seguridad de la capa de transporte</td><td>Cifrar la conversación: el candado del navegador</td></tr><tr><td><b>HTTP / HTTPS</b></td><td><i>Hypertext Transfer Protocol (Secure)</i></td><td>Protocolo de transferencia de hipertexto (seguro)</td><td>Pedir y entregar páginas y datos de aplicaciones</td></tr><tr><td><b>SMTP, IMAP</b></td><td><i>Simple Mail Transfer / Internet Message Access Protocol</i></td><td>Protocolos de envío y lectura de correo</td><td>Mandar y leer correo electrónico</td></tr><tr><td><b>SIP</b></td><td><i>Session Initiation Protocol</i></td><td>Protocolo de inicio de sesión</td><td>Establecer llamadas de voz por Internet</td></tr><tr><td><b>BGP</b></td><td><i>Border Gateway Protocol</i></td><td>Protocolo de pasarela de frontera</td><td>Que los operadores se digan qué direcciones alcanza cada uno</td></tr></tbody></table></div><p>No hace falta memorizarlos ahora. Los capítulos 4 al 10 los explican uno por uno, con sus flujos, y el apéndice B tiene una ficha de cada uno.</p></div></section>
+<section><h2>Tu celular pregunta dónde queda el sitio (DNS)</h2><div class="prose"><p>En Internet cada máquina tiene una <b>dirección IP</b> (<i>Internet Protocol address</i>, dirección del protocolo de Internet), un número como <code>203.0.113.10</code>. Las personas recordamos nombres; las máquinas, números. Por eso, antes de pedir la página, el celular hace una pregunta: «¿cuál es la dirección de <code>www.ejemplo.com</code>?».</p><p>La respuesta la da el <b>DNS</b> (<i>Domain Name System</i>, sistema de nombres de dominio), un servicio que funciona como una guía telefónica gigante y repartida por todo el mundo. Normalmente el celular le pregunta al servidor DNS del operador, que ya conoce la respuesta de los sitios más visitados porque alguien más la pidió hace poco. Si no la conoce, la averigua preguntando a otros servidores DNS, de arriba hacia abajo, y la guarda un rato en su <b>caché</b> (<i>cache</i>, memoria de respuestas recientes) para la próxima vez.</p><p>Este paso es tan rápido que nadie lo nota, pero cuando falla el cliente dice «no tengo Internet» aunque la conexión esté perfecta: el teléfono tiene camino, pero no sabe a dónde ir. El capítulo 8 explica el DNS en detalle: la pregunta paso a paso por los servidores raíz, de dominio y del sitio, cuánto dura una respuesta guardada, por qué un cambio tarda en verse y cómo usa el operador su propio DNS. El apéndice B tiene su ficha resumida.</p></div></section>
+<section><h2>Tramos 1 y 2: el Wi-Fi y el equipo de la casa</h2><div class="prose"><p>Con la dirección en la mano, el celular arma el pedido y lo manda <b>por radio</b> al <b>router Wi-Fi</b> de la casa. Un <b>router</b> (<i>router</i>, enrutador) es el equipo que decide hacia dónde mandar cada mensaje; el de la casa además emite la red <b>Wi-Fi</b>, el nombre comercial de las redes locales inalámbricas que sigue la norma IEEE 802.11.</p><p>El Wi-Fi es el tramo más corto del viaje, apenas unos metros, pero también el más frágil: las paredes, la distancia, el microondas y los Wi-Fi de los vecinos generan interferencia o ruido que le quitan velocidad. Muchas quejas de «Internet lento» se originan en estos pocos metros.</p></div><figure class="fig fig-arquitectura" id="01-diagrama-6"><div class="lienzo"><svg viewBox="0 0 760 262" style="min-width:620px" role="img" aria-label="Tramo 1, del celular al router Wi-Fi: el pedido viaja por radio unos metros dentro de la casa">
+  <rect x="24" y="8" width="712" height="160" rx="12" class="d-casa"/>
+  <text x="380" y="28" text-anchor="middle" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+  <line x1="246" y1="92" x2="514" y2="92" class="ln ln-d"/>
+  <text x="380" y="82" text-anchor="middle" class="t t-xs t-b">ondas de radio</text>
+  <text x="380" y="110" text-anchor="middle" class="t t-xs t-m">2,4 · 5 · 6 GHz · unos metros</text>
+  <rect x="154" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-celular" x="180" y="50" width="40" height="40" class="ico"/>
+  <text x="200" y="112" text-anchor="middle" class="t t-s t-b">Celular</text>
+  <text x="200" y="130" text-anchor="middle" class="t t-xs t-m">cliente Wi-Fi</text>
+  <rect x="514" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-router" x="540" y="50" width="40" height="40" class="ico"/>
+  <text x="560" y="112" text-anchor="middle" class="t t-s t-b">Router Wi-Fi</text>
+  <text x="560" y="130" text-anchor="middle" class="t t-xs t-m">punto de acceso</text>
+  <rect x="20" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="32" y="200" class="t t-xs t-b k-warm">MEDIO</text>
+  <text x="32" y="220" class="t t-s">Radio por el aire</text>
+  <text x="32" y="238" class="t t-s">Wi-Fi 4, 5 y 6 (IEEE 802.11)</text>
+  <rect x="264" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="276" y="200" class="t t-xs t-b k-warm">CAPAS QUE TRABAJAN</text>
+  <text x="276" y="220" class="t t-s">Física y enlace: el router</text>
+  <text x="276" y="238" class="t t-s">recibe el mensaje y lo reenvía</text>
+  <rect x="508" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="520" y="200" class="t t-xs t-b k-warm">QUÉ LO AFECTA</text>
+  <text x="520" y="220" class="t t-s">Paredes, distancia, microondas</text>
+  <text x="520" y="238" class="t t-s">y las redes de los vecinos</text>
+</svg></div><figcaption><b>Tramo 1: del celular al router Wi-Fi.</b> El pedido viaja por ondas de radio (línea punteada) unos pocos metros. Abajo, en qué medio viaja, qué capas trabajan y qué lo afecta. Todo ocurre dentro de la casa, en la red del cliente.</figcaption></figure><div class="prose"><p>El router Wi-Fi suele vivir dentro de la <b>ONT</b> (<i>Optical Network Terminal</i>, terminal de red óptica), el equipo que el operador instala en la casa, o conectado a ella por un cable de red <b>Ethernet</b>. Antes de pasar el pedido, el router le da a cada equipo de la casa una dirección privada con <b>DHCP</b> y la cambia por la dirección pública de la casa con <b>NAT</b> (<i>Network Address Translation</i>, traducción de direcciones de red); el capítulo 5 lo explica.</p><p>La ONT es la frontera: de un lado la red de la casa, que es del cliente; del otro, la fibra, que es del operador. La ONT convierte el pedido, que hasta ahí eran señales eléctricas o de radio, en <b>pulsos de luz</b>.</p></div><figure class="fig fig-arquitectura" id="01-diagrama-7"><div class="lienzo"><svg viewBox="0 0 760 262" style="min-width:620px" role="img" aria-label="Tramo 2, del router Wi-Fi a la ONT: un cable de red, o ninguno si los dos están en el mismo equipo">
+  <rect x="24" y="8" width="712" height="160" rx="12" class="d-casa"/>
+  <text x="380" y="28" text-anchor="middle" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+  <line x1="246" y1="92" x2="514" y2="92" class="ln"/>
+  <text x="380" y="82" text-anchor="middle" class="t t-xs t-b">cable de red (Ethernet)</text>
+  <text x="380" y="110" text-anchor="middle" class="t t-xs t-m">o dentro del mismo equipo</text>
+  <rect x="154" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-router" x="180" y="50" width="40" height="40" class="ico"/>
+  <text x="200" y="112" text-anchor="middle" class="t t-s t-b">Router Wi-Fi</text>
+  <text x="200" y="130" text-anchor="middle" class="t t-xs t-m">red de la casa</text>
+  <rect x="514" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-ont" x="540" y="50" width="40" height="40" class="ico"/>
+  <text x="560" y="112" text-anchor="middle" class="t t-s t-b">ONT</text>
+  <text x="560" y="130" text-anchor="middle" class="t t-xs t-m">frontera</text>
+  <line x1="603" y1="92" x2="736" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="680" y="82" text-anchor="middle" class="t t-xs t-b k-fis">sale como luz →</text>
+  <rect x="20" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="32" y="200" class="t t-xs t-b k-warm">MEDIO</text>
+  <text x="32" y="220" class="t t-s">Cable Ethernet (IEEE 802.3)</text>
+  <text x="32" y="238" class="t t-s">o una conexión interna</text>
+  <rect x="264" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="276" y="200" class="t t-xs t-b k-warm">QUÉ HACE EL ROUTER</text>
+  <text x="276" y="220" class="t t-s">Reparte direcciones privadas</text>
+  <text x="276" y="238" class="t t-s">(DHCP) y las traduce (NAT)</text>
+  <rect x="508" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="520" y="200" class="t t-xs t-b k-warm">LA FRONTERA</text>
+  <text x="520" y="220" class="t t-s">La ONT separa la red del</text>
+  <text x="520" y="238" class="t t-s">cliente de la del operador</text>
+</svg></div><figcaption><b>Tramo 2: del router Wi-Fi a la ONT.</b> Un cable de red, o ninguno si el router viene dentro de la ONT. Aquí el router reparte direcciones y las traduce, y la ONT convierte el pedido en luz para mandarlo por la fibra del operador.</figcaption></figure></section>
+<section><h2>Tramo 3: la fibra hasta la central del operador</h2><div class="prose"><p>La fibra que sale de la casa es un hilo de vidrio más delgado que un cabello. Por dentro viaja luz que se enciende y se apaga millones de veces por segundo: cada destello es un pedacito de información.</p><p>Esa fibra no va directo a la central. En una caja en el poste o en la acera se junta con las fibras de los vecinos mediante un <b>splitter</b> (divisor óptico), un divisor de luz que no usa electricidad. Así, una sola fibra que sale de la central llega a decenas de casas. A esa red de vidrio y divisores se le llama <b>PON</b> (<i>Passive Optical Network</i>, red óptica pasiva), y es la base de la <b>FTTH</b> (<i>Fiber To The Home</i>, fibra hasta el hogar).</p><p>En la central espera la <b>OLT</b> (<i>Optical Line Terminal</i>, terminal de línea óptica), el equipo que habla con todas las ONT de una zona. La OLT ordena quién transmite y cuándo, para que las luces de los vecinos no choquen. Los capítulos 17 y 18 cuentan cómo funciona este reparto.</p></div><figure class="fig fig-arquitectura" id="01-diagrama-8"><div class="lienzo"><svg viewBox="0 0 760 262" style="min-width:620px" role="img" aria-label="Tramo 3, de la ONT a la OLT: luz por fibra, repartida por dos splitters, hasta la central del operador">
+  <rect x="24" y="8" width="172" height="160" rx="12" class="d-casa"/>
+  <text x="110" y="28" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <rect x="204" y="8" width="532" height="160" rx="12" class="d-oper"/>
+  <text x="470" y="28" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR · RED ÓPTICA PASIVA (PON)</text>
+  <line x1="156" y1="92" x2="244" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="200" y="82" text-anchor="middle" class="t t-xs t-b">acometida</text>
+  <text x="200" y="110" text-anchor="middle" class="t t-xs t-m">de la casa</text>
+  <line x1="336" y1="92" x2="424" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="380" y="82" text-anchor="middle" class="t t-xs t-b">distribución</text>
+  <text x="380" y="110" text-anchor="middle" class="t t-xs t-m">de la calle</text>
+  <line x1="516" y1="92" x2="604" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="560" y="82" text-anchor="middle" class="t t-xs t-b">troncal</text>
+  <text x="560" y="110" text-anchor="middle" class="t t-xs t-m">hasta ~20 km</text>
+  <rect x="64" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-ont" x="90" y="50" width="40" height="40" class="ico"/>
+  <text x="110" y="112" text-anchor="middle" class="t t-s t-b">ONT</text>
+  <text x="110" y="130" text-anchor="middle" class="t t-xs t-m">en la casa</text>
+  <rect x="244" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-splitter" x="270" y="50" width="40" height="40" class="ico"/>
+  <text x="290" y="112" text-anchor="middle" class="t t-s t-b">Splitter 1:8</text>
+  <text x="290" y="130" text-anchor="middle" class="t t-xs t-m">caja en el poste</text>
+  <rect x="424" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-splitter" x="450" y="50" width="40" height="40" class="ico"/>
+  <text x="470" y="112" text-anchor="middle" class="t t-s t-b">Splitter 1:8</text>
+  <text x="470" y="130" text-anchor="middle" class="t t-xs t-m">armario de la zona</text>
+  <rect x="604" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-olt" x="630" y="50" width="40" height="40" class="ico"/>
+  <text x="650" y="112" text-anchor="middle" class="t t-s t-b">OLT</text>
+  <text x="650" y="130" text-anchor="middle" class="t t-xs t-m">en la central</text>
+  <rect x="20" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="32" y="200" class="t t-xs t-b k-warm">MEDIO</text>
+  <text x="32" y="220" class="t t-s">Luz por fibra de vidrio,</text>
+  <text x="32" y="238" class="t t-s">sin electricidad en el camino</text>
+  <rect x="264" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="276" y="200" class="t t-xs t-b k-warm">CÓMO SE COMPARTE</text>
+  <text x="276" y="220" class="t t-s">Una fibra de la OLT llega</text>
+  <text x="276" y="238" class="t t-s">a 64 casas (1:8 × 1:8)</text>
+  <rect x="508" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="520" y="200" class="t t-xs t-b k-warm">QUÉ LO AFECTA</text>
+  <text x="520" y="220" class="t t-s">Fibras dobladas o cortadas</text>
+  <text x="520" y="238" class="t t-s">y conectores sucios</text>
+</svg></div><figcaption><b>Tramo 3: de la ONT a la OLT.</b> La luz sale de la ONT por la fibra de la casa, pasa por un splitter en el poste y otro en el armario de la zona, y llega por la fibra troncal a la OLT. Con dos splitters de 1 a 8, una sola fibra de la OLT atiende 64 casas.</figcaption></figure></section>
+<section><h2>Tramo 4: dentro de la red del operador, de la OLT al BNG</h2><div class="prose"><p>Detrás de la OLT, unos <b>switches de agregación</b> (equipos que juntan el tráfico de muchas OLT) llevan el pedido a un equipo que reconoce al cliente: el <b>BNG</b> (<i>Broadband Network Gateway</i>, puerta de enlace de banda ancha). Es el portero de la red: sabe quién eres, qué plan pagaste y a qué velocidad puedes navegar, porque se lo dice otro sistema llamado <b>RADIUS</b> (<i>Remote Authentication Dial-In User Service</i>, servicio de autenticación remota de usuarios). El BNG también le da a la casa su dirección IP. Si la cuenta está suspendida, el BNG es el que te manda a la página de pago en vez de dejarte salir.</p></div><figure class="fig fig-arquitectura" id="01-diagrama-9"><div class="lienzo"><svg viewBox="0 0 760 262" style="min-width:620px" role="img" aria-label="Tramo 4, de la OLT al BNG dentro de la red del operador: el BNG reconoce al cliente consultando a RADIUS">
+  <rect x="24" y="8" width="712" height="160" rx="12" class="d-oper"/>
+  <text x="380" y="28" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  <line x1="156" y1="92" x2="244" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="200" y="82" text-anchor="middle" class="t t-xs t-b">VLAN</text>
+  <text x="200" y="110" text-anchor="middle" class="t t-xs t-m">por fibra</text>
+  <line x1="336" y1="92" x2="424" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="380" y="82" text-anchor="middle" class="t t-xs t-b">Ethernet</text>
+  <text x="380" y="110" text-anchor="middle" class="t t-xs t-m">por fibra</text>
+  <line x1="516" y1="92" x2="604" y2="92" class="ln"/>
+  <text x="560" y="82" text-anchor="middle" class="t t-xs t-b">consulta</text>
+  <text x="560" y="110" text-anchor="middle" class="t t-xs t-m">¿quién es?</text>
+  <rect x="64" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-olt" x="90" y="50" width="40" height="40" class="ico"/>
+  <text x="110" y="112" text-anchor="middle" class="t t-s t-b">OLT</text>
+  <text x="110" y="130" text-anchor="middle" class="t t-xs t-m">en la central</text>
+  <rect x="244" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-router-core" x="270" y="50" width="40" height="40" class="ico"/>
+  <text x="290" y="112" text-anchor="middle" class="t t-s t-b">Agregación</text>
+  <text x="290" y="130" text-anchor="middle" class="t t-xs t-m">switches</text>
+  <rect x="424" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-router-core" x="450" y="50" width="40" height="40" class="ico"/>
+  <text x="470" y="112" text-anchor="middle" class="t t-s t-b">BNG</text>
+  <text x="470" y="130" text-anchor="middle" class="t t-xs t-m">el portero</text>
+  <rect x="604" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-llave" x="630" y="50" width="40" height="40" class="ico"/>
+  <text x="650" y="112" text-anchor="middle" class="t t-s t-b">RADIUS</text>
+  <text x="650" y="130" text-anchor="middle" class="t t-xs t-m">quién es, qué plan</text>
+  <rect x="20" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="32" y="200" class="t t-xs t-b k-warm">MEDIO</text>
+  <text x="32" y="220" class="t t-s">Fibra y Ethernet entre</text>
+  <text x="32" y="238" class="t t-s">los equipos de la central</text>
+  <rect x="264" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="276" y="200" class="t t-xs t-b k-warm">QUÉ PASA AQUÍ</text>
+  <text x="276" y="220" class="t t-s">El BNG identifica al cliente,</text>
+  <text x="276" y="238" class="t t-s">le da su IP y aplica su plan</text>
+  <rect x="508" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="520" y="200" class="t t-xs t-b k-warm">CAPAS QUE TRABAJAN</text>
+  <text x="520" y="220" class="t t-s">Enlace y red: aquí el pedido</text>
+  <text x="520" y="238" class="t t-s">empieza a buscar su camino</text>
+</svg></div><figcaption><b>Tramo 4: de la OLT al BNG.</b> Dentro de la central, el tráfico de la OLT pasa por los switches de agregación y llega al BNG, separado por cliente o por servicio en <b>VLAN</b> (<i>Virtual LAN</i>, red local virtual). El BNG le pregunta a RADIUS quién es el cliente y qué plan tiene, y con eso lo deja navegar.</figcaption></figure></section>
+<section><h2>Tramo 5: del operador a Internet</h2><div class="prose"><p>Superado el portero, el pedido entra al <b>core</b> (núcleo), el corazón de la red del operador: routers muy potentes que deciden por dónde mandar cada <b>paquete</b> (<i>packet</i>), que es cada pedacito en que se divide la información. Algunos destinos están dentro de la propia red, porque los grandes sitios de video y redes sociales dejan copias de su contenido muy cerca del cliente, en una <b>CDN</b> (<i>Content Delivery Network</i>, red de entrega de contenido).</p><p>El resto sale a Internet por los routers de <b>borde</b> (<i>edge</i>), por enlaces que el operador paga a otros operadores más grandes (<b>tránsito</b>, <i>transit</i>) o que intercambia con ellos sin cobrarse (<b>peering</b>, intercambio de tráfico). Para ponerse de acuerdo sobre qué direcciones alcanza cada uno, los operadores usan el protocolo <b>BGP</b> (<i>Border Gateway Protocol</i>, protocolo de pasarela de frontera).</p></div><figure class="fig fig-arquitectura" id="01-diagrama-10"><div class="lienzo"><svg viewBox="0 0 760 262" style="min-width:620px" role="img" aria-label="Tramo 5, del BNG a Internet: los routers del core llevan el pedido hasta el borde y lo entregan a otros operadores">
+  <rect x="24" y="8" width="532" height="160" rx="12" class="d-oper"/>
+  <text x="290" y="28" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  <rect x="564" y="8" width="172" height="160" rx="12" class="d-inet"/>
+  <text x="650" y="28" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <line x1="156" y1="92" x2="244" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="200" y="82" text-anchor="middle" class="t t-xs t-b">fibra</text>
+  <line x1="336" y1="92" x2="424" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="380" y="82" text-anchor="middle" class="t t-xs t-b">fibra</text>
+  <line x1="516" y1="92" x2="604" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="560" y="82" text-anchor="middle" class="t t-xs t-b">BGP</text>
+  <text x="560" y="110" text-anchor="middle" class="t t-xs t-m">otras redes</text>
+  <rect x="64" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-router-core" x="90" y="50" width="40" height="40" class="ico"/>
+  <text x="110" y="112" text-anchor="middle" class="t t-s t-b">BNG</text>
+  <text x="110" y="130" text-anchor="middle" class="t t-xs t-m">el portero</text>
+  <rect x="244" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-router-core" x="270" y="50" width="40" height="40" class="ico"/>
+  <text x="290" y="112" text-anchor="middle" class="t t-s t-b">Core</text>
+  <text x="290" y="130" text-anchor="middle" class="t t-xs t-m">routers potentes</text>
+  <rect x="424" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-router-core" x="450" y="50" width="40" height="40" class="ico"/>
+  <text x="470" y="112" text-anchor="middle" class="t t-s t-b">Borde</text>
+  <text x="470" y="130" text-anchor="middle" class="t t-xs t-m">router de salida</text>
+  <rect x="604" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-nube" x="630" y="50" width="40" height="40" class="ico"/>
+  <text x="650" y="112" text-anchor="middle" class="t t-s t-b">Internet</text>
+  <text x="650" y="130" text-anchor="middle" class="t t-xs t-m">otros operadores</text>
+  <rect x="20" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="32" y="200" class="t t-xs t-b k-warm">CAPA QUE TRABAJA</text>
+  <text x="32" y="220" class="t t-s">Red: cada router decide el</text>
+  <text x="32" y="238" class="t t-s">siguiente salto por la IP</text>
+  <rect x="264" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="276" y="200" class="t t-xs t-b k-warm">ATAJOS</text>
+  <text x="276" y="220" class="t t-s">Video y redes sociales suelen</text>
+  <text x="276" y="238" class="t t-s">salir de cachés de la red</text>
+  <rect x="508" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="520" y="200" class="t t-xs t-b k-warm">LA SALIDA</text>
+  <text x="520" y="220" class="t t-s">El operador paga tránsito o</text>
+  <text x="520" y="238" class="t t-s">intercambia tráfico (peering)</text>
+</svg></div><figcaption><b>Tramo 5: del BNG a Internet.</b> Los routers del core llevan el pedido hasta el router de borde, que lo entrega a otro operador por un enlace de tránsito o de peering. En cada router se decide el siguiente salto mirando solo la dirección IP de destino.</figcaption></figure></section>
+<section><h2>Tramo 6: de Internet al servidor</h2><div class="prose"><p>Entre Internet y el servidor hay <b>otro operador</b>, muy parecido al tuyo: el que le da acceso a la Nube al data center donde vive el servidor. El pedido llega a la red de ese operador, entra al data center, pasa por un <b>firewall</b> (cortafuegos), que deja pasar solo el tráfico permitido, y por un <b>balanceador de carga</b> (<i>load balancer</i>), que reparte los pedidos entre varios servidores iguales, y por fin llega al <b>servidor</b> de <code>www.ejemplo.com</code>.</p><p>Desde el punto de vista del servidor, el viaje es el espejo del tuyo: su operador hace por él lo que el tuyo hace por ti. Por eso, cuando un sitio está caído, no importa qué tan buena sea tu conexión: el problema está del otro lado, y afecta a todos sus usuarios.</p></div><figure class="fig fig-arquitectura" id="01-diagrama-11"><div class="lienzo"><svg viewBox="0 0 760 262" style="min-width:620px" role="img" aria-label="Tramo 6, de Internet al servidor: el servidor también tiene un operador que le da acceso, y vive en un data center">
+  <rect x="24" y="8" width="172" height="160" rx="12" class="d-inet"/>
+  <text x="110" y="28" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <rect x="204" y="8" width="532" height="160" rx="12" class="d-oper"/>
+  <text x="470" y="28" text-anchor="middle" class="t t-xs t-b k-oper">EL LADO DEL SERVIDOR: SU OPERADOR Y SU DATA CENTER</text>
+  <line x1="156" y1="92" x2="244" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="200" y="82" text-anchor="middle" class="t t-xs t-b">enlace</text>
+  <line x1="336" y1="92" x2="424" y2="92" class="ln s-fis" style="stroke-width:3"/>
+  <text x="380" y="82" text-anchor="middle" class="t t-xs t-b">red del DC</text>
+  <line x1="516" y1="92" x2="604" y2="92" class="ln"/>
+  <text x="560" y="82" text-anchor="middle" class="t t-xs t-b">red interna</text>
+  <rect x="64" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-nube" x="90" y="50" width="40" height="40" class="ico"/>
+  <text x="110" y="112" text-anchor="middle" class="t t-s t-b">Internet</text>
+  <text x="110" y="130" text-anchor="middle" class="t t-xs t-m">muchas redes</text>
+  <rect x="244" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-router-core" x="270" y="50" width="40" height="40" class="ico"/>
+  <text x="290" y="112" text-anchor="middle" class="t t-s t-b">Operador</text>
+  <text x="290" y="130" text-anchor="middle" class="t t-xs t-m">del servidor</text>
+  <rect x="424" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-candado" x="450" y="50" width="40" height="40" class="ico"/>
+  <text x="470" y="112" text-anchor="middle" class="t t-s t-b">Firewall</text>
+  <text x="470" y="130" text-anchor="middle" class="t t-xs t-m">y balanceador</text>
+  <rect x="604" y="40" width="92" height="112" rx="10" class="caja"/>
+  <use href="#i-servidor" x="630" y="50" width="40" height="40" class="ico"/>
+  <text x="650" y="112" text-anchor="middle" class="t t-s t-b">Servidor</text>
+  <text x="650" y="130" text-anchor="middle" class="t t-xs t-m">www.ejemplo.com</text>
+  <rect x="20" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="32" y="200" class="t t-xs t-b k-warm">SIMETRÍA</text>
+  <text x="32" y="220" class="t t-s">El servidor también tiene un</text>
+  <text x="32" y="238" class="t t-s">operador que le da acceso</text>
+  <rect x="264" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="276" y="200" class="t t-xs t-b k-warm">DÓNDE VIVE</text>
+  <text x="276" y="220" class="t t-s">En un data center o en la</text>
+  <text x="276" y="238" class="t t-s">nube de un proveedor (cap. 11)</text>
+  <rect x="508" y="180" width="232" height="72" rx="8" class="caja"/>
+  <text x="520" y="200" class="t t-xs t-b k-warm">QUÉ LO AFECTA</text>
+  <text x="520" y="220" class="t t-s">Si el servidor cae, falla</text>
+  <text x="520" y="238" class="t t-s">para todos, no solo para ti</text>
+</svg></div><figcaption><b>Tramo 6: de Internet al servidor.</b> Del otro lado de Internet está el operador del servidor y su data center. El pedido pasa por el firewall y el balanceador y llega al servidor del sitio. Es el mismo esquema que en la casa, visto desde la otra punta.</figcaption></figure></section>
+<section><h2>El túnel lógico entre el cliente y el servidor</h2><div class="prose"><p>Si miras los tramos uno por uno, el pedido pasa por diez equipos o más. Pero el celular y el servidor no lo viven así: para ellos hay <b>una sola conversación</b>, directa, de punta a punta, como si existiera un tubo entre los dos. A ese tubo se le llama <b>conexión lógica</b> o, de forma coloquial, <b>túnel</b> (<i>tunnel</i>): lógico porque no existe un cable propio entre ellos, sino un acuerdo entre los dos extremos sobre cómo conversar.</p><p>El túnel se arma con protocolos, en tres pasos:</p><ol class="steps"><li><span><b>TCP</b> (<i>Transmission Control Protocol</i>, protocolo de control de transmisión) abre la conexión con un saludo de tres pasos: «¿hablamos?», «sí, hablemos», «listo». Desde ahí, TCP numera cada pedacito, confirma lo que llega y reenvía lo que se pierde.</span></li><li><span><b>TLS</b> (<i>Transport Layer Security</i>, seguridad de la capa de transporte) pone el candado: el celular comprueba que el servidor es quien dice ser y los dos acuerdan una clave secreta. Desde ahí, nadie en el camino puede leer lo que se dicen.</span></li><li><span><b>HTTP</b> (<i>Hypertext Transfer Protocol</i>, protocolo de transferencia de hipertexto) viaja por dentro del túnel: el celular pide la página y el servidor la manda. Cuando HTTP va protegido por TLS se le llama <b>HTTPS</b> (la «S» es de <i>secure</i>, seguro).</span></li></ol><p>Los equipos del medio, la ONT, la OLT, el BNG y los routers, no forman parte de esa conversación. Solo leen las etiquetas de afuera de cada paquete (la dirección y el camino) y lo pasan al siguiente. No abren el contenido, y con TLS no podrían aunque quisieran.</p></div><div class="analogia"><b>Imagínalo así</b><p>Cuando llamas por teléfono a alguien en otro país, hablas con esa persona, no con las centrales telefónicas que conectan la llamada. Las centrales llevan tu voz, pero la conversación es solo entre ustedes dos. Si además hablan en un idioma que solo ustedes conocen, nadie en el camino entiende lo que se dicen: eso hace TLS.</p></div><figure class="fig fig-esquema" id="01-diagrama-14"><div class="lienzo"><svg viewBox="0 0 960 300" style="min-width:760px" role="img" aria-label="El túnel lógico: arriba, una sola conversación de extremo a extremo entre el celular y el servidor, protegida con TLS sobre TCP; abajo, el camino físico por diez equipos que solo reenvían los paquetes sin abrirlos">
+  <text x="20" y="24" class="t t-xs t-b t-m">LO QUE VEN EL CELULAR Y EL SERVIDOR: UNA SOLA CONVERSACIÓN</text>
+  <rect x="40" y="40" width="877" height="74" rx="37" class="c-tra"/>
+  <rect x="80" y="54" width="797" height="46" rx="23" class="c-apl"/>
+  <use href="#i-candado" x="328" y="62" width="30" height="30" class="ico"/>
+  <text x="488" y="74" text-anchor="middle" class="t t-s t-b k-apl">HTTP dentro de TLS: pedido y respuesta, cifrados</text>
+  <line x1="120" y1="86" x2="837" y2="86" class="ln s-apl" marker-end="url(#fl-apl)"/>
+  <text x="478" y="132" text-anchor="middle" class="t t-xs t-b k-tra">el «túnel»: una conexión TCP de extremo a extremo</text>
+  <line x1="60" y1="114" x2="60" y2="176" class="ln ln-d"/><line x1="897" y1="114" x2="897" y2="176" class="ln ln-d"/>
+  <text x="74" y="160" class="t t-xs t-b t-m">LO QUE PASA DE VERDAD: DIEZ EQUIPOS QUE REENVÍAN</text>
+  <line x1="60" y1="210" x2="897" y2="210" class="ln"/>
+  <rect x="24" y="180" width="72" height="72" rx="10" class="caja"/>
+  <use href="#i-celular" x="44" y="186" width="32" height="32" class="ico"/>
+  <text x="60" y="240" text-anchor="middle" class="t t-xs t-b">Celular</text>
+  <rect x="117" y="180" width="72" height="72" rx="10" class="caja apagado"/>
+  <use href="#i-router" x="137" y="186" width="32" height="32" class="ico"/>
+  <text x="153" y="240" text-anchor="middle" class="t t-xs t-b">Wi-Fi</text>
+  <rect x="210" y="180" width="72" height="72" rx="10" class="caja apagado"/>
+  <use href="#i-ont" x="230" y="186" width="32" height="32" class="ico"/>
+  <text x="246" y="240" text-anchor="middle" class="t t-xs t-b">ONT</text>
+  <rect x="303" y="180" width="72" height="72" rx="10" class="caja apagado"/>
+  <use href="#i-splitter" x="323" y="186" width="32" height="32" class="ico"/>
+  <text x="339" y="240" text-anchor="middle" class="t t-xs t-b">Splitter</text>
+  <rect x="396" y="180" width="72" height="72" rx="10" class="caja apagado"/>
+  <use href="#i-olt" x="416" y="186" width="32" height="32" class="ico"/>
+  <text x="432" y="240" text-anchor="middle" class="t t-xs t-b">OLT</text>
+  <rect x="489" y="180" width="72" height="72" rx="10" class="caja apagado"/>
+  <use href="#i-router-core" x="509" y="186" width="32" height="32" class="ico"/>
+  <text x="525" y="240" text-anchor="middle" class="t t-xs t-b">BNG</text>
+  <rect x="582" y="180" width="72" height="72" rx="10" class="caja apagado"/>
+  <use href="#i-router-core" x="602" y="186" width="32" height="32" class="ico"/>
+  <text x="618" y="240" text-anchor="middle" class="t t-xs t-b">Core</text>
+  <rect x="675" y="180" width="72" height="72" rx="10" class="caja apagado"/>
+  <use href="#i-nube" x="695" y="186" width="32" height="32" class="ico"/>
+  <text x="711" y="240" text-anchor="middle" class="t t-xs t-b">Internet</text>
+  <rect x="768" y="180" width="72" height="72" rx="10" class="caja apagado"/>
+  <use href="#i-router-core" x="788" y="186" width="32" height="32" class="ico"/>
+  <text x="804" y="240" text-anchor="middle" class="t t-xs t-b">Op. servidor</text>
+  <rect x="861" y="180" width="72" height="72" rx="10" class="caja"/>
+  <use href="#i-servidor" x="881" y="186" width="32" height="32" class="ico"/>
+  <text x="897" y="240" text-anchor="middle" class="t t-xs t-b">Servidor</text>
+  <text x="478" y="278" text-anchor="middle" class="t t-s t-m">los equipos del medio leen solo las etiquetas de afuera (dirección y camino); no abren el contenido</text>
+  <circle r="6" class="pkt" cx="60" cy="210"><animateMotion dur="6s" repeatCount="indefinite" path="M0 0H837H0" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="linear"/></circle>
+</svg></div><figcaption><b>El túnel lógico.</b> Arriba, lo que ven el celular y el servidor: una sola conversación de extremo a extremo, una conexión TCP con HTTP cifrado por TLS adentro. Abajo, lo que pasa de verdad: el paquete (el punto naranja) cruza diez equipos que solo lo reenvían, sin abrirlo.</figcaption></figure><div class="prose"><p>Esa palabra, «túnel», vuelve a aparecer más adelante con un sentido más estricto: las <b>VPN</b> (<i>Virtual Private Network</i>, red privada virtual) y otros túneles meten un paquete entero dentro de otro para cruzar una red ajena. El capítulo 21 los explica.</p><p>El diagrama de flujo muestra la conversación completa en orden, del DNS al pedido HTTP.</p></div><figure class="fig fig-flujo" id="01-diagrama-5"><div class="lienzo"><svg viewBox="0 0 860 560" style="min-width:660px" role="img" aria-label="Flujo de un clic: consulta DNS y respuesta; saludo TCP de tres pasos; saludo TLS; pedido GET y respuesta 200 OK con la página">
   
   <rect x="60" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-celular" x="72" y="26" width="32" height="32" class="ico"/><text x="112" y="47" class="t t-b">Celular</text>
   <rect x="320" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-guia" x="332" y="26" width="32" height="32" class="ico"/><text x="372" y="40" class="t t-b">DNS del</text><text x="372" y="57" class="t t-b">operador</text>
@@ -210,8 +546,99 @@
 <div class="crono-bar" id="c01-bar" role="img" aria-label="Tiempo de cada paso del clic"></div>
 <div class="crono-ley" id="c01-ley"></div>
 <p class="hint" id="c01-nota"></p></div></section>
-<section><h2>Quién cobra, quién vigila y quién arregla</h2><div class="prose"><p>El viaje que acabamos de seguir es solo la mitad de la historia. Para que ese clic funcione, mientras el cliente duerme y mientras navega, trabajan muchos otros sistemas y muchas personas que el cliente nunca ve:</p><ul><li><b>Los que venden y cobran.</b> Alguien registró al cliente, le vendió un plan, emite su factura todos los meses y registra su pago. Son los sistemas del negocio, que la industria llama <b>BSS</b>.</li><li><b>Los que instalan y configuran.</b> Un técnico llevó la fibra a la casa, y un conjunto de sistemas dio de alta la ONT, le cargó la configuración y le avisó al BNG a qué velocidad debía navegar ese cliente. Son los sistemas de operación, los <b>OSS</b>.</li><li><b>Los que vigilan.</b> Un centro de operaciones de red (<b>NOC</b>) mira alarmas de miles de equipos a toda hora y detecta un corte de fibra antes de que lleguen las llamadas.</li><li><b>Los que arreglan y atienden.</b> El agente que contesta el teléfono, el técnico que sale a la calle y el ingeniero que cambia una configuración de madrugada.</li></ul></div><div class="caso"><b>Así lo hace un operador</b><p>En un operador FTTH típico, un solo clic de un cliente residencial pasa por el router Wi-Fi y la ONT de la casa, uno o dos splitters en la calle, la OLT de la central, switches de agregación, el BNG, el DNS del operador, varios routers del core y, según el destino, una caché de contenido dentro de la red o los enlaces de salida a Internet. Son más de una docena de equipos del operador en menos de un segundo. Y detrás, sin participar en cada clic pero imprescindibles para que funcione, están RADIUS, el servidor que configura la ONT, el sistema de monitoreo, el de facturación y el de atención al cliente.</p></div></section>
-<section><h2>El mapa del libro</h2><div class="prose"><p>Para no perderse en tantas máquinas, los ingenieros dividen el problema en <b>capas</b>. Cada capa se ocupa de una sola cosa y confía en que la de abajo hace bien su trabajo: la capa física mueve luz, radio o electricidad; la de enlace entrega mensajes entre dos equipos vecinos; la de red encuentra el camino a través de muchos equipos; la de transporte cuida que la conversación llegue completa; y la de aplicación es la que entiende de páginas, correos o llamadas. El capítulo 3 las presenta una por una.</p><p>La tabla de abajo cruza las dos ideas de este capítulo: los tramos del viaje y las capas. Muestra que no todos los equipos trabajan en todas las capas. La fibra y el splitter solo mueven luz; la ONT y la OLT llegan hasta la capa de enlace; los routers del operador deciden caminos en la capa de red; y solo los dos extremos, el celular y el servidor, entienden la página completa.</p></div><figure class="fig fig-capas" id="01-diagrama-4"><div class="lienzo"><svg viewBox="0 0 840 290" style="min-width:680px" role="img" aria-label="Qué capa trabaja en cada tramo: el celular y el servidor usan las cinco capas; el router Wi-Fi llega hasta transporte; BNG y core hasta red; ONT y OLT hasta enlace; la fibra y el splitter solo la física">
+<section><h2>Quién cobra, quién vigila y quién arregla</h2><div class="prose"><p>El viaje que acabamos de seguir es solo la mitad de la historia. Para que ese clic funcione, mientras el cliente duerme y mientras navega, trabajan muchos otros sistemas y muchas personas que el cliente nunca ve:</p><ul><li><b>Los que venden y cobran.</b> Alguien registró al cliente, le vendió un plan, emite su factura todos los meses y registra su pago. Son los sistemas del negocio, que la industria llama <b>BSS</b> (<i>Business Support Systems</i>, sistemas de soporte al negocio).</li><li><b>Los que instalan y configuran.</b> Un técnico llevó la fibra a la casa, y un conjunto de sistemas dio de alta la ONT, le cargó la configuración y le avisó al BNG a qué velocidad debía navegar ese cliente. Son los <b>OSS</b> (<i>Operations Support Systems</i>, sistemas de soporte a la operación).</li><li><b>Los que vigilan.</b> Un <b>NOC</b> (<i>Network Operations Center</i>, centro de operaciones de red) mira alarmas de miles de equipos a toda hora y detecta un corte de fibra antes de que lleguen las llamadas.</li><li><b>Los que arreglan y atienden.</b> El agente que contesta el teléfono, el técnico que sale a la calle y el ingeniero que cambia una configuración de madrugada.</li></ul></div><div class="caso"><b>Así lo hace un operador</b><p>En un operador FTTH típico, un solo clic de un cliente residencial pasa por el router Wi-Fi y la ONT de la casa, uno o dos splitters en la calle, la OLT de la central, switches de agregación, el BNG, el DNS del operador, varios routers del core y, según el destino, una caché de contenido dentro de la red o los enlaces de salida a Internet. Son más de una docena de equipos del operador en menos de un segundo. Y detrás, sin participar en cada clic pero imprescindibles para que funcione, están RADIUS, el servidor que configura la ONT, el sistema de monitoreo, el de facturación y el de atención al cliente.</p></div></section>
+<section><h2>Las capas: cómo viaja la información de un equipo a otro</h2><div class="prose"><p>Para no perderse en tantos equipos, los ingenieros dividen el problema en <b>capas</b> (<i>layers</i>). Cada capa se ocupa de una sola cosa y confía en que la de abajo hace bien su trabajo:</p><ul><li>La capa <b>física</b> (<i>physical</i>) mueve luz, radio o electricidad.</li><li>La de <b>enlace</b> (<i>data link</i>) entrega mensajes entre dos equipos vecinos.</li><li>La de <b>red</b> (<i>network</i>) encuentra el camino a través de muchos equipos.</li><li>La de <b>transporte</b> (<i>transport</i>) cuida que la conversación llegue completa.</li><li>La de <b>aplicación</b> (<i>application</i>) es la que entiende de páginas, correos o llamadas.</li></ul><p>El capítulo 3 las presenta una por una.</p><p>Cuando el celular manda el pedido, cada capa le agrega su propia etiqueta por delante, como meter una carta en un sobre, ese sobre en otro y así sucesivamente. A eso se le llama <b>encapsular</b> (<i>encapsulation</i>). Aplicación escribe el pedido; transporte le pone los números de puerto que dicen a qué programa va; red le pone la dirección IP de origen y de destino; enlace le pone la dirección del equipo vecino al que se lo entrega; y la capa física lo convierte en radio, electricidad o luz.</p></div><figure class="fig fig-capas" id="01-diagrama-16"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:720px" role="img" aria-label="Encapsular: al enviar, cada capa agrega su sobre por delante: datos, luego TCP con los puertos, luego IP con las direcciones, luego Wi-Fi o Ethernet con el equipo vecino; la capa física lo convierte en radio, electricidad o luz. Al recibir, se quitan en orden inverso">
+  <text x="20" y="47" class="t t-b k-apl">Aplicación</text>
+  <rect x="580" y="22" width="296" height="38" rx="6" class="c-apl"/>
+  <text x="728" y="46" text-anchor="middle" class="t t-s">Datos: «dame la página»</text>
+  <text x="20" y="103" class="t t-b k-tra">Transporte</text>
+  <rect x="450" y="78" width="126" height="38" rx="6" class="c-tra"/>
+  <text x="513" y="102" text-anchor="middle" class="t t-s">TCP: puertos</text>
+  <rect x="580" y="78" width="296" height="38" rx="6" class="c-apl"/>
+  <text x="728" y="102" text-anchor="middle" class="t t-s">Datos</text>
+  <text x="20" y="159" class="t t-b k-red">Red</text>
+  <rect x="290" y="134" width="156" height="38" rx="6" class="c-red"/>
+  <text x="368" y="158" text-anchor="middle" class="t t-s">IP: origen → destino</text>
+  <rect x="450" y="134" width="126" height="38" rx="6" class="c-tra"/>
+  <text x="513" y="158" text-anchor="middle" class="t t-s">TCP</text>
+  <rect x="580" y="134" width="296" height="38" rx="6" class="c-apl"/>
+  <text x="728" y="158" text-anchor="middle" class="t t-s">Datos</text>
+  <text x="20" y="215" class="t t-b k-enl">Enlace</text>
+  <rect x="310" y="190" width="156" height="38" rx="6" class="c-enl"/>
+  <text x="388" y="214" text-anchor="middle" class="t t-s">Wi-Fi: equipo vecino</text>
+  <rect x="470" y="190" width="86" height="38" rx="6" class="c-red"/>
+  <text x="513" y="214" text-anchor="middle" class="t t-s">IP</text>
+  <rect x="560" y="190" width="76" height="38" rx="6" class="c-tra"/>
+  <text x="598" y="214" text-anchor="middle" class="t t-s">TCP</text>
+  <rect x="640" y="190" width="236" height="38" rx="6" class="c-apl"/>
+  <text x="758" y="214" text-anchor="middle" class="t t-s">Datos</text>
+  <text x="20" y="271" class="t t-b k-fis">Física</text>
+  <rect x="250" y="246" width="626" height="38" rx="6" class="c-fis"/>
+  <text x="563" y="270" text-anchor="middle" class="t t-mono">0 1 1 0 1 0 0 1 1 1 0 1 0 · radio, electricidad o luz</text>
+  <line x1="140" y1="30" x2="140" y2="250" class="ln s-warm" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="150" y="296" class="t t-xs t-b k-warm">al enviar: cada capa agrega su sobre por delante · al recibir: se quitan en orden inverso</text>
+</svg></div><figcaption><b>Encapsular: sobres dentro de sobres.</b> Cada fila es una capa. Al bajar, cada capa agrega su sobre por delante del anterior: los datos, luego TCP con los puertos, luego IP con las direcciones, luego Wi-Fi o Ethernet con el equipo vecino. Abajo, la capa física convierte todo en señales. Al recibir, los sobres se quitan en orden inverso.</figcaption></figure><div class="prose"><p>En el camino, cada equipo abre solo los sobres que necesita. La ONT y la OLT miran el sobre de enlace, lo cambian por uno nuevo para el siguiente vecino y vuelven a mandar. El BNG y los routers abren hasta el sobre de red para leer la dirección IP y decidir el camino. Solo el servidor abre todos los sobres y lee el pedido. La respuesta hace el mismo recorrido al revés.</p></div><figure class="fig fig-capas" id="01-diagrama-15"><div class="lienzo"><svg viewBox="0 0 960 340" style="min-width:780px" role="img" aria-label="Cómo viaja un pedido por las capas, ida y vuelta: en el celular baja de aplicación a física; en cada equipo sube solo hasta la capa que necesita leer y vuelve a bajar; en el servidor sube hasta aplicación. La respuesta, punteada, hace el mismo recorrido al revés">
+  <text x="20" y="83" class="t t-b k-apl">Aplicación</text>
+  <line x1="120" y1="78" x2="940" y2="78" class="ln ln-d apagado"/>
+  <text x="20" y="127" class="t t-b k-tra">Transporte</text>
+  <line x1="120" y1="122" x2="940" y2="122" class="ln ln-d apagado"/>
+  <text x="20" y="171" class="t t-b k-red">Red</text>
+  <line x1="120" y1="166" x2="940" y2="166" class="ln ln-d apagado"/>
+  <text x="20" y="215" class="t t-b k-enl">Enlace</text>
+  <line x1="120" y1="210" x2="940" y2="210" class="ln ln-d apagado"/>
+  <text x="20" y="259" class="t t-b k-fis">Física</text>
+  <line x1="120" y1="254" x2="940" y2="254" class="ln ln-d apagado"/>
+  <use href="#i-celular" x="175" y="8" width="30" height="30" class="ico"/>
+  <text x="190" y="52" text-anchor="middle" class="t t-s t-b">Celular</text>
+  <rect x="160" y="65" width="60" height="26" rx="6" class="c-apl"/>
+  <rect x="160" y="109" width="60" height="26" rx="6" class="c-tra"/>
+  <rect x="160" y="153" width="60" height="26" rx="6" class="c-red"/>
+  <rect x="160" y="197" width="60" height="26" rx="6" class="c-enl"/>
+  <rect x="160" y="241" width="60" height="26" rx="6" class="c-fis"/>
+  <use href="#i-router" x="295" y="8" width="30" height="30" class="ico"/>
+  <text x="310" y="52" text-anchor="middle" class="t t-s t-b">Router Wi-Fi</text>
+  <rect x="280" y="109" width="60" height="26" rx="6" class="c-tra"/>
+  <rect x="280" y="153" width="60" height="26" rx="6" class="c-red"/>
+  <rect x="280" y="197" width="60" height="26" rx="6" class="c-enl"/>
+  <rect x="280" y="241" width="60" height="26" rx="6" class="c-fis"/>
+  <use href="#i-ont" x="415" y="8" width="30" height="30" class="ico"/>
+  <text x="430" y="52" text-anchor="middle" class="t t-s t-b">ONT</text>
+  <rect x="400" y="197" width="60" height="26" rx="6" class="c-enl"/>
+  <rect x="400" y="241" width="60" height="26" rx="6" class="c-fis"/>
+  <use href="#i-olt" x="535" y="8" width="30" height="30" class="ico"/>
+  <text x="550" y="52" text-anchor="middle" class="t t-s t-b">OLT</text>
+  <rect x="520" y="197" width="60" height="26" rx="6" class="c-enl"/>
+  <rect x="520" y="241" width="60" height="26" rx="6" class="c-fis"/>
+  <use href="#i-router-core" x="655" y="8" width="30" height="30" class="ico"/>
+  <text x="670" y="52" text-anchor="middle" class="t t-s t-b">BNG</text>
+  <rect x="640" y="153" width="60" height="26" rx="6" class="c-red"/>
+  <rect x="640" y="197" width="60" height="26" rx="6" class="c-enl"/>
+  <rect x="640" y="241" width="60" height="26" rx="6" class="c-fis"/>
+  <use href="#i-router-core" x="775" y="8" width="30" height="30" class="ico"/>
+  <text x="790" y="52" text-anchor="middle" class="t t-s t-b">Core</text>
+  <rect x="760" y="153" width="60" height="26" rx="6" class="c-red"/>
+  <rect x="760" y="197" width="60" height="26" rx="6" class="c-enl"/>
+  <rect x="760" y="241" width="60" height="26" rx="6" class="c-fis"/>
+  <use href="#i-servidor" x="895" y="8" width="30" height="30" class="ico"/>
+  <text x="910" y="52" text-anchor="middle" class="t t-s t-b">Servidor</text>
+  <rect x="880" y="65" width="60" height="26" rx="6" class="c-apl"/>
+  <rect x="880" y="109" width="60" height="26" rx="6" class="c-tra"/>
+  <rect x="880" y="153" width="60" height="26" rx="6" class="c-red"/>
+  <rect x="880" y="197" width="60" height="26" rx="6" class="c-enl"/>
+  <rect x="880" y="241" width="60" height="26" rx="6" class="c-fis"/>
+  <path d="M190 78V254H310V122V254H430V210V254H550V210V254H670V166V254H790V166V254H910V78" class="ln s-warm" style="stroke-width:3" marker-end="url(#fl)"/>
+  <path d="M919 78V264H799V166V264H679V166V264H559V210V264H439V210V264H319V122V264H199V78" class="ln ln-d" style="stroke-width:2" marker-end="url(#fl)"/>
+  <circle r="7" class="pkt" cx="0" cy="0"><animateMotion dur="9s" repeatCount="indefinite" path="M190 78V254H310V122V254H430V210V254H550V210V254H670V166V254H790V166V254H910V78"/></circle>
+  <text x="150" y="144" text-anchor="end" class="t t-xs t-b k-warm">empaqueta ↓</text>
+  <text x="872" y="144" text-anchor="end" class="t t-xs t-b k-warm">abre ↑</text>
+  <text x="250" y="282" text-anchor="middle" class="t t-xs t-m">radio</text>
+  <text x="370" y="282" text-anchor="middle" class="t t-xs t-m">cable</text>
+  <text x="490" y="282" text-anchor="middle" class="t t-xs k-fis">luz (PON)</text>
+  <text x="670" y="282" text-anchor="middle" class="t t-xs k-fis">fibra</text>
+  <text x="850" y="282" text-anchor="middle" class="t t-xs t-m">Internet</text>
+  <line x1="250" y1="326" x2="290" y2="326" class="ln s-warm" style="stroke-width:3"/><text x="298" y="330" class="t t-s">ida: el pedido</text>
+  <line x1="470" y1="326" x2="510" y2="326" class="ln ln-d" style="stroke-width:2"/><text x="518" y="330" class="t t-s">vuelta: la respuesta, por el mismo camino</text>
+</svg></div><figcaption><b>El recorrido por capas.</b> La línea naranja es el pedido. En el celular baja de aplicación a física (empaqueta). En cada equipo sube solo hasta la capa que necesita leer y vuelve a bajar: el router Wi-Fi hasta transporte (porque NAT cambia los puertos), la ONT y la OLT hasta enlace, el BNG y el core hasta red. En el servidor sube hasta aplicación (abre). La línea punteada es la respuesta: hace el mismo recorrido al revés, del servidor al celular.</figcaption></figure><div class="prose"><p>La tabla de abajo resume lo mismo: los tramos del viaje cruzados con las capas. Muestra que no todos los equipos trabajan en todas las capas. La fibra y el splitter solo mueven luz; la ONT y la OLT llegan hasta la capa de enlace; los routers del operador deciden caminos en la capa de red; y solo los dos extremos, el celular y el servidor, entienden la página completa.</p></div><figure class="fig fig-capas" id="01-diagrama-4"><div class="lienzo"><svg viewBox="0 0 840 290" style="min-width:680px" role="img" aria-label="Qué capa trabaja en cada tramo: el celular y el servidor usan las cinco capas; el router Wi-Fi llega hasta transporte; BNG y core hasta red; ONT y OLT hasta enlace; la fibra y el splitter solo la física">
   
   <g class="t t-s t-b" text-anchor="middle">
     <text x="202" y="30">Celular</text><text x="284" y="30">Router</text><text x="284" y="44" class="t t-xs t-m">Wi-Fi</text>
@@ -273,7 +700,8 @@
     <rect x="659" y="234" width="70" height="36" rx="6" class="c-fis"/><text x="694" y="257">fibra</text>
     <rect x="741" y="234" width="70" height="36" rx="6" class="c-fis"/><text x="776" y="257">cable</text>
   </g>
-</svg></div><figcaption><b>Qué capa trabaja en cada tramo.</b> Las columnas son las estaciones del viaje y las filas, las capas. Un cuadro lleno quiere decir que ese equipo lee y usa esa capa del mensaje; uno vacío, que la deja pasar sin mirarla.</figcaption></figure><div class="prose"><p>El libro sigue ese mapa en seis partes:</p><ol class="steps"><li><span><b>Las bases</b>: cómo se hablan las máquinas, capa por capa, y los protocolos de cada una.</span></li><li><span><b>La red de un telco</b>: el acceso, la fibra, la PON, el core, la voz, la televisión y el Wi-Fi de la casa.</span></li><li><span><b>Gestionar la red</b>: cómo se vigilan, configuran y protegen miles de equipos.</span></li><li><span><b>Los sistemas del negocio</b>: OSS, BSS, la atención al cliente y el inventario.</span></li><li><span><b>Todo junto</b>: los procesos de punta a punta, como instalar, diagnosticar, cobrar y reconectar.</span></li><li><span><b>La cadena de valor</b>: cómo todo esto se convierte en un negocio.</span></li></ol></div><div class="ml"><b>En la práctica</b><p>Cuando un cliente dice «no tengo Internet», el problema está en uno de estos tramos: el Wi-Fi, la ONT, la fibra, la sesión en el BNG, el DNS o el sitio al que quiere entrar. Saber en cuál cambia a quién se llama: al propio cliente para que acerque el router, a un técnico de calle, al NOC o a nadie, porque el sitio estaba caído para todo el mundo.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué el celular consulta al DNS antes de pedir la página?</summary><p>Porque las máquinas se encuentran por dirección IP, no por nombre. El DNS traduce el nombre del sitio a su dirección.</p></details><details><summary>¿Qué equipo marca la frontera entre la red de la casa y la red del operador?</summary><p>La ONT: convierte las señales de la casa en luz y la manda por la fibra del operador.</p></details><details><summary>Un splitter reparte la luz entre varias casas. ¿Necesita electricidad?</summary><p>No. Es un divisor pasivo de vidrio; por eso la red se llama «óptica pasiva» (PON).</p></details><details><summary>¿Qué equipo del operador sabe qué plan pagó el cliente y lo suspende si no paga?</summary><p>El BNG, que recibe esa información del servidor RADIUS.</p></details><details><summary>Si el servidor está en otro continente, ¿por qué la página tarda más aunque tengas mucha velocidad contratada?</summary><p>Porque cada saludo (TCP y TLS) y el pedido necesitan una ida y vuelta completa, y la distancia alarga cada una; la velocidad contratada no acorta esa espera.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://developer.mozilla.org/es/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work" target="_blank" rel="noopener">Cómo funciona Internet (MDN) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Sistema_de_nombres_de_dominio" target="_blank" rel="noopener">Sistema de nombres de dominio (Wikipedia) <small>lectura</small></a><a class="vid" href="https://developer.mozilla.org/es/docs/Web/HTTP/Guides/Overview" target="_blank" rel="noopener">Generalidades del protocolo HTTP (MDN) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Seguridad_de_la_capa_de_transporte" target="_blank" rel="noopener">Seguridad de la capa de transporte (Wikipedia) <small>lectura</small></a></div></section>
+</svg></div><figcaption><b>Qué capa trabaja en cada tramo.</b> Las columnas son las estaciones del viaje y las filas, las capas. Un cuadro lleno quiere decir que ese equipo lee y usa esa capa del mensaje; uno vacío, que la deja pasar sin mirarla.</figcaption></figure></section>
+<section><h2>El mapa del libro</h2><div class="prose"><p>El libro sigue ese viaje en seis partes:</p><ol class="steps"><li><span><b>Las bases</b>: cómo se hablan las máquinas, capa por capa, y los protocolos de cada una.</span></li><li><span><b>La red de un telco</b>: el acceso, la fibra, la PON, el core, la voz, la televisión y el Wi-Fi de la casa.</span></li><li><span><b>Gestionar la red</b>: cómo se vigilan, configuran y protegen miles de equipos.</span></li><li><span><b>Los sistemas del negocio</b>: OSS, BSS, la atención al cliente y el inventario.</span></li><li><span><b>Todo junto</b>: los procesos de punta a punta, como instalar, diagnosticar, cobrar y reconectar.</span></li><li><span><b>La cadena de valor</b>: cómo todo esto se convierte en un negocio.</span></li></ol></div><div class="ml"><b>En la práctica</b><p>Cuando un cliente dice «no tengo Internet», el problema está en uno de estos tramos: el Wi-Fi, la ONT, la fibra, la sesión en el BNG, el DNS o el sitio al que quiere entrar. Saber en cuál cambia a quién se llama: al propio cliente para que acerque el router, a un técnico de calle, al NOC o a nadie, porque el sitio estaba caído para todo el mundo y el problema es del operador del otro lado.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué el celular consulta al DNS antes de pedir la página?</summary><p>Porque las máquinas se encuentran por dirección IP, no por nombre. El DNS traduce el nombre del sitio a su dirección.</p></details><details><summary>En la arquitectura cliente-servidor, ¿quién empieza la conversación?</summary><p>El cliente: pide algo cuando el usuario hace una acción. El servidor está siempre encendido esperando pedidos y responde.</p></details><details><summary>¿Qué es un protocolo?</summary><p>Un conjunto de reglas escritas que dicen qué mensajes existen, en qué orden se mandan y qué forma tienen, para que dos equipos de fabricantes distintos se entiendan.</p></details><details><summary>El servidor de un sitio, ¿se conecta directo a Internet?</summary><p>No. Vive en un data center y tiene su propio operador que le da acceso, igual que el cliente tiene el suyo. Entre los dos operadores hay otras redes.</p></details><details><summary>¿Qué equipo marca la frontera entre la red de la casa y la red del operador?</summary><p>La ONT: convierte las señales de la casa en luz y la manda por la fibra del operador.</p></details><details><summary>Un splitter reparte la luz entre varias casas. ¿Necesita electricidad?</summary><p>No. Es un divisor pasivo de vidrio; por eso la red se llama «óptica pasiva» (PON).</p></details><details><summary>¿Qué equipo del operador sabe qué plan pagó el cliente y lo suspende si no paga?</summary><p>El BNG, que recibe esa información del servidor RADIUS.</p></details><details><summary>¿Por qué se dice que entre el celular y el servidor hay un «túnel lógico»?</summary><p>Porque los dos conversan de punta a punta con TCP y TLS como si hubiera un tubo directo, aunque el paquete cruce muchos equipos que solo lo reenvían sin abrirlo.</p></details><details><summary>¿Hasta qué capa sube un paquete dentro de un router del core?</summary><p>Hasta la capa de red: lee la dirección IP de destino para decidir el siguiente salto, y vuelve a bajar.</p></details><details><summary>Si el servidor está en otro continente, ¿por qué la página tarda más aunque tengas mucha velocidad contratada?</summary><p>Porque cada saludo (TCP y TLS) y el pedido necesitan una ida y vuelta completa, y la distancia alarga cada una; la velocidad contratada no acorta esa espera.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://developer.mozilla.org/es/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work" target="_blank" rel="noopener">Cómo funciona Internet (MDN) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Cliente-servidor" target="_blank" rel="noopener">Cliente-servidor (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Protocolo_de_comunicaciones" target="_blank" rel="noopener">Protocolo de comunicaciones (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Sistema_de_nombres_de_dominio" target="_blank" rel="noopener">Sistema de nombres de dominio (Wikipedia) <small>lectura</small></a><a class="vid" href="https://developer.mozilla.org/es/docs/Web/HTTP/Guides/Overview" target="_blank" rel="noopener">Generalidades del protocolo HTTP (MDN) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Seguridad_de_la_capa_de_transporte" target="_blank" rel="noopener">Seguridad de la capa de transporte (Wikipedia) <small>lectura</small></a></div></section>
 <label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
 <nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
 </main>
