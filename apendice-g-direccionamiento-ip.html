@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Direccionamiento IP paso a paso · Cómo funciona un telco</title>
+<meta name="description" content="Prefijos, máscaras, binario, subredes y ejercicios resueltos para dominar las direcciones IP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="apendice-g-direccionamiento-ip">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">APÉNDICE G</span><h1>Direccionamiento IP paso a paso</h1><p class="lede">Prefijos, máscaras, binario, subredes y ejercicios resueltos para dominar las direcciones IP.</p></header>
+<section><div class="prose"><p>El <a href="05-ip.html">capítulo 5</a> explica qué es una dirección IP, para qué sirve la máscara y por qué un /24 tiene 254 equipos. Este apéndice es su cuaderno de práctica: reúne en un solo lugar las tablas que conviene tener a mano, el método para calcular una red con lápiz y papel, y diez ejercicios resueltos que van de lo más simple a lo que se ve en la red de un operador.</p><p>No hace falta leerlo de corrido. Si necesitas una máscara, ve a la tabla de prefijos; si quieres aprender a calcular, empieza por el método y sigue con los ejercicios. Todas las direcciones de ejemplo son de documentación o privadas: no pertenecen a nadie en Internet.</p></div><div class="analogia"><b>Imagínalo así</b><p>Una regla de carpintero. Las marcas grandes son los metros; las medianas, los decímetros; las pequeñas, los centímetros. Para medir no cuentas cada milímetro: buscas la marca grande más cercana y sumas desde ahí. Calcular una subred es igual: buscas el «bloque» en el que cae la dirección y todo lo demás sale de contar dentro de ese bloque.</p></div></section>
+<section><h2>Todos los prefijos, de /8 a /32</h2><div class="prose"><p>La tabla tiene una fila por prefijo. <b>Direcciones</b> es el tamaño total del bloque, 2 elevado a los bits de equipo; <b>equipos usables</b> descuenta la dirección de red y la de broadcast. La columna <b>octeto · bloque</b> dice en cuál de los cuatro números cae la línea entre red y equipo, y de a cuánto saltan las redes en ese número: es el atajo del método que verás más abajo.</p><div class="tbl"><table><thead><tr><th>Prefijo</th><th>Máscara</th><th>Direcciones</th><th>Equipos usables</th><th>Octeto · bloque</th></tr></thead><tbody><tr><td>/8</td><td><code>255.0.0.0</code></td><td>16.777.216</td><td>16.777.214</td><td>1.º · 1</td></tr><tr><td>/9</td><td><code>255.128.0.0</code></td><td>8.388.608</td><td>8.388.606</td><td>2.º · 128</td></tr><tr><td>/10</td><td><code>255.192.0.0</code></td><td>4.194.304</td><td>4.194.302</td><td>2.º · 64</td></tr><tr><td>/11</td><td><code>255.224.0.0</code></td><td>2.097.152</td><td>2.097.150</td><td>2.º · 32</td></tr><tr><td>/12</td><td><code>255.240.0.0</code></td><td>1.048.576</td><td>1.048.574</td><td>2.º · 16</td></tr><tr><td>/13</td><td><code>255.248.0.0</code></td><td>524.288</td><td>524.286</td><td>2.º · 8</td></tr><tr><td>/14</td><td><code>255.252.0.0</code></td><td>262.144</td><td>262.142</td><td>2.º · 4</td></tr><tr><td>/15</td><td><code>255.254.0.0</code></td><td>131.072</td><td>131.070</td><td>2.º · 2</td></tr><tr><td>/16</td><td><code>255.255.0.0</code></td><td>65.536</td><td>65.534</td><td>2.º · 1</td></tr><tr><td>/17</td><td><code>255.255.128.0</code></td><td>32.768</td><td>32.766</td><td>3.º · 128</td></tr><tr><td>/18</td><td><code>255.255.192.0</code></td><td>16.384</td><td>16.382</td><td>3.º · 64</td></tr><tr><td>/19</td><td><code>255.255.224.0</code></td><td>8.192</td><td>8.190</td><td>3.º · 32</td></tr><tr><td>/20</td><td><code>255.255.240.0</code></td><td>4.096</td><td>4.094</td><td>3.º · 16</td></tr><tr><td>/21</td><td><code>255.255.248.0</code></td><td>2.048</td><td>2.046</td><td>3.º · 8</td></tr><tr><td>/22</td><td><code>255.255.252.0</code></td><td>1.024</td><td>1.022</td><td>3.º · 4</td></tr><tr><td>/23</td><td><code>255.255.254.0</code></td><td>512</td><td>510</td><td>3.º · 2</td></tr><tr><td>/24</td><td><code>255.255.255.0</code></td><td>256</td><td>254</td><td>3.º · 1</td></tr><tr><td>/25</td><td><code>255.255.255.128</code></td><td>128</td><td>126</td><td>4.º · 128</td></tr><tr><td>/26</td><td><code>255.255.255.192</code></td><td>64</td><td>62</td><td>4.º · 64</td></tr><tr><td>/27</td><td><code>255.255.255.224</code></td><td>32</td><td>30</td><td>4.º · 32</td></tr><tr><td>/28</td><td><code>255.255.255.240</code></td><td>16</td><td>14</td><td>4.º · 16</td></tr><tr><td>/29</td><td><code>255.255.255.248</code></td><td>8</td><td>6</td><td>4.º · 8</td></tr><tr><td>/30</td><td><code>255.255.255.252</code></td><td>4</td><td>2</td><td>4.º · 4</td></tr><tr><td>/31</td><td><code>255.255.255.254</code></td><td>2</td><td>2 (sin red ni broadcast)</td><td>4.º · 2</td></tr><tr><td>/32</td><td><code>255.255.255.255</code></td><td>1</td><td>1 (la propia dirección)</td><td>4.º · 1</td></tr></tbody></table></div><p>Dos filas son especiales y merecen su nota:</p><ul><li><b>/31</b>: un bloque de dos direcciones, y las dos se usan. En un enlace entre dos routers no hace falta ni dirección de red ni broadcast, porque solo hay dos puntas y cada una sabe quién es la otra. Lo describe el RFC 3021 y hoy es común en los enlaces de un operador, porque ahorra la mitad de las direcciones que gastaba un /30.</li><li><b>/32</b>: una sola dirección. No es una red para conectar equipos sino una dirección suelta: la <i>loopback</i> de un router (su dirección de gestión, que no depende de ningún puerto), una ruta hacia un único equipo o la IP fija que el BNG le entrega a un cliente.</li></ul><p>Algunos prefijos aparecen mucho más que otros. Estos son los que vas a ver en el trabajo de todos los días:</p><div class="tbl"><table><thead><tr><th>Prefijo</th><th>Dónde aparece</th></tr></thead><tbody><tr><td>/8, /12 y /16</td><td>Los tres rangos privados: <code>10.0.0.0/8</code>, <code>172.16.0.0/12</code> y <code>192.168.0.0/16</code></td></tr><tr><td>/10</td><td>El rango compartido <code>100.64.0.0/10</code>, entre el router de la casa y el CGNAT</td></tr><tr><td>/20 a /22</td><td>Bloques públicos de un operador mediano, que después se parten en pools</td></tr><tr><td>/24</td><td>La red de una casa o de una oficina chica</td></tr><tr><td>/26 y /27</td><td>Un piso, un área o una VLAN de una oficina</td></tr><tr><td>/28 y /29</td><td>Las IP públicas que se le venden a una empresa</td></tr><tr><td>/30 y /31</td><td>Un enlace entre dos routers</td></tr><tr><td>/32</td><td>Una sola dirección: la <i>loopback</i> de un router o la IP fija de un cliente</td></tr></tbody></table></div><p>Fíjate en la regla de oro del capítulo 5 en la tabla: <b>cada bit que se suma al prefijo parte el bloque a la mitad</b>. De /24 a /25 se pasa de 256 a 128 direcciones; de /25 a /26, a 64. Y al revés: cada bit que se resta lo duplica.</p></div><figure class="fig fig-esquema" id="apg-diagrama-1"><div class="lienzo"><svg viewBox="0 0 882 356" style="min-width:720px" role="img" aria-label="La dirección 203.0.113.77 en 32 bits, con 26 bits de red en azul y 6 de equipo en verde; debajo la máscara /26, 255.255.255.192, con 26 unos y 6 ceros; y el resultado de la operación AND, 203.0.113.64, que es la dirección de la red.">
+<text x="14" y="24" class="t t-xs t-b t-m">LA MÁSCARA DECIDE QUÉ PARTE DE LA DIRECCIÓN ES LA RED</text>
+<text x="265" y="48" text-anchor="middle" class="t t-xs t-m">1.º OCTETO</text>
+<text x="429" y="48" text-anchor="middle" class="t t-xs t-m">2.º OCTETO</text>
+<text x="593" y="48" text-anchor="middle" class="t t-xs t-m">3.º OCTETO</text>
+<text x="757" y="48" text-anchor="middle" class="t t-xs t-m">4.º OCTETO</text>
+<text x="14" y="75" class="t t-b">Dirección</text><text x="14" y="91" class="t t-s t-mono t-m">203.0.113.77</text>
+<rect x="190" y="62" width="17" height="28" rx="3" class="c-red"/><text x="198.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="209" y="62" width="17" height="28" rx="3" class="c-red"/><text x="217.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="228" y="62" width="17" height="28" rx="3" class="c-red"/><text x="236.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="247" y="62" width="17" height="28" rx="3" class="c-red"/><text x="255.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="266" y="62" width="17" height="28" rx="3" class="c-red"/><text x="274.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="285" y="62" width="17" height="28" rx="3" class="c-red"/><text x="293.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="304" y="62" width="17" height="28" rx="3" class="c-red"/><text x="312.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="323" y="62" width="17" height="28" rx="3" class="c-red"/><text x="331.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="354" y="62" width="17" height="28" rx="3" class="c-red"/><text x="362.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="373" y="62" width="17" height="28" rx="3" class="c-red"/><text x="381.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="392" y="62" width="17" height="28" rx="3" class="c-red"/><text x="400.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="411" y="62" width="17" height="28" rx="3" class="c-red"/><text x="419.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="430" y="62" width="17" height="28" rx="3" class="c-red"/><text x="438.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="449" y="62" width="17" height="28" rx="3" class="c-red"/><text x="457.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="468" y="62" width="17" height="28" rx="3" class="c-red"/><text x="476.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="487" y="62" width="17" height="28" rx="3" class="c-red"/><text x="495.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="518" y="62" width="17" height="28" rx="3" class="c-red"/><text x="526.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="537" y="62" width="17" height="28" rx="3" class="c-red"/><text x="545.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="556" y="62" width="17" height="28" rx="3" class="c-red"/><text x="564.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="575" y="62" width="17" height="28" rx="3" class="c-red"/><text x="583.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="594" y="62" width="17" height="28" rx="3" class="c-red"/><text x="602.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="613" y="62" width="17" height="28" rx="3" class="c-red"/><text x="621.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="632" y="62" width="17" height="28" rx="3" class="c-red"/><text x="640.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="651" y="62" width="17" height="28" rx="3" class="c-red"/><text x="659.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="682" y="62" width="17" height="28" rx="3" class="c-red"/><text x="690.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="701" y="62" width="17" height="28" rx="3" class="c-red"/><text x="709.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="720" y="62" width="17" height="28" rx="3" class="c-enl"/><text x="728.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="739" y="62" width="17" height="28" rx="3" class="c-enl"/><text x="747.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="758" y="62" width="17" height="28" rx="3" class="c-enl"/><text x="766.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="777" y="62" width="17" height="28" rx="3" class="c-enl"/><text x="785.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<rect x="796" y="62" width="17" height="28" rx="3" class="c-enl"/><text x="804.5" y="81" text-anchor="middle" class="t t-mono">0</text>
+<rect x="815" y="62" width="17" height="28" rx="3" class="c-enl"/><text x="823.5" y="81" text-anchor="middle" class="t t-mono">1</text>
+<text x="265" y="106" text-anchor="middle" class="t t-s t-m">203</text>
+<text x="429" y="106" text-anchor="middle" class="t t-s t-m">0</text>
+<text x="593" y="106" text-anchor="middle" class="t t-s t-m">113</text>
+<text x="757" y="106" text-anchor="middle" class="t t-s t-m">77</text>
+<text x="14" y="145" class="t t-b">Máscara /26</text><text x="14" y="161" class="t t-s t-mono t-m">255.255.255.192</text>
+<rect x="190" y="132" width="17" height="28" rx="3" class="c-red"/><text x="198.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="209" y="132" width="17" height="28" rx="3" class="c-red"/><text x="217.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="228" y="132" width="17" height="28" rx="3" class="c-red"/><text x="236.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="247" y="132" width="17" height="28" rx="3" class="c-red"/><text x="255.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="266" y="132" width="17" height="28" rx="3" class="c-red"/><text x="274.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="285" y="132" width="17" height="28" rx="3" class="c-red"/><text x="293.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="304" y="132" width="17" height="28" rx="3" class="c-red"/><text x="312.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="323" y="132" width="17" height="28" rx="3" class="c-red"/><text x="331.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="354" y="132" width="17" height="28" rx="3" class="c-red"/><text x="362.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="373" y="132" width="17" height="28" rx="3" class="c-red"/><text x="381.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="392" y="132" width="17" height="28" rx="3" class="c-red"/><text x="400.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="411" y="132" width="17" height="28" rx="3" class="c-red"/><text x="419.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="430" y="132" width="17" height="28" rx="3" class="c-red"/><text x="438.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="449" y="132" width="17" height="28" rx="3" class="c-red"/><text x="457.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="468" y="132" width="17" height="28" rx="3" class="c-red"/><text x="476.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="487" y="132" width="17" height="28" rx="3" class="c-red"/><text x="495.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="518" y="132" width="17" height="28" rx="3" class="c-red"/><text x="526.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="537" y="132" width="17" height="28" rx="3" class="c-red"/><text x="545.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="556" y="132" width="17" height="28" rx="3" class="c-red"/><text x="564.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="575" y="132" width="17" height="28" rx="3" class="c-red"/><text x="583.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="594" y="132" width="17" height="28" rx="3" class="c-red"/><text x="602.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="613" y="132" width="17" height="28" rx="3" class="c-red"/><text x="621.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="632" y="132" width="17" height="28" rx="3" class="c-red"/><text x="640.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="651" y="132" width="17" height="28" rx="3" class="c-red"/><text x="659.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="682" y="132" width="17" height="28" rx="3" class="c-red"/><text x="690.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="701" y="132" width="17" height="28" rx="3" class="c-red"/><text x="709.5" y="151" text-anchor="middle" class="t t-mono">1</text>
+<rect x="720" y="132" width="17" height="28" rx="3" class="caja"/><text x="728.5" y="151" text-anchor="middle" class="t t-mono">0</text>
+<rect x="739" y="132" width="17" height="28" rx="3" class="caja"/><text x="747.5" y="151" text-anchor="middle" class="t t-mono">0</text>
+<rect x="758" y="132" width="17" height="28" rx="3" class="caja"/><text x="766.5" y="151" text-anchor="middle" class="t t-mono">0</text>
+<rect x="777" y="132" width="17" height="28" rx="3" class="caja"/><text x="785.5" y="151" text-anchor="middle" class="t t-mono">0</text>
+<rect x="796" y="132" width="17" height="28" rx="3" class="caja"/><text x="804.5" y="151" text-anchor="middle" class="t t-mono">0</text>
+<rect x="815" y="132" width="17" height="28" rx="3" class="caja"/><text x="823.5" y="151" text-anchor="middle" class="t t-mono">0</text>
+<text x="265" y="176" text-anchor="middle" class="t t-s t-m">255</text>
+<text x="429" y="176" text-anchor="middle" class="t t-s t-m">255</text>
+<text x="593" y="176" text-anchor="middle" class="t t-s t-m">255</text>
+<text x="757" y="176" text-anchor="middle" class="t t-s t-m">192</text>
+<text x="14" y="235" class="t t-b">Red (AND)</text><text x="14" y="251" class="t t-s t-mono t-m">203.0.113.64</text>
+<rect x="190" y="222" width="17" height="28" rx="3" class="c-red"/><text x="198.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="209" y="222" width="17" height="28" rx="3" class="c-red"/><text x="217.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="228" y="222" width="17" height="28" rx="3" class="c-red"/><text x="236.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="247" y="222" width="17" height="28" rx="3" class="c-red"/><text x="255.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="266" y="222" width="17" height="28" rx="3" class="c-red"/><text x="274.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="285" y="222" width="17" height="28" rx="3" class="c-red"/><text x="293.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="304" y="222" width="17" height="28" rx="3" class="c-red"/><text x="312.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="323" y="222" width="17" height="28" rx="3" class="c-red"/><text x="331.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="354" y="222" width="17" height="28" rx="3" class="c-red"/><text x="362.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="373" y="222" width="17" height="28" rx="3" class="c-red"/><text x="381.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="392" y="222" width="17" height="28" rx="3" class="c-red"/><text x="400.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="411" y="222" width="17" height="28" rx="3" class="c-red"/><text x="419.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="430" y="222" width="17" height="28" rx="3" class="c-red"/><text x="438.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="449" y="222" width="17" height="28" rx="3" class="c-red"/><text x="457.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="468" y="222" width="17" height="28" rx="3" class="c-red"/><text x="476.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="487" y="222" width="17" height="28" rx="3" class="c-red"/><text x="495.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="518" y="222" width="17" height="28" rx="3" class="c-red"/><text x="526.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="537" y="222" width="17" height="28" rx="3" class="c-red"/><text x="545.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="556" y="222" width="17" height="28" rx="3" class="c-red"/><text x="564.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="575" y="222" width="17" height="28" rx="3" class="c-red"/><text x="583.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="594" y="222" width="17" height="28" rx="3" class="c-red"/><text x="602.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="613" y="222" width="17" height="28" rx="3" class="c-red"/><text x="621.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="632" y="222" width="17" height="28" rx="3" class="c-red"/><text x="640.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="651" y="222" width="17" height="28" rx="3" class="c-red"/><text x="659.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="682" y="222" width="17" height="28" rx="3" class="c-red"/><text x="690.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="701" y="222" width="17" height="28" rx="3" class="c-red"/><text x="709.5" y="241" text-anchor="middle" class="t t-mono">1</text>
+<rect x="720" y="222" width="17" height="28" rx="3" class="caja"/><text x="728.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="739" y="222" width="17" height="28" rx="3" class="caja"/><text x="747.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="758" y="222" width="17" height="28" rx="3" class="caja"/><text x="766.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="777" y="222" width="17" height="28" rx="3" class="caja"/><text x="785.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="796" y="222" width="17" height="28" rx="3" class="caja"/><text x="804.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<rect x="815" y="222" width="17" height="28" rx="3" class="caja"/><text x="823.5" y="241" text-anchor="middle" class="t t-mono">0</text>
+<text x="265" y="266" text-anchor="middle" class="t t-s t-m">203</text>
+<text x="429" y="266" text-anchor="middle" class="t t-s t-m">0</text>
+<text x="593" y="266" text-anchor="middle" class="t t-s t-m">113</text>
+<text x="757" y="266" text-anchor="middle" class="t t-s t-m">64</text>
+<line x1="719.0" y1="56" x2="719.0" y2="258" class="ln s-warm" style="stroke-width:2"/>
+<text x="719.0" y="275" text-anchor="middle" class="t t-s t-b k-warm">/26</text>
+<line x1="190" y1="196" x2="832" y2="196" class="ln" style="stroke-width:1.6"/>
+<text x="842" y="200" class="t t-b">AND</text>
+<path d="M190 286v8h528v-8" class="ln s-red" style="stroke-width:2"/>
+<text x="454" y="312" text-anchor="middle" class="t t-b k-red">Red: 26 bits, pasan igual</text>
+<path d="M720 286v8h112v-8" class="ln s-enl" style="stroke-width:2"/>
+<text x="776" y="312" text-anchor="middle" class="t t-b k-enl">Equipo: 6 bits, a cero</text>
+<text x="14" y="340" class="t t-s t-m">AND bit a bit: 1 y 1 dan 1; cualquier otra combinación da 0. En el 4.º octeto, 01001101 (77) y 11000000 (192) dan 01000000 (64).</text>
+</svg></div><figcaption><b>Cómo un equipo saca la red de una dirección.</b> Arriba, <code>203.0.113.77</code> en sus 32 bits: en azul los 26 de red y en verde los 6 de equipo. En el medio, la máscara /26: 26 unos seguidos de 6 ceros. Abajo, el resultado de combinarlas bit a bit con la operación AND, que da 1 solo cuando los dos bits son 1: la parte de red pasa igual y la parte de equipo queda en cero. El resultado, <code>203.0.113.64</code>, es la dirección de la red.</figcaption></figure></section>
+<section><h2>Del decimal al binario y de vuelta</h2><div class="prose"><p>Cada octeto son ocho casillas con un valor fijo. Para escribir un número en binario se encienden las casillas que lo suman; para leerlo, se suman las encendidas.</p><div class="tbl"><table><thead><tr><th>Casilla</th><th>1.ª</th><th>2.ª</th><th>3.ª</th><th>4.ª</th><th>5.ª</th><th>6.ª</th><th>7.ª</th><th>8.ª</th></tr></thead><tbody><tr><td>Valor</td><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr><tr><td><code>200</code></td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td><code>77</code></td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr><tr><td><code>172</code></td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr></tbody></table></div><h3>De decimal a binario: restar de izquierda a derecha</h3><p>Para convertir <code>200</code>, recorre las casillas de izquierda a derecha y pregúntate en cada una si su valor cabe en lo que te queda:</p><ol class="steps"><li><span>¿Cabe 128 en 200? Sí: escribe 1 y quedan 72.</span></li><li><span>¿Cabe 64 en 72? Sí: 1, y quedan 8.</span></li><li><span>¿Caben 32 y 16 en 8? No: 0 y 0.</span></li><li><span>¿Cabe 8 en 8? Sí: 1, y queda 0.</span></li><li><span>Las casillas que faltan (4, 2 y 1) van en 0. Resultado: <code>11001000</code>.</span></li></ol><h3>De binario a decimal: sumar las casillas encendidas</h3><p><code>10101100</code> tiene encendidas las casillas de 128, 32, 8 y 4: 128 + 32 + 8 + 4 = <b>172</b>. Y <code>11100000</code> tiene encendidas las tres primeras: 128 + 64 + 32 = <b>224</b>.</p><h3>Los nueve valores que puede tomar un octeto de la máscara</h3><p>Como la máscara siempre son unos seguidos y después ceros, un octeto de máscara solo puede valer nueve cosas. Conviene aprendérselas de memoria, porque con ellas se lee cualquier máscara al vuelo:</p><div class="tbl"><table><thead><tr><th>Unos en el octeto</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead><tbody><tr><td>Binario</td><td><code>00000000</code></td><td><code>10000000</code></td><td><code>11000000</code></td><td><code>11100000</code></td><td><code>11110000</code></td><td><code>11111000</code></td><td><code>11111100</code></td><td><code>11111110</code></td><td><code>11111111</code></td></tr><tr><td>Decimal</td><td>0</td><td>128</td><td>192</td><td>224</td><td>240</td><td>248</td><td>252</td><td>254</td><td>255</td></tr><tr><td>Tamaño del bloque</td><td>256</td><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr></tbody></table></div><p>La última fila es el truco de todo el apéndice: <b>el tamaño del bloque es 256 menos el valor de la máscara en ese octeto</b>. Una máscara <code>255.255.255.224</code> tiene bloques de 256 − 224 = 32.</p></div></section>
+<section><h2>Rangos privados, compartidos, de documentación y especiales</h2><div class="prose"><p>No todas las direcciones IPv4 se pueden usar en Internet. Estos rangos están reservados para un fin, y conviene reconocerlos a primera vista:</p><div class="tbl"><table><thead><tr><th>Rango</th><th>De… a…</th><th>Para qué</th><th>Norma</th></tr></thead><tbody><tr><td><code>10.0.0.0/8</code></td><td>10.0.0.0 a 10.255.255.255</td><td>Privado: redes internas de empresas y operadores</td><td>RFC 1918</td></tr><tr><td><code>172.16.0.0/12</code></td><td>172.16.0.0 a 172.31.255.255</td><td>Privado</td><td>RFC 1918</td></tr><tr><td><code>192.168.0.0/16</code></td><td>192.168.0.0 a 192.168.255.255</td><td>Privado: casi todas las casas</td><td>RFC 1918</td></tr><tr><td><code>100.64.0.0/10</code></td><td>100.64.0.0 a 100.127.255.255</td><td>Compartido: entre el router de la casa y el CGNAT del operador</td><td>RFC 6598</td></tr><tr><td><code>192.0.2.0/24</code></td><td>192.0.2.0 a 192.0.2.255</td><td>Documentación y ejemplos</td><td>RFC 5737</td></tr><tr><td><code>198.51.100.0/24</code></td><td>198.51.100.0 a 198.51.100.255</td><td>Documentación y ejemplos</td><td>RFC 5737</td></tr><tr><td><code>203.0.113.0/24</code></td><td>203.0.113.0 a 203.0.113.255</td><td>Documentación y ejemplos</td><td>RFC 5737</td></tr><tr><td><code>127.0.0.0/8</code></td><td>127.0.0.0 a 127.255.255.255</td><td><i>Loopback</i>: el equipo hablándose a sí mismo</td><td>RFC 1122</td></tr><tr><td><code>169.254.0.0/16</code></td><td>169.254.0.0 a 169.254.255.255</td><td>Enlace local: la dirección que un equipo se inventa si nadie le da una</td><td>RFC 3927</td></tr><tr><td><code>0.0.0.0/8</code></td><td>0.0.0.0 a 0.255.255.255</td><td>«Esta red»: un equipo que todavía no tiene dirección</td><td>RFC 1122</td></tr><tr><td><code>198.18.0.0/15</code></td><td>198.18.0.0 a 198.19.255.255</td><td>Pruebas de rendimiento en laboratorio</td><td>RFC 2544</td></tr><tr><td><code>224.0.0.0/4</code></td><td>224.0.0.0 a 239.255.255.255</td><td>Multicast: televisión por IP y protocolos de routing</td><td>RFC 5771</td></tr><tr><td><code>240.0.0.0/4</code></td><td>240.0.0.0 a 255.255.255.254</td><td>Reservado para uso futuro</td><td>RFC 1112</td></tr><tr><td><code>255.255.255.255/32</code></td><td>Una sola dirección</td><td>Broadcast a toda la red local</td><td>RFC 919</td></tr></tbody></table></div><p>Los <b>privados</b> se pueden repetir en millones de redes porque nunca salen a Internet: el NAT los traduce antes. El <b>compartido</b> es un privado de uso exclusivo de los operadores, para que el CGNAT no choque con el <code>192.168.1.0/24</code> que el cliente tiene en su casa. Y los de <b>documentación</b> existen para que los libros, los manuales y los ejemplos no usen por accidente la dirección de alguien real; por eso este libro los usa siempre.</p></div></section>
+<section><h2>El método del tamaño del bloque: red, broadcast y rango usable a mano</h2><div class="prose"><p>Con este método se calcula cualquier red sin escribir un solo número en binario. Sirve para todos los prefijos, caiga donde caiga la línea entre red y equipo.</p><ol class="steps"><li><span><b>Busca el octeto donde cae la línea.</b> Resta 8 al prefijo tantas veces como puedas: cada 8 es un octeto entero de red. Lo que sobra son los bits de red del octeto siguiente. En un /21: 8 + 8 = 16, sobran 5 bits en el <b>tercer</b> octeto.</span></li><li><span><b>Calcula el tamaño del bloque.</b> Es 256 menos el valor de la máscara en ese octeto, o 2 elevado a los bits de equipo de ese octeto. En el /21 la máscara del tercer octeto es 248 (cinco unos), así que el bloque es 256 − 248 = <b>8</b>.</span></li><li><span><b>Encuentra el múltiplo del bloque.</b> Toma el número de la dirección en ese octeto y busca el múltiplo del bloque más grande que no lo pase. Ahí empieza la red.</span></li><li><span><b>Completa la red.</b> Los octetos de la izquierda se copian igual; los de la derecha van en 0.</span></li><li><span><b>Calcula el broadcast.</b> En el octeto de la línea: el inicio de la red más el bloque menos 1. Los octetos de la derecha van en 255.</span></li><li><span><b>Saca el rango usable.</b> La primera usable es la red más 1 en el último octeto; la última, el broadcast menos 1.</span></li><li><span><b>Cuenta los equipos.</b> 2 elevado a los bits de equipo (32 menos el prefijo), menos 2.</span></li></ol><h3>Ejemplo: <code>10.45.203.17/21</code></h3><ol class="steps"><li><span>21 = 8 + 8 + 5: la línea cae en el tercer octeto, que vale 203.</span></li><li><span>Máscara del tercer octeto: 248. Bloque: 256 − 248 = 8. La máscara completa es <code>255.255.248.0</code>.</span></li><li><span>Múltiplos de 8: …, 192, 200, 208… El mayor que no pasa de 203 es <b>200</b>.</span></li><li><span>Red: <code>10.45.200.0</code> (el 10 y el 45 se copian; el cuarto octeto, a 0).</span></li><li><span>Broadcast: 200 + 8 − 1 = 207 en el tercer octeto, y 255 en el cuarto: <code>10.45.207.255</code>.</span></li><li><span>Rango usable: de <code>10.45.200.1</code> a <code>10.45.207.254</code>.</span></li><li><span>Equipos: 2¹¹ − 2 = <b>2.046</b>.</span></li></ol><p>Fíjate en que el rango usable cruza varios valores del tercer octeto: <code>10.45.201.0</code> o <code>10.45.204.255</code> son direcciones de equipo perfectamente válidas dentro de este /21. Un número terminado en 0 o en 255 no siempre es red ni broadcast; depende del prefijo.</p></div><div class="lab" id="05-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Calculadora IP</h3></div><p class="hint">Comprueba con la calculadora del capítulo 5 cada ejemplo y cada ejercicio de este apéndice: escribe la dirección, mueve el prefijo y compara la red, el broadcast y el rango usable con los que calculaste a mano.</p><style>
+.c05-calc{display:grid;gap:14px;min-width:0}
+.c05-calc input[type=text]{font:600 1.05rem var(--f-mono);padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);width:100%;max-width:240px}
+.c05-calc input[type=text][aria-invalid=true]{border-color:var(--warm)}
+.c05-bits{display:flex;flex-wrap:wrap;gap:10px 12px;font-family:var(--f-mono)}
+.c05-oct{display:grid;gap:3px;justify-items:center}
+.c05-oct b{font-size:.95rem}
+.c05-row{display:flex;gap:2px}
+.c05-row span{width:14px;height:24px;display:grid;place-items:center;font-size:.78rem;border-radius:3px;border:1px solid}
+.c05-row .r{background:var(--c-red-s);border-color:var(--c-red);color:var(--c-red)}
+.c05-row .e{background:var(--c-enl-s);border-color:var(--c-enl);color:var(--c-enl)}
+.c05-calc .legend i.r{background:var(--c-red)} .c05-calc .legend i.e{background:var(--c-enl)}
+@media (min-width:700px){.c05-row span{width:19px;height:28px;font-size:.88rem}}
+.c05-calc .readout b{font-weight:600;color:var(--ink)}
+</style>
+<div class="c05-calc">
+  <div class="opciones">
+    <label for="c05-ip">Dirección IP
+      <input id="c05-ip" type="text" value="192.168.1.10" inputmode="decimal" autocomplete="off" spellcheck="false" aria-describedby="c05-res"></label>
+    <div class="ctl"><label for="c05-pre">Prefijo (bits de red)</label><output id="c05-pre-o" for="c05-pre"></output>
+      <input type="range" id="c05-pre" min="0" max="32" value="24"></div>
+  </div>
+  <div class="btns" id="c05-ej" role="group" aria-label="Ejemplos">
+    <button type="button" data-ip="192.168.1.10" data-p="24">Casa /24</button>
+    <button type="button" data-ip="172.16.40.9" data-p="16">Empresa /16</button>
+    <button type="button" data-ip="10.1.2.3" data-p="8">Red 10 /8</button>
+    <button type="button" data-ip="203.0.113.77" data-p="26">Bloque /26</button>
+    <button type="button" data-ip="203.0.113.130" data-p="28">IP fijas /28</button>
+    <button type="button" data-ip="198.51.100.9" data-p="30">Enlace /30</button>
+    <button type="button" data-ip="100.64.12.7" data-p="10">CGNAT /10</button>
+  </div>
+  <div class="c05-bits" id="c05-bits" aria-hidden="true"></div>
+  <div class="legend"><span><i class="r"></i>bits de red (el barrio)</span><span><i class="e"></i>bits de equipo (la casa)</span></div>
+  <div class="readout" id="c05-res" aria-live="polite"></div>
+  <p class="hint" id="c05-nota"></p>
+</div></div></section>
+<section><h2>Subredes de tamaño variable (VLSM)</h2><div class="prose"><p>En el capítulo 5 se partió un /24 en cuatro /26 iguales. Pero las áreas de una empresa casi nunca son del mismo tamaño, y dar a todas el bloque de la más grande desperdicia direcciones. La solución es usar <b>subredes de tamaño variable</b>, que en inglés se llaman VLSM (<i>variable length subnet mask</i>): a cada área se le da el bloque más chico en el que cabe.</p><p>La receta tiene tres reglas: <b>ordena las necesidades de mayor a menor</b>, <b>elige para cada una el prefijo más largo que alcance</b> y <b>asígnalas una detrás de otra</b>, empezando por la más grande. Empezar por la grande no es un capricho: así cada bloque cae en un múltiplo de su propio tamaño y nada queda desalineado.</p><h3>Ejemplo completo: una sede con <code>192.168.20.0/24</code></h3><p>Una sede necesita direcciones para cinco usos: ventas (100 equipos), oficina (50), cámaras (20), gestión de equipos de red (10) y dos enlaces con routers (2 cada uno).</p><ol class="steps"><li><span><b>Ventas, 100 equipos.</b> Un /26 da 62: no alcanza. Un /25 da 126: sí. Se le asigna <code>192.168.20.0/25</code>: usables <code>.1</code> a <code>.126</code>, broadcast <code>.127</code>.</span></li><li><span><b>Oficina, 50 equipos.</b> Un /27 da 30: no alcanza. Un /26 da 62: sí. Empieza donde terminó ventas: <code>192.168.20.128/26</code>, usables <code>.129</code> a <code>.190</code>, broadcast <code>.191</code>.</span></li><li><span><b>Cámaras, 20 equipos.</b> Un /27 da 30: sí. <code>192.168.20.192/27</code>, usables <code>.193</code> a <code>.222</code>, broadcast <code>.223</code>.</span></li><li><span><b>Gestión, 10 equipos.</b> Un /28 da 14: sí. <code>192.168.20.224/28</code>, usables <code>.225</code> a <code>.238</code>, broadcast <code>.239</code>.</span></li><li><span><b>Enlaces, 2 equipos cada uno.</b> Un /30 da 2: justo. <code>192.168.20.240/30</code> (usables <code>.241</code> y <code>.242</code>) y <code>192.168.20.244/30</code> (usables <code>.245</code> y <code>.246</code>).</span></li><li><span><b>Lo que sobra:</b> <code>192.168.20.248/29</code>, ocho direcciones libres para crecer.</span></li></ol><div class="tbl"><table><thead><tr><th>Uso</th><th>Necesita</th><th>Prefijo</th><th>Red</th><th>Usables</th><th>Broadcast</th></tr></thead><tbody><tr><td>Ventas</td><td>100</td><td>/25</td><td>192.168.20.0</td><td>.1 a .126</td><td>.127</td></tr><tr><td>Oficina</td><td>50</td><td>/26</td><td>192.168.20.128</td><td>.129 a .190</td><td>.191</td></tr><tr><td>Cámaras</td><td>20</td><td>/27</td><td>192.168.20.192</td><td>.193 a .222</td><td>.223</td></tr><tr><td>Gestión</td><td>10</td><td>/28</td><td>192.168.20.224</td><td>.225 a .238</td><td>.239</td></tr><tr><td>Enlace 1</td><td>2</td><td>/30</td><td>192.168.20.240</td><td>.241 y .242</td><td>.243</td></tr><tr><td>Enlace 2</td><td>2</td><td>/30</td><td>192.168.20.244</td><td>.245 y .246</td><td>.247</td></tr><tr><td>Libre</td><td>—</td><td>/29</td><td>192.168.20.248</td><td>.249 a .254</td><td>.255</td></tr></tbody></table></div><p>Con cuatro /26 iguales, este plan no habría cabido: ventas no entra en 62 direcciones. Con bloques variables entran los cinco usos y todavía sobran ocho direcciones.</p></div><figure class="fig fig-comparacion" id="apg-diagrama-2"><div class="lienzo"><svg viewBox="0 0 890 351" style="min-width:720px" role="img" aria-label="Regla con las 256 direcciones de 192.168.20.0/24 y cuatro formas de partirla: dos /25, cuatro /26, ocho /27 y un plan de tamaño variable con un /25 para ventas, un /26 para oficina, un /27 para cámaras, un /28 para gestión, dos /30 para enlaces y un /29 libre.">
+<text x="14" y="24" class="t t-xs t-b t-m">192.168.20.0/24: LAS 256 DIRECCIONES EN UNA REGLA</text>
+<line x1="170" y1="52" x2="874" y2="52" class="ln" style="stroke-width:1.6"/>
+<line x1="170.0" y1="46" x2="170.0" y2="58" class="ln"/>
+<text x="170.0" y="40" text-anchor="start" class="t t-s t-mono t-m">.0</text>
+<line x1="258.0" y1="46" x2="258.0" y2="58" class="ln"/>
+<text x="258.0" y="40" text-anchor="middle" class="t t-s t-mono t-m">.32</text>
+<line x1="346.0" y1="46" x2="346.0" y2="58" class="ln"/>
+<text x="346.0" y="40" text-anchor="middle" class="t t-s t-mono t-m">.64</text>
+<line x1="434.0" y1="46" x2="434.0" y2="58" class="ln"/>
+<text x="434.0" y="40" text-anchor="middle" class="t t-s t-mono t-m">.96</text>
+<line x1="522.0" y1="46" x2="522.0" y2="58" class="ln"/>
+<text x="522.0" y="40" text-anchor="middle" class="t t-s t-mono t-m">.128</text>
+<line x1="610.0" y1="46" x2="610.0" y2="58" class="ln"/>
+<text x="610.0" y="40" text-anchor="middle" class="t t-s t-mono t-m">.160</text>
+<line x1="698.0" y1="46" x2="698.0" y2="58" class="ln"/>
+<text x="698.0" y="40" text-anchor="middle" class="t t-s t-mono t-m">.192</text>
+<line x1="786.0" y1="46" x2="786.0" y2="58" class="ln"/>
+<text x="786.0" y="40" text-anchor="middle" class="t t-s t-mono t-m">.224</text>
+<line x1="874.0" y1="46" x2="874.0" y2="58" class="ln"/>
+<text x="874.0" y="40" text-anchor="end" class="t t-s t-mono t-m">.255</text>
+<text x="14" y="90" class="t t-b">2 × /25</text><text x="14" y="106" class="t t-s t-m">126 equipos c/u</text>
+<rect x="171.5" y="72" width="349.0" height="40" rx="5" class="caja"/><text x="346.0" y="97" text-anchor="middle" class="t t-s t-b t-mono">.0</text>
+<rect x="523.5" y="72" width="349.0" height="40" rx="5" class="caja"/><text x="698.0" y="97" text-anchor="middle" class="t t-s t-b t-mono">.128</text>
+<text x="14" y="142" class="t t-b">4 × /26</text><text x="14" y="158" class="t t-s t-m">62 equipos c/u</text>
+<rect x="171.5" y="124" width="173.0" height="40" rx="5" class="caja"/><text x="258.0" y="149" text-anchor="middle" class="t t-s t-b t-mono">.0</text>
+<rect x="347.5" y="124" width="173.0" height="40" rx="5" class="caja"/><text x="434.0" y="149" text-anchor="middle" class="t t-s t-b t-mono">.64</text>
+<rect x="523.5" y="124" width="173.0" height="40" rx="5" class="caja"/><text x="610.0" y="149" text-anchor="middle" class="t t-s t-b t-mono">.128</text>
+<rect x="699.5" y="124" width="173.0" height="40" rx="5" class="caja"/><text x="786.0" y="149" text-anchor="middle" class="t t-s t-b t-mono">.192</text>
+<text x="14" y="194" class="t t-b">8 × /27</text><text x="14" y="210" class="t t-s t-m">30 equipos c/u</text>
+<rect x="171.5" y="176" width="85.0" height="40" rx="5" class="caja"/><text x="214.0" y="201" text-anchor="middle" class="t t-s t-b t-mono">.0</text>
+<rect x="259.5" y="176" width="85.0" height="40" rx="5" class="caja"/><text x="302.0" y="201" text-anchor="middle" class="t t-s t-b t-mono">.32</text>
+<rect x="347.5" y="176" width="85.0" height="40" rx="5" class="caja"/><text x="390.0" y="201" text-anchor="middle" class="t t-s t-b t-mono">.64</text>
+<rect x="435.5" y="176" width="85.0" height="40" rx="5" class="caja"/><text x="478.0" y="201" text-anchor="middle" class="t t-s t-b t-mono">.96</text>
+<rect x="523.5" y="176" width="85.0" height="40" rx="5" class="caja"/><text x="566.0" y="201" text-anchor="middle" class="t t-s t-b t-mono">.128</text>
+<rect x="611.5" y="176" width="85.0" height="40" rx="5" class="caja"/><text x="654.0" y="201" text-anchor="middle" class="t t-s t-b t-mono">.160</text>
+<rect x="699.5" y="176" width="85.0" height="40" rx="5" class="caja"/><text x="742.0" y="201" text-anchor="middle" class="t t-s t-b t-mono">.192</text>
+<rect x="787.5" y="176" width="85.0" height="40" rx="5" class="caja"/><text x="830.0" y="201" text-anchor="middle" class="t t-s t-b t-mono">.224</text>
+<line x1="14" y1="230" x2="874" y2="230" class="ln ln-d"/>
+<text x="14" y="260" class="t t-b">Tamaño variable</text><text x="14" y="276" class="t t-s t-m">el plan del ejemplo</text>
+<rect x="171.5" y="242" width="349.0" height="40" rx="5" class="c-red"/>
+<text x="346.0" y="260" text-anchor="middle" class="t t-s t-b">/25 · Ventas</text><text x="346.0" y="275" text-anchor="middle" class="t t-s t-mono t-m">.0</text>
+<rect x="523.5" y="242" width="173.0" height="40" rx="5" class="c-red"/>
+<text x="610.0" y="260" text-anchor="middle" class="t t-s t-b">/26 · Oficina</text><text x="610.0" y="275" text-anchor="middle" class="t t-s t-mono t-m">.128</text>
+<rect x="699.5" y="242" width="85.0" height="40" rx="5" class="c-red"/>
+<text x="742.0" y="260" text-anchor="middle" class="t t-s t-b">/27 · Cámaras</text><text x="742.0" y="275" text-anchor="middle" class="t t-s t-mono t-m">.192</text>
+<rect x="787.5" y="242" width="41.0" height="40" rx="5" class="c-red"/>
+<text x="808.0" y="260" text-anchor="middle" class="t t-s t-b">/28</text><text x="808.0" y="275" text-anchor="middle" class="t t-s t-mono t-m">.224</text>
+<rect x="830.8" y="242" width="9.5" height="40" rx="2" class="c-enl"/>
+<rect x="841.8" y="242" width="9.5" height="40" rx="2" class="c-enl"/>
+<rect x="852.8" y="242" width="20.5" height="40" rx="2" class="caja ln-d"/>
+<line x1="808.0" y1="282" x2="808.0" y2="290" class="ln"/>
+<text x="802.0" y="301" text-anchor="end" class="t t-s">Gestión .224</text>
+<line x1="835.5" y1="282" x2="835.5" y2="308" class="ln"/>
+<text x="829.5" y="319" text-anchor="end" class="t t-s">Enlaces /30 .240 y .244</text>
+<line x1="863.0" y1="282" x2="863.0" y2="326" class="ln"/>
+<text x="857.0" y="337" text-anchor="end" class="t t-s">/29 libre .248</text>
+</svg></div><figcaption><b>Un /24 partido de cuatro maneras.</b> La regla de arriba son las 256 direcciones de <code>192.168.20.0/24</code>, de la <code>.0</code> a la <code>.255</code>. Las tres primeras filas lo parten en bloques iguales: dos /25, cuatro /26 y ocho /27; cada fila suma un bit al prefijo y parte cada bloque a la mitad. La última fila es el plan de tamaño variable del ejemplo: un /25, un /26, un /27, un /28, dos /30 y un /29 libre, todos alineados con la regla.</figcaption></figure></section>
+<section><h2>IPv6: las equivalencias que hay que conocer</h2><div class="prose"><p>En IPv6 las direcciones tienen 128 bits y se escriben en hexadecimal, en ocho grupos de cuatro cifras. Cada cifra hexadecimal son 4 bits y cada grupo son 16, así que los prefijos de IPv6 casi siempre caen en un límite fácil de ver: el /48 son los tres primeros grupos, el /56 tres grupos y dos cifras más, el /64 los cuatro primeros grupos.</p><p>Lo que sí cambia es la escala. En IPv6 nadie cuenta direcciones de equipos, porque sobran: se cuentan <b>redes /64</b>, que es el tamaño estándar de una red local.</p><div class="tbl"><table><thead><tr><th>Prefijo</th><th>Cuántas redes /64 contiene</th><th>Uso típico</th></tr></thead><tbody><tr><td>/32</td><td>4.294.967.296</td><td>El bloque que un registro regional entrega a un operador (lo más común)</td></tr><tr><td>/48</td><td>65.536</td><td>Una empresa o una sede</td></tr><tr><td>/56</td><td>256</td><td>Un hogar: lo que se recomienda entregar a cada cliente residencial</td></tr><tr><td>/64</td><td>1</td><td>Una sola red local: el Wi-Fi de la casa, una VLAN, un enlace</td></tr><tr><td>/128</td><td>Una sola dirección</td><td>Una interfaz concreta, la <i>loopback</i> de un router</td></tr></tbody></table></div><p>Un solo /64 tiene 2⁶⁴ direcciones: 18.446.744.073.709.551.616, unos 18 trillones. Por eso a nadie le preocupa cuántos equipos caben en un /64: caben todos los que existen. Y por eso un operador con un /32 puede darle un /56 a 16.777.216 clientes, que es 2 elevado a 56 − 32.</p><h3>Por qué un hogar recibe un /56 o un /64</h3><p>Una red IPv6 local <b>tiene que ser un /64</b>. El mecanismo con el que cada equipo arma su propia dirección (el capítulo 5 lo explica: el router anuncia el prefijo y el equipo completa el resto) da por hecho que la parte de equipo mide 64 bits. Si el operador le diera a la casa algo más chico que un /64, la autoconfiguración no funcionaría.</p><p>Con un <b>/64</b> la casa tiene una sola red. Alcanza para el Wi-Fi de siempre, pero no deja separar nada. Con un <b>/56</b>, el router de la casa recibe 256 redes /64 y puede armar varias: una para la familia, otra para los invitados, otra para las cámaras y los aparatos inteligentes. Esa entrega de un bloque al router del cliente se llama <b>delegación de prefijo</b> y la hace el operador con DHCPv6. Por ejemplo, si a un cliente le toca <code>2001:db8:1234:5600::/56</code>, su router puede usar desde <code>2001:db8:1234:5600::/64</code> hasta <code>2001:db8:1234:56ff::/64</code>.</p><p>Las guías de la industria recomiendan entregar un /56 (o un /48) a cada cliente y que sea <b>estable</b>, que no cambie con cada reconexión; un /64 solo se recomienda cuando no hay otra opción. Una empresa con varias sedes suele recibir un /48.</p><h3>Rangos especiales de IPv6</h3><div class="tbl"><table><thead><tr><th>Rango</th><th>Para qué</th></tr></thead><tbody><tr><td><code>2000::/3</code></td><td>Direcciones globales: las que se usan en Internet</td></tr><tr><td><code>2001:db8::/32</code></td><td>Documentación y ejemplos, como los rangos de documentación de IPv4</td></tr><tr><td><code>fc00::/7</code></td><td>Locales únicas: el equivalente de las privadas, para redes internas</td></tr><tr><td><code>fe80::/10</code></td><td>Enlace local: cada interfaz tiene una, y sirve para hablar con el vecino directo</td></tr><tr><td><code>ff00::/8</code></td><td>Multicast</td></tr><tr><td><code>::1/128</code></td><td><i>Loopback</i>: el equipo hablándose a sí mismo</td></tr></tbody></table></div></div></section>
+<section><h2>Diez ejercicios resueltos</h2><div class="prose"><p>Los ejercicios van de menos a más. Intenta cada uno antes de leer la solución, y después compruébalo con la calculadora de más arriba.</p><h3>Ejercicio 1</h3><p>¿Qué máscara corresponde a un /27, cuántas direcciones tiene el bloque y cuántos equipos caben?</p><ol class="steps"><li><span>Bits de equipo: 32 − 27 = 5.</span></li><li><span>Direcciones del bloque: 2⁵ = <b>32</b>.</span></li><li><span>Equipos: 32 − 2 = <b>30</b> (se descuentan la red y el broadcast).</span></li><li><span>Máscara: 27 = 8 + 8 + 8 + 3, es decir, tres octetos de 255 y un cuarto con tres unos: <code>11100000</code> = 128 + 64 + 32 = 224. Máscara: <b><code>255.255.255.224</code></b>.</span></li></ol><h3>Ejercicio 2</h3><p>Escribe <code>172.16.200.5</code> en binario.</p><ol class="steps"><li><span><code>172</code>: cabe 128 (quedan 44), no cabe 64, cabe 32 (quedan 12), no cabe 16, cabe 8 (quedan 4), cabe 4 (queda 0), no caben 2 ni 1 → <code>10101100</code>.</span></li><li><span><code>16</code>: solo la casilla de 16 → <code>00010000</code>.</span></li><li><span><code>200</code>: 128 + 64 + 8 → <code>11001000</code>.</span></li><li><span><code>5</code>: 4 + 1 → <code>00000101</code>.</span></li><li><span>Resultado: <b><code>10101100.00010000.11001000.00000101</code></b>.</span></li></ol><h3>Ejercicio 3</h3><p>¿Qué dirección es <code>11000000.10101000.00001010.01000001</code>? ¿En cuál de las cuatro subredes del ejemplo 4 del capítulo 5 (<code>192.168.10.0/24</code> partido en /26) cae?</p><ol class="steps"><li><span><code>11000000</code> = 128 + 64 = 192.</span></li><li><span><code>10101000</code> = 128 + 32 + 8 = 168.</span></li><li><span><code>00001010</code> = 8 + 2 = 10.</span></li><li><span><code>01000001</code> = 64 + 1 = 65.</span></li><li><span>La dirección es <b><code>192.168.10.65</code></b>.</span></li><li><span>Los /26 empiezan en 0, 64, 128 y 192; el 65 cae en el que empieza en 64: la subred de <b>finanzas</b>, <code>192.168.10.64/26</code>.</span></li></ol><h3>Ejercicio 4</h3><p>Calcula la red, el broadcast y el rango usable de <code>192.168.5.130/25</code>.</p><ol class="steps"><li><span>25 = 8 + 8 + 8 + 1: la línea cae en el cuarto octeto, con 1 bit de red.</span></li><li><span>Máscara del cuarto octeto: 128. Bloque: 256 − 128 = 128. Los bloques empiezan en 0 y en 128.</span></li><li><span>El 130 cae en el que empieza en 128. Red: <b><code>192.168.5.128</code></b>.</span></li><li><span>Broadcast: 128 + 128 − 1 = 255 → <b><code>192.168.5.255</code></b>.</span></li><li><span>Rango usable: de <b><code>192.168.5.129</code></b> a <b><code>192.168.5.254</code></b>: <b>126</b> equipos.</span></li></ol><h3>Ejercicio 5</h3><p>Lo mismo para <code>198.51.100.200/28</code>.</p><ol class="steps"><li><span>28 = 24 + 4: cuarto octeto, 4 bits de red. Máscara: <code>255.255.255.240</code>.</span></li><li><span>Bloque: 256 − 240 = 16. Múltiplos: …, 176, 192, 208…</span></li><li><span>El mayor que no pasa de 200 es 192. Red: <b><code>198.51.100.192</code></b>.</span></li><li><span>Broadcast: 192 + 16 − 1 = 207 → <b><code>198.51.100.207</code></b>.</span></li><li><span>Rango usable: de <b><code>198.51.100.193</code></b> a <b><code>198.51.100.206</code></b>: <b>14</b> equipos.</span></li></ol><h3>Ejercicio 6</h3><p>Dos equipos tienen <code>203.0.113.70/27</code> y <code>203.0.113.100/27</code>. ¿Se hablan directo o necesitan la puerta de enlace? ¿Y si los dos fueran /26?</p><ol class="steps"><li><span>Con /27 el bloque es 32: las redes empiezan en 0, 32, 64, 96, 128…</span></li><li><span>El 70 cae en la red que empieza en 64 (<code>203.0.113.64/27</code>, de .64 a .95).</span></li><li><span>El 100 cae en la que empieza en 96 (<code>203.0.113.96/27</code>, de .96 a .127).</span></li><li><span>Son redes distintas: cada equipo le entrega el paquete a su <b>puerta de enlace</b>, que lo pasa a la otra red.</span></li><li><span>Con /26 el bloque es 64 y los dos caen en <code>203.0.113.64/26</code> (de .64 a .127): estarían en <b>la misma red</b> y se hablarían directo. El mismo par de direcciones da respuestas distintas según la máscara.</span></li></ol><h3>Ejercicio 7</h3><p>Calcula la red, el broadcast y el rango usable de <code>10.20.37.9/20</code>. Aquí la línea cae en el tercer octeto.</p><ol class="steps"><li><span>20 = 16 + 4: tercer octeto, con 4 bits de red. Máscara: <code>255.255.240.0</code>.</span></li><li><span>Bloque en el tercer octeto: 256 − 240 = 16. Múltiplos: 0, 16, 32, 48…</span></li><li><span>El 37 cae en el bloque que empieza en 32. El cuarto octeto va en 0: red <b><code>10.20.32.0</code></b>.</span></li><li><span>Broadcast: 32 + 16 − 1 = 47 en el tercer octeto y 255 en el cuarto → <b><code>10.20.47.255</code></b>.</span></li><li><span>Rango usable: de <b><code>10.20.32.1</code></b> a <b><code>10.20.47.254</code></b>.</span></li><li><span>Equipos: 2¹² − 2 = <b>4.094</b>.</span></li></ol><h3>Ejercicio 8</h3><p>Una red necesita 500 equipos y otra, 60. ¿Qué prefijo y qué máscara le corresponde a cada una, sin desperdiciar más de lo necesario?</p><ol class="steps"><li><span>Se busca el menor número de bits de equipo cuyo bloque, menos 2, alcance. Para 500: 2⁸ − 2 = 254 no alcanza; 2⁹ − 2 = 510 sí. Hacen falta <b>9 bits</b> de equipo.</span></li><li><span>Prefijo: 32 − 9 = <b>/23</b>. Máscara: <code>255.255.254.0</code> (el tercer octeto tiene 7 unos: 254). Caben 510 equipos.</span></li><li><span>Para 60: 2⁶ − 2 = 62 alcanza y 2⁵ − 2 = 30 no. Hacen falta <b>6 bits</b>: prefijo <b>/26</b>, máscara <code>255.255.255.192</code>.</span></li><li><span>Ojo con el borde: si fueran 63 equipos, un /26 ya no alcanzaría (62) y habría que pasar a un /25.</span></li></ol><h3>Ejercicio 9</h3><p>Una oficina tiene <code>192.168.50.0/24</code> y necesita cinco subredes: 60 equipos, 28 equipos, 12 equipos y dos enlaces entre routers. Arma el plan con subredes de tamaño variable.</p><ol class="steps"><li><span>Ordenadas de mayor a menor: 60, 28, 12, 2 y 2.</span></li><li><span><b>60 equipos → /26</b> (62). Primer bloque: <code>192.168.50.0/26</code>, usables .1 a .62, broadcast .63.</span></li><li><span><b>28 equipos → /27</b> (30). Sigue en .64: <code>192.168.50.64/27</code>, usables .65 a .94, broadcast .95.</span></li><li><span><b>12 equipos → /28</b> (14). Sigue en .96: <code>192.168.50.96/28</code>, usables .97 a .110, broadcast .111.</span></li><li><span><b>Enlace 1 → /30</b>. Sigue en .112: <code>192.168.50.112/30</code>, usables .113 y .114, broadcast .115.</span></li><li><span><b>Enlace 2 → /30</b>. Sigue en .116: <code>192.168.50.116/30</code>, usables .117 y .118, broadcast .119.</span></li><li><span>Queda libre todo desde <code>192.168.50.120</code> hasta <code>192.168.50.255</code>: 136 direcciones para crecer (un /29 en .120 y un /25 en .128).</span></li></ol><h3>Ejercicio 10</h3><p>El router de un cliente detrás de CGNAT recibió <code>100.100.37.200/10</code>. ¿De qué red forma parte, cuántas direcciones tiene y por qué esa dirección no sirve para entrar desde Internet?</p><ol class="steps"><li><span>10 = 8 + 2: la línea cae en el <b>segundo</b> octeto, con 2 bits de red. Máscara: <code>255.192.0.0</code>.</span></li><li><span>Bloque en el segundo octeto: 256 − 192 = 64. Múltiplos: 0, 64, 128, 192.</span></li><li><span>El 100 cae en el bloque que empieza en 64. Los octetos de la derecha van en 0: red <b><code>100.64.0.0</code></b>.</span></li><li><span>Broadcast: 64 + 64 − 1 = 127 en el segundo octeto y 255 en los demás → <b><code>100.127.255.255</code></b>.</span></li><li><span>El bloque tiene 2²² = 4.194.304 direcciones: <b>4.194.302</b> usables, de <code>100.64.0.1</code> a <code>100.127.255.254</code>.</span></li><li><span>Es exactamente el <b>rango compartido</b> <code>100.64.0.0/10</code>, reservado para el tramo entre el router de la casa y el CGNAT del operador. No existe en Internet: por eso nadie de afuera puede iniciar una conexión hacia esa dirección, y el cliente que quiere ver sus cámaras necesita una IP pública (capítulo 5).</span></li></ol></div><div class="ml"><b>En la práctica</b><p>Saber calcular una subred a mano sirve más de lo que parece. Cuando un técnico configura un equipo con IP fija, cuando un cliente empresarial pregunta cuántas direcciones le da su /29, cuando alguien de sistemas pide «una IP en la red de gestión» o cuando en una llamada aparece una dirección <code>100.64…</code> o <code>169.254…</code>, la persona que reconoce el bloque y su tamaño en diez segundos ahorra una escalada. Y en la planificación de un operador, repartir bien los bloques con tamaños variables es la diferencia entre que las direcciones alcancen o tener que comprar más en un mercado donde ya son escasas.</p></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const ip=q('#c05-ip'), pre=q('#c05-pre');
+  const mil=n=>n.toLocaleString('es');
+  const aTexto=n=>[24,16,8,0].map(s=>(n>>>s)&255).join('.');
+  function leer(t){
+    const p=t.trim().split('.');
+    if(p.length!==4||p.some(x=>!/^\d{1,3}$/.test(x)||+x>255))return null;
+    return p.reduce((a,x)=>((a*256)+(+x))>>>0,0);
+  }
+  function tipo(n){
+    const en=(base,len)=>len===0||((n>>>(32-len))===(leer(base)>>>(32-len)));
+    if(en('127.0.0.0',8))return 'Especial: «yo mismo» (loopback), nunca sale a la red';
+    if(en('169.254.0.0',16))return 'Especial: enlace local; el equipo no recibió dirección';
+    if(en('10.0.0.0',8)||en('172.16.0.0',12)||en('192.168.0.0',16))return 'Privada: solo vale adentro de una red, sale a Internet con NAT';
+    if(en('100.64.0.0',10))return 'Compartida: la red interna del operador para CGNAT';
+    if(en('192.0.2.0',24)||en('198.51.100.0',24)||en('203.0.113.0',24))return 'Pública de documentación: reservada para ejemplos como este';
+    if(en('224.0.0.0',4))return 'Multicast: un envío para un grupo de equipos';
+    if(n===0)return 'Especial: «ninguna» o «cualquiera»';
+    if(n===0xFFFFFFFF)return 'Especial: broadcast a toda la red local';
+    return 'Pública: se puede alcanzar desde Internet';
+  }
+  function dibujar(){
+    const p=+pre.value; q('#c05-pre-o').textContent='/'+p;
+    const n=leer(ip.value);
+    ip.setAttribute('aria-invalid',n===null?'true':'false');
+    if(n===null){
+      q('#c05-bits').innerHTML='';
+      q('#c05-res').innerHTML='<span class="warn">Escribe cuatro números de 0 a 255 separados por puntos, por ejemplo 192.168.1.10.</span>';
+      q('#c05-nota').textContent='';return;
+    }
+    const mask=p===0?0:(0xFFFFFFFF<<(32-p))>>>0;
+    const red=(n&mask)>>>0, bc=(red|(~mask>>>0))>>>0, total=Math.pow(2,32-p);
+    const bits=n.toString(2).padStart(32,'0');
+    let h='';
+    for(let o=0;o<4;o++){
+      h+='<div class="c05-oct"><b>'+((n>>>(24-8*o))&255)+'</b><div class="c05-row">';
+      for(let j=0;j<8;j++){const i=o*8+j;h+='<span class="'+(i<p?'r':'e')+'">'+bits[i]+'</span>';}
+      h+='</div></div>';
+    }
+    q('#c05-bits').innerHTML=h;
+    let usable,cuantos;
+    if(p===32){usable=aTexto(n)+' (una sola dirección)';cuantos='1, una dirección sola';}
+    else if(p===31){usable=aTexto(red)+' y '+aTexto(bc);cuantos='2, las dos puntas de un enlace';}
+    else{usable=aTexto(red+1)+' a '+aTexto(bc-1);cuantos=mil(total-2);}
+    q('#c05-res').innerHTML=
+      '<div>Máscara: <b>'+aTexto(mask)+'</b> (/'+p+')</div>'+
+      '<div>Dirección de red: <b>'+aTexto(red)+'</b></div>'+
+      '<div>Broadcast: <b>'+(p>=31?'no tiene':aTexto(bc))+'</b></div>'+
+      '<div>Rango usable: <b>'+usable+'</b></div>'+
+      '<div class="big">Equipos que caben: '+cuantos+'</div>'+(p<31?'<div>Son '+mil(total)+' direcciones menos 2: la de red y el broadcast.</div>':'')+
+      '<div>Tipo: '+tipo(n)+'</div>';
+    let nota;
+    if(p%8===0&&p>0&&p<32){nota='Con /'+p+' la línea cae justo entre dos números: los '+(p/8)+' primeros son la red y '+(p/8===3?'el último':'los otros '+(4-p/8))+', el equipo.';}
+    else if(p>=31||p===0){nota=p===0?'Con /0 no hay red: es «todas las direcciones del mundo». Así se escribe la ruta por defecto (capítulo 6).':'Con /'+p+' casi no quedan bits de equipo.';}
+    else{
+      const oct=Math.floor(p/8), tam=Math.pow(2,8-(p%8));
+      nota='Con /'+p+' la línea cae dentro del '+['primer','segundo','tercer','cuarto'][oct]+' número: el bloque mide '+tam+' y empieza en múltiplos de '+tam+'. Como ese número es '+((n>>>(24-8*oct))&255)+', el bloque empieza en '+(((n>>>(24-8*oct))&255)&(256-tam))+'.';
+    }
+    q('#c05-nota').textContent=nota;
+  }
+  ip.addEventListener('input',dibujar); pre.addEventListener('input',dibujar);
+  q('#c05-ej').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ip.value=b.dataset.ip;pre.value=b.dataset.p;dibujar();});
+  dibujar();
+})();
+</script>
+</body>
+</html>

@@ -269,7 +269,198 @@
   <path d="M244 116H814M404 166H814M724 357H814M724 417H814" class="ln ln-d" style="stroke-width:1;opacity:.6"/>
 </svg></div><figcaption><b>Un ataque de phishing de punta a punta, y dónde se corta.</b> El atacante manda el correo; el filtro de correo puede detenerlo (corte 1). Si llega, la persona puede reconocerlo y reportarlo (corte 2). Si hace clic y escribe su contraseña en la página falsa, el segundo factor impide que el atacante entre (corte 3). Si aun así entra, el monitoreo puede detectar un acceso raro y bloquear la cuenta (corte 4). Cada capa que falla deja pasar el ataque a la siguiente.</figcaption></figure></section>
 <section><h2>Malware y ransomware</h2><div class="prose"><p><b>Malware</b> es cualquier programa hecho para dañar: virus, troyanos que se esconden dentro de un programa aparentemente útil, programas espía que roban contraseñas. Casi siempre llega por la misma puerta que el phishing: un archivo adjunto, un enlace o un programa descargado de donde no se debía.</p><p>El más dañino hoy es el <b>ransomware</b> (secuestro de datos). Entra en una computadora, se mueve en silencio por la red de la empresa durante días buscando servidores y respaldos, y de golpe cifra todo lo que encuentra. Después pide un rescate por la llave. Rompe a la vez la disponibilidad (nada funciona) y, cada vez más, la confidencialidad: los atacantes copian los datos antes de cifrarlos y amenazan con publicarlos.</p><p>Las defensas son las de todo el capítulo: no abrir lo que no se esperaba, tener parches al día, segmentar la red para que no se mueva libremente y, sobre todo, <b>respaldos fuera de línea</b>, que el ransomware no pueda alcanzar. Con un buen respaldo, el secuestro se convierte en un mal día en vez de un desastre.</p></div></section>
-<section><h2>Firewalls, segmentación y el principio de mínimo privilegio</h2><div class="prose"><p>Un <b>firewall</b> (cortafuegos) es el vigilante del portón: un equipo o programa que mira cada conexión y decide si pasa, según una lista de reglas. Las reglas hablan en el idioma de las capas del capítulo 3: «desde Internet, solo dejar entrar al puerto 443 de este servidor web», «la red de oficinas no puede llegar a los equipos de la red». Tu router de casa ya tiene uno básico: deja salir todo lo que pides y no deja entrar lo que nadie pidió.</p><p>Pero un solo portón no basta. Si el atacante pasa, no debería poder recorrer la casa entera. Por eso las redes se <b>segmentan</b>: se dividen en zonas separadas por firewalls internos, de modo que la computadora de un vendedor no pueda hablar con la gestión de las OLT. El capítulo 32 cuenta cómo lo hace un operador.</p><p>La misma idea vale para las personas: el <b>principio de mínimo privilegio</b>. Cada usuario recibe solo los accesos que necesita para su trabajo, y no más. Un agente de atención ve la cuenta del cliente que atiende, pero no exporta la base completa. Cuando alguien cambia de puesto, se le quitan los accesos viejos. Así, si roban una cuenta, el daño queda acotado.</p></div><figure class="fig fig-capas" id="12-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 530" style="min-width:680px" role="img" aria-label="Defensa en capas: cinco anillos alrededor de los datos. Personas, dispositivos, red, aplicaciones y, en el centro, los datos cifrados y respaldados; un ataque que atraviesa un anillo choca con el siguiente">
+<section><h2>Qué hace un firewall: reglas, orden y política por defecto</h2><div class="prose"><p>Un <b>firewall</b> (cortafuegos) es el vigilante del portón: un equipo o programa que se para entre dos redes, mira cada paquete que quiere cruzar y decide si pasa, según una lista de reglas. Funciona como el vigilante de un edificio con su planilla: «los repartidores, solo hasta la recepción», «el técnico del ascensor, solo con orden de trabajo», «cualquier otro, no pasa».</p><p>Cada regla dice qué hacer, <b>permitir</b> o <b>bloquear</b>, con el tráfico que coincide con cuatro datos, los mismos de los capítulos 5 y 7:</p><ul><li><b>Origen</b>: de qué dirección o red viene.</li><li><b>Destino</b>: a qué dirección o red va.</li><li><b>Puerto</b>: a qué servicio quiere llegar (443 es la web cifrada, 22 es SSH, 25 es el envío de correo).</li><li><b>Protocolo</b>: TCP, UDP o ICMP.</li></ul><p>Una lista de reglas para el servidor web de una empresa pequeña podría verse así:</p><div class="tbl"><table><thead><tr><th>#</th><th>Acción</th><th>Origen</th><th>Destino</th><th>Protocolo y puerto</th><th>Para qué</th></tr></thead><tbody><tr><td>1</td><td>Permitir</td><td>cualquiera</td><td><code>203.0.113.10</code></td><td>TCP 443</td><td>que todos vean el sitio web</td></tr><tr><td>2</td><td>Permitir</td><td><code>10.99.0.0/24</code> (gestión)</td><td><code>203.0.113.10</code></td><td>TCP 22</td><td>que sistemas administre el servidor</td></tr><tr><td>3</td><td>Permitir</td><td><code>192.168.10.0/24</code> (oficina)</td><td>Internet</td><td>TCP 443</td><td>que las oficinas naveguen</td></tr><tr><td>—</td><td>Bloquear</td><td>cualquiera</td><td>cualquiera</td><td>todo</td><td>la política por defecto</td></tr></tbody></table></div><p><b>Las reglas se leen en orden, y gana la primera que coincide.</b> El firewall compara el paquete con la regla 1; si coincide, aplica esa acción y deja de leer. Si no, pasa a la 2, y así hasta el final. Por eso el orden importa tanto como el contenido. El error clásico es poner una regla amplia antes que una específica: si alguien agrega «bloquear todo lo que venga de <code>198.51.100.66</code>», una dirección que atacó ayer, <b>debajo</b> de la regla 1, los paquetes de ese atacante hacia el puerto 443 coinciden primero con «permitir a cualquiera» y entran; el bloqueo nunca llega a leerse. La regla específica va arriba de la general.</p><p>Si el paquete llega al final sin coincidir con ninguna regla, se aplica la <b>política por defecto</b>. Hay dos filosofías. «Permitir todo lo que no esté prohibido» obliga a imaginar de antemano cada ataque posible, y siempre se escapa alguno. «<b>Denegar todo lo que no esté permitido</b>» abre solo lo necesario, y lo que nadie pensó queda cerrado. La buena práctica es la segunda, y por eso la última línea de la tabla bloquea todo.</p><p>Las reglas valen <b>en los dos sentidos</b>. Las de <b>entrada</b> (de Internet hacia la empresa) son las que todos imaginan. Las de <b>salida</b> (de la empresa hacia Internet) importan igual: una computadora infectada que intenta mandar correo basura por el puerto 25, o hablar con el servidor del atacante, se topa con un firewall que solo deja salir lo que la empresa usa. El router de tu casa aplica la versión más simple: deja salir todo lo que pides y no deja entrar nada que nadie haya pedido.</p></div><div class="lab" id="12-lab-10"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Arma las reglas del firewall</h3></div><p class="hint">Activa, desactiva y cambia de orden las reglas del firewall de una empresa pequeña, y elige la política por defecto. Abajo, ocho paquetes de ejemplo muestran si pasan o se bloquean y qué regla lo decidió. El orden inicial tiene un error clásico: encuéntralo y corrígelo hasta que los ocho casos salgan como la empresa quiere. La casilla «con estado» se explica en la sección siguiente; apágala al final y mira qué le pasa a la respuesta que vuelve a la laptop.</p><style>
+[id="12-lab-10"] .c12-fw{display:grid;gap:14px;min-width:0}
+[id="12-lab-10"] .c12-fw h4{margin:0;font:700 .8rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+[id="12-lab-10"] .c12-fw .c12-chk{display:flex;gap:8px;align-items:center;align-self:end;color:var(--ink);font:600 .86rem var(--f-display)}
+[id="12-lab-10"] .c12-fw .c12-chk input{width:18px;height:18px;accent-color:var(--accent)}
+[id="12-lab-10"] .c12-reglas{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+[id="12-lab-10"] .c12-reglas li{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--card);padding:6px 8px}
+[id="12-lab-10"] .c12-reglas li.off{opacity:.55}
+[id="12-lab-10"] .c12-reglas li.def{background:var(--paper);border-style:dashed}
+[id="12-lab-10"] .c12-n{font:700 .9rem var(--f-mono);color:var(--muted);text-align:center}
+[id="12-lab-10"] .c12-reglas label{display:flex;gap:8px;align-items:flex-start;font-size:.9rem;line-height:1.35;min-width:0}
+[id="12-lab-10"] .c12-reglas label input{width:18px;height:18px;flex:none;margin-top:1px;accent-color:var(--accent)}
+[id="12-lab-10"] .c12-reglas label span{min-width:0;overflow-wrap:anywhere}
+[id="12-lab-10"] .c12-acc{font:700 .78rem var(--f-display);text-transform:uppercase;letter-spacing:.05em}
+[id="12-lab-10"] .c12-acc.p{color:var(--good)}
+[id="12-lab-10"] .c12-acc.b{color:var(--warm)}
+[id="12-lab-10"] .c12-mv{display:flex;gap:4px}
+[id="12-lab-10"] .c12-mv button{min-width:34px;min-height:34px;padding:0;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font:700 1rem var(--f-display);cursor:pointer}
+[id="12-lab-10"] .c12-mv button:disabled{opacity:.3;cursor:default}
+[id="12-lab-10"] .c12-casos{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+[id="12-lab-10"] .c12-casos li{border:1px solid var(--line);border-left-width:5px;border-radius:8px;background:var(--card);padding:8px 10px;display:grid;gap:3px;font-size:.9rem;line-height:1.4}
+[id="12-lab-10"] .c12-casos li.bien{border-left-color:var(--good)}
+[id="12-lab-10"] .c12-casos li.mal{border-left-color:var(--warm);background:var(--warm-soft)}
+[id="12-lab-10"] .c12-cab{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+[id="12-lab-10"] .c12-cab b{font-family:var(--f-display)}
+[id="12-lab-10"] .c12-res{font:700 .78rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;padding:1px 7px;border-radius:5px}
+[id="12-lab-10"] .c12-res.p{color:var(--good);border:1px solid var(--good)}
+[id="12-lab-10"] .c12-res.b{color:var(--warm);border:1px solid var(--warm)}
+[id="12-lab-10"] .c12-pk{font:500 .8rem var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
+[id="12-lab-10"] .c12-por{color:var(--ink)}
+[id="12-lab-10"] .c12-ojo{color:var(--warm);font-weight:600}
+</style>
+<div class="c12-fw">
+  <div class="opciones">
+    <label for="c12-pol">Política por defecto
+      <select id="c12-pol">
+        <option value="b" selected>Denegar lo no permitido</option>
+        <option value="p">Permitir lo no prohibido</option>
+      </select></label>
+    <label class="c12-chk" for="c12-est"><input type="checkbox" id="c12-est" checked> Firewall con estado (recuerda las conexiones)</label>
+  </div>
+  <div>
+    <h4>Reglas, en el orden en que se leen</h4>
+    <ol class="c12-reglas" id="c12-reglas"></ol>
+  </div>
+  <div class="btns"><button type="button" id="c12-reset">Volver al orden inicial</button></div>
+  <div class="readout texto" id="c12-sum" aria-live="polite"></div>
+  <div>
+    <h4>Ocho paquetes de prueba</h4>
+    <ul class="c12-casos" id="c12-casos"></ul>
+  </div>
+</div></div></section>
+<section><h2>Tipos de firewall: filtro de paquetes, con estado, de aplicación y de nueva generación</h2><div class="prose"><p>No todos los vigilantes miran lo mismo. Uno solo lee el sobre; otro recuerda quién salió y deja volver a la misma persona; otro abre el paquete y revisa lo que trae. Los firewalls evolucionaron en ese orden, y hoy conviven los cuatro tipos.</p><h3>Filtro de paquetes: sin memoria</h3><p>El más simple mira cada paquete por separado y solo su cabecera: origen, destino, puerto y protocolo. No recuerda nada de los paquetes anteriores. En los routers y switches se llama <b>ACL</b> (lista de control de acceso). Es muy rápido y por eso los operadores lo usan en sus routers para filtrar enormes volúmenes de tráfico, por ejemplo para que nadie de afuera llegue a las direcciones de gestión.</p><p>Su problema es la falta de memoria. Para que la laptop de la oficina reciba la respuesta del sitio web que pidió, hay que escribir una regla que deje entrar paquetes desde el puerto 443 de cualquier servidor, y un atacante puede aprovecharla fabricando paquetes que parezcan respuestas.</p><h3>Con estado (<i>stateful</i>): recuerda las conversaciones</h3><p>El firewall <b>con estado</b> lleva una tabla de las conexiones abiertas, parecida a la tabla del NAT del capítulo 5. Cuando la laptop abre una conexión hacia un sitio web, el firewall revisa sus reglas una sola vez, con ese primer paquete, y si la permite la anota. Cuando vuelve la respuesta, la encuentra en la tabla y la deja pasar sin volver a leer las reglas. Un paquete que dice ser una respuesta pero no corresponde a ninguna conexión anotada se descarta.</p><p>Así, con una sola regla de salida («la oficina puede navegar») las respuestas vuelven solas, y nadie de afuera puede colarse disfrazado de respuesta. Hoy es lo normal: con estado son el firewall del router de tu casa, el de tu computadora y el de cualquier empresa.</p></div><figure class="fig fig-flujo" id="12-diagrama-9"><div class="lienzo"><svg viewBox="0 0 1000 520" style="min-width:760px" role="img" aria-label="Flujo de decisión de un firewall con estado. Un visitante de Internet pide el sitio web en el puerto 443: no es de una conexión conocida, el firewall lee las reglas en orden, la regla 1 lo permite y la conexión se anota en la tabla. La respuesta del servidor es de una conexión conocida y pasa sin leer reglas. Un desconocido intenta entrar por el puerto 22: no es conocido, ninguna regla coincide y la política por defecto lo descarta">
+  
+  <rect x="20" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-nube" x="28" y="26" width="30" height="30" class="ico"/><text x="64" y="40" class="t t-b">Internet</text><text x="64" y="57" class="t t-xs t-m">visitantes</text>
+  <rect x="218" y="14" width="164" height="56" rx="10" class="caja"/><use href="#i-candado" x="226" y="26" width="30" height="30" class="ico"/><text x="262" y="40" class="t t-b">Firewall:</text><text x="262" y="57" class="t t-s">tabla de conexiones</text>
+  <rect x="430" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-candado" x="438" y="26" width="30" height="30" class="ico"/><text x="474" y="40" class="t t-b">Firewall:</text><text x="474" y="57" class="t t-s">reglas en orden</text>
+  <rect x="640" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-servidor" x="648" y="26" width="30" height="30" class="ico"/><text x="684" y="40" class="t t-b">Servidor web</text><text x="684" y="57" class="t t-xs t-mono">203.0.113.10</text>
+  <line x1="95" y1="70" x2="95" y2="500" class="vida"/>
+  <line x1="300" y1="70" x2="300" y2="500" class="vida"/>
+  <line x1="510" y1="70" x2="510" y2="500" class="vida"/>
+  <line x1="720" y1="70" x2="720" y2="500" class="vida"/>
+
+  <g class="t t-s">
+    
+    <text x="104" y="100">①&#160; de <tspan class="t-mono t-b">192.0.2.44</tspan></text>
+    <text x="118" y="114" class="t-m">a <tspan class="t-mono">:443</tspan> (el sitio web)</text>
+    <line x1="95" y1="122" x2="298" y2="130" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+    <text x="310" y="146" class="t-b">¿Conexión conocida? No.</text>
+    <line x1="300" y1="156" x2="508" y2="162" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+    <text x="318" y="174" class="t-m">a las reglas</text>
+    
+    <rect x="404" y="184" width="214" height="76" rx="8" class="c-tra"/>
+    <text x="414" y="202" class="t-xs t-b">1 · Permitir · cualquiera → :443</text>
+    <text x="414" y="220" class="t-xs">2 · Permitir · gestión → :22</text>
+    <text x="414" y="238" class="t-xs">… más reglas …</text>
+    <text x="414" y="254" class="t-xs t-b k-apl">por defecto · Bloquear todo</text>
+    
+    <line x1="510" y1="272" x2="718" y2="280" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+    <text x="520" y="292">②&#160; la regla 1 coincide: pasa</text>
+    <path d="M510 300 L302 306" class="ln ln-d" style="stroke-width:1.4" marker-end="url(#fl)"/>
+    <text x="312" y="322" class="t-m">y se anota en la tabla</text>
+    
+    <text x="530" y="346">③&#160; la respuesta vuelve</text>
+    <line x1="720" y1="354" x2="97" y2="366" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+    <circle cx="300" cy="360" r="6" class="c-tra"/>
+    <text x="104" y="384" class="t-b">conocida: pasa sin leer las reglas</text>
+    
+    <text x="104" y="412">④&#160; de <tspan class="t-mono t-b">192.0.2.99</tspan> a <tspan class="t-mono">:22</tspan></text>
+    <line x1="95" y1="420" x2="298" y2="428" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+    <text x="310" y="444" class="t-b">No es conocida.</text>
+    <line x1="300" y1="452" x2="508" y2="458" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+    
+    <line x1="510" y1="472" x2="600" y2="474" class="ln s-apl ln-d" style="stroke-width:2"/>
+    <line x1="598" y1="466" x2="612" y2="480" class="ln s-apl" style="stroke-width:3"/><line x1="612" y1="466" x2="598" y2="480" class="ln s-apl" style="stroke-width:3"/>
+    <text x="520" y="498" class="k-apl t-b">⑤&#160; ninguna coincide: se descarta</text>
+  </g>
+
+  
+  <g class="t t-s">
+    <rect x="828" y="90" width="160" height="236" rx="8" class="c-tra"/>
+    <text x="840" y="112" class="t-b">Paquete nuevo</text><text x="840" y="130">deciden las reglas,</text><text x="840" y="146">de arriba abajo;</text><text x="840" y="162">gana la primera</text><text x="840" y="178">que coincide</text>
+    <rect x="828" y="340" width="160" height="56" rx="8" class="caja"/>
+    <text x="840" y="362" class="t-b">Respuesta</text><text x="840" y="380">decide la tabla</text>
+    <rect x="828" y="408" width="160" height="96" rx="8" class="c-apl"/>
+    <text x="840" y="430" class="t-b">Nadie lo permitió</text><text x="840" y="448">se aplica la política</text><text x="840" y="464">por defecto:</text><text x="840" y="480">denegar todo</text>
+  </g>
+</svg></div><figcaption><b>Cómo decide un firewall con estado.</b> Tres paquetes llegan al firewall, que primero mira su tabla de conexiones y después, si hace falta, sus reglas en orden. Un visitante pide el sitio web (①): no es de una conexión conocida, así que el firewall lee las reglas, la regla 1 lo permite y la conexión queda anotada (②). La respuesta del servidor (③) sí es de una conexión conocida y pasa sin leer reglas. Un desconocido intenta entrar por el puerto 22 (④): ninguna regla coincide, se aplica la política por defecto y el paquete se descarta (⑤).</figcaption></figure><div class="prose"><h3>De aplicación o proxy: entiende lo que se dice</h3><p>El firewall <b>de aplicación</b> trabaja en la capa de aplicación: entiende HTTP, DNS o el correo. En lugar de dejar pasar la conexión, la recibe él y abre otra hacia el destino, como un intermediario (eso significa <b>proxy</b>). Por eso puede leer el contenido: bloquear una página prohibida, un archivo con virus o un comando mal formado. Es el vigilante que abre los paquetes. A cambio, es más lento y tiene que conocer cada protocolo que revisa.</p><h3>De nueva generación (NGFW): aplicaciones, usuarios y tráfico cifrado</h3><p>El firewall <b>de nueva generación</b> (<b>NGFW</b>, por sus siglas en inglés) junta todo lo anterior y suma más. Reconoce la <b>aplicación</b> aunque use un puerto común: distingue una videollamada, un juego o un programa de descargas aunque todos viajen por el 443. Conoce al <b>usuario</b>, porque se conecta al directorio de la empresa, y puede tener reglas como «finanzas puede usar el banco en línea; nadie puede usar programas de acceso remoto no aprobados». Y suele traer adentro un IPS, que se explica en la sección siguiente.</p><p>Para ver adentro del tráfico cifrado hace <b>inspección de TLS</b>: descifra la conexión, la revisa y la vuelve a cifrar. Para lograrlo, se pone en el medio con un certificado de la propia empresa que las computadoras de la empresa tienen instalado como confiable. Es, literalmente, un intermediario autorizado. Tiene límites claros:</p><ul><li>Solo funciona en los equipos que la empresa administra; en un celular personal aparecería la pantalla de advertencia que vimos en «Certificados y autoridades».</li><li>Algunas aplicaciones, como las de bancos, rechazan cualquier certificado que no sea el suyo y se rompen, así que se dejan fuera de la inspección.</li><li>Descifrar y volver a cifrar todo exige mucho procesamiento.</li><li>Y tiene un <b>impacto en la privacidad</b>: la empresa puede ver el contenido de lo que sus empleados hacen en la web, incluso trámites personales. Por eso debe estar declarado en la política de uso, dejar fuera categorías sensibles como salud o banca y respetar la ley de cada país.</li></ul><p>Sin descifrar, el firewall solo ve las direcciones y el nombre del sitio, no lo que se dice.</p><h3>Dónde viven los firewalls</h3><ul><li><b>En el router de la casa</b>: un firewall con estado básico, junto con el NAT.</li><li><b>En la computadora</b>: el firewall del sistema operativo, que protege al equipo aunque esté en el Wi-Fi de un hotel o de un aeropuerto.</li><li><b>En el borde de la empresa</b>: equipos dedicados, casi siempre de nueva generación y en pareja, para que si uno falla siga el otro.</li><li><b>En la nube</b>: firewalls virtuales y reglas por cada máquina virtual, que el proveedor llama grupos de seguridad (capítulo 11).</li></ul><p>Para empresas pequeñas existe además el <b>UTM</b> (gestión unificada de amenazas): una sola caja que hace de firewall, antivirus, filtro web, VPN e IPS a la vez; hoy la frontera entre un UTM y un NGFW es más comercial que técnica.</p></div></section>
+<section><h2>IDS, IPS y WAF: detectar y frenar ataques</h2><div class="prose"><p>El firewall decide según quién habla y hacia dónde. Pero si el puerto 443 del servidor web está permitido, y tiene que estarlo, un ataque que viaja <b>dentro</b> de una conexión permitida pasa igual. Para eso hay otras herramientas que miran el contenido.</p><ul><li>El <b>IDS</b> (sistema de detección de intrusos) mira una copia del tráfico y levanta una alarma cuando ve algo sospechoso, pero no bloquea nada. Es la cámara de seguridad.</li><li>El <b>IPS</b> (sistema de prevención de intrusos) está en el camino del tráfico, en línea, y puede descartar el paquete o cortar la conexión en el momento. Es el vigilante que detiene a la persona. Por eso, si se equivoca, bloquea tráfico legítimo.</li></ul><p>Los dos reconocen un ataque de dos maneras. Por <b>firmas</b>: patrones de ataques conocidos, como un antivirus, que hay que actualizar todo el tiempo y que no ven un ataque nuevo. Y por <b>comportamiento</b>: aprenden qué es normal en la red y avisan cuando algo se sale de lo común, como un servidor que de pronto manda diez veces más datos de lo habitual. Esto último detecta ataques nuevos, pero da más alarmas falsas.</p><p>Ese es el problema de fondo: los <b>falsos positivos</b> (alarmas sin ataque) y los <b>falsos negativos</b> (ataques sin alarma). Si el sistema es muy sensible, genera tantas alarmas que el equipo de seguridad termina por ignorarlas; si es muy permisivo, deja pasar ataques reales. Por eso un IPS suele empezar en modo «solo detectar», y el bloqueo se activa regla por regla cuando se confirma que no molesta al tráfico legítimo.</p><p>El <b>WAF</b> (firewall de aplicaciones web) es un especialista: se pone delante de un sitio web o de una API (capítulo 9) y revisa cada pedido HTTP. Bloquea ataques típicos de la web, como escribir un comando de base de datos en el campo de un formulario (<i>inyección SQL</i>), los robots que prueban miles de contraseñas o un cliente que hace demasiados pedidos por segundo. Muchas CDN lo ofrecen como servicio.</p><p>Todas estas herramientas mandan sus alarmas al sistema de monitoreo de seguridad que se explica más abajo, en «Detectar y responder».</p></div></section>
+<section><h2>Zonas, DMZ y segmentación</h2><div class="prose"><p>Un solo portón no basta. Si el atacante logra pasar, no debería poder recorrer la casa entera. Piensa en un hotel: el lobby está abierto a todos, los pisos de habitaciones solo se abren con la tarjeta de huésped, y la cocina y la sala de máquinas son solo para el personal. Las redes se ordenan igual: se dividen en <b>zonas</b>, separadas por firewalls, y cada paso de una zona a otra tiene sus propias reglas.</p><ul><li><b>Internet</b>: la zona en la que no se confía nada.</li><li><b>DMZ</b> (zona desmilitarizada): una red aparte para los servidores que tienen que verse desde Internet, como el sitio web, el correo o el portal de clientes. Si alguno de ellos cae en manos de un atacante, el atacante queda en la DMZ, no adentro: el firewall no deja que la DMZ inicie conexiones hacia la red interna, salvo la mínima necesaria, por ejemplo que el servidor web consulte una base de datos por un solo puerto.</li><li><b>Red interna</b>: las computadoras de los empleados y los sistemas del negocio, como facturación o la atención al cliente. Puede salir a Internet, pero nadie de Internet puede entrar.</li><li><b>Red de gestión</b>: la red desde la que se administran los propios equipos de red (routers, switches, OLT) y las consolas de los servidores. No se llega a ella desde Internet, y desde la red interna solo a través de un puesto de salto (<i>jump host</i> o bastión), con segundo factor y con registro de cada comando.</li></ul><p>¿Por qué la gestión va aparte en un operador? Porque quien controla la gestión controla el servicio de todos los clientes a la vez: podría cortar una ciudad entera, desviar tráfico o leer configuraciones con claves. Por eso vive en su propia red o en su propia VLAN (capítulo 4), con una lista corta de personas autorizadas, y las páginas de administración de los equipos nunca quedan expuestas a Internet.</p></div><figure class="fig fig-arquitectura" id="12-diagrama-11"><div class="lienzo"><svg viewBox="0 0 1000 550" style="min-width:760px" role="img" aria-label="Zonas de una red separadas por firewalls. Desde Internet, el firewall de borde deja pasar solo hacia la DMZ, donde están el sitio web, el correo y el portal de clientes, y solo a los puertos publicados; hacia la red interna no deja pasar nada. Desde la DMZ solo sale la consulta a la base de datos interna. La red interna puede salir a Internet. La red de gestión de routers, switches y OLT está detrás de su propio firewall: se entra solo desde el puesto de salto con segundo factor, y nunca desde Internet">
+  
+  <rect x="10" y="14" width="160" height="470" rx="12" class="d-inet"/>
+  <rect x="300" y="14" width="320" height="206" rx="12" class="c-apl"/>
+  <rect x="300" y="278" width="320" height="206" rx="12" class="d-sis"/>
+  <rect x="748" y="14" width="242" height="470" rx="12" class="d-oper"/>
+  <text x="90" y="38" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <text x="90" y="54" text-anchor="middle" class="t t-xs t-m">no se confía en nada</text>
+  <text x="460" y="38" text-anchor="middle" class="t t-xs t-b k-apl">DMZ · SERVIDORES PÚBLICOS</text>
+  <text x="460" y="302" text-anchor="middle" class="t t-xs t-b k-sis">RED INTERNA</text>
+  <text x="869" y="38" text-anchor="middle" class="t t-xs t-b k-oper">RED DE GESTIÓN</text>
+  <text x="869" y="54" text-anchor="middle" class="t t-xs t-m">los equipos de la red</text>
+
+  
+  <rect x="24" y="90" width="132" height="58" rx="10" class="caja"/>
+  <use href="#i-persona" x="32" y="102" width="30" height="30" class="ico"/><text x="68" y="116" class="t t-s t-b">Visitantes</text><text x="68" y="132" class="t t-xs t-mono">192.0.2.44</text>
+  <rect x="24" y="330" width="132" height="58" rx="10" class="caja"/>
+  <use href="#i-persona" x="32" y="342" width="30" height="30" class="ico"/><text x="68" y="356" class="t t-s t-b">Atacante</text><text x="68" y="372" class="t t-xs t-mono">198.51.100.66</text>
+
+  
+  <rect x="190" y="196" width="92" height="104" rx="10" class="caja" style="stroke-width:2"/>
+  <use href="#i-candado" x="219" y="204" width="34" height="34" class="ico"/>
+  <text x="236" y="256" text-anchor="middle" class="t t-s t-b">Firewall</text>
+  <text x="236" y="272" text-anchor="middle" class="t t-s t-b">de borde</text>
+  <text x="236" y="288" text-anchor="middle" class="t t-xs t-m">NGFW</text>
+
+  
+  <g class="t t-s">
+    <rect x="316" y="64" width="92" height="88" rx="10" class="caja"/><use href="#i-servidor" x="345" y="70" width="32" height="32" class="ico"/><text x="362" y="120" text-anchor="middle" class="t-b">Sitio web</text><text x="362" y="138" text-anchor="middle" class="t-xs t-mono">203.0.113.10</text>
+    <rect x="416" y="64" width="92" height="88" rx="10" class="caja"/><use href="#i-servidor" x="445" y="70" width="32" height="32" class="ico"/><text x="462" y="120" text-anchor="middle" class="t-b">Correo</text><text x="462" y="138" text-anchor="middle" class="t-xs t-mono">203.0.113.11</text>
+    <rect x="516" y="64" width="92" height="88" rx="10" class="caja"/><use href="#i-servidor" x="545" y="70" width="32" height="32" class="ico"/><text x="562" y="120" text-anchor="middle" class="t-b">Portal</text><text x="562" y="138" text-anchor="middle" class="t-xs t-mono">203.0.113.12</text>
+  </g>
+  <text x="460" y="176" text-anchor="middle" class="t t-xs t-m">si toman uno, el atacante queda aquí,</text>
+  <text x="460" y="190" text-anchor="middle" class="t t-xs t-m">no adentro</text>
+
+  
+  <g class="t t-s">
+    <rect x="316" y="322" width="140" height="70" rx="10" class="caja"/><use href="#i-monitor" x="324" y="332" width="30" height="30" class="ico"/><text x="360" y="346" class="t-b">Oficinas</text><text x="324" y="380" class="t-xs t-mono">192.168.10.0/24</text>
+    <rect x="466" y="322" width="140" height="70" rx="10" class="caja"/><use href="#i-factura" x="474" y="332" width="30" height="30" class="ico"/><text x="510" y="346" class="t-b">Facturación</text><text x="510" y="362" class="t-b">y atención</text><text x="474" y="380" class="t-xs t-mono">192.168.20.0/24</text>
+    <rect x="466" y="404" width="140" height="56" rx="10" class="caja"/><use href="#i-servidor" x="474" y="416" width="30" height="30" class="ico"/><text x="510" y="430" class="t-b">Base de</text><text x="510" y="446" class="t-b">datos</text>
+  </g>
+
+  
+  <rect x="644" y="300" width="80" height="94" rx="10" class="caja" style="stroke-width:2"/>
+  <use href="#i-candado" x="667" y="306" width="34" height="34" class="ico"/>
+  <text x="684" y="356" text-anchor="middle" class="t t-s t-b">Firewall</text>
+  <text x="684" y="372" text-anchor="middle" class="t t-s t-b">de gestión</text>
+
+  
+  <g class="t t-s">
+    <rect x="768" y="84" width="200" height="58" rx="10" class="caja"/><use href="#i-router-core" x="776" y="96" width="32" height="32" class="ico"/><text x="816" y="110" class="t-b">Routers y</text><text x="816" y="126" class="t-b">switches</text>
+    <rect x="768" y="156" width="200" height="58" rx="10" class="caja"/><use href="#i-olt" x="776" y="168" width="32" height="32" class="ico"/><text x="816" y="182" class="t-b">OLT y servidores</text><text x="816" y="198" class="t-xs t-mono">10.99.0.0/24</text>
+    <rect x="768" y="318" width="200" height="58" rx="10" class="caja"/><use href="#i-llave" x="776" y="330" width="32" height="32" class="ico"/><text x="816" y="344" class="t-b">Puesto de salto</text><text x="816" y="360" class="t-xs">segundo factor y registro</text>
+  </g>
+  <line x1="868" y1="318" x2="868" y2="214" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+
+  
+  <line x1="156" y1="128" x2="196" y2="204" class="ln s-red" style="stroke-width:2"/>
+  <line x1="282" y1="210" x2="340" y2="156" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="206" y="186" class="t t-s t-b k-red">①&#160; solo :443</text>
+  
+  <line x1="156" y1="350" x2="196" y2="292" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <line x1="282" y1="292" x2="292" y2="300" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <line x1="290" y1="298" x2="302" y2="310" class="ln s-apl" style="stroke-width:3"/><line x1="302" y1="298" x2="290" y2="310" class="ln s-apl" style="stroke-width:3"/>
+  <text x="196" y="326" class="t t-s t-b k-apl">②&#160; nada</text>
+  
+  <path d="M362 152 V250 H630 V432 H608" class="ln s-red" style="stroke-width:2" fill="none" marker-end="url(#fl-red)"/>
+  <text x="372" y="244" class="t t-s t-b k-red">③&#160; solo la consulta a la base</text>
+  
+  <line x1="340" y1="322" x2="284" y2="252" class="ln s-red" style="stroke-width:2"/>
+  <line x1="190" y1="250" x2="150" y2="250" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="20" y="242" class="t t-s t-b k-red">④&#160; navegar: sí</text>
+  
+  <path d="M386 392 V472 H684 V396" class="ln s-red" style="stroke-width:2" fill="none"/>
+  <line x1="724" y1="347" x2="766" y2="347" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="768" y="410" class="t t-s t-b k-red">⑤&#160; solo por el puesto</text>
+  <text x="768" y="426" class="t t-s t-b k-red">de salto, con MFA</text>
+  
+  <path d="M90 388 V512 H740" class="ln s-apl ln-d" style="stroke-width:2" fill="none"/>
+  <line x1="740" y1="504" x2="756" y2="520" class="ln s-apl" style="stroke-width:3"/><line x1="756" y1="504" x2="740" y2="520" class="ln s-apl" style="stroke-width:3"/>
+  <text x="420" y="538" text-anchor="middle" class="t t-s t-b k-apl">⑥&#160; de Internet a la red de gestión: nunca</text>
+</svg></div><figcaption><b>Las zonas de una red, separadas por firewalls.</b> A la izquierda, Internet. El firewall de borde deja pasar desde Internet solo hacia la DMZ, donde viven los servidores públicos, y solo a los puertos publicados (①); hacia la red interna, nada (②). Desde la DMZ, solo la consulta justa a la base de datos interna (③). La red interna sale a Internet (④). A la derecha, la red de gestión de los equipos de red, detrás de su propio firewall: se entra solo desde el puesto de salto, con segundo factor (⑤), y nunca desde Internet (⑥).</figcaption></figure><div class="prose"><p>Adentro de cada zona también se divide. La red interna no es una sola: cada área tiene su segmento, de modo que la computadora de un vendedor no pueda hablar con los servidores de facturación ni con la gestión de las OLT. Así, si el ransomware entra por una computadora, no puede saltar libremente a las demás, que es justo lo que busca hacer (el <b>movimiento lateral</b>). La idea llevada al extremo se llama <b>confianza cero</b> (<i>zero trust</i>): no confiar en nada por el solo hecho de estar «adentro» y verificar cada acceso. El capítulo 32 cuenta cómo lo aplica un operador.</p></div></section>
+<section><h2>El principio de mínimo privilegio</h2><div class="prose"><p>La misma idea vale para las personas: el <b>principio de mínimo privilegio</b>. Cada usuario recibe solo los accesos que necesita para su trabajo, y no más. Un agente de atención ve la cuenta del cliente que atiende, pero no exporta la base completa. Cuando alguien cambia de puesto, se le quitan los accesos viejos. Así, si roban una cuenta, el daño queda acotado.</p><p>Y vale también para las máquinas y las reglas. Cada regla del firewall abre solo el puerto y el origen que hacen falta, no «todo, por las dudas». Las cuentas que usan los programas para hablar entre sí tienen solo los permisos de su tarea. Nadie trabaja a diario con una cuenta de administrador. Los accesos especiales, como los de un proveedor que viene a reparar un equipo, se dan por un tiempo y vencen solos. Y cada cierto tiempo alguien revisa quién tiene qué, porque los permisos tienden a acumularse.</p></div><figure class="fig fig-capas" id="12-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 530" style="min-width:680px" role="img" aria-label="Defensa en capas: cinco anillos alrededor de los datos. Personas, dispositivos, red, aplicaciones y, en el centro, los datos cifrados y respaldados; un ataque que atraviesa un anillo choca con el siguiente">
   <rect x="10" y="10" width="880" height="510" rx="18" class="d-casa"/>
   <text x="28" y="34" class="t t-b k-casa">1 · Personas</text>
   <text x="28" y="52" class="t t-s">reconocen el phishing · no comparten claves ni códigos · avisan rápido</text>
@@ -333,7 +524,7 @@
   <text x="420" y="320" text-anchor="middle" class="t t-xs t-m">LA VENTANA DE EXPOSICIÓN EMPIEZA AQUÍ</text>
 </svg></div><figcaption><b>La vida de una vulnerabilidad.</b> La línea de tiempo va de izquierda a derecha: el agujero existe sin que nadie lo sepa, alguien lo descubre, el fabricante publica el parche y, desde ese momento, los ataques se multiplican (la franja de arriba). Abajo, dos equipos: el que se actualiza en días queda expuesto un tramo corto; el que se actualiza en meses queda expuesto justo cuando el ataque circula en masa. Parchear rápido es achicar esa ventana.</figcaption></figure><div class="prose"><p>Esto vale para la computadora de cada empleado, pero también para los servidores, los routers, las OLT y los equipos en casa de los clientes, que reciben actualizaciones de firmware (capítulo 41). Por eso aceptar la actualización cuando el sistema la pide, y reiniciar cuando hace falta, es una tarea de seguridad, no una molestia.</p></div></section>
 <section><h2>Detectar y responder: registros, alertas y a quién avisar</h2><div class="prose"><p>Ninguna defensa es perfecta, así que la seguridad también consiste en <b>darse cuenta a tiempo</b>. Cada sistema deja <b>registros</b> (<i>logs</i>): quién entró, desde dónde, a qué hora, qué hizo. Un sistema de monitoreo de seguridad, conocido como <b>SIEM</b>, junta los registros de toda la empresa y levanta alertas cuando algo no cuadra: un usuario que entra desde otro país a las tres de la mañana, cien intentos de contraseña fallidos, una computadora que de pronto habla con cientos de otras.</p><p>Del otro lado de esas alertas hay un equipo de seguridad que sigue un procedimiento: confirmar, contener (bloquear la cuenta, aislar el equipo), limpiar, recuperar y aprender. El marco de ciberseguridad del NIST ordena todo este trabajo en seis funciones: gobernar, identificar, proteger, detectar, responder y recuperar.</p><p>Para un empleado, la parte que le toca es simple y muy valiosa: <b>avisar rápido</b>. Si hiciste clic en algo raro, escribiste tu contraseña donde no debías o ves un comportamiento extraño, repórtalo de inmediato por el canal que tenga la empresa (la mesa de ayuda o el correo de seguridad). Avisar no es confesar una culpa: cada minuto cuenta, y el que avisa a tiempo es el que evita el incidente grande.</p></div><div class="caso"><b>Así lo hace un operador</b><p>El engaño más común contra el personal de un operador no llega por correo sino por teléfono o chat. Alguien llama a un agente de atención o a un técnico, dice ser «de soporte del sistema» o «del NOC», conoce algunos nombres internos que sacó de redes sociales, y pide con urgencia la clave de un sistema, que le lea el código que acaba de llegar por SMS o que cambie el número de teléfono asociado a la cuenta de un cliente. Con eso puede tomar el control de la línea del cliente o entrar al sistema con el usuario del empleado. La defensa es un procedimiento que nadie se salta: soporte nunca pide contraseñas ni códigos, los cambios sensibles se verifican devolviendo la llamada al número oficial, y cualquier pedido así se reporta aunque parezca legítimo.</p></div></section>
-<section><h2>Hábitos de seguridad para cualquier empleado</h2><div class="prose"><p>Todo lo anterior se convierte en una lista corta de hábitos:</p><ol class="steps"><li><span><b>Usa contraseñas largas, distintas para cada sistema</b>, guardadas en un gestor, y activa el segundo factor donde se pueda.</span></li><li><span><b>Nunca compartas tu contraseña ni un código de verificación</b>, ni siquiera con alguien que dice ser de soporte.</span></li><li><span><b>Desconfía de la urgencia.</b> Ante un pedido raro, verifica por otro canal: llama al número que ya conoces, no al que viene en el mensaje.</span></li><li><span><b>Mira la dirección real</b> de los enlaces y de los remitentes antes de hacer clic.</span></li><li><span><b>Actualiza</b> la computadora y el celular cuando lo piden.</span></li><li><span><b>Bloquea la pantalla</b> al levantarte y no dejes documentos de clientes a la vista.</span></li><li><span><b>Usa solo los canales autorizados</b> para mover datos de clientes: nada de reenviarlos a correos personales ni subirlos a servicios no aprobados.</span></li><li><span><b>Reporta rápido</b> cualquier cosa sospechosa, incluso si fuiste tú quien se equivocó.</span></li></ol></div><div class="ml"><b>En la práctica</b><p>Cualquier empleado es una puerta de entrada: el atacante no necesita romper el cifrado si consigue que alguien le dé su contraseña. Reconocer un phishing, no compartir códigos, usar segundo factor y avisar a tiempo protegen a la empresa y, sobre todo, los datos de los clientes, que confían en que su operador los cuida. Y cuando un cliente pregunta si un mensaje «del operador» es real, quien atiende ya sabe qué señales mirar.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué parte de la tríada CIA se rompe si alguien cambia el número de cuenta de un proveedor en el sistema de pagos?</summary><p>La integridad: la información fue alterada sin permiso.</p></details><details><summary>En el cifrado asimétrico, ¿con qué llave se cifra un mensaje para que solo lo lea su destinatario?</summary><p>Con la llave pública del destinatario. Solo su llave privada, que nunca comparte, puede abrirlo.</p></details><details><summary>¿El candado del navegador garantiza que el sitio sea honesto?</summary><p>No. Garantiza que la conexión está cifrada y que hablas con el dueño de ese nombre de dominio, pero un estafador puede tener un certificado válido para un dominio parecido.</p></details><details><summary>¿Por qué el segundo factor frena tantos ataques?</summary><p>Porque al atacante ya no le basta con robar o adivinar la contraseña: también necesita algo que tienes tú, como tu celular o una llave física.</p></details><details><summary>Te llega una notificación para aprobar un inicio de sesión que no hiciste. ¿Qué haces?</summary><p>La rechazas y lo reportas: alguien tiene tu contraseña e intenta entrar.</p></details><details><summary>¿Por qué un respaldo fuera de línea es la mejor defensa contra el ransomware?</summary><p>Porque el ransomware cifra todo lo que alcanza por la red; un respaldo desconectado queda fuera de su alcance y permite recuperar los datos sin pagar.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.incibe.es/ciudadania/tematicas/fraudes-online" target="_blank" rel="noopener">Qué es el phishing (INCIBE, Oficina de Seguridad del Internauta) <small>lectura</small></a><a class="vid" href="https://learn.microsoft.com/es-es/entra/identity/authentication/concept-mfa-howitworks" target="_blank" rel="noopener">Cómo funciona la autenticación multifactor (Microsoft Learn) <small>lectura</small></a><a class="vid" href="https://letsencrypt.org/es/how-it-works/" target="_blank" rel="noopener">Cómo funciona una autoridad de certificación (Let's Encrypt) <small>lectura</small></a><a class="vid" href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener">Marco de Ciberseguridad del NIST 2.0 <small>lectura</small></a></div></section>
+<section><h2>Hábitos de seguridad para cualquier empleado</h2><div class="prose"><p>Todo lo anterior se convierte en una lista corta de hábitos:</p><ol class="steps"><li><span><b>Usa contraseñas largas, distintas para cada sistema</b>, guardadas en un gestor, y activa el segundo factor donde se pueda.</span></li><li><span><b>Nunca compartas tu contraseña ni un código de verificación</b>, ni siquiera con alguien que dice ser de soporte.</span></li><li><span><b>Desconfía de la urgencia.</b> Ante un pedido raro, verifica por otro canal: llama al número que ya conoces, no al que viene en el mensaje.</span></li><li><span><b>Mira la dirección real</b> de los enlaces y de los remitentes antes de hacer clic.</span></li><li><span><b>Actualiza</b> la computadora y el celular cuando lo piden.</span></li><li><span><b>Bloquea la pantalla</b> al levantarte y no dejes documentos de clientes a la vista.</span></li><li><span><b>Usa solo los canales autorizados</b> para mover datos de clientes: nada de reenviarlos a correos personales ni subirlos a servicios no aprobados.</span></li><li><span><b>Reporta rápido</b> cualquier cosa sospechosa, incluso si fuiste tú quien se equivocó.</span></li></ol></div><div class="ml"><b>En la práctica</b><p>Cualquier empleado es una puerta de entrada: el atacante no necesita romper el cifrado si consigue que alguien le dé su contraseña. Reconocer un phishing, no compartir códigos, usar segundo factor y avisar a tiempo protegen a la empresa y, sobre todo, los datos de los clientes, que confían en que su operador los cuida. Y cuando un cliente pregunta si un mensaje «del operador» es real, quien atiende ya sabe qué señales mirar.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué parte de la tríada CIA se rompe si alguien cambia el número de cuenta de un proveedor en el sistema de pagos?</summary><p>La integridad: la información fue alterada sin permiso.</p></details><details><summary>En el cifrado asimétrico, ¿con qué llave se cifra un mensaje para que solo lo lea su destinatario?</summary><p>Con la llave pública del destinatario. Solo su llave privada, que nunca comparte, puede abrirlo.</p></details><details><summary>¿El candado del navegador garantiza que el sitio sea honesto?</summary><p>No. Garantiza que la conexión está cifrada y que hablas con el dueño de ese nombre de dominio, pero un estafador puede tener un certificado válido para un dominio parecido.</p></details><details><summary>¿Por qué el segundo factor frena tantos ataques?</summary><p>Porque al atacante ya no le basta con robar o adivinar la contraseña: también necesita algo que tienes tú, como tu celular o una llave física.</p></details><details><summary>Te llega una notificación para aprobar un inicio de sesión que no hiciste. ¿Qué haces?</summary><p>La rechazas y lo reportas: alguien tiene tu contraseña e intenta entrar.</p></details><details><summary>¿Por qué un respaldo fuera de línea es la mejor defensa contra el ransomware?</summary><p>Porque el ransomware cifra todo lo que alcanza por la red; un respaldo desconectado queda fuera de su alcance y permite recuperar los datos sin pagar.</p></details><details><summary>Un firewall tiene arriba «permitir a cualquiera hacia el servidor web, puerto 443» y abajo «bloquear todo lo que venga de <code>198.51.100.66</code>». ¿Ese atacante puede entrar al sitio web?</summary><p>Sí. Las reglas se leen en orden y gana la primera que coincide: su paquete al puerto 443 coincide con la regla de arriba y nunca llega a la de bloqueo. La regla específica tiene que ir antes que la amplia.</p></details><details><summary>¿Qué diferencia a un IDS de un IPS, y por qué los servidores públicos van en una DMZ?</summary><p>El IDS mira una copia del tráfico y avisa; el IPS está en el camino y puede cortar el ataque. Los servidores públicos van en una DMZ para que, si un atacante toma uno, quede en una red aparte y el firewall no lo deje pasar a la red interna.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.incibe.es/ciudadania/tematicas/fraudes-online" target="_blank" rel="noopener">Qué es el phishing (INCIBE, Oficina de Seguridad del Internauta) <small>lectura</small></a><a class="vid" href="https://learn.microsoft.com/es-es/entra/identity/authentication/concept-mfa-howitworks" target="_blank" rel="noopener">Cómo funciona la autenticación multifactor (Microsoft Learn) <small>lectura</small></a><a class="vid" href="https://letsencrypt.org/es/how-it-works/" target="_blank" rel="noopener">Cómo funciona una autoridad de certificación (Let's Encrypt) <small>lectura</small></a><a class="vid" href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener">Marco de Ciberseguridad del NIST 2.0 <small>lectura</small></a></div></section>
 <label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
 <nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
 </main>
@@ -501,6 +692,106 @@
   q('#c12-tarjeta').tabIndex=-1;
   document.querySelectorAll('#c12-resp button').forEach(b=>b.addEventListener('click',()=>responder(b.dataset.r,b)));
   mostrar();
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const ip=s=>s.split('.').reduce((a,b)=>a*256+(+b),0);
+  const enRed=(a,c)=>{const [r,p]=c.split('/');const m=p==='0'?0:(0xFFFFFFFF<<(32-p))>>>0;return ((ip(a)&m)>>>0)===((ip(r)&m)>>>0);};
+  const privada=a=>enRed(a,'10.0.0.0/8')||enRed(a,'192.168.0.0/16')||enRed(a,'172.16.0.0/12');
+  const coincide=(v,regla)=>regla==='any'?true:regla==='inet'?!privada(v):enRed(v,regla);
+  const REGLAS=[
+    {id:'web',acc:'p',src:'any',dst:'203.0.113.10/32',pto:443,txt:'cualquiera → servidor web 203.0.113.10 · TCP 443',corto:'permitir a cualquiera hacia el sitio web',on:true},
+    {id:'nav',acc:'p',src:'192.168.10.0/24',dst:'inet',pto:443,txt:'oficina 192.168.10.0/24 → Internet · TCP 443',corto:'la oficina puede navegar',on:true},
+    {id:'atk',acc:'b',src:'198.51.100.66/32',dst:'any',pto:'any',txt:'198.51.100.66 (atacó ayer) → cualquiera · todo',corto:'bloquear al atacante de ayer',on:true},
+    {id:'gst',acc:'p',src:'10.99.0.0/24',dst:'203.0.113.10/32',pto:22,txt:'gestión 10.99.0.0/24 → servidor web · TCP 22 (SSH)',corto:'la red de gestión administra el servidor',on:true},
+    {id:'ssh',acc:'p',src:'any',dst:'203.0.113.10/32',pto:22,txt:'cualquiera → servidor web · TCP 22 (SSH)',corto:'SSH abierto a todo Internet',on:false},
+    {id:'tmp',acc:'p',src:'any',dst:'any',pto:'any',txt:'cualquiera → cualquiera · todo («temporal, para pruebas»)',corto:'la regla temporal que deja pasar todo',on:false}
+  ];
+  const CASOS=[
+    {d:'Un cliente visita el sitio web',o:'192.0.2.44',dst:'203.0.113.10',pto:443,quiere:'p'},
+    {d:'El atacante de ayer vuelve a probar el sitio web',o:'198.51.100.66',dst:'203.0.113.10',pto:443,quiere:'b'},
+    {d:'Un desconocido intenta entrar por SSH al servidor',o:'192.0.2.99',dst:'203.0.113.10',pto:22,quiere:'b'},
+    {d:'El técnico de sistemas administra el servidor',o:'10.99.0.5',dst:'203.0.113.10',pto:22,quiere:'p'},
+    {d:'La laptop de la oficina abre un sitio web',o:'192.168.10.23',dst:'198.51.100.20',pto:443,quiere:'p'},
+    {d:'La respuesta de ese sitio vuelve a la laptop',o:'198.51.100.20',dst:'192.168.10.23',pto:51000,quiere:'p',resp:4,ori:443},
+    {d:'Alguien de Internet intenta el escritorio remoto de la laptop',o:'192.0.2.99',dst:'192.168.10.23',pto:3389,quiere:'b'},
+    {d:'Un virus en la laptop intenta mandar correo basura',o:'192.168.10.23',dst:'203.0.113.200',pto:25,quiere:'b'}
+  ];
+  let orden, on;
+  function reiniciar(){orden=REGLAS.map((r,i)=>i);on=REGLAS.map(r=>r.on);}
+  function porReglas(c){
+    for(let k=0;k<orden.length;k++){const i=orden[k],r=REGLAS[i];
+      if(!on[i])continue;
+      if(coincide(c.o,r.src)&&coincide(c.dst,r.dst)&&(r.pto==='any'||r.pto===c.pto))return {pasa:r.acc==='p',por:'regla',n:k+1,r};
+    }
+    return {pasa:q('#c12-pol').value==='p',por:'defecto'};
+  }
+  function evaluar(){
+    const est=q('#c12-est').checked, res=[];
+    CASOS.forEach((c,i)=>{
+      if(est&&c.resp!==undefined&&res[c.resp].pasa) res.push({pasa:true,por:'estado'});
+      else res.push(porReglas(c));
+    });
+    return res;
+  }
+  function pista(c,i,r){
+    const est=q('#c12-est').checked;
+    if(r.pasa===(c.quiere==='p'))return '';
+    if(r.por==='regla'&&r.r.id==='tmp')return 'La regla temporal deja pasar todo y anula lo que está debajo, incluida la política por defecto. Desactívala.';
+    if(i===1&&r.por==='regla')return 'El bloqueo del atacante está más abajo y nunca llega a leerse: la regla amplia del sitio web le ganó. Sube la regla de bloqueo por encima.';
+    if(i===1)return 'Activa la regla que bloquea a 198.51.100.66 y ponla arriba de la del sitio web.';
+    if(r.por==='regla'&&r.r.id==='ssh')return 'Esa regla abre SSH a todo Internet. Desactívala: la red de gestión ya tiene su propia regla.';
+    if(i===5&&!est)return 'Sin estado, el firewall no recuerda que la laptop pidió esta página. Para dejarla pasar haría falta una regla amplia de entrada que también aprovecharía un atacante. Vuelve a activar «con estado».';
+    if(i===5)return 'La respuesta solo pasa por la tabla de conexiones si antes pasó el pedido de la laptop (el caso 5).';
+    if(r.por==='defecto'&&r.pasa)return 'Nadie pensó en este caso y la política «permitir todo lo no prohibido» lo dejó pasar. Cambia la política a «denegar».';
+    if(!r.pasa&&r.por==='defecto')return 'Ninguna regla activa lo permite. Revisa que la regla que lo necesita esté activada.';
+    if(!r.pasa)return 'Una regla de bloqueo está antes que la que debía permitirlo.';
+    return '';
+  }
+  function dibujarReglas(foco){
+    const ol=q('#c12-reglas');
+    ol.innerHTML=orden.map((i,k)=>{const r=REGLAS[i];
+      return '<li class="'+(on[i]?'':'off')+'"><span class="c12-n">'+(k+1)+'</span>'+
+        '<label><input type="checkbox" data-on="'+i+'"'+(on[i]?' checked':'')+'><span><span class="c12-acc '+r.acc+'">'+(r.acc==='p'?'Permitir':'Bloquear')+'</span> · '+r.txt+'</span></label>'+
+        '<span class="c12-mv"><button type="button" data-up="'+k+'" aria-label="Subir la regla '+(k+1)+'"'+(k===0?' disabled':'')+'>↑</button>'+
+        '<button type="button" data-down="'+k+'" aria-label="Bajar la regla '+(k+1)+'"'+(k===orden.length-1?' disabled':'')+'>↓</button></span></li>';
+    }).join('')+'<li class="def"><span class="c12-n">—</span><span><span class="c12-acc '+q('#c12-pol').value+'">'+(q('#c12-pol').value==='b'?'Bloquear':'Permitir')+'</span> · todo lo demás (política por defecto)</span><span></span></li>';
+    if(foco){const b=ol.querySelector(foco);if(b&&!b.disabled)b.focus();else{const o=ol.querySelector('button:not(:disabled)');if(o)o.focus();}}
+  }
+  function dibujarCasos(){
+    const res=evaluar(); let bien=0, primera='';
+    q('#c12-casos').innerHTML=CASOS.map((c,i)=>{const r=res[i],ok=r.pasa===(c.quiere==='p');if(ok)bien++;
+      const p=pista(c,i,r); if(!ok&&!primera)primera='Caso '+(i+1)+': '+p;
+      const por=r.por==='estado'?'Lo decidió la <b>tabla de conexiones</b>: es la respuesta de una conexión que abrió la laptop, así que pasa sin leer las reglas.':
+        r.por==='regla'?'Lo decidió la <b>regla '+r.n+'</b> ('+r.r.corto+'): es la primera que coincide.':
+        'Ninguna regla coincidió: lo decidió la <b>política por defecto</b> ('+(q('#c12-pol').value==='b'?'denegar':'permitir')+').';
+      return '<li class="'+(ok?'bien':'mal')+'"><div class="c12-cab"><b>'+(i+1)+'. '+c.d+'</b><span class="c12-res '+(r.pasa?'p':'b')+'">'+(r.pasa?'Pasa':'Bloqueado')+'</span></div>'+
+        '<div class="c12-pk">'+c.o+(c.ori?':'+c.ori:'')+' → '+c.dst+':'+c.pto+'</div>'+
+        '<div class="c12-por">'+por+'</div>'+
+        (ok?'':'<div class="c12-ojo">✗ Debería '+(c.quiere==='p'?'pasar':'bloquearse')+'. '+p+'</div>')+'</li>';
+    }).join('');
+    q('#c12-sum').innerHTML=bien===8?'<span class="ok">8 de 8 casos salen como la empresa quiere.</span> Lo específico va arriba, solo se abre lo necesario y todo lo demás se deniega.':
+      '<span class="warn">'+bien+' de 8 casos salen como la empresa quiere.</span> '+primera;
+  }
+  function todo(foco){dibujarReglas(foco);dibujarCasos();}
+  q('#c12-reglas').addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    let k,j;
+    if(b.dataset.up!==undefined){k=+b.dataset.up;j=k-1;}else{k=+b.dataset.down;j=k+1;}
+    if(j<0||j>=orden.length)return;
+    [orden[k],orden[j]]=[orden[j],orden[k]];
+    todo('[data-'+(b.dataset.up!==undefined?'up':'down')+'="'+j+'"]');
+  });
+  q('#c12-reglas').addEventListener('change',e=>{
+    const c=e.target.closest('input[data-on]');if(!c)return;
+    on[+c.dataset.on]=c.checked;todo('input[data-on="'+c.dataset.on+'"]');
+  });
+  q('#c12-pol').addEventListener('change',()=>todo());
+  q('#c12-est').addEventListener('change',()=>todo());
+  q('#c12-reset').addEventListener('click',()=>{reiniciar();q('#c12-pol').value='b';q('#c12-est').checked=true;todo();});
+  reiniciar();todo();
 })();
 </script>
 </body>

@@ -689,27 +689,153 @@
     <path d="M790 292v110" class="ln s-red" style="stroke-width:3"/><text x="800" y="336" class="k-red">VUELTA</text><text x="800" y="350" class="t-m">cambia</text><text x="800" y="362" class="t-m">el destino</text>
   </g>
   <text x="20" y="250" class="t t-xs t-m" transform="rotate(-90 20 250)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
-</svg></div><figcaption><b>El flujo del NAT, de ida y de vuelta.</b> El celular manda su pedido con origen privado (①). El router cambia el origen por su dirección pública y un puerto, y lo anota en la tabla (②). El servidor responde a esa dirección pública (③). El router busca el puerto en la tabla y le devuelve la respuesta al celular con su dirección privada (④).</figcaption></figure><div class="prose"><p>El NAT tiene una consecuencia importante: <b>las conexiones solo pueden empezar desde adentro</b>. Si alguien en Internet le manda algo a <code>203.0.113.25</code> sin que nadie de la casa lo haya pedido, el router no encuentra ninguna línea en su tabla y lo descarta. Eso protege, pero también impide ver desde afuera una cámara de la casa, salvo que se abra un puerto a mano (<i>port forwarding</i>): una regla fija que dice «lo que llegue al puerto 8080, mándaselo a la cámara».</p></div><div class="lab" id="05-lab-7"><div class="lab-title"><span class="tag">Laboratorio</span><h3>El router de la casa traduciendo conexiones</h3></div><p class="hint">Abre conexiones desde distintos equipos de la casa y mira cómo se llena la tabla NAT. Después intenta entrar a la cámara desde Internet, con y sin puerto abierto, y con el router detrás de CGNAT.</p><style>
+</svg></div><figcaption><b>El flujo del NAT, de ida y de vuelta.</b> El celular manda su pedido con origen privado (①). El router cambia el origen por su dirección pública y un puerto, y lo anota en la tabla (②). El servidor responde a esa dirección pública (③). El router busca el puerto en la tabla y le devuelve la respuesta al celular con su dirección privada (④).</figcaption></figure><div class="prose"><p>El NAT tiene una consecuencia importante: <b>las conexiones solo pueden empezar desde adentro</b>. Si alguien en Internet le manda algo a <code>203.0.113.25</code> sin que nadie de la casa lo haya pedido, el router no encuentra ninguna línea en su tabla y lo descarta. Eso protege, pero también impide ver desde afuera una cámara de la casa. Antes de ver cómo se abre esa puerta, conviene ponerle nombre a lo que hace el router, porque no hay un solo tipo de NAT.</p></div></section>
+<section><h2>Tipos de NAT: estático, dinámico y PAT (NAPT)</h2><div class="prose"><p>Piensa en las líneas telefónicas de una oficina. Algunas personas tienen una <b>línea directa</b> con su propio número: cualquiera puede llamarlas desde afuera. Otras oficinas tienen <b>pocas líneas para muchos empleados</b>, y quien levanta el teléfono toma la primera libre. Y la mayoría tiene <b>un solo número con extensiones</b>: todos llaman hacia afuera por el mismo número y la central distingue cada llamada por su extensión. Esas son, en ese orden, las tres formas de NAT.</p><h3>NAT estático: uno a uno, siempre el mismo</h3><p>El <b>NAT estático</b> ata una dirección privada a una pública, de forma fija y en los dos sentidos. Por ejemplo, el servidor <code>192.168.10.5</code> de una empresa queda unido a <code>203.0.113.10</code>: todo lo que sale del servidor sale como <code>203.0.113.10</code>, y todo lo que llega a <code>203.0.113.10</code>, en cualquier puerto, entra al servidor. Sirve para que un equipo pueda ser encontrado desde afuera, como un servidor web o una central telefónica.</p><p>No ahorra nada: hace falta una dirección pública por cada equipo traducido. Y deja al equipo expuesto en todos sus puertos, así que siempre va acompañado de un firewall que decida qué deja pasar (capítulo 12).</p><h3>NAT dinámico: un grupo de direcciones que se presta</h3><p>En el <b>NAT dinámico</b>, el router tiene un grupo (<i>pool</i>) de direcciones públicas, por ejemplo de <code>203.0.113.10</code> a <code>203.0.113.13</code>, y se las presta a los equipos de adentro a medida que las piden: una dirección entera por equipo, mientras tenga conexiones abiertas. Cuando el equipo deja de usarla, vuelve al grupo. Cambia la dirección, pero no el puerto.</p><p>Ahorra algo si no todos salen a la vez, pero tiene un límite duro: si el grupo tiene cuatro direcciones y un quinto equipo quiere salir, se queda esperando hasta que se libere una. Por eso hoy se usa poco; sobrevive en algunas redes de empresa y en los exámenes de certificación.</p><h3>PAT o NAPT: muchos equipos detrás de una dirección, gracias a los puertos</h3><p>El <b>PAT</b> (traducción de direcciones de puerto), también llamado <b>NAPT</b> (traducción de dirección de red y de puerto), cambia la dirección <b>y el puerto</b>. Así puede sacar a muchos equipos por una sola dirección pública: la tabla anota la dirección y el puerto de adentro y el puerto que les asignó afuera, y con ese puerto sabe a quién devolver cada respuesta. Según el fabricante también aparece como «NAT con sobrecarga» (<i>overload</i>) o «enmascaramiento» (<i>masquerade</i>).</p><p><b>Lo que hace el router de tu casa es PAT</b>, y lo que este capítulo llamó NAT en la sección anterior también. En el día a día, cuando alguien dice «NAT» casi siempre está hablando de PAT.</p><h3>¿Cuántas conexiones caben en una dirección?</h3><p>El puerto es un número de 16 bits: hay 65.536 posibles. Quitando los más bajos, que se reservan para servicios conocidos, quedan unos <b>64.000 puertos por dirección pública</b>, y TCP y UDP llevan cuentas separadas. Cada pestaña del navegador, cada aplicación que revisa notificaciones y cada video ocupa una o varias líneas de la tabla. Una casa con diez equipos rara vez pasa de unos cientos a la vez, y cada línea se borra después de un rato sin tráfico (segundos o minutos para UDP, más para TCP), así que los puertos se reciclan.</p><p>En la práctica un router puede repetir un mismo puerto para destinos distintos, así que la cuenta real es mayor; como orden de magnitud, sirve. Y se vuelve importante cuando quien hace PAT ya no es el router de una casa sino el operador, para decenas de casas a la vez: es el CGNAT, que se explica dos secciones más abajo.</p></div><figure class="fig fig-comparacion" id="05-diagrama-16"><div class="lienzo"><svg viewBox="0 0 1000 560" style="min-width:760px" role="img" aria-label="Comparación de NAT estático, dinámico y PAT con los mismos cuatro equipos de adentro. El estático usa una dirección pública fija por equipo; el dinámico presta un grupo de dos direcciones públicas y el tercer equipo espera; el PAT saca a todos por la dirección 203.0.113.25 y los distingue por el puerto. Debajo, la tabla de cada uno y sus diferencias: cuántas públicas usa, si cambia el puerto, si se puede entrar desde afuera y su uso típico">
+<rect x="722" y="8" width="270" height="544" rx="12" class="d-casa" style="opacity:.55"/>
+<line x1="447" y1="14" x2="447" y2="546" class="ln" style="opacity:.4"/><line x1="722" y1="14" x2="722" y2="546" class="ln" style="opacity:.4"/>
+<text x="180" y="34" class="t t-b" style="font-size:16px">NAT estático</text>
+<text x="180" y="52" class="t t-s t-m">uno a uno, fijo</text>
+<text x="455" y="34" class="t t-b" style="font-size:16px">NAT dinámico</text>
+<text x="455" y="52" class="t t-s t-m">un grupo que se presta</text>
+<text x="730" y="34" class="t t-b" style="font-size:16px">PAT o NAPT</text>
+<text x="730" y="52" class="t t-s t-m">todos por una, con puertos</text>
+<text x="980" y="34" text-anchor="end" class="t t-xs t-b k-casa">EL ROUTER DE CASA</text>
+<g class="t t-xs t-b t-m"><text x="20" y="110">ADENTRO → AFUERA</text><text x="20" y="226">LA TABLA</text></g>
+<text x="20" y="128" class="t t-xs t-m">privadas a la izquierda,</text><text x="20" y="142" class="t t-xs t-m">públicas a la derecha</text>
+<rect x="180" y="70" width="104" height="22" rx="6" class="d-casa"/>
+<text x="232.0" y="85" text-anchor="middle" class="t t-xs t-mono">192.168.1.10</text>
+<rect x="332" y="70" width="104" height="22" rx="6" class="d-inet"/>
+<text x="384.0" y="85" text-anchor="middle" class="t t-xs t-mono">203.0.113.10</text>
+<line x1="286" y1="81" x2="328" y2="81" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="180" y="100" width="104" height="22" rx="6" class="d-casa"/>
+<text x="232.0" y="115" text-anchor="middle" class="t t-xs t-mono">192.168.1.11</text>
+<rect x="332" y="100" width="104" height="22" rx="6" class="d-inet"/>
+<text x="384.0" y="115" text-anchor="middle" class="t t-xs t-mono">203.0.113.11</text>
+<line x1="286" y1="111" x2="328" y2="111" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="180" y="130" width="104" height="22" rx="6" class="d-casa"/>
+<text x="232.0" y="145" text-anchor="middle" class="t t-xs t-mono">192.168.1.12</text>
+<rect x="332" y="130" width="104" height="22" rx="6" class="d-inet"/>
+<text x="384.0" y="145" text-anchor="middle" class="t t-xs t-mono">203.0.113.12</text>
+<line x1="286" y1="141" x2="328" y2="141" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="180" y="160" width="104" height="22" rx="6" class="d-casa"/>
+<text x="232.0" y="175" text-anchor="middle" class="t t-xs t-mono">192.168.1.13</text>
+<rect x="332" y="160" width="104" height="22" rx="6" class="d-inet"/>
+<text x="384.0" y="175" text-anchor="middle" class="t t-xs t-mono">203.0.113.13</text>
+<line x1="286" y1="171" x2="328" y2="171" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="607" y="70" width="104" height="22" rx="6" class="d-inet"/>
+<text x="659.0" y="85" text-anchor="middle" class="t t-xs t-mono">203.0.113.10</text>
+<rect x="607" y="100" width="104" height="22" rx="6" class="d-inet"/>
+<text x="659.0" y="115" text-anchor="middle" class="t t-xs t-mono">203.0.113.11</text>
+<rect x="455" y="70" width="104" height="22" rx="6" class="d-casa"/>
+<text x="507.0" y="85" text-anchor="middle" class="t t-xs t-mono">192.168.1.10</text>
+<line x1="561" y1="81" x2="603" y2="81" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="455" y="100" width="104" height="22" rx="6" class="d-casa"/>
+<text x="507.0" y="115" text-anchor="middle" class="t t-xs t-mono">192.168.1.11</text>
+<line x1="561" y1="111" x2="603" y2="111" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="455" y="130" width="104" height="22" rx="6" class="d-casa"/>
+<text x="507.0" y="145" text-anchor="middle" class="t t-xs t-mono">192.168.1.12</text>
+<line x1="561" y1="141" x2="577" y2="141" class="ln s-apl ln-d" style="stroke-width:1.6"/>
+<text x="581" y="145" class="t t-xs t-b k-apl">espera</text>
+<g class="apagado">
+<rect x="455" y="160" width="104" height="22" rx="6" class="d-casa"/>
+<text x="507.0" y="175" text-anchor="middle" class="t t-xs t-mono">192.168.1.13</text>
+</g>
+<text x="567" y="175" class="t t-xs t-m">sin tráfico</text>
+<text x="639" y="146" class="t t-xs t-m">grupo de 2,</text><text x="639" y="160" class="t t-xs t-m">ya agotado</text>
+<rect x="882" y="104" width="104" height="22" rx="6" class="d-inet"/>
+<text x="934.0" y="119" text-anchor="middle" class="t t-xs t-mono">203.0.113.25</text>
+<text x="934" y="144" text-anchor="middle" class="t t-xs t-m">una sola pública</text>
+<rect x="730" y="70" width="104" height="22" rx="6" class="d-casa"/>
+<text x="782.0" y="85" text-anchor="middle" class="t t-xs t-mono">192.168.1.10</text>
+<line x1="836" y1="81" x2="878" y2="115" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="730" y="100" width="104" height="22" rx="6" class="d-casa"/>
+<text x="782.0" y="115" text-anchor="middle" class="t t-xs t-mono">192.168.1.11</text>
+<line x1="836" y1="111" x2="878" y2="115" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="730" y="130" width="104" height="22" rx="6" class="d-casa"/>
+<text x="782.0" y="145" text-anchor="middle" class="t t-xs t-mono">192.168.1.12</text>
+<line x1="836" y1="141" x2="878" y2="115" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<rect x="730" y="160" width="104" height="22" rx="6" class="d-casa"/>
+<text x="782.0" y="175" text-anchor="middle" class="t t-xs t-mono">192.168.1.13</text>
+<line x1="836" y1="171" x2="878" y2="115" class="ln s-red" style="stroke-width:1.6" marker-end="url(#fl-red)"/>
+<g class="t t-xs t-b t-m"><text x="180" y="226">ADENTRO</text><text x="314" y="226">AFUERA</text></g>
+<line x1="180" y1="233" x2="432" y2="233" class="ln"/>
+<text x="180" y="252" class="t t-xs t-mono">192.168.1.10</text><text x="314" y="252" class="t t-xs t-mono">203.0.113.10</text>
+<text x="180" y="272" class="t t-xs t-mono">192.168.1.11</text><text x="314" y="272" class="t t-xs t-mono">203.0.113.11</text>
+<text x="180" y="292" class="t t-xs t-mono">192.168.1.12</text><text x="314" y="292" class="t t-xs t-mono">203.0.113.12</text>
+<text x="180" y="312" class="t t-xs t-mono">192.168.1.13</text><text x="314" y="312" class="t t-xs t-mono">203.0.113.13</text>
+<text x="180" y="342" class="t t-xs t-m">fija: está aunque nadie hable</text>
+<g class="t t-xs t-b t-m"><text x="455" y="226">ADENTRO</text><text x="589" y="226">AFUERA</text></g>
+<line x1="455" y1="233" x2="707" y2="233" class="ln"/>
+<text x="455" y="252" class="t t-xs t-mono">192.168.1.10</text><text x="589" y="252" class="t t-xs t-mono">203.0.113.10</text>
+<text x="455" y="272" class="t t-xs t-mono">192.168.1.11</text><text x="589" y="272" class="t t-xs t-mono">203.0.113.11</text>
+<text x="455" y="292" class="t t-xs t-mono">192.168.1.12</text><text x="589" y="292" class="t t-xs t-mono k-apl t-b">— espera —</text>
+<text x="455" y="342" class="t t-xs t-m">la fila se borra al terminar</text>
+<g class="t t-xs t-b t-m"><text x="730" y="226">ADENTRO</text><text x="864" y="226">AFUERA</text></g>
+<line x1="730" y1="233" x2="982" y2="233" class="ln"/>
+<text x="730" y="252" class="t t-xs t-mono">192.168.1.10:51200</text><text x="864" y="252" class="t t-xs t-mono">203.0.113.25:40001</text>
+<text x="730" y="272" class="t t-xs t-mono">192.168.1.11:51200</text><text x="864" y="272" class="t t-xs t-mono">203.0.113.25:40002</text>
+<text x="730" y="292" class="t t-xs t-mono">192.168.1.12:49152</text><text x="864" y="292" class="t t-xs t-mono">203.0.113.25:40003</text>
+<text x="730" y="312" class="t t-xs t-mono">192.168.1.13:50110</text><text x="864" y="312" class="t t-xs t-mono">203.0.113.25:40004</text>
+<text x="730" y="342" class="t t-xs t-m">una fila por conversación</text>
+<line x1="20" y1="362" x2="985" y2="362" class="ln"/>
+<text x="20" y="388" class="t t-s t-b">Públicas que usa</text>
+<text x="180" y="388" class="t t-s">una por equipo</text>
+<text x="455" y="388" class="t t-s">un grupo, más chico</text>
+<text x="730" y="388" class="t t-s t-b">una para todos</text>
+<line x1="20" y1="402" x2="985" y2="402" class="ln" style="stroke-width:.6;opacity:.5"/>
+<text x="20" y="424" class="t t-s t-b">¿Cambia el puerto?</text>
+<text x="180" y="424" class="t t-s">no</text>
+<text x="455" y="424" class="t t-s">no</text>
+<text x="730" y="424" class="t t-s t-b">sí: así los distingue</text>
+<line x1="20" y1="438" x2="985" y2="438" class="ln" style="stroke-width:.6;opacity:.5"/>
+<text x="20" y="460" class="t t-s t-b">¿Ahorra direcciones?</text>
+<text x="180" y="460" class="t t-s">no</text>
+<text x="455" y="460" class="t t-s">algo</text>
+<text x="730" y="460" class="t t-s t-b">mucho</text>
+<line x1="20" y1="474" x2="985" y2="474" class="ln" style="stroke-width:.6;opacity:.5"/>
+<text x="20" y="496" class="t t-s t-b">¿Se entra desde afuera?</text>
+<text x="180" y="496" class="t t-s">sí, a todos los puertos</text>
+<text x="455" y="496" class="t t-s">no</text>
+<text x="730" y="496" class="t t-s t-b">solo con reenvío de puertos</text>
+<line x1="20" y1="510" x2="985" y2="510" class="ln" style="stroke-width:.6;opacity:.5"/>
+<text x="20" y="532" class="t t-s t-b">Uso típico</text>
+<text x="180" y="532" class="t t-s">publicar un servidor</text>
+<text x="455" y="532" class="t t-s">redes de empresa antiguas</text>
+<text x="730" y="532" class="t t-s t-b">la casa y el CGNAT</text>
+</svg></div><figcaption><b>NAT estático, dinámico y PAT, lado a lado.</b> Cada columna muestra los mismos cuatro equipos de adentro (a la izquierda) y las direcciones públicas que usa el router (a la derecha). El estático usa una pública por equipo, fija; el dinámico presta un grupo más chico y el que llega cuando se agotó espera; el PAT saca a todos por una sola dirección y los distingue por el puerto. Debajo, cómo queda la tabla de cada uno y sus diferencias: cuántas públicas usa, si cambia el puerto y si se puede entrar desde afuera.</figcaption></figure></section>
+<section><h2>Abrir la puerta desde afuera: reenvío de puertos, DMZ y UPnP</h2><div class="prose"><p>El PAT deja salir y descarta lo que nadie pidió. Para ver la cámara desde el celular, o para que alguien juegue en línea alojando una partida, hay que hacer una excepción en el router. Hay tres maneras, de la más controlada a la más abierta.</p><ul><li><b>Reenvío de puertos</b> (<i>port forwarding</i>). Una regla fija que escribe una persona: «lo que llegue al puerto 8080 de la dirección pública, mándaselo a la cámara, <code>192.168.1.20</code>, al puerto 80». Es un NAT estático de un solo puerto. El riesgo es que ese puerto queda visible para todo Internet: hay programas automáticos que recorren Internet entera probando puertos abiertos y contraseñas de fábrica, y encuentran una cámara nueva en cuestión de horas. Abrir solo lo justo, cambiar la contraseña y actualizar el equipo es obligatorio.</li><li><b>DMZ del router</b>. Muchos routers domésticos tienen una opción llamada DMZ (zona desmilitarizada) que manda <b>todo</b> lo que llega sin dueño a un solo equipo de la casa, en todos los puertos: es como un NAT estático completo. Se usa para consolas de juego que necesitan muchos puertos, pero deja ese equipo tan expuesto como si estuviera conectado directo a Internet. El nombre viene de las redes de empresa, donde una DMZ es una red aparte protegida por firewalls (capítulo 12); la del router de casa no separa nada.</li><li><b>UPnP</b> (conexión universal automática, <i>Universal Plug and Play</i>). Permite que un programa o un equipo de la casa (una consola, una aplicación de llamadas, una cámara) le pida al router que abra un puerto por su cuenta, sin que nadie entre a la configuración. Es cómodo, pero cualquier programa de la casa puede abrir puertos sin preguntar, incluido un programa malicioso. Por eso muchas redes lo desactivan.</li></ul><p>Las tres son reglas <b>del router de la casa</b>, y por eso <b>ninguna funciona detrás de CGNAT</b>: la conexión que viene de Internet muere antes, en el CGNAT del operador, que no tiene ninguna de esas reglas y no sabe a qué casa mandarla. De ahí salen el «NAT estricto» que muestran las consolas y el «no puedo ver mis cámaras» de la sección siguiente.</p><p>Un último detalle que confunde en las pruebas: si desde adentro de la casa intentas entrar a tu propia dirección pública para probar el reenvío, algunos routers no saben «dar la vuelta» y la conexión falla, aunque desde afuera funcione; la función que lo permite se llama <b>NAT loopback</b> o <i>hairpinning</i> (horquilla).</p></div><div class="lab" id="05-lab-7"><div class="lab-title"><span class="tag">Laboratorio</span><h3>El router de la casa traduciendo conexiones</h3></div><p class="hint">Elige el tipo de NAT y abre conexiones desde distintos equipos de la casa: mira cómo se llena la tabla, si cambia el puerto y qué pasa cuando se agota el grupo del NAT dinámico. Después, con PAT, intenta entrar a la cámara desde Internet sin excepción, con reenvío de puerto, con DMZ y con UPnP, y repite con el router detrás de CGNAT.</p><style>
 .c05-nat{display:grid;gap:14px;min-width:0}
 .c05-nat .chain .box.on{border-color:var(--accent);background:var(--accent-soft)}
 .c05-nat .chain .box.off{opacity:.35}
-.c05-nat .opciones label.chk{display:flex;gap:8px;align-items:center;align-self:end;color:var(--ink);font:600 .86rem var(--f-display)}
-.c05-nat .chk input{width:18px;height:18px;accent-color:var(--accent)}
+.c05-nat select:disabled{opacity:.5}
 .c05-nat h4{margin:0;font:700 .8rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .c05-nat td,.c05-nat th{font-family:var(--f-mono);font-size:.8rem;padding:5px 8px;white-space:nowrap}
 .c05-nat th{font-family:var(--f-display)}
 .c05-nat tr.nuevo td{background:var(--mark)}
 .c05-nat .vacio{color:var(--muted);font-style:italic;font-size:.88rem}
+.c05-nat .nota{color:var(--muted);font-size:.85rem;margin:4px 0 0}
 .c05-nat ol{margin:0;padding-left:1.3em;display:grid;gap:4px;font-size:.94rem}
 </style>
 <div class="c05-nat">
   <div class="opciones">
-    <label for="c05-modo">El router de la casa sale a Internet con
+    <label for="c05-tipo">Tipo de NAT del router
+      <select id="c05-tipo">
+        <option value="pat" selected>PAT (todos por una IP)</option>
+        <option value="din">Dinámico (grupo de 2 IP)</option>
+        <option value="est">Estático (una IP por equipo)</option>
+      </select></label>
+    <label for="c05-modo">El router sale a Internet con
       <select id="c05-modo">
         <option value="pub" selected>Su propia IP pública</option>
         <option value="cg">Una IP 100.64, detrás de CGNAT</option>
       </select></label>
-    <label class="chk" for="c05-pf"><input type="checkbox" id="c05-pf"> Puerto 8080 abierto hacia la cámara (port forwarding)</label>
+    <label for="c05-exc">Excepción para ver la cámara
+      <select id="c05-exc">
+        <option value="no" selected>Ninguna</option>
+        <option value="pf">Reenvío del puerto 8080</option>
+        <option value="dmz">DMZ hacia la cámara</option>
+        <option value="upnp">UPnP (la cámara lo abre)</option>
+      </select></label>
   </div>
   <div class="chain" id="c05-cad" aria-hidden="true"></div>
   <div class="btns" role="group" aria-label="Conexiones desde la casa">
@@ -722,10 +848,10 @@
     <button type="button" id="c05-borrar">Vaciar las tablas</button>
   </div>
   <div aria-live="polite" id="c05-log" class="readout"></div>
-  <div><h4>Tabla NAT del router de la casa</h4><div class="tbl" id="c05-t1"></div></div>
+  <div><h4>Tabla NAT del router de la casa</h4><div class="tbl" id="c05-t1"></div><p class="nota" id="c05-nota"></p></div>
   <div id="c05-t2w"><h4>Tabla del CGNAT del operador</h4><div class="tbl" id="c05-t2"></div></div>
 </div></div></section>
-<section><h2>CGNAT: cuando el operador también comparte direcciones</h2><div class="prose"><p>El NAT de la casa resolvió el problema de las casas, pero no el de los operadores: cada router todavía necesita <b>una</b> dirección pública, y un operador con cientos de miles de clientes no tiene tantas. La solución fue repetir el truco un piso más arriba. Con <b>CGNAT</b> (NAT de grado operador), el router de la casa recibe una dirección que tampoco es pública, del rango <code>100.64.0.0/10</code>, reservado justamente para esto. Un equipo grande en la red del operador hace una segunda traducción y saca a decenas de clientes por una misma dirección pública, cada uno con su rango de puertos.</p><p>Para navegar, ver video o usar redes sociales, el cliente no nota diferencia. Pero hay servicios que sí: todo lo que necesita que <b>alguien de afuera inicie la conexión</b> hacia la casa. El <i>port forwarding</i> del router de la casa ya no alcanza, porque el paquete muere antes, en el CGNAT del operador, que no sabe a qué cliente mandarlo.</p></div><figure class="fig fig-arquitectura" id="05-diagrama-14"><div class="lienzo"><svg viewBox="0 0 940 340" style="min-width:740px" role="img" aria-label="NAT doble con CGNAT: el celular con dirección privada 192.168.1.10 sale por el router de la casa, que traduce a 100.64.12.7; el CGNAT del operador traduce otra vez a la dirección pública 203.0.113.25, compartida con casas vecinas. Una conexión que llega desde Internet para ver la cámara se descarta en el CGNAT">
+<section><h2>CGNAT: cuando el operador también comparte direcciones</h2><div class="prose"><p>El NAT de la casa resolvió el problema de las casas, pero no el de los operadores: cada router todavía necesita <b>una</b> dirección pública, y un operador con cientos de miles de clientes no tiene tantas. La solución fue repetir el truco un piso más arriba. Con <b>CGNAT</b> (NAT de grado operador), el router de la casa recibe una dirección que tampoco es pública, del rango <code>100.64.0.0/10</code>, reservado justamente para esto. Un equipo grande en la red del operador hace una segunda traducción y saca a decenas de clientes por una misma dirección pública, cada uno con su rango de puertos.</p><p>Para navegar, ver video o usar redes sociales, el cliente no nota diferencia. Pero hay servicios que sí: todo lo que necesita que <b>alguien de afuera inicie la conexión</b> hacia la casa. El reenvío de puertos, la DMZ y el UPnP del router de la casa ya no alcanzan, porque el paquete muere antes, en el CGNAT del operador, que no sabe a qué cliente mandarlo.</p></div><figure class="fig fig-arquitectura" id="05-diagrama-14"><div class="lienzo"><svg viewBox="0 0 940 340" style="min-width:740px" role="img" aria-label="NAT doble con CGNAT: el celular con dirección privada 192.168.1.10 sale por el router de la casa, que traduce a 100.64.12.7; el CGNAT del operador traduce otra vez a la dirección pública 203.0.113.25, compartida con casas vecinas. Una conexión que llega desde Internet para ver la cámara se descarta en el CGNAT">
   <defs>
     <symbol id="i05-camara" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="9" width="18" height="13" rx="2"/><path d="M22 13l6-3v12l-6-3z"/><circle cx="12" cy="15.5" r="3.2"/><path d="M13 22v5M8 27h10"/></g></symbol>
   </defs>
@@ -788,7 +914,7 @@
   <path d="M754 262 C 690 262, 640 228, 576 222" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
   <g class="s-apl" style="stroke-width:3"><line x1="594" y1="234" x2="606" y2="246" class="ln s-apl" style="stroke-width:3"/><line x1="606" y1="234" x2="594" y2="246" class="ln s-apl" style="stroke-width:3"/></g>
   <text x="600" y="260" text-anchor="middle" class="t t-xs t-b k-apl">se descarta</text>
-</svg></div><figcaption><b>NAT doble con CGNAT.</b> Adentro de la casa, direcciones privadas <code>192.168.1.x</code>. El router de la casa traduce a una dirección <code>100.64.x.x</code>, que solo existe dentro de la red del operador. El CGNAT del operador traduce otra vez a una dirección pública compartida con otros clientes. La flecha punteada es una conexión que llega desde Internet: el CGNAT no sabe a qué casa mandarla y la descarta.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región que crece rápido no consigue direcciones IPv4 públicas al ritmo de sus ventas, así que pone a la mayoría de sus clientes residenciales detrás de CGNAT, mientras despliega IPv6. Navegar, ver series y usar redes sociales funciona igual. Los reclamos aparecen en tres grupos: quien quiere ver sus cámaras o su DVR desde el celular, los jugadores en línea que ven un «NAT estricto» en la consola, y quien necesita entrar de forma remota a una computadora de la casa. A ellos el operador les ofrece una IP pública (dinámica o fija) como servicio adicional. Además, como muchos clientes comparten una dirección, el operador guarda registros de qué cliente usó qué puerto y a qué hora, para poder responder a pedidos legales.</p></div></section>
+</svg></div><figcaption><b>NAT doble con CGNAT.</b> Adentro de la casa, direcciones privadas <code>192.168.1.x</code>. El router de la casa traduce a una dirección <code>100.64.x.x</code>, que solo existe dentro de la red del operador. El CGNAT del operador traduce otra vez a una dirección pública compartida con otros clientes. La flecha punteada es una conexión que llega desde Internet: el CGNAT no sabe a qué casa mandarla y la descarta.</figcaption></figure><div class="prose"><h3>Puertos por cliente y el registro de quién usó qué</h3><p>El CGNAT es PAT a escala de operador. Los unos 64.000 puertos de cada dirección pública se reparten entre los clientes que la comparten, casi siempre en <b>bloques fijos</b>: si a cada cliente le toca un bloque de 2.000 puertos, una dirección alcanza para unos 30 clientes (son números de ejemplo; cada operador elige el tamaño). Si el bloque es muy chico, un cliente con muchos equipos, o con un programa que abre miles de conexiones a la vez, se queda sin puertos y ve páginas que cargan a medias. Si es muy grande, se gastan direcciones.</p><p>Compartir tiene además una consecuencia legal. Si una autoridad investiga un delito y pregunta «¿quién usaba la <code>203.0.113.25</code>?», la dirección sola ya no alcanza: la usaban treinta clientes al mismo tiempo. Para poder identificar al cliente correcto, el operador <b>registra qué cliente tuvo qué dirección pública y qué bloque de puertos, desde cuándo y hasta cuándo</b>. Y quien pide el dato tiene que dar no solo la dirección, sino también el <b>puerto de origen</b> y la <b>hora exacta</b>, con su zona horaria.</p><p>Por eso los relojes de los equipos del operador tienen que estar sincronizados (NTP, capítulo 8), y por eso conviene repartir los puertos en bloques: se anota una línea cuando el cliente recibe su bloque, en lugar de una por cada conexión. Cuánto tiempo se guardan esos registros y quién puede pedirlos lo define la regulación de cada país (capítulo 47).</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región que crece rápido no consigue direcciones IPv4 públicas al ritmo de sus ventas, así que pone a la mayoría de sus clientes residenciales detrás de CGNAT, mientras despliega IPv6. Navegar, ver series y usar redes sociales funciona igual. Los reclamos aparecen en tres grupos: quien quiere ver sus cámaras o su DVR desde el celular, los jugadores en línea que ven un «NAT estricto» en la consola, y quien necesita entrar de forma remota a una computadora de la casa. A ellos el operador les ofrece una IP pública (dinámica o fija) como servicio adicional. Además, como muchos clientes comparten una dirección, el operador guarda registros de qué cliente usó qué puerto y a qué hora, para poder responder a pedidos legales.</p></div></section>
 <section><h2>IPv6: direcciones para todo (y cómo reemplaza a ARP)</h2><div class="prose"><p>La solución de fondo al agotamiento es <b>IPv6</b>: direcciones de 128 bits en lugar de 32. Son tantas (un 3 seguido de 38 ceros) que alcanzan para darle millones a cada persona del planeta sin necesidad de NAT. Se escriben en hexadecimal (cifras del 0 al 9 y letras de la a a la f) en ocho grupos de cuatro, separados por dos puntos, como <code>2001:0db8:0000:0000:​0000:0000:0000:0010</code>.</p><p>Para no escribir tanto hay dos reglas: los ceros a la izquierda de cada grupo se pueden omitir, y <b>una sola vez</b> una tira de grupos en cero se reemplaza por <code>::</code>. La dirección de arriba queda <code>2001:db8::10</code>. Al igual que en IPv4, una parte es red y otra es equipo, y la red de una casa suele ser un /64: 64 bits de red y 64 de equipo. El operador le delega a cada cliente un bloque entero, por ejemplo un /56, que alcanza para 256 redes /64 dentro de la casa.</p></div><figure class="fig fig-comparacion" id="05-diagrama-10"><div class="lienzo"><svg viewBox="0 0 840 420" style="min-width:680px" role="img" aria-label="Comparación de IPv4 e IPv6: IPv4 tiene 32 bits escritos como cuatro números decimales, unos 4.300 millones de direcciones, usa NAT y ARP; IPv6 tiene 128 bits escritos como ocho grupos hexadecimales, una cantidad prácticamente ilimitada, no necesita NAT y usa descubrimiento de vecinos">
   
   <text x="20" y="34" class="t t-b" style="font-size:16px">IPv4</text>
@@ -853,7 +979,7 @@
     <path d="M676 290v104" class="ln s-red" style="stroke-width:3"/><text x="686" y="334" class="k-red">VECINO</text><text x="686" y="348" class="t-m">reemplaza</text><text x="686" y="360" class="t-m">a ARP</text>
   </g>
   <text x="20" y="250" class="t t-xs t-m" transform="rotate(-90 20 250)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
-</svg></div><figcaption><b>El flujo de descubrimiento de vecinos en IPv6.</b> El celular pregunta si hay un router (①, <i>Router Solicitation</i>). El router responde con el prefijo de la red (②, <i>Router Advertisement</i>) y el celular arma su dirección con él (③). Para hablar con el router, pregunta su MAC (④, <i>Neighbor Solicitation</i>) y recibe la respuesta (⑤, <i>Neighbor Advertisement</i>): los mismos pasos de ARP, pero sin broadcast.</figcaption></figure><div class="prose"><p>Hoy conviven las dos versiones: casi todos los operadores dan IPv4 (muchas veces con CGNAT) y además IPv6, y los grandes sitios responden por los dos. Lo que va por IPv6 no pasa por el CGNAT, y eso alivia al operador.</p></div><div class="ml"><b>En la práctica</b><p>Cuando un cliente dice «no puedo ver mis cámaras desde afuera», la primera pregunta es qué dirección tiene su router hacia Internet. Si es una <code>100.64.x.x</code> u otra privada, está detrás de CGNAT y ningún ajuste en su casa lo va a resolver: necesita una IP pública, que es un producto que el operador vende, o usar la aplicación del fabricante, que conecta las cámaras a un servidor en la nube desde adentro. Por eso la IP pública, y más aún la fija, se cobra: es un recurso escaso, se gestiona una por una y le da al cliente algo que la mayoría no tiene.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué no existe la dirección <code>192.168.1.256</code>?</summary><p>Porque cada número es un octeto de 8 bits, y con 8 bits el máximo es 255 (todos en uno).</p></details><details><summary>¿Cuántos equipos caben en un /24 y por qué no son 256?</summary><p>254. De las 256 direcciones, la primera es la dirección de red y la última el broadcast; ninguna se le da a un equipo.</p></details><details><summary>En <code>203.0.113.77/26</code>, ¿cuál es la dirección de red y cuál el broadcast?</summary><p>El bloque es de 64 (2⁶). El 77 cae entre 64 y 127: la red es <code>203.0.113.64</code> y el broadcast <code>203.0.113.127</code>.</p></details><details><summary>Tu computadora (<code>192.168.1.20/24</code>) quiere hablar con <code>192.168.2.5</code>. ¿Le habla directo?</summary><p>No. La parte de red es distinta (<code>192.168.1</code> frente a <code>192.168.2</code>), así que se lo entrega a la puerta de enlace.</p></details><details><summary>Una computadora muestra la dirección <code>169.254.33.7</code>. ¿Qué pasó?</summary><p>Nadie le dio una dirección (no respondió el DHCP del router), así que se inventó una de enlace local. No sale a Internet.</p></details><details><summary>¿Por qué un cliente detrás de CGNAT no puede ver su cámara desde afuera aunque abra un puerto en su router?</summary><p>Porque la conexión que viene de Internet muere en el CGNAT del operador, que comparte la dirección pública entre muchos clientes y no sabe a cuál mandársela.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Direcci%C3%B3n_IP" target="_blank" rel="noopener">Dirección IP (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Subred" target="_blank" rel="noopener">Subred y máscara de red (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Traducci%C3%B3n_de_direcciones_de_red" target="_blank" rel="noopener">Traducción de direcciones de red, NAT (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.lacnic.net/1001/1/lacnic/ipv6" target="_blank" rel="noopener">IPv6 para todos (LACNIC) <small>lectura</small></a></div></section>
+</svg></div><figcaption><b>El flujo de descubrimiento de vecinos en IPv6.</b> El celular pregunta si hay un router (①, <i>Router Solicitation</i>). El router responde con el prefijo de la red (②, <i>Router Advertisement</i>) y el celular arma su dirección con él (③). Para hablar con el router, pregunta su MAC (④, <i>Neighbor Solicitation</i>) y recibe la respuesta (⑤, <i>Neighbor Advertisement</i>): los mismos pasos de ARP, pero sin broadcast.</figcaption></figure><div class="prose"><p>Hoy conviven las dos versiones: casi todos los operadores dan IPv4 (muchas veces con CGNAT) y además IPv6, y los grandes sitios responden por los dos. Lo que va por IPv6 no pasa por el CGNAT, y eso alivia al operador.</p></div><div class="ml"><b>En la práctica</b><p>Cuando un cliente dice «no puedo ver mis cámaras desde afuera», la primera pregunta es qué dirección tiene su router hacia Internet. Si es una <code>100.64.x.x</code> u otra privada, está detrás de CGNAT y ningún ajuste en su casa lo va a resolver: necesita una IP pública, que es un producto que el operador vende, o usar la aplicación del fabricante, que conecta las cámaras a un servidor en la nube desde adentro. Por eso la IP pública, y más aún la fija, se cobra: es un recurso escaso, se gestiona una por una y le da al cliente algo que la mayoría no tiene.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué no existe la dirección <code>192.168.1.256</code>?</summary><p>Porque cada número es un octeto de 8 bits, y con 8 bits el máximo es 255 (todos en uno).</p></details><details><summary>¿Cuántos equipos caben en un /24 y por qué no son 256?</summary><p>254. De las 256 direcciones, la primera es la dirección de red y la última el broadcast; ninguna se le da a un equipo.</p></details><details><summary>En <code>203.0.113.77/26</code>, ¿cuál es la dirección de red y cuál el broadcast?</summary><p>El bloque es de 64 (2⁶). El 77 cae entre 64 y 127: la red es <code>203.0.113.64</code> y el broadcast <code>203.0.113.127</code>.</p></details><details><summary>Tu computadora (<code>192.168.1.20/24</code>) quiere hablar con <code>192.168.2.5</code>. ¿Le habla directo?</summary><p>No. La parte de red es distinta (<code>192.168.1</code> frente a <code>192.168.2</code>), así que se lo entrega a la puerta de enlace.</p></details><details><summary>Una computadora muestra la dirección <code>169.254.33.7</code>. ¿Qué pasó?</summary><p>Nadie le dio una dirección (no respondió el DHCP del router), así que se inventó una de enlace local. No sale a Internet.</p></details><details><summary>¿Por qué un cliente detrás de CGNAT no puede ver su cámara desde afuera aunque abra un puerto en su router?</summary><p>Porque la conexión que viene de Internet muere en el CGNAT del operador, que comparte la dirección pública entre muchos clientes y no sabe a cuál mandársela.</p></details><details><summary>¿Qué tipo de NAT hace el router de una casa y en qué se diferencia del NAT estático?</summary><p>Hace PAT (o NAPT): saca a todos los equipos por una sola dirección pública y los distingue por el puerto. El NAT estático, en cambio, ata cada dirección privada a una pública propia, uno a uno y de forma fija.</p></details><details><summary>Una autoridad pide identificar al cliente que usó <code>203.0.113.25</code>, una dirección del CGNAT. ¿Qué más necesita el operador para responder?</summary><p>El puerto de origen y la hora exacta, porque esa dirección la comparten muchos clientes. Con esos datos busca en su registro qué cliente tenía ese bloque de puertos en ese momento.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Direcci%C3%B3n_IP" target="_blank" rel="noopener">Dirección IP (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Subred" target="_blank" rel="noopener">Subred y máscara de red (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Traducci%C3%B3n_de_direcciones_de_red" target="_blank" rel="noopener">Traducción de direcciones de red, NAT (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.lacnic.net/1001/1/lacnic/ipv6" target="_blank" rel="noopener">IPv6 para todos (LACNIC) <small>lectura</small></a></div></section>
 <label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
 <nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
 </main>
@@ -969,52 +1095,94 @@
             {n:'laptop',a:'La',b:'a la',ip:'192.168.1.11',dst:'198.51.100.25:993',que:'el correo'},
             {n:'televisor',a:'El',b:'al',ip:'192.168.1.12',dst:'198.51.100.80:443',que:'la serie'}];
   const PUB='203.0.113.25', CG='100.64.12.7';
-  let t1=[],t2=[],p1=40001,p2=61233,ult=-1;
-  const modo=()=>q('#c05-modo').value;
+  const FIJA=['203.0.113.10','203.0.113.11','203.0.113.12','203.0.113.13'];
+  const GRUPO=['203.0.113.10','203.0.113.11'];
+  let t1=[],t2=[],p1=40001,p2=61233,ult=-1,prest={};
+  const tipo=()=>q('#c05-tipo').value;
+  const modo=()=>tipo()==='pat'?q('#c05-modo').value:'pub';
   function cadena(){
-    const cg=modo()==='cg';
+    const cg=modo()==='cg', t=tipo();
+    const sale=t==='pat'?(cg?CG:PUB):t==='din'?'un grupo de 2 públicas':'4 públicas fijas';
     q('#c05-cad').innerHTML='<div class="box">Casa<small>192.168.1.x</small></div><div class="arr">→<b>NAT 1</b></div>'+
-      '<div class="box">Router<small>sale como '+(cg?CG:PUB)+'</small></div><div class="arr">→</div>'+
+      '<div class="box">Router<small>sale como '+sale+'</small></div><div class="arr">→</div>'+
       '<div class="box '+(cg?'on':'off')+'">CGNAT<small>'+(cg?'NAT 2 · '+PUB:'no interviene')+'</small></div><div class="arr">→</div>'+
-      '<div class="box">Internet<small>ve '+PUB+'</small></div>';
+      '<div class="box">Internet<small>'+(t==='pat'?'ve '+PUB:'ve la pública de cada equipo')+'</small></div>';
     q('#c05-t2w').style.display=cg?'':'none';
+    q('#c05-modo').disabled=t!=='pat';
+    q('#c05-exc').disabled=t==='est';
   }
   function tabla(filas,cab){
     if(!filas.length)return '<p class="vacio">Vacía: nadie de adentro abrió una conexión.</p>';
     return '<table><thead><tr>'+cab.map(c=>'<th>'+c+'</th>').join('')+'</tr></thead><tbody>'+
-      filas.map((f,i)=>'<tr'+(i===filas.length-1&&ult>=0?' class="nuevo"':'')+'>'+f.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+      filas.map((f,i)=>'<tr'+((tipo()==='est'?i===ult:i===filas.length-1&&ult>=0)?' class="nuevo"':'')+'>'+f.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
   }
   function tablas(){
     q('#c05-t1').innerHTML=tabla(t1,['Adentro','Afuera','Destino']);
     q('#c05-t2').innerHTML=tabla(t2,['Del router','Hacia Internet','Destino']);
+    const t=tipo();
+    q('#c05-nota').textContent=t==='pat'?'PAT: cambia la dirección y el puerto. Todas las filas comparten la misma IP de afuera y se distinguen por el puerto.':
+      t==='din'?'Dinámico: cambia la dirección pero no el puerto. Cada equipo se lleva una IP entera del grupo mientras tenga conexiones.':
+      'Estático: las filas son fijas, están aunque nadie hable. Cambia la dirección pero no el puerto.';
+  }
+  function iniciar(){
+    t1=[];t2=[];p1=40001;p2=61233;ult=-1;prest={};
+    if(tipo()==='est'){t1=EQ.map((e,i)=>[e.ip,FIJA[i],'cualquiera (fija)']).concat([['192.168.1.20 (cámara)',FIJA[3],'cualquiera (fija)']]);}
   }
   function abrir(d){
-    const e=EQ[d], cg=modo()==='cg', priv=e.ip+':'+(51000+Math.floor(Math.random()*9000));
-    const fuera1=(cg?CG:PUB)+':'+(p1++);
-    t1.push([priv,fuera1,e.dst]); ult=d;
-    let pasos=['<li>'+e.a+' '+e.n+' manda su pedido de <b>'+priv+'</b> a '+e.dst+'.</li>',
-      '<li>El router cambia el origen por <b>'+fuera1+'</b> y lo anota en su tabla.</li>'];
-    let visto=fuera1;
-    if(cg){const fuera2=PUB+':'+(p2++);t2.push([fuera1,fuera2,e.dst]);visto=fuera2;
-      pasos.push('<li>El CGNAT del operador lo cambia otra vez, a <b>'+fuera2+'</b>, y lo anota en la suya.</li>');}
+    const e=EQ[d], t=tipo(), cg=modo()==='cg', pto=51000+Math.floor(Math.random()*9000), priv=e.ip+':'+pto;
+    let pasos=['<li>'+e.a+' '+e.n+' manda su pedido de <b>'+priv+'</b> a '+e.dst+'.</li>'], visto;
+    if(t==='est'){
+      ult=d; visto=FIJA[d]+':'+pto;
+      pasos.push('<li>El router aplica la regla fija de '+e.ip+' y cambia solo la dirección: <b>'+visto+'</b>. El puerto no cambia.</li>');
+    }else if(t==='din'){
+      let pub=prest[e.ip];
+      if(!pub){const libre=GRUPO.find(g=>!Object.values(prest).includes(g));
+        if(!libre){ult=-1;tablas();
+          q('#c05-log').innerHTML='<div><span class="warn">'+e.a+' '+e.n+' no puede salir.</span> El grupo tiene solo 2 direcciones públicas y las dos están prestadas a otros equipos. Tiene que esperar a que se libere una (prueba «Vaciar las tablas»). Con PAT esto no pasa: todos comparten una sola IP.</div>';return;}
+        prest[e.ip]=pub=libre;
+        pasos.push('<li>El router le presta a '+e.ip+' una dirección libre del grupo: <b>'+pub+'</b>.</li>');
+      }else pasos.push('<li>'+e.ip+' ya tenía prestada <b>'+pub+'</b>: la reutiliza.</li>');
+      visto=pub+':'+pto; t1.push([priv,visto,e.dst]); ult=d;
+      pasos.push('<li>Cambia solo la dirección: <b>'+visto+'</b>. El puerto queda igual.</li>');
+    }else{
+      const fuera1=(cg?CG:PUB)+':'+(p1++);
+      t1.push([priv,fuera1,e.dst]); ult=d; visto=fuera1;
+      pasos.push('<li>El router cambia el origen por <b>'+fuera1+'</b> (dirección <i>y</i> puerto) y lo anota en su tabla.</li>');
+      if(cg){const fuera2=PUB+':'+(p2++);t2.push([fuera1,fuera2,e.dst]);visto=fuera2;
+        pasos.push('<li>El CGNAT del operador lo cambia otra vez, a <b>'+fuera2+'</b>, dentro del bloque de puertos de esta casa, y lo anota en la suya.</li>');}
+    }
     pasos.push('<li>El servidor responde a '+visto+'. '+(cg?'El CGNAT y después el router deshacen':'El router deshace')+' el cambio y '+e.que+' llega '+e.b+' '+e.n+'.</li>');
     q('#c05-log').innerHTML='<ol>'+pasos.join('')+'</ol>';
     tablas();
   }
   function camara(){
-    const cg=modo()==='cg', pf=q('#c05-pf').checked; ult=-1; tablas();
+    const t=tipo(), cg=modo()==='cg', x=q('#c05-exc').value; ult=-1; tablas();
     let m;
-    if(cg) m='<span class="warn">No llega.</span> Pides '+PUB+':8080, pero esa dirección es del CGNAT del operador y la comparten decenas de casas. El CGNAT no tiene ninguna línea para ese puerto y descarta la conexión antes de que llegue a tu casa.'+(pf?' La regla de tu router nunca llega a usarse.':'')+' Solución: una IP pública (un producto del operador), IPv6 o la aplicación en la nube del fabricante.';
-    else if(pf) m='<span class="ok">¡La ves!</span> Pides '+PUB+':8080. El router tiene una regla fija: lo que llegue al puerto 8080 va a la cámara, 192.168.1.20:80.';
-    else m='<span class="warn">No llega.</span> Pides '+PUB+':8080. El router busca ese puerto en su tabla y no lo encuentra: nadie de adentro empezó esa conversación. La descarta. Prueba abrir el puerto 8080.';
+    if(t==='est') m='<span class="ok">¡La ves!</span> Pides '+FIJA[3]+':80. Con NAT estático la cámara tiene su propia IP pública fija, en los dos sentidos: todo lo que llegue a esa dirección, en <b>cualquier</b> puerto, entra a la cámara. Por eso un NAT estático siempre va con un firewall delante.';
+    else if(t==='din') m='<span class="warn">No llega.</span> Con NAT dinámico la cámara solo tiene una IP pública prestada mientras ella misma tiene conexiones abiertas, y nunca sabes cuál le tocó. Desde afuera no hay una dirección fija a la que llamar.';
+    else if(cg) m='<span class="warn">No llega.</span> Pides '+PUB+':8080, pero esa dirección es del CGNAT del operador y la comparten decenas de casas. El CGNAT no tiene ninguna línea para ese puerto y descarta la conexión antes de que llegue a tu casa.'+(x!=='no'?' La excepción de tu router ('+({pf:'reenvío de puerto',dmz:'DMZ',upnp:'UPnP'})[x]+') nunca llega a usarse.':'')+' Solución: una IP pública (un producto del operador), IPv6 o la aplicación en la nube del fabricante.';
+    else if(x==='pf') m='<span class="ok">¡La ves!</span> Pides '+PUB+':8080. Alguien escribió en el router una regla fija: lo que llegue al puerto 8080 va a la cámara, 192.168.1.20:80. Solo ese puerto queda abierto, pero queda abierto para todo Internet: cambia la contraseña de fábrica.';
+    else if(x==='dmz') m='<span class="ok">¡La ves!</span> Pides '+PUB+':8080. La DMZ manda <b>todo</b> lo que llega sin dueño a la cámara, en cualquier puerto. Funciona, pero la cámara queda tan expuesta como si estuviera conectada directo a Internet.';
+    else if(x==='upnp') m='<span class="ok">¡La ves!</span> Pides '+PUB+':8080. La cámara le pidió al router por UPnP que le abriera ese puerto, y el router lo hizo sin preguntarle a nadie. Cómodo, pero cualquier programa de la casa puede hacer lo mismo.';
+    else m='<span class="warn">No llega.</span> Pides '+PUB+':8080. El router busca ese puerto en su tabla y no lo encuentra: nadie de adentro empezó esa conversación. La descarta. Prueba una excepción: reenvío de puerto, DMZ o UPnP.';
     q('#c05-log').innerHTML='<div>'+m+'</div>';
   }
   document.querySelectorAll('.c05-nat [data-d]').forEach(b=>b.addEventListener('click',()=>abrir(+b.dataset.d)));
   q('#c05-cam').addEventListener('click',camara);
-  q('#c05-borrar').addEventListener('click',()=>{t1=[];t2=[];p1=40001;p2=61233;ult=-1;tablas();q('#c05-log').innerHTML='<div>Tablas vacías. Abre una conexión desde la casa.</div>';});
-  q('#c05-modo').addEventListener('change',()=>{t1=[];t2=[];ult=-1;cadena();tablas();q('#c05-log').innerHTML='<div>Cambió la conexión del router: las tablas empiezan vacías.</div>';});
-  q('#c05-pf').addEventListener('change',()=>{q('#c05-log').innerHTML='<div>'+(q('#c05-pf').checked?'Regla creada en el router: puerto 8080 → 192.168.1.20:80 (la cámara).':'Regla borrada.')+'</div>';});
-  cadena();tablas();
+  q('#c05-borrar').addEventListener('click',()=>{iniciar();tablas();q('#c05-log').innerHTML='<div>'+(tipo()==='est'?'Con NAT estático las reglas fijas no se borran: siguen ahí.':'Tablas vacías'+(tipo()==='din'?' y grupo libre':'')+'. Abre una conexión desde la casa.')+'</div>';});
+  q('#c05-tipo').addEventListener('change',()=>{iniciar();cadena();tablas();
+    const t=tipo();
+    q('#c05-log').innerHTML='<div>'+(t==='pat'?'PAT: lo que hace el router de tu casa. Abre conexiones y mira el puerto de afuera.':
+      t==='din'?'NAT dinámico: el router tiene 2 IP públicas para prestar. Abre conexiones desde los tres equipos y mira qué pasa con el tercero.':
+      'NAT estático: cada equipo, y también la cámara, tiene su IP pública fija. La tabla ya está llena aunque nadie haya hablado.')+
+      (t!=='pat'?' (Con varias IP públicas por casa no hay CGNAT: esa opción solo aplica a PAT.)':'')+'</div>';});
+  q('#c05-modo').addEventListener('change',()=>{iniciar();cadena();tablas();q('#c05-log').innerHTML='<div>Cambió la conexión del router: las tablas empiezan vacías.</div>';});
+  q('#c05-exc').addEventListener('change',()=>{const x=q('#c05-exc').value;
+    q('#c05-log').innerHTML='<div>'+({no:'Sin excepciones: el router descarta todo lo que nadie de adentro pidió.',
+      pf:'Regla creada a mano en el router: puerto 8080 → 192.168.1.20:80 (la cámara).',
+      dmz:'DMZ activada: todo lo que llegue sin dueño, en cualquier puerto, va a 192.168.1.20 (la cámara).',
+      upnp:'UPnP activado: la cámara le pide al router que le abra el puerto 8080, y el router lo abre solo.'})[x]+'</div>';});
+  iniciar();cadena();tablas();
   q('#c05-log').innerHTML='<div>Abre una conexión desde un equipo de la casa para ver cómo la traduce el router.</div>';
 })();
 </script>
