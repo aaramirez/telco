@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Televisión por IP · Cómo funciona un telco</title>
+<meta name="description" content="Para mandar el mismo canal de TV a miles de casas a la vez, la red no envía una copia por cliente: envía una sola copia que los equipos de la red duplican solo hacia donde alguien lo está viendo (multicast), y cada decodificador avisa qué canal quiere con IGMP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="23-television-por-ip">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 23 DE 49</span><h1>Televisión por IP: multicast e IGMP</h1><p class="lede">Para mandar el mismo canal de TV a miles de casas a la vez, la red no envía una copia por cliente: envía una sola copia que los equipos de la red duplican solo hacia donde alguien lo está viendo (multicast), y cada decodificador avisa qué canal quiere con IGMP.</p></header>
+<section><div class="analogia"><b>Imagínalo así</b><p>Una emisora de radio frente a una llamada telefónica: la radio emite una vez y escucha quien sintoniza; IGMP es levantar la mano para decir «en mi cuadra queremos este canal».</p></div><figure class="fig fig-capas" id="23-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: un canal que sale de la cabecera y se copia en la red hasta cada decodificador">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class=""><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: un canal que sale de la cabecera y se copia en la red hasta cada decodificador</text>
+</svg></div><figcaption><b>Dónde estamos.</b> La televisión por IP se juega en las capas de red (multicast, IGMP y PIM) y de enlace (las VLAN y el <i>snooping</i> de los switches y la OLT). Recorre todo el camino del operador: de la cabecera, donde nacen los canales, por el core y la OLT, hasta la ONT y el decodificador de la casa.</figcaption></figure></section>
+<section><h2>Unicast, broadcast y multicast</h2><div class="prose"><p>Casi todo lo que vimos hasta ahora es una conversación entre dos: tu celular y un servidor. Cada paquete lleva una dirección de destino y llega a una sola máquina. Eso se llama <b>unicast</b>, y es como una llamada telefónica.</p><p>Ahora imagina la final del campeonato. Treinta mil casas quieren ver el mismo canal al mismo tiempo. Con unicast, la red tendría que mandar treinta mil copias idénticas del partido, una por casa. A 8 megabits por segundo (Mbps) cada una, son 240 gigabits por segundo saliendo del mismo lugar: más de lo que cabe en casi cualquier enlace de un operador mediano.</p><p>Hay otras dos formas de enviar. <b>Broadcast</b> es gritar a todos: el paquete llega a cada equipo de la red, lo quiera o no. Sirve dentro de una red pequeña (lo usa DHCP para encontrar al servidor), pero mandar todos los canales a todas las casas saturaría cada fibra. <b>Multicast</b> es el punto medio, como una emisora de radio: el canal se emite una sola vez, y la red hace copias solo en los puntos donde el camino se divide y solo hacia donde alguien sintonizó.</p></div><figure class="fig fig-esquema" id="23-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:700px" role="img" aria-label="Tres formas de enviar: unicast manda cuatro copias desde la fuente, una por casa que mira; broadcast manda una copia a las seis casas aunque dos no la pidieron; multicast manda una sola copia que la red duplica solo hacia las cuatro casas que miran">
+  <defs><symbol id="i23-6-casa" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></g></symbol></defs>
+  <rect x="10" y="8" width="284" height="314" rx="12" class="caja"/>
+  <text x="150" y="30" text-anchor="middle" class="t t-xs t-b k-red">UNICAST</text><text x="150" y="46" text-anchor="middle" class="t t-s t-m">una copia por casa</text>
+  <line x1="80.0" y1="220.0" x2="40.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="80.0" y1="220.0" x2="80.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="220.0" y1="220.0" x2="180.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="220.0" y1="220.0" x2="220.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="151.0" y1="164.0" x2="81.0" y2="198.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="149.0" y1="160.0" x2="79.0" y2="194.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="151.0" y1="160.0" x2="221.0" y2="194.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="149.0" y1="164.0" x2="219.0" y2="198.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="156.8" y1="95.0" x2="156.8" y2="134.0" class="ln s-red" style="stroke-width:2.4"/>
+  <line x1="152.2" y1="95.0" x2="152.2" y2="134.0" class="ln s-red" style="stroke-width:2.4"/>
+  <line x1="147.8" y1="95.0" x2="147.8" y2="134.0" class="ln s-red" style="stroke-width:2.4"/>
+  <line x1="143.2" y1="95.0" x2="143.2" y2="134.0" class="ln s-red" style="stroke-width:2.4"/>
+  <text x="166" y="117" class="t t-s t-b k-red">4 copias</text>
+  <rect x="106" y="61" width="88" height="34" rx="8" class="c-red"/><text x="150" y="83" text-anchor="middle" class="t t-s t-b">Cabecera</text>
+  <circle cx="150" cy="148" r="14" class="caja"/><use href="#i-router-core" x="140" y="138" width="20" height="20" class="ico"/>
+  <circle cx="80" cy="208" r="12" class="caja"/><use href="#i-olt" x="72" y="200" width="16" height="16" class="ico"/>
+  <circle cx="220" cy="208" r="12" class="caja"/><use href="#i-olt" x="212" y="200" width="16" height="16" class="ico"/>
+  <rect x="24" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="30" y="271" width="20" height="20" class="ico"/>
+  <rect x="64" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="70" y="271" width="20" height="20" class="ico"/>
+  <g class="apagado"><rect x="104" y="266" width="32" height="32" rx="7" class="caja"/><use href="#i23-6-casa" x="110" y="271" width="20" height="20" class="ico"/></g>
+  <rect x="164" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="170" y="271" width="20" height="20" class="ico"/>
+  <rect x="204" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="210" y="271" width="20" height="20" class="ico"/>
+  <g class="apagado"><rect x="244" y="266" width="32" height="32" rx="7" class="caja"/><use href="#i23-6-casa" x="250" y="271" width="20" height="20" class="ico"/></g>
+  <text x="150" y="314" text-anchor="middle" class="t t-xs t-m">solo lo reciben las 4 casas que miran</text>
+  <rect x="306" y="8" width="284" height="314" rx="12" class="caja"/>
+  <text x="446" y="30" text-anchor="middle" class="t t-xs t-b k-red">BROADCAST</text><text x="446" y="46" text-anchor="middle" class="t t-s t-m">una copia para todas</text>
+  <line x1="376.0" y1="220.0" x2="336.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="376.0" y1="220.0" x2="376.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="376.0" y1="220.0" x2="416.0" y2="266.0" class="ln ln-d" style="stroke-width:2"/>
+  <line x1="516.0" y1="220.0" x2="476.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="516.0" y1="220.0" x2="516.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="516.0" y1="220.0" x2="556.0" y2="266.0" class="ln ln-d" style="stroke-width:2"/>
+  <line x1="446.0" y1="162.0" x2="376.0" y2="196.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="446.0" y1="162.0" x2="516.0" y2="196.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="446.0" y1="95.0" x2="446.0" y2="134.0" class="ln s-red" style="stroke-width:2.4"/>
+  <text x="462" y="117" class="t t-s t-b k-red">1 copia</text>
+  <rect x="402" y="61" width="88" height="34" rx="8" class="c-red"/><text x="446" y="83" text-anchor="middle" class="t t-s t-b">Cabecera</text>
+  <circle cx="446" cy="148" r="14" class="caja"/><use href="#i-router-core" x="436" y="138" width="20" height="20" class="ico"/>
+  <circle cx="376" cy="208" r="12" class="caja"/><use href="#i-olt" x="368" y="200" width="16" height="16" class="ico"/>
+  <circle cx="516" cy="208" r="12" class="caja"/><use href="#i-olt" x="508" y="200" width="16" height="16" class="ico"/>
+  <rect x="320" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="326" y="271" width="20" height="20" class="ico"/>
+  <rect x="360" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="366" y="271" width="20" height="20" class="ico"/>
+  <g class="apagado"><rect x="400" y="266" width="32" height="32" rx="7" class="caja"/><use href="#i23-6-casa" x="406" y="271" width="20" height="20" class="ico"/></g>
+  <rect x="460" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="466" y="271" width="20" height="20" class="ico"/>
+  <rect x="500" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="506" y="271" width="20" height="20" class="ico"/>
+  <g class="apagado"><rect x="540" y="266" width="32" height="32" rx="7" class="caja"/><use href="#i23-6-casa" x="546" y="271" width="20" height="20" class="ico"/></g>
+  <text x="446" y="314" text-anchor="middle" class="t t-xs t-m">las casas en gris lo reciben sin pedirlo</text>
+  <rect x="602" y="8" width="284" height="314" rx="12" class="caja"/>
+  <text x="742" y="30" text-anchor="middle" class="t t-xs t-b k-red">MULTICAST</text><text x="742" y="46" text-anchor="middle" class="t t-s t-m">una copia, se duplica donde hace falta</text>
+  <line x1="672.0" y1="220.0" x2="632.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="672.0" y1="220.0" x2="672.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="812.0" y1="220.0" x2="772.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="812.0" y1="220.0" x2="812.0" y2="266.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="742.0" y1="162.0" x2="672.0" y2="196.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="742.0" y1="162.0" x2="812.0" y2="196.0" class="ln s-red" style="stroke-width:2"/>
+  <line x1="742.0" y1="95.0" x2="742.0" y2="134.0" class="ln s-red" style="stroke-width:2.4"/>
+  <text x="758" y="117" class="t t-s t-b k-red">1 copia</text>
+  <rect x="698" y="61" width="88" height="34" rx="8" class="c-red"/><text x="742" y="83" text-anchor="middle" class="t t-s t-b">Cabecera</text>
+  <circle cx="742" cy="148" r="14" class="caja"/><use href="#i-router-core" x="732" y="138" width="20" height="20" class="ico"/>
+  <circle cx="672" cy="208" r="12" class="caja"/><use href="#i-olt" x="664" y="200" width="16" height="16" class="ico"/>
+  <circle cx="812" cy="208" r="12" class="caja"/><use href="#i-olt" x="804" y="200" width="16" height="16" class="ico"/>
+  <rect x="616" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="622" y="271" width="20" height="20" class="ico"/>
+  <rect x="656" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="662" y="271" width="20" height="20" class="ico"/>
+  <g class="apagado"><rect x="696" y="266" width="32" height="32" rx="7" class="caja"/><use href="#i23-6-casa" x="702" y="271" width="20" height="20" class="ico"/></g>
+  <rect x="756" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="762" y="271" width="20" height="20" class="ico"/>
+  <rect x="796" y="266" width="32" height="32" rx="7" class="d-casa"/><use href="#i23-6-casa" x="802" y="271" width="20" height="20" class="ico"/>
+  <g class="apagado"><rect x="836" y="266" width="32" height="32" rx="7" class="caja"/><use href="#i23-6-casa" x="842" y="271" width="20" height="20" class="ico"/></g>
+  <text x="742" y="314" text-anchor="middle" class="t t-xs t-m">solo lo reciben las 4 casas que miran</text>
+</svg></div><figcaption><b>Tres formas de enviar.</b> Con unicast, la fuente manda una copia por cada casa y el enlace de salida carga con todas. Con broadcast, una copia llega a todas las casas, incluso a las que no la pidieron (en gris). Con multicast, sale una sola copia y los equipos de la red la duplican solo en las ramas donde alguien la está viendo.</figcaption></figure></section>
+<section><h2>Grupos multicast: un canal, una dirección</h2><div class="prose"><p>En multicast, el destino de un paquete no es una máquina sino un <b>grupo</b>: «todos los que están viendo este canal». Cada grupo tiene su propia dirección IP, tomada de un rango reservado para eso, el que va de <code>224.0.0.0</code> a <code>239.255.255.255</code>. Los operadores suelen usar las direcciones que empiezan con <code>239</code>, reservadas para uso privado dentro de una red.</p><p>Así, cada canal de la grilla es una dirección: el canal de noticias puede ser <code>239.1.1.10</code>, el de deportes <code>239.1.1.11</code>, y así sucesivamente. El decodificador de la casa, el equipo que se conecta al televisor, tiene esa lista guardada. Cuando cambias al canal 11, no le pide nada a ningún servidor: le avisa a la red que quiere unirse al grupo <code>239.1.1.11</code>.</p><p>La cabecera emite cada canal sin descanso hacia su grupo, haya o no alguien mirando. Cada paquete lleva siete pedacitos de 188 bytes de video en el formato de la televisión digital (MPEG-TS) sobre UDP. Igual que la voz del capítulo anterior, la TV en vivo no puede esperar retransmisiones: si un paquete se pierde, se ve un cuadrito o un salto en la imagen.</p><p>Prueba en el laboratorio cuánto tráfico ahorra el multicast cuando muchas casas ven lo mismo.</p></div><div class="lab" id="23-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Mil casas viendo el partido</h3></div><p class="hint">Mueve cuántas casas están viendo TV, cuántos canales distintos se están mirando y la calidad. Compara el tráfico que sale de la cabecera con unicast (una copia por casa) y con multicast (una copia por canal).</p><style>
+[id="23-lab-3"] .c23-barras{display:grid;gap:14px}
+[id="23-lab-3"] .c23-fila{display:grid;gap:4px}
+[id="23-lab-3"] .c23-fila header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font:600 .9rem var(--f-display)}
+[id="23-lab-3"] .c23-fila header b{font-family:var(--f-mono)}
+[id="23-lab-3"] .c23-pista{position:relative;height:26px;background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+[id="23-lab-3"] .c23-pista i{display:block;height:100%;transition:width .3s}
+[id="23-lab-3"] .c23-pista s{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--ink)}
+@media (prefers-reduced-motion: reduce){[id="23-lab-3"] .c23-pista i{transition:none}}
+</style>
+<div class="btns" role="group" aria-label="Escenarios">
+  <button type="button" data-c23="1000,60,8" aria-pressed="true">Una noche cualquiera</button>
+  <button type="button" data-c23="30000,15,8" aria-pressed="false">La final del campeonato</button>
+  <button type="button" data-c23="30000,15,20" aria-pressed="false">La final en 4K</button>
+</div>
+<div class="ctls">
+  <label class="ctl">Casas viendo TV <output id="c23-casas-o"></output><input type="range" id="c23-casas" min="100" max="30000" step="100" value="1000"></label>
+  <label class="ctl">Canales distintos en pantalla <output id="c23-can-o"></output><input type="range" id="c23-can" min="1" max="200" step="1" value="60"></label>
+</div>
+<div class="opciones">
+  <label>Calidad de cada canal
+    <select id="c23-cal">
+      <option value="3">Definición estándar (3 Mbps)</option>
+      <option value="8" selected>Alta definición (8 Mbps)</option>
+      <option value="20">4K (20 Mbps)</option>
+    </select></label>
+  <label>Enlace de salida de la cabecera
+    <select id="c23-enl">
+      <option value="10">10 Gbps</option>
+      <option value="100" selected>100 Gbps</option>
+    </select></label>
+</div>
+<div class="c23-barras" aria-live="polite">
+  <div class="c23-fila"><header><span>Unicast: una copia por casa</span><b id="c23-uni"></b></header><div class="c23-pista"><i id="c23-uni-b" style="background:var(--warm)"></i><s id="c23-lim1"></s></div></div>
+  <div class="c23-fila"><header><span>Multicast: una copia por canal</span><b id="c23-mul"></b></header><div class="c23-pista"><i id="c23-mul-b" style="background:var(--c-red)"></i><s id="c23-lim2"></s></div></div>
+  <div class="legend"><span><i style="background:transparent;border:2px dashed var(--ink);border-radius:2px"></i>capacidad del enlace de salida</span></div>
+  <p class="hint" id="c23-nota" style="margin:0"></p>
+</div></div></section>
+<section><h2>IGMP: unirse y salir de un canal</h2><div class="prose"><p>¿Cómo se entera la red de que alguien quiere un canal? Con <b>IGMP</b> (protocolo de gestión de grupos de Internet), el idioma con que el decodificador «levanta la mano». Sus mensajes son pocos y cortos:</p><ul><li><b>Report</b> o <i>join</i>: «quiero recibir el grupo <code>239.1.1.11</code>».</li><li><b>Leave</b>: «ya no quiero ese grupo».</li><li><b>Query</b>: la pregunta que el equipo de la red hace cada tanto, «¿alguien sigue mirando algo?». Los decodificadores que siguen mirando responden con un nuevo Report.</li></ul><p>El decodificador no le habla a la cabecera, que está lejos: le habla al primer equipo de la red que entiende multicast, que en una red de fibra suele ser la OLT. Si en esa zona ya había alguien viendo el canal, la OLT simplemente agrega una copia hacia la nueva casa y listo. Si es el primero, la OLT pide el canal hacia arriba, y la red del operador lo trae desde la cabecera.</p><p>La salida es igual de importante. Cuando cambias de canal, el decodificador manda un Leave del canal viejo. La OLT pregunta en ese puerto si queda alguien mirando y, si nadie responde, deja de mandar el canal. Si los Leave no funcionaran, cada vez que alguien hace <i>zapping</i> se acumularían canales encendidos en la fibra hasta saturarla.</p></div><figure class="fig fig-flujo" id="23-diagrama-2"><div class="lienzo"><svg viewBox="0 0 990 640" style="min-width:760px" role="img" aria-label="Flujo IGMP: el decodificador envía un Report para unirse al canal; la OLT lo pide al router, que envía un PIM Join hacia la cabecera; el canal baja en multicast; la red pregunta periódicamente con Query y el decodificador responde; al cambiar de canal el decodificador envía Leave, la OLT pregunta si queda alguien, deja de enviar y el router poda la rama con PIM Prune">
+  <defs>
+    <symbol id="i23-2-tv" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="12.5" rx="1.6"/><path d="M8 20.5h8M12 16.5v4"/></g></symbol>
+  </defs>
+  
+  <rect x="24" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i23-2-tv" x="36" y="26" width="32" height="32" class="ico"/><text x="76" y="40" class="t t-b">Decodificador</text><text x="76" y="57" class="t t-s t-m">en la casa</text>
+  <rect x="260" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-olt" x="272" y="26" width="32" height="32" class="ico"/><text x="312" y="40" class="t t-b">OLT</text><text x="312" y="57" class="t t-s t-m">snooping y proxy</text>
+  <rect x="480" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-router-core" x="492" y="26" width="32" height="32" class="ico"/><text x="532" y="40" class="t t-b">Router</text><text x="532" y="57" class="t t-s t-m">core multicast</text>
+  <rect x="690" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-servidor" x="702" y="26" width="32" height="32" class="ico"/><text x="742" y="40" class="t t-b">Cabecera</text><text x="742" y="57" class="t t-s t-m">fuente del canal</text>
+  <line x1="104" y1="70" x2="104" y2="625" class="vida"/>
+  <line x1="340" y1="70" x2="340" y2="625" class="vida"/>
+  <line x1="560" y1="70" x2="560" y2="625" class="vida"/>
+  <line x1="765" y1="70" x2="765" y2="625" class="vida"/>
+
+  
+  <line x1="104" y1="104" x2="338" y2="116" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="112" y="98" class="t t-s"><tspan class="t-mono t-b">Report</tspan> ① Quiero 239.1.1.11</text>
+  <rect x="262" y="126" width="156" height="34" rx="8" class="c-red"/>
+  <text x="340" y="140" text-anchor="middle" class="t t-xs">nadie de esta zona</text><text x="340" y="153" text-anchor="middle" class="t t-xs">lo estaba viendo</text>
+  <line x1="340" y1="176" x2="558" y2="188" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="348" y="170" class="t t-s"><tspan class="t-mono t-b">Report</tspan> ② Lo pido por la zona</text>
+  <line x1="560" y1="214" x2="763" y2="226" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="568" y="208" class="t t-s"><tspan class="t-mono t-b">PIM Join</tspan> ③ hacia la fuente</text>
+  <line x1="765" y1="262" x2="108" y2="262" class="ln s-tra" style="stroke-width:3.6" marker-end="url(#fl-tra)"/>
+  <text x="200" y="254" class="t t-s"><tspan class="t-mono t-b">UDP</tspan> ④ El canal 11 baja en multicast: una copia por rama del árbol</text>
+  <text x="112" y="282" class="t t-s t-b">Se ve el canal</text>
+
+  
+  <line x1="30" y1="306" x2="800" y2="306" class="ln ln-d"/>
+  <text x="560" y="300" text-anchor="middle" class="t t-xs t-m">CADA DOS MINUTOS, MÁS O MENOS</text>
+  <line x1="340" y1="330" x2="106" y2="342" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="150" y="326" class="t t-s"><tspan class="t-mono t-b">Query</tspan> ⑤ ¿Alguien sigue?</text>
+  <line x1="104" y1="364" x2="338" y2="376" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="112" y="392" class="t t-s"><tspan class="t-mono t-b">Report</tspan> ⑥ Sigo con 239.1.1.11</text>
+
+  
+  <line x1="30" y1="412" x2="800" y2="412" class="ln ln-d"/>
+  <text x="560" y="406" text-anchor="middle" class="t t-xs t-m">EL CLIENTE CAMBIA DE CANAL</text>
+  <line x1="104" y1="436" x2="338" y2="448" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="112" y="430" class="t t-s"><tspan class="t-mono t-b">Leave</tspan> ⑦ Dejo 239.1.1.11</text>
+  <line x1="340" y1="470" x2="106" y2="482" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="112" y="500" class="t t-s"><tspan class="t-mono t-b">Query</tspan> ⑧ ¿Alguien más lo mira?</text>
+  <text x="350" y="490" class="t t-s t-m">silencio: nadie más</text>
+  <line x1="340" y1="522" x2="558" y2="534" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="348" y="516" class="t t-s"><tspan class="t-mono t-b">Leave</tspan> ⑨ La zona ya no lo quiere</text>
+  <line x1="560" y1="558" x2="763" y2="570" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="568" y="552" class="t t-s"><tspan class="t-mono t-b">PIM Prune</tspan> ⑩ poda la rama</text>
+  <line x1="765" y1="600" x2="566" y2="600" class="ln s-tra ln-d" style="stroke-width:3"/>
+  <text x="560" y="596" text-anchor="end" class="t t-s t-m">el canal deja de bajar por esta rama</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M860 96v192" class="ln s-red" style="stroke-width:3"/><text x="870" y="180" class="k-red">ENTRAR</text><text x="870" y="194" class="t-m">IGMP + PIM</text><text x="870" y="208" class="t-m">milisegundos</text>
+    <path d="M860 322v62" class="ln s-red" style="stroke-width:3"/><text x="870" y="348" class="k-red">SEGUIR</text><text x="870" y="362" class="t-m">pregunta y</text><text x="870" y="376" class="t-m">respuesta</text>
+    <path d="M860 428v178" class="ln s-red" style="stroke-width:3"/><text x="870" y="508" class="k-red">SALIR</text><text x="870" y="522" class="t-m">IGMP + PIM</text>
+  </g>
+  <text x="12" y="330" class="t t-xs t-m" transform="rotate(-90 12 330)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>IGMP: pedir un canal y dejarlo.</b> El decodificador pide unirse al grupo del canal; como nadie más en la zona lo estaba viendo, la OLT lo pide hacia el router del core, que lo trae desde la cabecera con PIM. El canal baja hasta la casa. Cada tanto la red pregunta quién sigue mirando. Al cambiar de canal, el decodificador avisa que se va, la OLT confirma que no queda nadie y corta ese canal. Las flechas azules son mensajes de la capa de red y las moradas, el video sobre UDP.</figcaption></figure></section>
+<section><h2>Cambiar de canal rápido: el «zapping»</h2><div class="prose"><p>Con la televisión de antena, cambiar de canal era casi instantáneo. Con la TV por IP, la espera puede llegar a dos o tres segundos si la red no está bien pensada, y es una de las cosas que más molestan a los clientes. Se suman varios tiempos:</p><ol class="steps"><li><span><b>Salir y entrar.</b> El decodificador manda el Leave y el Report. Si el canal ya está en la OLT, la respuesta tarda milisegundos; si hay que traerlo desde la cabecera, algo más.</span></li><li><span><b>Esperar una imagen completa.</b> El video comprimido no manda cada cuadro entero. Manda de vez en cuando una imagen completa, llamada <b>cuadro I</b>, y entre medio solo las diferencias. El decodificador que acaba de llegar no puede mostrar nada hasta recibir el próximo cuadro I, que puede tardar entre medio segundo y varios segundos según cómo se codificó el canal.</span></li><li><span><b>Llenar el depósito.</b> Igual que el teléfono con la voz, el decodificador guarda un poco de video antes de mostrarlo, para absorber el jitter.</span></li><li><span><b>Descifrar.</b> Si el canal está protegido, necesita la clave del momento.</span></li></ol><p>Los operadores usan trucos para acortar la espera: codificar con cuadros I más frecuentes (a costa de algo más de ancho de banda), y un servidor de <b>cambio rápido de canal</b> que, en el instante del cambio, le manda al decodificador una ráfaga individual del canal empezando justo en un cuadro I, mientras la copia multicast llega. Mídelo.</p></div><div class="lab" id="23-lab-4"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Cronómetro del zapping</h3></div><p class="hint">Elige cada cuánto manda el canal una imagen completa, si alguien de tu zona ya lo está viendo, cuánto guarda el decodificador y si el operador tiene cambio rápido de canal. La barra muestra de dónde sale cada milisegundo de espera.</p><div class="opciones">
+  <label>El canal manda una imagen completa cada
+    <select id="c23z-gop">
+      <option value="0.5">0,5 segundos</option>
+      <option value="1">1 segundo</option>
+      <option value="2" selected>2 segundos</option>
+      <option value="4">4 segundos</option>
+    </select></label>
+  <label>¿Alguien de tu zona ya ve ese canal?
+    <select id="c23z-zona">
+      <option value="1" selected>Sí, ya está en la OLT</option>
+      <option value="0">No, hay que traerlo desde la cabecera</option>
+    </select></label>
+  <label>El decodificador guarda antes de mostrar
+    <select id="c23z-buf">
+      <option value="200">200 ms</option>
+      <option value="500" selected>500 ms</option>
+      <option value="1000">1 segundo</option>
+    </select></label>
+  <label>Cambio rápido de canal del operador
+    <select id="c23z-fcc">
+      <option value="0" selected>No tiene</option>
+      <option value="1">Sí tiene</option>
+    </select></label>
+</div>
+<div class="crono-total" id="c23z-total" aria-live="polite"></div>
+<div class="crono-bar" id="c23z-bar" role="img" aria-label="Tiempo de cada paso del cambio de canal"></div>
+<div class="crono-ley" id="c23z-ley"></div>
+<p class="hint" id="c23z-nota" aria-live="polite"></p></div></section>
+<section><h2>Cómo se reparte el canal por la red (PIM y snooping)</h2><div class="prose"><p>Entre la cabecera y la OLT hay varios routers. Para que cada uno sepa a quién copiarle cada canal, hablan entre ellos otro protocolo: <b>PIM</b> (multicast independiente del protocolo). Cuando un router recibe el primer pedido de un canal desde abajo, manda un mensaje <i>Join</i> de PIM hacia el router que está más cerca de la cabecera, y así salto por salto hasta la fuente. Se arma un <b>árbol</b>: el tronco en la cabecera y las ramas solo hacia donde hay televidentes. Cuando una rama se queda sin nadie, el router manda un <i>Prune</i> («podar») y esa rama se corta.</p><p>Más abajo, en los switches y en la OLT, trabaja el <b>IGMP snooping</b> («espiar IGMP»). Un switch común trata al multicast como broadcast y lo copia por todos sus puertos. Con snooping, el switch escucha los Report y los Leave que pasan por él, anota en una tabla qué puerto pidió qué grupo y manda cada canal solo por esos puertos. La OLT hace lo mismo con sus puertos PON y con cada ONT, a menudo actuando como <b>proxy IGMP</b>: responde ella las preguntas de los decodificadores y hacia arriba pide en nombre de todos.</p><p>Hay un detalle que no se ve pero importa: en la PON, la luz que baja por la fibra llega a todas las ONT del splitter. Por eso, cuando dos vecinos del mismo puerto PON ven el mismo canal, la OLT lo manda <b>una sola vez</b> por esa fibra, y cada ONT lo deja pasar solo si su decodificador lo pidió.</p><p>Para ordenar todo esto, los operadores separan el tráfico de TV en una <b>VLAN de multicast</b> propia, compartida por todos los clientes, distinta de la VLAN de Internet de cada uno. Así el canal se replica una vez por puerto y no una vez por cliente.</p></div><figure class="fig fig-arquitectura" id="23-diagrama-5"><div class="lienzo"><svg viewBox="0 0 1000 410" style="min-width:740px" role="img" aria-label="Arquitectura de TV por IP: en la casa, el decodificador conectado a la ONT y un televisor inteligente por Wi-Fi; en la red del operador, la OLT con IGMP y la VLAN de multicast hacia el core con PIM, y el BNG con una caché OTT; en la cabecera, recepción, codificación y cifrado de los canales, la guía, el video bajo demanda y el origen OTT; a la derecha, las programadoras que entregan los canales">
+  <defs>
+    <symbol id="i23-5-tv" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="12.5" rx="1.6"/><path d="M8 20.5h8M12 16.5v4"/></g></symbol>
+    <symbol id="i23-5-antena" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a8 8 0 0 0 8 6"/><path d="M4 14 14 4a8 8 0 0 1 6 6z"/><path d="M12 12l4-4"/><path d="M9 21h8"/></g></symbol>
+  </defs>
+  <rect x="10" y="14" width="220" height="348" rx="12" class="d-casa"/>
+  <rect x="240" y="14" width="270" height="348" rx="12" class="d-oper"/>
+  <rect x="520" y="14" width="350" height="348" rx="12" class="d-sis"/>
+  <rect x="880" y="14" width="110" height="348" rx="12" class="d-inet"/>
+  <text x="120" y="34" text-anchor="middle" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+  <text x="375" y="34" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  <text x="695" y="34" text-anchor="middle" class="t t-xs t-b k-sis">CABECERA DE TV</text>
+  <text x="935" y="34" text-anchor="middle" class="t t-xs t-b k-inet">PROGRAMADORAS</text>
+
+  
+  <rect x="24" y="70" width="92" height="80" rx="10" class="caja"/><use href="#i23-5-tv" x="56" y="78" width="28" height="28" class="ico"/>
+  <text x="70" y="126" text-anchor="middle" class="t t-s t-b">Decodificador</text><text x="70" y="141" text-anchor="middle" class="t t-xs t-m">y televisor</text>
+  <rect x="130" y="70" width="86" height="80" rx="10" class="caja"/><use href="#i-ont" x="159" y="78" width="28" height="28" class="ico"/>
+  <text x="173" y="126" text-anchor="middle" class="t t-s t-b">ONT</text><text x="173" y="141" text-anchor="middle" class="t t-xs t-m">filtra canales</text>
+  <rect x="24" y="230" width="92" height="80" rx="10" class="caja"/><use href="#i-celular" x="56" y="238" width="28" height="28" class="ico"/>
+  <text x="70" y="286" text-anchor="middle" class="t t-s t-b">App de TV</text><text x="70" y="301" text-anchor="middle" class="t t-xs t-m">celular o TV</text>
+  <rect x="130" y="230" width="86" height="80" rx="10" class="caja"/><use href="#i-router" x="159" y="238" width="28" height="28" class="ico"/>
+  <text x="173" y="286" text-anchor="middle" class="t t-s t-b">Router</text><text x="173" y="301" text-anchor="middle" class="t t-xs t-m">Wi-Fi</text>
+  <line x1="116" y1="110" x2="130" y2="110" class="ln"/>
+  <line x1="116" y1="270" x2="130" y2="270" class="ln ln-d"/>
+  <line x1="173" y1="230" x2="173" y2="150" class="ln"/>
+
+  
+  <line x1="216" y1="110" x2="256" y2="110" class="ln s-fis" style="stroke-width:3"/>
+  <rect x="256" y="70" width="96" height="80" rx="10" class="caja"/><use href="#i-olt" x="290" y="78" width="28" height="28" class="ico"/>
+  <text x="304" y="126" text-anchor="middle" class="t t-s t-b">OLT</text><text x="304" y="141" text-anchor="middle" class="t t-xs t-m">IGMP snooping</text>
+  <rect x="400" y="70" width="96" height="80" rx="10" class="c-red"/><use href="#i-router-core" x="434" y="78" width="28" height="28" class="ico"/>
+  <text x="448" y="126" text-anchor="middle" class="t t-s t-b">Core</text><text x="448" y="141" text-anchor="middle" class="t t-xs t-m">PIM</text>
+  <line x1="352" y1="110" x2="400" y2="110" class="ln s-red" style="stroke-width:3"/>
+  <text x="376" y="168" text-anchor="middle" class="t t-xs k-red">VLAN de</text><text x="376" y="180" text-anchor="middle" class="t t-xs k-red">multicast</text>
+  <rect x="256" y="230" width="96" height="80" rx="10" class="caja"/><use href="#i-router-core" x="290" y="238" width="28" height="28" class="ico"/>
+  <text x="304" y="286" text-anchor="middle" class="t t-s t-b">BNG</text><text x="304" y="301" text-anchor="middle" class="t t-xs t-m">Internet</text>
+  <rect x="400" y="230" width="96" height="80" rx="10" class="caja"/><use href="#i-servidor" x="434" y="238" width="28" height="28" class="ico"/>
+  <text x="448" y="286" text-anchor="middle" class="t t-s t-b">Caché OTT</text><text x="448" y="301" text-anchor="middle" class="t t-xs t-m">CDN</text>
+  <line x1="304" y1="150" x2="304" y2="230" class="ln ln-d"/>
+  <line x1="352" y1="270" x2="400" y2="270" class="ln ln-d"/>
+  <text x="312" y="196" class="t t-xs t-m">VLAN de</text><text x="312" y="208" class="t t-xs t-m">Internet</text>
+
+  
+  <rect x="536" y="56" width="148" height="62" rx="10" class="caja"/><use href="#i23-5-antena" x="546" y="70" width="28" height="28" class="ico"/>
+  <text x="582" y="83" class="t t-s t-b">Recepción</text><text x="582" y="99" class="t t-xs t-m">satélite y fibra</text>
+  <rect x="536" y="152" width="148" height="62" rx="10" class="caja"/><use href="#i-servidor" x="546" y="166" width="28" height="28" class="ico"/>
+  <text x="582" y="179" class="t t-s t-b">Codificación</text><text x="582" y="195" class="t t-xs t-m">comprime el video</text>
+  <rect x="536" y="248" width="148" height="62" rx="10" class="caja"/><use href="#i-candado" x="546" y="262" width="28" height="28" class="ico"/>
+  <text x="582" y="275" class="t t-s t-b">Cifrado</text><text x="582" y="291" class="t t-xs t-m">acceso condicional</text>
+  <line x1="610" y1="118" x2="610" y2="148" class="ln" marker-end="url(#fl)"/>
+  <line x1="610" y1="214" x2="610" y2="244" class="ln" marker-end="url(#fl)"/>
+  <path d="M536 279H516V110H500" class="ln s-tra" style="stroke-width:3.4" marker-end="url(#fl-tra)"/>
+  <text x="455" y="196" text-anchor="middle" class="t t-xs k-tra">239.1.1.x: un</text><text x="455" y="208" text-anchor="middle" class="t t-xs k-tra">grupo por canal</text>
+
+  <rect x="700" y="56" width="156" height="62" rx="10" class="caja"/><use href="#i-monitor" x="710" y="70" width="28" height="28" class="ico"/>
+  <text x="746" y="83" class="t t-s t-b">Guía y menús</text><text x="746" y="99" class="t t-xs t-m">middleware</text>
+  <rect x="700" y="152" width="156" height="62" rx="10" class="caja"/><use href="#i-servidor" x="710" y="166" width="28" height="28" class="ico"/>
+  <text x="746" y="179" class="t t-s t-b">Bajo demanda</text><text x="746" y="195" class="t t-xs t-m">y TV en diferido</text>
+  <rect x="700" y="248" width="156" height="62" rx="10" class="caja"/><use href="#i-nube" x="710" y="262" width="28" height="28" class="ico"/>
+  <text x="746" y="275" class="t t-s t-b">Origen OTT</text><text x="746" y="291" class="t t-xs t-m">para la app</text>
+  <path d="M778 310V344H448V314" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="620" y="358" text-anchor="middle" class="t t-xs t-m">OTT: unicast por HTTP</text>
+
+  
+  <rect x="892" y="56" width="86" height="96" rx="10" class="caja"/><use href="#i23-5-antena" x="921" y="66" width="28" height="28" class="ico"/>
+  <text x="935" y="114" text-anchor="middle" class="t t-s t-b">Canales</text><text x="935" y="130" text-anchor="middle" class="t t-xs t-m">de cada</text><text x="935" y="142" text-anchor="middle" class="t t-xs t-m">programadora</text>
+  <path d="M935 152V172H875V46H610V52" class="ln" marker-end="url(#fl)"/>
+
+  
+  <g class="t t-s t-m">
+    <line x1="250" y1="392" x2="280" y2="392" class="ln s-tra" style="stroke-width:3.4"/><text x="286" y="396">canales en multicast</text>
+    <line x1="440" y1="392" x2="470" y2="392" class="ln s-red" style="stroke-width:3"/><text x="476" y="396">VLAN de multicast</text>
+    <line x1="610" y1="392" x2="640" y2="392" class="ln s-fis" style="stroke-width:3"/><text x="646" y="396" class="k-fis">fibra</text>
+    <line x1="700" y1="392" x2="730" y2="392" class="ln ln-d"/><text x="736" y="396">Internet, OTT y radio</text>
+  </g>
+</svg></div><figcaption><b>La red de televisión de un operador.</b> En la cabecera, los canales llegan por satélite o por fibra, se codifican, se cifran y salen cada uno hacia su grupo multicast. El core los reparte con PIM hasta las OLT, que los entregan con IGMP por la VLAN de multicast. En la casa, la ONT los pasa al decodificador. Abajo, en línea punteada, el camino de una plataforma OTT: por Internet, desde una CDN, como cualquier otra página.</figcaption></figure></section>
+<section><h2>TV en vivo frente a video bajo demanda</h2><div class="prose"><p>El multicast funciona porque en la TV en vivo todos miran <b>lo mismo al mismo tiempo</b>. Con el video bajo demanda (VOD), cada cliente elige qué ver y cuándo: uno empieza la película, otro la pausa en el minuto 40, otro la retrocede. Ya no hay nada que compartir, así que el VOD viaja en <b>unicast</b>, una copia por cliente, desde servidores de video que el operador pone lo más cerca posible de sus clientes.</p><p>Entre los dos están los servicios de «TV en diferido» o «volver a ver»: el operador graba los canales en vivo durante unos días y el cliente puede ver un programa que ya pasó. Técnicamente es VOD: unicast desde un servidor de grabación.</p><p>Esa diferencia cambia la forma de planificar la red. Para la TV en vivo, lo que importa es cuántos canales distintos se emiten: con 200 canales en HD, el tráfico de la cabecera es el mismo con mil clientes que con cien mil. Para el VOD, lo que importa es cuántos clientes miran a la vez en la hora pico, porque cada uno suma su propia copia. Por eso los operadores siguen de cerca ese pico de concurrencia y acercan los servidores de video a las OLT, para que esas copias no tengan que cruzar todo el core.</p></div></section>
+<section><h2>OTT: cuando la TV llega por Internet como cualquier app</h2><div class="prose"><p><b>OTT</b> (<i>over the top</i>, «por encima») es el video que llega por Internet en una aplicación, sin que el operador de red intervenga: las plataformas de series, los canales que transmiten por streaming, los videos en redes sociales. Para la red, una plataforma OTT es tráfico web: el celular o el televisor inteligente pide el video por HTTP, en pedacitos de unos segundos, a una red de distribución de contenido (CDN).</p><p>El OTT tiene ventajas: llega a cualquier pantalla y a cualquier red, y se adapta solo a la velocidad disponible, bajando la calidad si la conexión se pone lenta en vez de congelarse. Su costo es que cada televidente es una copia unicast, y por eso los grandes generadores de contenido instalan servidores de caché dentro de las redes de los operadores. Además, el en vivo por OTT suele ir varios segundos atrasado respecto de la señal de TV, porque el reproductor guarda varios pedacitos antes de empezar.</p><p>Muchos operadores hoy combinan las dos cosas: TV en vivo por multicast para sus decodificadores y una aplicación OTT propia para ver los mismos canales en el celular, fuera de casa.</p></div><figure class="fig fig-comparacion" id="23-diagrama-7"><div class="lienzo"><svg viewBox="0 0 860 330" style="min-width:680px" role="img" aria-label="Comparación de TV por IP en vivo, video bajo demanda y OTT: cómo viaja cada una, cuántas copias hay en la red, retardo del en vivo, qué pasa si la red se congestiona, dónde se ve y quién cuida la calidad">
+  <rect x="194" y="14" width="212" height="42" rx="8" class="c-red"/><text x="300.0" y="40" text-anchor="middle" class="t t-b">TV por IP en vivo</text>
+  <rect x="414" y="14" width="212" height="42" rx="8" class="c-tra"/><text x="520.0" y="40" text-anchor="middle" class="t t-b">Bajo demanda (VOD)</text>
+  <rect x="634" y="14" width="212" height="42" rx="8" class="c-apl"/><text x="740.0" y="40" text-anchor="middle" class="t t-b">OTT (app por Internet)</text>
+  <line x1="14" y1="70" x2="850" y2="70" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="95" class="t t-s t-b">Cómo viaja</text>
+  <text x="300.0" y="95" text-anchor="middle" class="t t-s">multicast</text>
+  <text x="520.0" y="95" text-anchor="middle" class="t t-s">unicast</text>
+  <text x="740.0" y="95" text-anchor="middle" class="t t-s">unicast por HTTP</text>
+  <text x="20" y="135" class="t t-s t-b">Copias en la red</text>
+  <text x="300.0" y="135" text-anchor="middle" class="t t-s">una por canal</text>
+  <text x="520.0" y="135" text-anchor="middle" class="t t-s">una por cliente</text>
+  <text x="740.0" y="135" text-anchor="middle" class="t t-s">una por cliente</text>
+  <line x1="14" y1="150" x2="850" y2="150" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="175" class="t t-s t-b">Retardo del en vivo</text>
+  <text x="300.0" y="175" text-anchor="middle" class="t t-s">pocos segundos</text>
+  <text x="520.0" y="175" text-anchor="middle" class="t t-s">no aplica</text>
+  <text x="740.0" y="175" text-anchor="middle" class="t t-s">decenas de segundos</text>
+  <text x="20" y="215" class="t t-s t-b">Si la red se congestiona</text>
+  <text x="300.0" y="215" text-anchor="middle" class="t t-s">se pixela o congela</text>
+  <text x="520.0" y="215" text-anchor="middle" class="t t-s">se pausa a cargar</text>
+  <text x="740.0" y="215" text-anchor="middle" class="t t-s">baja la calidad</text>
+  <line x1="14" y1="230" x2="850" y2="230" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="255" class="t t-s t-b">Dónde se ve</text>
+  <text x="300.0" y="255" text-anchor="middle" class="t t-s">decodificador en casa</text>
+  <text x="520.0" y="255" text-anchor="middle" class="t t-s">decodificador o app</text>
+  <text x="740.0" y="255" text-anchor="middle" class="t t-s">cualquier pantalla y red</text>
+  <text x="20" y="295" class="t t-s t-b">Quién cuida la calidad</text>
+  <text x="300.0" y="288" text-anchor="middle" class="t t-s">el operador, de punta</text><text x="300.0" y="302" text-anchor="middle" class="t t-s">a punta</text>
+  <text x="520.0" y="295" text-anchor="middle" class="t t-s">el operador</text>
+  <text x="740.0" y="288" text-anchor="middle" class="t t-s">la plataforma;</text><text x="740.0" y="302" text-anchor="middle" class="t t-s">el operador transporta</text>
+</svg></div><figcaption><b>Tres maneras de ver TV.</b> La TV por IP en vivo usa multicast: una copia por canal, con poco retardo y dependiente de la red del operador. El video bajo demanda y el OTT usan unicast: una copia por televidente. El OTT llega por Internet a cualquier pantalla y ajusta la calidad a la conexión, a cambio de más retardo en vivo.</figcaption></figure></section>
+<section><h2>Derechos, cifrado y decodificadores</h2><div class="prose"><p>Los canales no son del operador: los compra a programadoras que exigen protegerlos. Por eso el video sale de la cabecera <b>cifrado</b>, y solo los decodificadores autorizados tienen las claves para verlo. En la TV por IP tradicional esto lo hace un <b>sistema de acceso condicional</b> (CAS); en las aplicaciones OTT, un sistema de <b>gestión de derechos digitales</b> (DRM). Ambos hacen lo mismo con distinta técnica: entregan claves que cambian cada pocos segundos solo a quien pagó por el paquete de canales, y el sistema de negocio del operador le dice al de cifrado qué cliente tiene qué paquete.</p><p>La protección no termina en la red. El cable HDMI que va del decodificador al televisor también viaja cifrado, con un sistema llamado HDCP, para que nadie pueda grabar la señal en ese último tramo. Cuando un televisor viejo o un adaptador no lo soporta, el cliente ve una pantalla negra con un aviso, aunque la red funcione perfecto.</p><p>El <b>decodificador</b> (también llamado <i>set-top box</i>) es una computadora pequeña: recibe el multicast, descifra, decodifica el video, muestra la guía de programación y la interfaz del operador, y se gestiona a distancia como la ONT. Cada vez más, su función la cumple una aplicación dentro del televisor inteligente o un dispositivo de streaming.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región que ofrece TV por IP configura en sus OLT una VLAN de multicast única para todos los clientes de TV, con IGMP snooping o proxy activado, y deja el Internet de cada cliente en su propia VLAN. Las fallas típicas cuando esa configuración está mal son reconocibles. Si el snooping está apagado, todos los canales se copian a todas las ONT y la fibra se satura: el Internet de la zona se pone lento y la TV se pixela. Si en la red falta el equipo que hace las preguntas periódicas de IGMP, las tablas de los switches vencen y el canal se <b>congela a los pocos minutos</b> de haberlo elegido. Y si los Leave no se procesan, cada cambio de canal deja el anterior encendido: el zapping se vuelve cada vez más lento hasta que el cliente reinicia el decodificador.</p></div><div class="ml"><b>En la práctica</b><p>«Se congela la TV pero el Internet anda bien» tiene sentido: la TV en vivo viaja por otra VLAN, en multicast, con otros protocolos. Un problema de IGMP, de la VLAN de multicast o de la cabecera afecta a la TV sin tocar el Internet. Si le pasa a toda una zona o a un solo canal, es de la red o de la cabecera (va al NOC); si le pasa a un solo cliente en todos los canales, suele ser el decodificador, su cable o el Wi-Fi si está conectado de forma inalámbrica. En cambio, una plataforma de streaming que se pone borrosa es tráfico de Internet: depende de la velocidad y del Wi-Fi del cliente, y su comportamiento es bajar la calidad, no congelarse.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué la TV en vivo usa multicast y no unicast?</summary><p>Porque miles de casas ven el mismo canal al mismo tiempo; con multicast sale una sola copia y la red la duplica solo donde hace falta, en vez de mandar una copia por casa.</p></details><details><summary>¿Qué le manda el decodificador a la red cuando eliges un canal?</summary><p>Un mensaje IGMP Report (<i>join</i>) para unirse a la dirección multicast de ese canal, y un Leave para dejar el anterior.</p></details><details><summary>¿Qué hace el IGMP snooping en un switch o en una OLT?</summary><p>Escucha los mensajes IGMP y anota qué puerto pidió qué canal, para mandar cada canal solo por esos puertos en vez de copiarlo a todos.</p></details><details><summary>¿Por qué tarda un cambio de canal aunque la red sea rápida?</summary><p>Porque el decodificador tiene que esperar la próxima imagen completa (cuadro I) del canal y llenar su depósito antes de mostrar algo.</p></details><details><summary>¿Por qué una película bajo demanda no puede ir por multicast?</summary><p>Porque cada cliente la mira en un momento distinto; no hay una sola copia que compartir.</p></details><details><summary>Un cliente dice que su TV se congela pero navega bien. ¿Por qué puede pasar?</summary><p>Porque la TV en vivo usa otra VLAN y otros protocolos (multicast e IGMP); un problema ahí no afecta al Internet.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Multidifusi%C3%B3n" target="_blank" rel="noopener">Multidifusión (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Internet_Group_Management_Protocol" target="_blank" rel="noopener">Internet Group Management Protocol (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/IPTV" target="_blank" rel="noopener">IPTV (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.rfc-editor.org/rfc/rfc4541" target="_blank" rel="noopener">RFC 4541: IGMP snooping (IETF, en inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab,$=L.$;
+  const miles=n=>Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  const caudal=mbps=>mbps>=1000?L.fmt(mbps/1000,mbps>=100000?0:1).replace('.',',')+' Gbps':miles(mbps)+' Mbps';
+  function calcular(){
+    const casas=+$('#c23-casas').value, can=Math.min(+$('#c23-can').value,casas), cal=+$('#c23-cal').value, enl=+$('#c23-enl').value*1000;
+    const uni=casas*cal, mul=can*cal, escala=Math.max(uni,enl)*1.08;
+    $('#c23-uni').textContent=caudal(uni); $('#c23-mul').textContent=caudal(mul);
+    $('#c23-uni-b').style.width=(uni/escala*100)+'%'; $('#c23-mul-b').style.width=Math.max(.4,mul/escala*100)+'%';
+    $('#c23-lim1').style.left=$('#c23-lim2').style.left=(enl/escala*100)+'%';
+    const veces=uni/mul, cabe=uni<=enl;
+    $('#c23-nota').textContent='Con '+miles(casas)+' casas mirando '+can+' canales, el multicast manda '+L.fmt(veces,0)+' veces menos tráfico. '+
+      (cabe?'Esta vez el unicast todavía cabe en el enlace, pero cada casa nueva suma '+cal+' Mbps; con multicast, una casa más que mira un canal ya encendido no suma nada.'
+           :'Con unicast el enlace se desborda: harían falta '+L.fmt(Math.ceil(uni/enl),0)+' enlaces como este. Con multicast el tráfico depende de cuántos canales distintos se miran, no de cuántas casas: por eso en la final, con todos en el mismo canal, la red está más tranquila que en una noche cualquiera.');
+  }
+  L.bindOut('#c23-casas',v=>miles(v)); L.bindOut('#c23-can',v=>String(v));
+  const pres=document.querySelectorAll('[data-c23]');
+  ['#c23-casas','#c23-can'].forEach(id=>$(id).addEventListener('input',()=>{pres.forEach(b=>b.setAttribute('aria-pressed','false'));calcular();}));
+  ['#c23-cal','#c23-enl'].forEach(id=>$(id).addEventListener('change',calcular));
+  pres.forEach(b=>b.addEventListener('click',()=>{
+    const [c,k,q]=b.dataset.c23.split(',');
+    $('#c23-casas').value=c;$('#c23-can').value=k;$('#c23-cal').value=q;
+    ['#c23-casas','#c23-can'].forEach(id=>$(id).dispatchEvent(new Event('input')));
+    pres.forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));calcular();
+  }));
+  calcular();
+})();
+</script>
+<script>
+(function(){
+  const $=window.Lab.$;
+  const PASOS=[
+    {k:'igmp',n:'Salir y entrar (IGMP)',c:'var(--c-red)'},
+    {k:'pim',n:'Traer el canal (PIM)',c:'var(--c-enl)'},
+    {k:'iframe',n:'Esperar una imagen completa',c:'var(--warm)'},
+    {k:'buf',n:'Llenar el depósito',c:'var(--c-tra)'},
+    {k:'cif',n:'Conseguir la clave',c:'var(--c-fis)'}
+  ];
+  const coma=n=>(Math.round(n/10)/100).toFixed(2).replace('.',',');
+  function calcular(){
+    const gop=+$('#c23z-gop').value*1000, zona=$('#c23z-zona').value==='1', buf=+$('#c23z-buf').value, fcc=$('#c23z-fcc').value==='1';
+    return {igmp:fcc?40:20, pim:zona?0:120, iframe:fcc?0:gop/2, buf:fcc?buf*0.3:buf, cif:fcc?30:100, gop, fcc, zona};
+  }
+  function dibujar(){
+    const t=calcular(), total=PASOS.reduce((s,p)=>s+t[p.k],0), peor=total+(t.fcc?0:t.gop/2);
+    $('#c23z-total').innerHTML=Math.round(total)+' ms<small>en promedio desde que tocas el control hasta ver el canal nuevo (≈ '+coma(total)+' s; en el peor caso '+coma(peor)+' s)</small>';
+    $('#c23z-bar').innerHTML=PASOS.map(p=>'<i style="width:'+(t[p.k]/total*100)+'%;background:'+p.c+'" title="'+p.n+'"></i>').join('');
+    $('#c23z-ley').innerHTML=PASOS.map(p=>'<span><i style="background:'+p.c+'"></i>'+p.n+'<b>'+Math.round(t[p.k])+' ms</b></span>').join('');
+    let nota;
+    if(t.fcc) nota='El servidor de cambio rápido te manda una ráfaga individual del canal que empieza justo en una imagen completa, y más rápido que el ritmo normal para llenar el depósito. Mientras, el decodificador se une al multicast y, cuando las dos copias se alinean, deja la ráfaga. Por eso desaparece casi toda la espera.';
+    else nota='La mayor parte de la espera no es la red: es esperar la próxima imagen completa, que en promedio llega a la mitad del intervalo ('+Math.round(t.gop/2)+' ms). '+(t.zona?'Como el canal ya estaba en la OLT, IGMP resolvió en milisegundos.':'Traer el canal desde la cabecera agrega '+t.pim+' ms, poco comparado con lo demás.');
+    $('#c23z-nota').textContent=nota;
+  }
+  ['#c23z-gop','#c23z-zona','#c23z-buf','#c23z-fcc'].forEach(s=>$(s).addEventListener('change',dibujar));
+  dibujar();
+})();
+</script>
+</body>
+</html>

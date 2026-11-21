@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ethernet y switching · Cómo funciona un telco</title>
+<meta name="description" content="Dentro de una misma red local, los equipos se encuentran por una dirección física (la MAC) y un switch aprende quién está en cada puerto para entregar cada mensaje solo a quien corresponde.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="04-ethernet-y-switching">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 04 DE 49</span><h1>Ethernet y switching: MAC, tramas y VLAN</h1><p class="lede">Dentro de una misma red local, los equipos se encuentran por una dirección física (la MAC) y un switch aprende quién está en cada puerto para entregar cada mensaje solo a quien corresponde.</p></header>
+<section><div class="prose"><p>En el capítulo anterior vimos que las redes se dividen en capas. Este capítulo se queda en una sola: la <b>capa de enlace</b>, la que entrega mensajes entre dos equipos que están conectados al mismo cable, al mismo Wi-Fi o a la misma caja. Es el tramo corto del viaje: del celular al router, del router a la ONT, de la OLT al BNG.</p><p>En casi todas esas conexiones se habla el mismo idioma: <b>Ethernet</b>. Nació en los años setenta para unir computadoras de una oficina y hoy está en todas partes, desde el cable que sale del televisor hasta los enlaces de cien gigabits entre los equipos de una central. Entender cómo funciona Ethernet, y sobre todo cómo trabaja el equipo que reparte sus mensajes, el <b>switch</b>, explica muchas cosas que pasan dentro de la red de un operador.</p></div><div class="analogia"><b>Imagínalo así</b><p>Piensa en el conserje de un edificio grande. Al principio no conoce a nadie, pero cada vez que un vecino baja a dejar un paquete, anota de qué apartamento salió. Con el tiempo sabe exactamente dónde vive cada quien y lleva cada paquete directo a la puerta correcta, sin tocar el timbre de todos. Y si el edificio tiene pisos separados, cada uno con su propio conserje, los vecinos de un piso nunca reciben por error lo que era para otro: eso son las VLAN.</p></div><figure class="fig fig-capas" id="04-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la capa de enlace, de la casa al BNG">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class="apagado"><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la capa de enlace, de la casa al BNG</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo enciende una sola capa, la de enlace, y los tramos donde Ethernet hace el trabajo: dentro de la casa, de la ONT a la OLT y de la OLT al BNG. Más allá del BNG, los mensajes también viajan en tramas Ethernet, pero el camino ya lo decide la capa de red.</figcaption></figure></section>
+<section><h2>La trama Ethernet</h2><div class="prose"><p>En Ethernet, cada mensaje viaja dentro de un sobre con un formato fijo que se llama <b>trama</b>. La trama no sabe nada de páginas web ni de llamadas: lleva adentro un paquete de la capa de arriba (casi siempre un paquete IP, que veremos en el capítulo 5) y le pone por fuera lo que hace falta para llegar al vecino correcto.</p><p>La trama tiene pocas partes y cada una tiene un trabajo claro:</p><ul><li><b>Preámbulo</b>: una ráfaga de unos y ceros alternados que avisa «ahí viene una trama» y permite que el receptor se sincronice. Es un pedazo de capa física pegado a la trama.</li><li><b>Dirección de destino</b>: a quién va la trama.</li><li><b>Dirección de origen</b>: quién la manda.</li><li><b>Tipo</b>: qué hay adentro, para que el receptor sepa a quién entregarle el contenido. <code>0x0800</code> quiere decir «un paquete IPv4»; <code>0x86DD</code>, «un paquete IPv6».</li><li><b>Datos</b>: la carga útil, entre 46 y 1.500 bytes. Si el paquete es más grande, la capa de arriba tiene que partirlo.</li><li><b>FCS</b> (secuencia de control de la trama): una especie de dígito verificador de 4 bytes. El receptor recalcula la cuenta y, si no coincide, sabe que algún bit se dañó en el camino y tira la trama.</li></ul><p>Fíjate que el destino va <b>primero</b>. No es casualidad: así un switch puede empezar a decidir a dónde mandar la trama apenas leyó los primeros bytes, sin esperar a que llegue completa.</p></div><figure class="fig fig-esquema" id="04-diagrama-4"><div class="lienzo"><svg viewBox="0 0 900 290" style="min-width:720px" role="img" aria-label="La trama Ethernet campo por campo: preámbulo de 8 bytes, dirección MAC de destino de 6 bytes, dirección MAC de origen de 6 bytes, tipo de 2 bytes, datos de 46 a 1500 bytes y verificación FCS de 4 bytes">
+  
+  <g class="t t-xs t-b t-m" text-anchor="middle">
+    <path d="M122 46v-8h356v8" class="ln"/><text x="300" y="30">ENCABEZADO · 14 BYTES</text>
+    <path d="M482 46v-8h296v8" class="ln"/><text x="630" y="30">CARGA ÚTIL</text>
+    <path d="M782 46v-8h96v8" class="ln"/><text x="830" y="30">COLA</text>
+    <text x="70" y="30">SINCRONÍA</text>
+  </g>
+  
+  <rect x="20" y="52" width="100" height="62" rx="6" class="c-fis"/>
+  <rect x="122" y="52" width="140" height="62" rx="6" class="c-enl"/>
+  <rect x="264" y="52" width="140" height="62" rx="6" class="c-enl"/>
+  <rect x="406" y="52" width="72" height="62" rx="6" class="c-enl"/>
+  <rect x="482" y="52" width="296" height="62" rx="6" class="c-red"/>
+  <rect x="782" y="52" width="96" height="62" rx="6" class="c-enl"/>
+  <g class="t t-b" text-anchor="middle">
+    <text x="70" y="79">Preámbulo</text>
+    <text x="192" y="79">Destino</text>
+    <text x="334" y="79">Origen</text>
+    <text x="442" y="79">Tipo</text>
+    <text x="630" y="79">Datos</text>
+    <text x="830" y="79">FCS</text>
+  </g>
+  <g class="t t-s t-m" text-anchor="middle">
+    <text x="70" y="99">8 bytes</text>
+    <text x="192" y="99">6 bytes</text>
+    <text x="334" y="99">6 bytes</text>
+    <text x="442" y="99">2 bytes</text>
+    <text x="630" y="99">46 a 1.500 bytes</text>
+    <text x="830" y="99">4 bytes</text>
+  </g>
+  
+  <g class="t t-s t-mono" text-anchor="middle">
+    <text x="70" y="142">10101010…</text>
+    <text x="192" y="142">00:00:5e:00:53:0b</text>
+    <text x="334" y="142">00:00:5e:00:53:0a</text>
+    <text x="442" y="142">0x0800</text>
+    <text x="630" y="142">paquete IP</text>
+    <text x="830" y="142">CRC-32</text>
+  </g>
+  <path d="M70 152v10M192 152v10M334 152v10M442 152v10M630 152v10M830 152v10" class="ln"/>
+  
+  <g class="t t-s" text-anchor="middle">
+    <text x="70" y="180">«ahí viene</text><text x="70" y="195">una trama»:</text><text x="70" y="210">el receptor</text><text x="70" y="225">se sincroniza</text>
+    <text x="192" y="180">a quién va.</text><text x="192" y="195">Va primero para que</text><text x="192" y="210">el switch decida</text><text x="192" y="225">cuanto antes</text>
+    <text x="334" y="180">quién la manda.</text><text x="334" y="195">De aquí aprende</text><text x="334" y="210">el switch</text>
+    <text x="442" y="180">qué hay</text><text x="442" y="195">adentro:</text><text x="442" y="210">IPv4</text>
+    <text x="630" y="180">lo que la capa de arriba quiere entregar,</text><text x="630" y="195">casi siempre un paquete IP (capítulo 5).</text><text x="630" y="210">Si es más grande, hay que partirlo</text>
+    <text x="830" y="180">verificación:</text><text x="830" y="195">si no cuadra,</text><text x="830" y="210">la trama se</text><text x="830" y="225">descarta</text>
+  </g>
+  
+  <g class="t t-s">
+    <rect x="20" y="256" width="14" height="14" rx="3" class="c-fis"/><text x="40" y="268">capa física</text>
+    <rect x="130" y="256" width="14" height="14" rx="3" class="c-enl"/><text x="150" y="268">capa de enlace (Ethernet)</text>
+    <rect x="320" y="256" width="14" height="14" rx="3" class="c-red"/><text x="340" y="268">capa de red: va adentro de la trama</text>
+    <text x="878" y="268" text-anchor="end" class="t-m">Los bits viajan de izquierda a derecha →</text>
+  </g>
+</svg></div><figcaption><b>La trama Ethernet, campo por campo.</b> De izquierda a derecha, en el orden en que viajan los bits: preámbulo, dirección de destino, dirección de origen, tipo, datos y verificación. El encabezado ocupa 14 bytes; los datos, hasta 1.500. Debajo de cada campo hay un ejemplo de su valor y para qué sirve.</figcaption></figure></section>
+<section><h2>Direcciones MAC</h2><div class="prose"><p>Las direcciones de origen y de destino de una trama se llaman <b>direcciones MAC</b> (por <i>Media Access Control</i>, control de acceso al medio). Cada tarjeta de red del mundo, la del celular, la del televisor, la del puerto de la ONT, trae una grabada de fábrica.</p><p>Una dirección MAC tiene 48 bits y se escribe como seis pares de caracteres hexadecimales separados por dos puntos, por ejemplo <code>00:00:5e:00:53:0a</code>. Los primeros tres pares identifican al fabricante: la organización IEEE le asigna a cada uno un prefijo propio, llamado <b>OUI</b>. Los otros tres los numera el fabricante para que no haya dos tarjetas iguales. Por eso, con solo ver el comienzo de una MAC, un técnico puede saber si el equipo conectado es un teléfono de cierta marca o una ONT de otra.</p><p>Una diferencia importante con la dirección IP: la MAC dice <b>quién es</b> el equipo, no <b>dónde está</b>. Es como el número de cédula de una persona, que la acompaña a donde vaya, frente a la dirección de su casa, que cambia si se muda. Por eso la MAC solo sirve dentro de la misma red local: para cruzar a otra red hace falta una dirección IP y un router.</p><p>Dos aclaraciones que evitan confusiones en soporte. Primero, una MAC especial, <code>ff:ff:ff:ff:ff:ff</code>, no pertenece a nadie: quiere decir «para todos» y la veremos en la sección de broadcast. Segundo, los celulares modernos, por privacidad, inventan una MAC distinta para cada red Wi-Fi a la que se conectan. Si un cliente dice que su teléfono «cambió de MAC», probablemente es eso y no una falla.</p></div></section>
+<section><h2>El hub que gritaba y el switch que aprende</h2><div class="prose"><p>Las primeras redes Ethernet eran un solo cable compartido. Después llegaron los <b>hubs</b>, cajas con varios puertos que hacían algo muy simple: todo lo que entraba por un puerto lo repetían por todos los demás. Si la computadora A le mandaba algo a la B, también lo recibían la C, la D y todas las otras, que lo leían, veían que no era para ellas y lo tiraban.</p><p>El hub era como un pregonero en una plaza: grita cada mensaje para que lo oiga todo el mundo. Funciona con pocos equipos, pero tiene dos problemas. El primero, el ruido: si dos equipos hablaban a la vez, sus señales chocaban (una <b>colisión</b>) y había que repetir. Cuantos más equipos, más choques y menos velocidad. El segundo, la privacidad: cualquiera podía escuchar lo de todos.</p><p>El <b>switch</b> resolvió las dos cosas. Por fuera se parece a un hub, pero por dentro tiene memoria y criterio. Cada vez que recibe una trama hace tres cosas, en este orden:</p><ol class="steps"><li><span><b>Aprende</b>: mira la dirección de origen y anota «este equipo está en el puerto por donde entró».</span></li><li><span><b>Busca</b>: mira la dirección de destino y la busca en lo que ya aprendió.</span></li><li><span><b>Decide</b>: si sabe en qué puerto está el destino, <b>reenvía</b> la trama solo por ese puerto. Si no lo sabe, la <b>inunda</b>: la manda por todos los puertos menos por el que entró, igual que un hub, y espera a que el destino responda para aprenderlo.</span></li></ol><p>La gracia es que la inundación solo pasa al principio. En cuanto el destino contesta, el switch ya sabe dónde vive y desde ese momento le habla solo a él. Además, cada puerto del switch tiene su propio canal en las dos direcciones a la vez (<i>full duplex</i>), así que las colisiones desaparecen.</p></div><figure class="fig fig-flujo" id="04-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 540" style="min-width:700px" role="img" aria-label="Flujo de un switch: A envía una trama a B; el switch aprende que A está en el puerto 1, no conoce a B e inunda la trama a B y a C, que la descarta; B responde, el switch aprende que B está en el puerto 2 y reenvía solo a A; la siguiente trama de A a B va solo a B">
+  <defs><symbol id="i04-switch" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="1.6"/><path d="M6 14h1.5M9.5 14h1.5M13 14h1.5M16.5 14h1.5"/><path d="M7 10.5h10M15 9l2 1.5-2 1.5M9 9l-2 1.5 2 1.5"/></g></symbol></defs>
+  
+  <rect x="50" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-monitor" x="62" y="26" width="32" height="32" class="ico"/><text x="102" y="40" class="t t-b">PC A</text><text x="102" y="57" class="t t-s t-m">puerto 1</text>
+  <rect x="290" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i04-switch" x="302" y="26" width="32" height="32" class="ico"/><text x="342" y="47" class="t t-b">Switch</text>
+  <rect x="500" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-monitor" x="510" y="26" width="32" height="32" class="ico"/><text x="548" y="40" class="t t-b">PC B</text><text x="548" y="57" class="t t-s t-m">puerto 2</text>
+  <rect x="640" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-monitor" x="650" y="26" width="32" height="32" class="ico"/><text x="688" y="40" class="t t-b">PC C</text><text x="688" y="57" class="t t-s t-m">puerto 3</text>
+  <line x1="115" y1="70" x2="115" y2="520" class="vida"/>
+  <line x1="360" y1="70" x2="360" y2="520" class="vida"/>
+  <line x1="560" y1="70" x2="560" y2="520" class="vida"/>
+  <line x1="700" y1="70" x2="700" y2="520" class="vida"/>
+
+  
+  <line x1="115" y1="104" x2="358" y2="110" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="124" y="98" class="t t-s">① Trama de A para B</text>
+  <rect x="288" y="122" width="144" height="40" rx="6" class="c-enl"/>
+  <text x="360" y="138" text-anchor="middle" class="t t-s">aprende: A → puerto 1</text>
+  <text x="360" y="154" text-anchor="middle" class="t t-s t-b">B: no la conozco</text>
+  <line x1="360" y1="182" x2="558" y2="188" class="ln s-enl ln-d" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="370" y="177" class="t t-s">② copia a B (inunda)</text>
+  <line x1="360" y1="208" x2="698" y2="216" class="ln s-enl ln-d" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="370" y="226" class="t t-s">③ copia a C (inunda)</text>
+  <text x="708" y="221" class="t t-s t-m">✕ la descarta</text>
+
+  
+  <line x1="560" y1="262" x2="362" y2="268" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="372" y="256" class="t t-s">④ Respuesta de B para A</text>
+  <rect x="288" y="280" width="144" height="40" rx="6" class="c-enl"/>
+  <text x="360" y="296" text-anchor="middle" class="t t-s">aprende: B → puerto 2</text>
+  <text x="360" y="312" text-anchor="middle" class="t t-s t-b">A está en el puerto 1</text>
+  <line x1="360" y1="342" x2="117" y2="348" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="124" y="336" class="t t-s">⑤ Solo a A (reenvía)</text>
+
+  
+  <line x1="115" y1="392" x2="358" y2="398" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="124" y="386" class="t t-s">⑥ Otra trama de A para B</text>
+  <rect x="288" y="410" width="144" height="26" rx="6" class="c-enl"/>
+  <text x="360" y="427" text-anchor="middle" class="t t-s t-b">B está en el puerto 2</text>
+  <line x1="360" y1="456" x2="558" y2="462" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="370" y="451" class="t t-s">⑦ Solo a B</text>
+  <text x="575" y="497" class="t t-s t-m">C ya no recibe nada</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M790 96v128" class="ln s-enl" style="stroke-width:3"/><text x="800" y="150" class="k-enl">INUNDA</text><text x="800" y="164" class="t-m">tabla vacía:</text><text x="800" y="178" class="t-m">copia a todos</text>
+    <path d="M790 252v100" class="ln s-enl" style="stroke-width:3"/><text x="800" y="296" class="k-enl">APRENDE</text><text x="800" y="310" class="t-m">de cada origen</text>
+    <path d="M790 382v86" class="ln s-enl" style="stroke-width:3"/><text x="800" y="420" class="k-enl">REENVÍA</text><text x="800" y="434" class="t-m">solo al puerto</text><text x="800" y="448" class="t-m">correcto</text>
+  </g>
+  <text x="20" y="300" class="t t-xs t-m" transform="rotate(-90 20 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Cómo decide un switch.</b> Tres computadoras conectadas a un switch que acaba de encenderse. El tiempo corre hacia abajo. Primero A le escribe a B y el switch, que todavía no conoce a B, inunda: C también recibe la copia y la descarta. Cuando B responde, el switch aprende dónde está B y le entrega la respuesta solo a A. Desde ahí, cada trama va directo a su destino.</figcaption></figure></section>
+<section><h2>La tabla MAC</h2><div class="prose"><p>Lo que el switch aprende lo guarda en la <b>tabla MAC</b> (también llamada tabla de direcciones o, en algunos manuales, tabla CAM). Es una lista de dos columnas: dirección MAC y puerto. Un switch de oficina guarda miles de entradas; uno de una central, cientos de miles.</p><p>La tabla no es eterna. Cada entrada tiene un reloj, normalmente de cinco minutos: si en ese tiempo no llega ninguna trama desde esa MAC, el switch la borra. Esto se llama <b>envejecimiento</b>, y tiene sentido: si desconectas la computadora y la llevas a otra oficina, el switch no debe seguir mandando sus tramas al puerto viejo para siempre. Y si el equipo aparece en otro puerto antes de que venza el reloj, el switch actualiza la entrada en cuanto lo ve hablar.</p><p>Para un técnico, la tabla MAC es una herramienta de diagnóstico de primera. Si la MAC de la ONT de un cliente aparece en el puerto correcto de la OLT, el enlace está vivo hasta ahí. Si no aparece, el problema está más abajo: la fibra, la ONT apagada o mal registrada. Pruébalo en el laboratorio: manda tramas entre cuatro computadoras y mira cómo se va llenando la tabla.</p></div><div class="lab" id="04-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>El switch que aprende</h3></div><p class="hint">Elige quién envía y a quién. Mira qué puertos reciben la trama, cómo se llena la tabla MAC y cuándo el switch deja de inundar. Empieza con A enviando a C y luego haz que C le responda a A.</p><style>
+.c04-sw{display:grid;gap:14px}
+.c04-sw svg{width:100%;max-width:440px;height:auto;display:block;margin:0 auto;font-family:var(--f-display)}
+.c04-sw .eq rect{fill:var(--card);stroke:var(--line);stroke-width:1.4}
+.c04-sw .eq text{fill:var(--ink);font-size:13px;text-anchor:middle}
+.c04-sw .eq .sub{fill:var(--muted);font-size:11px;font-family:var(--f-mono)}
+.c04-sw .eq.origen rect{stroke:var(--accent);stroke-width:2.5}
+.c04-sw .eq.recibe rect{stroke:var(--good);stroke-width:2.5;fill:var(--good-soft)}
+.c04-sw .eq.descarta rect{stroke:var(--warm);stroke-width:2.5;fill:var(--warm-soft)}
+.c04-sw .sw{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.c04-sw .swt{fill:var(--ink);font-size:13px;font-weight:700;text-anchor:middle}
+.c04-sw .pt{fill:var(--muted);font-size:11px;text-anchor:middle}
+.c04-sw .cab{stroke:var(--line);stroke-width:2.5}
+.c04-sw .cab.origen{stroke:var(--accent);stroke-width:4}
+.c04-sw .cab.directa{stroke:var(--good);stroke-width:4}
+.c04-sw .cab.inunda{stroke:var(--warm);stroke-width:4;stroke-dasharray:7 5}
+.c04-sw .legend i.o{background:var(--accent)} .c04-sw .legend i.d{background:var(--good)} .c04-sw .legend i.x{background:var(--warm)}
+.c04-sw td,.c04-sw th{font-size:.86rem}
+.c04-sw td.mac{font-family:var(--f-mono)}
+.c04-sw tr.nueva td{background:var(--accent-soft)}
+.c04-sw .stat{font:600 .86rem var(--f-display);color:var(--muted)}
+</style>
+<div class="c04-sw">
+  <div class="opciones">
+    <label>Envía
+      <select id="c04-de">
+        <option value="0" selected>A (puerto 1)</option><option value="1">B (puerto 2)</option>
+        <option value="2">C (puerto 3)</option><option value="3">D (puerto 4)</option>
+      </select></label>
+    <label>Para
+      <select id="c04-para">
+        <option value="0">A</option><option value="1">B</option>
+        <option value="2" selected>C</option><option value="3">D</option>
+        <option value="t">Todos (broadcast)</option>
+      </select></label>
+  </div>
+  <div class="btns">
+    <button class="primary" id="c04-enviar">Enviar trama</button>
+    <button id="c04-vaciar">Vaciar la tabla</button>
+  </div>
+  <div class="split">
+    <svg id="c04-dib" viewBox="0 0 360 250" role="img" aria-label="Cuatro computadoras conectadas a los puertos 1 a 4 de un switch"></svg>
+    <div class="tbl"><table><caption class="stat" style="text-align:left;padding-bottom:4px">Tabla MAC del switch</caption>
+      <thead><tr><th>Dirección MAC</th><th>Puerto</th></tr></thead><tbody id="c04-tabla"></tbody></table></div>
+  </div>
+  <div class="legend"><span><i class="o"></i>origen</span><span><i class="d"></i>entrega directa</span><span><i class="x"></i>copia inundada</span></div>
+  <div class="readout" id="c04-res" aria-live="polite"></div>
+  <p class="stat" id="c04-cuenta"></p>
+</div></div></section>
+<section><h2>Broadcast: cuando se le habla a todos</h2><div class="prose"><p>A veces un equipo <b>quiere</b> hablarle a todos. Recién conectado a una red, una computadora no sabe quién le va a dar una dirección IP ni cuál es la MAC del router. Entonces manda una trama a la dirección <code>ff:ff:ff:ff:ff:ff</code>, el <b>broadcast</b>, que el switch siempre inunda por todos sus puertos. Es el equivalente a pararse en el pasillo y preguntar en voz alta: «¿quién es el router aquí?». Dos protocolos que veremos en los capítulos 5 y 8, ARP y DHCP, empiezan exactamente así.</p><p>Todos los equipos que reciben un mismo broadcast forman un <b>dominio de broadcast</b>. Hasta aquí, todo el switch es un solo dominio: cada «¿quién es…?» lo escuchan todos los equipos conectados.</p><p>Eso está bien en una casa con diez equipos. En una red con miles se vuelve un problema: cada broadcast interrumpe a todas las máquinas, consume ancho de banda en todos los enlaces y, si alguien conecta por error un cable que forma un círculo entre dos switches, los broadcasts dan vueltas para siempre y se multiplican hasta tumbar la red. A esto se le llama <b>tormenta de broadcast</b>, y es una de las caídas más clásicas en redes mal diseñadas. Los switches serios se defienden con un protocolo que detecta los círculos y apaga el puerto que sobra (STP, <i>Spanning Tree</i>), pero la mejor defensa es no tener dominios gigantes. Para eso existen las VLAN.</p></div></section>
+<section><h2>VLAN: varias redes sobre el mismo cable</h2><div class="prose"><p>Una <b>VLAN</b> (red local virtual) es una forma de partir un switch en varios switches lógicos. Cada puerto se asigna a una VLAN, identificada con un número del 1 al 4094, y el switch se comporta como si cada VLAN fuera un aparato aparte: las tramas de la VLAN 10 nunca salen por un puerto de la VLAN 20, ni siquiera los broadcasts. Cada VLAN es su propio dominio de broadcast, con su propia tabla MAC. Es el edificio con pisos separados y un conserje por piso.</p><p>Para que dos equipos de VLAN distintas se hablen hace falta pasar por un <b>router</b>, que trabaja en la capa de red. Eso, lejos de ser una molestia, es la idea: obliga a que todo lo que cruza de una red a otra pase por un punto donde se puede controlar.</p><p>Ahora, ¿qué pasa con el cable que une dos switches o que va de la OLT al BNG, por donde tienen que viajar todas las VLAN a la vez? Ahí cada trama lleva una <b>etiqueta</b> de 4 bytes, definida en la norma IEEE <b>802.1Q</b>, que dice a qué VLAN pertenece. Por eso hay dos tipos de puerto:</p><ul><li><b>Puerto de acceso</b>: pertenece a una sola VLAN. Las tramas entran y salen sin etiqueta; el equipo conectado ni se entera de que existe una VLAN. Es el puerto donde enchufas una computadora o un teléfono.</li><li><b>Puerto troncal</b> (<i>trunk</i>): lleva muchas VLAN a la vez y cada trama viaja etiquetada. El switch del otro lado lee la etiqueta y sabe a qué red pertenece la trama.</li></ul><p>La etiqueta se mete entre la dirección de origen y el campo de tipo. Además del número de VLAN, lleva tres bits de <b>prioridad</b>, que le dicen a los equipos qué tramas atender primero cuando hay congestión, por ejemplo la voz antes que una descarga. El capítulo 26 vuelve sobre eso.</p></div><div class="lab" id="04-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Un switch, tres redes</h3></div><p class="hint">Asigna cada puerto a la VLAN de Internet, de voz o de gestión y manda un broadcast o una trama hacia el router. Mira quién la recibe, quién no y con qué etiqueta sale por el puerto troncal.</p><style>
+.c04-vl{display:grid;gap:14px}
+.c04-vl svg{width:100%;max-width:520px;height:auto;display:block;margin:0 auto;font-family:var(--f-display)}
+.c04-vl .eq rect{fill:var(--card);stroke-width:2.5}
+.c04-vl .eq text{fill:var(--ink);font-size:15px;text-anchor:middle}
+.c04-vl .eq .sub{font-size:13px;font-weight:700}
+.c04-vl .eq.recibe rect{fill:var(--good-soft)}
+.c04-vl .eq.origen rect{stroke-width:4}
+.c04-vl .eq.no rect{opacity:.45}
+.c04-vl .sw{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.c04-vl .swt{fill:var(--ink);font-size:13px;font-weight:700;text-anchor:middle}
+.c04-vl .cab{stroke:var(--line);stroke-width:2.5}
+.c04-vl .cab.on{stroke-width:5}
+.c04-vl .tr{fill:var(--ink);font-size:13px;text-anchor:middle}
+.c04-vl .eti{font-family:var(--f-mono);font-size:12px;font-weight:700;text-anchor:middle}
+.c04-vl .legend i.v10{background:var(--accent)} .c04-vl .legend i.v20{background:var(--warm)} .c04-vl .legend i.v30{background:var(--good)}
+</style>
+<div class="c04-vl">
+  <div class="opciones" id="c04-puertos"></div>
+  <div class="opciones">
+    <label>Envía el equipo del
+      <select id="c04-vl-de">
+        <option value="0" selected>Puerto 1 (computadora)</option><option value="1">Puerto 2 (teléfono IP)</option>
+        <option value="2">Puerto 3 (portátil)</option><option value="3">Puerto 4 (cámara)</option>
+      </select></label>
+  </div>
+  <div class="btns">
+    <button class="primary" id="c04-vl-bc">Mandar un broadcast</button>
+    <button id="c04-vl-rt">Mandar hacia el router</button>
+  </div>
+  <svg id="c04-vl-dib" viewBox="0 0 400 250" role="img" aria-label="Switch con cuatro puertos de acceso arriba y un puerto troncal abajo hacia el router del operador"></svg>
+  <div class="legend"><span><i class="v10"></i>VLAN 10 · Internet</span><span><i class="v20"></i>VLAN 20 · Voz</span><span><i class="v30"></i>VLAN 30 · Gestión</span></div>
+  <div class="readout" id="c04-vl-res" aria-live="polite"></div>
+  <p class="hint">Los números de VLAN son de ejemplo. El puerto 5 es troncal: lleva las tres VLAN y por eso cada trama sale etiquetada.</p>
+</div></div></section>
+<section><h2>Etiquetas dobles (QinQ) en un operador</h2><div class="prose"><p>Una VLAN se identifica con 12 bits, así que hay unas 4.094 disponibles. Para una empresa sobra. Para un operador con cientos de miles de clientes, no alcanza si quiere darle a cada cliente su propio carril separado de los demás.</p><p>La solución es poner <b>dos etiquetas</b>, una encima de la otra. Se llama <b>QinQ</b> (una «Q» de 802.1Q dentro de otra) y la norma que la define es la IEEE <b>802.1ad</b>. La etiqueta de afuera, la <b>S-VLAN</b> (de servicio), suele identificar un servicio o una OLT completa; la de adentro, la <b>C-VLAN</b> (de cliente), identifica al cliente dentro de ella. Con dos etiquetas hay 4.094 × 4.094 combinaciones, más de 16 millones de carriles posibles.</p><p>En la práctica, los operadores de fibra usan dos modelos, descritos por el Broadband Forum en su documento TR-101:</p><ul><li><b>N:1</b> (muchos a uno): todos los clientes de un servicio comparten una misma VLAN. Por ejemplo, una VLAN para el Internet de todos los clientes de una OLT. Es simple y gasta pocas VLAN, pero obliga a que los equipos de la red impidan que los clientes se vean entre sí.</li><li><b>1:1</b> (uno a uno): cada cliente tiene su propia combinación de dos etiquetas. Separa por completo a cada cliente y permite saber, solo mirando las etiquetas, de qué OLT y de qué puerto viene una trama. Es el modelo que usa QinQ.</li></ul><p>Lo más común es una mezcla: Internet en una VLAN, voz en otra y gestión en una tercera, con QinQ donde hace falta separar por cliente. El BNG, al recibir la trama, quita las etiquetas y sabe exactamente a qué cliente y a qué servicio corresponde, antes de mirar siquiera su dirección IP.</p></div><figure class="fig fig-capas" id="04-diagrama-6"><div class="lienzo"><svg viewBox="0 40 900 330" style="min-width:720px" role="img" aria-label="La misma trama sin etiqueta, con una etiqueta 802.1Q de VLAN 10 y con doble etiqueta QinQ: S-VLAN 500 del operador por fuera y C-VLAN 1050 del cliente por dentro; cada etiqueta suma 4 bytes entre el origen y el tipo">
+  
+  <g class="t t-b">
+    <text x="20" y="70">Trama normal</text>
+    <text x="20" y="160">Con una etiqueta</text>
+    <text x="20" y="250">Con dos etiquetas</text>
+  </g>
+  <g class="t t-s t-m">
+    <text x="20" y="86">sin VLAN</text>
+    <text x="20" y="176">802.1Q (VLAN)</text>
+    <text x="20" y="266">802.1ad (QinQ)</text>
+  </g>
+  
+  <g class="t t-s" text-anchor="middle">
+    <rect x="170" y="54" width="90" height="40" rx="6" class="caja"/><text x="215" y="78">Destino</text>
+    <rect x="262" y="54" width="90" height="40" rx="6" class="caja"/><text x="307" y="78">Origen</text>
+    <rect x="354" y="54" width="60" height="40" rx="6" class="caja"/><text x="384" y="78">Tipo</text>
+    <rect x="416" y="54" width="190" height="40" rx="6" class="c-red"/><text x="511" y="78">Datos (paquete IP)</text>
+    <rect x="608" y="54" width="56" height="40" rx="6" class="caja"/><text x="636" y="78">FCS</text>
+  
+    <rect x="170" y="144" width="90" height="40" rx="6" class="caja"/><text x="215" y="168">Destino</text>
+    <rect x="262" y="144" width="90" height="40" rx="6" class="caja"/><text x="307" y="168">Origen</text>
+    <rect x="354" y="144" width="110" height="40" rx="6" class="c-enl" style="stroke-width:2"/><text x="409" y="162" class="t-b">VLAN 10</text><text x="409" y="177" class="t-m">+4 bytes</text>
+    <rect x="466" y="144" width="60" height="40" rx="6" class="caja"/><text x="496" y="168">Tipo</text>
+    <rect x="528" y="144" width="190" height="40" rx="6" class="c-red"/><text x="623" y="168">Datos (paquete IP)</text>
+    <rect x="720" y="144" width="56" height="40" rx="6" class="caja"/><text x="748" y="168">FCS</text>
+  
+    <rect x="170" y="234" width="90" height="40" rx="6" class="caja"/><text x="215" y="258">Destino</text>
+    <rect x="262" y="234" width="90" height="40" rx="6" class="caja"/><text x="307" y="258">Origen</text>
+    <rect x="354" y="234" width="110" height="40" rx="6" class="d-oper" style="stroke-width:2"/><text x="409" y="252" class="t-b">S-VLAN 500</text><text x="409" y="267" class="t-m">+4 bytes</text>
+    <rect x="466" y="234" width="110" height="40" rx="6" class="c-enl" style="stroke-width:2"/><text x="521" y="252" class="t-b">C-VLAN 1050</text><text x="521" y="267" class="t-m">+4 bytes</text>
+    <rect x="578" y="234" width="60" height="40" rx="6" class="caja"/><text x="608" y="258">Tipo</text>
+    <rect x="640" y="234" width="190" height="40" rx="6" class="c-red"/><text x="735" y="258">Datos (paquete IP)</text>
+    <rect x="832" y="234" width="56" height="40" rx="6" class="caja"/><text x="860" y="258">FCS</text>
+  </g>
+  
+  <path d="M353 98v42M353 188v42" class="ln ln-d"/>
+  <text x="358" y="122" class="t t-s t-m">aquí se mete la etiqueta</text>
+  
+  <g class="t t-s">
+    <text x="672" y="70" class="t-m">Así sale de una computadora</text>
+    <text x="784" y="162" class="t-m">Un switch sabe</text><text x="784" y="177" class="t-m">a qué red va</text>
+  </g>
+  <g class="t t-s" text-anchor="middle">
+    <text x="409" y="294" class="k-oper t-b">la pone el operador:</text><text x="409" y="309" class="t-m">servicio u OLT</text>
+    <text x="521" y="294" class="k-enl t-b">identifica</text><text x="521" y="309" class="t-m">al cliente</text>
+  </g>
+  
+  <rect x="20" y="326" width="868" height="32" rx="6" class="caja"/>
+  <text x="34" y="346" class="t t-s"><tspan class="t-b">Cada etiqueta (4 bytes):</tspan> tipo de etiqueta <tspan class="t-mono">0x8100</tspan> (o <tspan class="t-mono">0x88a8</tspan> la de afuera) · prioridad, 3 bits · número de VLAN, 12 bits: del 1 al 4094</text>
+</svg></div><figcaption><b>La misma trama, con una y con dos etiquetas.</b> Arriba, una trama Ethernet normal. En el medio, la misma trama con una etiqueta 802.1Q que la marca como VLAN 10. Abajo, con doble etiqueta (QinQ): la de afuera la pone la red del operador y la de adentro identifica al cliente. Cada etiqueta suma 4 bytes y se mete entre la dirección de origen y el tipo. Los números de VLAN son de ejemplo.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH típico separa los servicios de cada cliente en VLAN distintas sobre la misma fibra. Dentro de la ONT, el puerto de datos y el Wi-Fi van a la VLAN de Internet; el puerto de teléfono, a la VLAN de voz; y la propia ONT tiene una tercera VLAN de gestión, por donde el operador la configura y la vigila sin mezclarse con el tráfico del cliente. La OLT recibe todo eso por la PON, le agrega o traduce etiquetas y lo sube por un troncal hacia la red de agregación. Al final, el BNG recibe el Internet, la plataforma de voz recibe la voz y los sistemas de gestión reciben la gestión, cada uno por su VLAN. En un esquema ilustrativo podrían ser la VLAN 10 para Internet, la 20 para voz y la 30 para gestión; cada operador elige sus propios números y los documenta en su diseño de red.</p></div><div class="ml"><b>En la práctica</b><p>Como Internet, voz y gestión viajan por VLAN separadas, cada servicio puede fallar por su cuenta. Un cliente puede navegar sin problema y no tener tono, porque la VLAN de voz quedó mal configurada en su ONT o en la OLT; o al revés, tener tono y no Internet. También explica por qué el operador puede ver y configurar la ONT de un cliente que «no tiene Internet»: la VLAN de gestión sigue viva. Cuando atiendas un caso así, la pregunta útil no es «¿hay fibra?», sino «¿qué servicio falla y cuál funciona?».</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué identifica una dirección MAC y por qué solo sirve dentro de la misma red local?</summary><p>Identifica a la tarjeta de red de un equipo, como una cédula, pero no dice dónde está. Para llegar a otra red hace falta una dirección IP y un router.</p></details><details><summary>Un switch recibe una trama para una MAC que no tiene en su tabla. ¿Qué hace?</summary><p>La inunda: la manda por todos los puertos menos por el que entró. Cuando el destino responda, aprenderá dónde está.</p></details><details><summary>¿Qué aprende el switch de cada trama que recibe, la dirección de origen o la de destino?</summary><p>La de origen: anota que esa MAC está en el puerto por donde entró la trama.</p></details><details><summary>¿Por qué un broadcast de la VLAN 10 no llega a un equipo de la VLAN 20 conectado al mismo switch?</summary><p>Porque cada VLAN es un dominio de broadcast separado; el switch se comporta como si fueran dos aparatos distintos. Para cruzar de una a otra hace falta un router.</p></details><details><summary>¿Para qué usa un operador la doble etiqueta (QinQ)?</summary><p>Para superar el límite de unas 4.094 VLAN y darle a cada cliente su propio carril: la etiqueta de afuera identifica el servicio o la OLT y la de adentro, al cliente.</p></details><details><summary>Un cliente tiene Internet pero no tono en el teléfono. ¿Cómo puede ser si usan la misma fibra?</summary><p>Porque Internet y voz viajan en VLAN distintas; si la de voz está mal configurada, solo falla ese servicio.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Ethernet" target="_blank" rel="noopener">Ethernet (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Direcci%C3%B3n_MAC" target="_blank" rel="noopener">Dirección MAC (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/VLAN" target="_blank" rel="noopener">Red de área local virtual, VLAN (Wikipedia) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/IEEE_802.1ad" target="_blank" rel="noopener">IEEE 802.1ad, QinQ (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const EQ=[
+    {n:'A',mac:'00:00:5e:00:53:0a',x:62,y:36},
+    {n:'B',mac:'00:00:5e:00:53:0b',x:298,y:36},
+    {n:'C',mac:'00:00:5e:00:53:0c',x:62,y:214},
+    {n:'D',mac:'00:00:5e:00:53:0d',x:298,y:214}];
+  const PUERTO=[{x:140,y:96},{x:220,y:96},{x:140,y:156},{x:220,y:156}];
+  let tabla={}, ultima=null, copias=0, inundadas=0;
+  const corta=m=>'…'+m.slice(-5);
+  const y=a=>a.length>1?a.slice(0,-1).join(', ')+' y '+a[a.length-1]:a.join('');
+  function dibujar(estado){
+    estado=estado||{eq:[],cab:[]};
+    let s='';
+    EQ.forEach((e,i)=>{const p=PUERTO[i];s+='<line class="cab '+(estado.cab[i]||'')+'" x1="'+e.x+'" y1="'+(i<2?e.y+20:e.y-20)+'" x2="'+p.x+'" y2="'+p.y+'"/>';});
+    s+='<rect class="sw" x="104" y="96" width="152" height="60" rx="8"/><text class="swt" x="180" y="131">Switch</text>';
+    PUERTO.forEach((p,i)=>{s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="var(--ink)"/><text class="pt" x="'+p.x+'" y="'+(i<2?p.y+18:p.y-9)+'">p'+(i+1)+'</text>';});
+    EQ.forEach((e,i)=>{s+='<g class="eq '+(estado.eq[i]||'')+'"><rect x="'+(e.x-52)+'" y="'+(e.y-20)+'" width="104" height="40" rx="8"/><text x="'+e.x+'" y="'+(e.y-3)+'" style="font-weight:700">PC '+e.n+'</text><text class="sub" x="'+e.x+'" y="'+(e.y+13)+'">'+corta(e.mac)+'</text></g>';});
+    q('#c04-dib').innerHTML=s;
+    const filas=Object.keys(tabla).map(m=>'<tr'+(m===ultima?' class="nueva"':'')+'><td class="mac">'+m+'</td><td>'+tabla[m]+'</td></tr>');
+    q('#c04-tabla').innerHTML=filas.length?filas.join(''):'<tr><td colspan="2" style="color:var(--muted)">vacía: el switch aún no conoce a nadie</td></tr>';
+    q('#c04-cuenta').textContent='Copias enviadas por el switch: '+copias+' ('+inundadas+' por inundación).';
+  }
+  function enviar(){
+    const de=+q('#c04-de').value, pv=q('#c04-para').value, o=EQ[de];
+    if(pv!=='t'&&+pv===de){q('#c04-res').innerHTML='<span class="warn">Elige un destino distinto del origen.</span>';return;}
+    const est={eq:[],cab:[]};est.eq[de]='origen';est.cab[de]='origen';
+    const lineas=[];
+    const sabia=tabla[o.mac]===de+1;
+    tabla[o.mac]=de+1;ultima=sabia?null:o.mac;
+    lineas.push('1. Aprende: '+(sabia?'ya sabía que '+corta(o.mac)+' (PC '+o.n+') está en el puerto '+(de+1)+'; renueva su reloj.':'anota que '+corta(o.mac)+' (PC '+o.n+') está en el puerto '+(de+1)+'.'));
+    const otros=[0,1,2,3].filter(i=>i!==de);
+    if(pv==='t'){
+      lineas.push('2. Busca: el destino es ff:ff:ff:ff:ff:ff, el broadcast. Va para todos.');
+      otros.forEach(i=>{est.cab[i]='inunda';est.eq[i]='recibe';});
+      copias+=3;inundadas+=3;
+      lineas.push('<span class="warn">3. Inunda por los puertos '+y(otros.map(i=>i+1))+'. Todos la leen, porque es para todos.</span>');
+    }else{
+      const d=+pv, dm=EQ[d].mac;
+      if(tabla[dm]){
+        lineas.push('2. Busca '+corta(dm)+' (PC '+EQ[d].n+'): está en el puerto '+tabla[dm]+'.');
+        est.cab[d]='directa';est.eq[d]='recibe';copias+=1;
+        lineas.push('<span class="ok">3. Reenvía solo por el puerto '+tabla[dm]+'. Nadie más se entera.</span>');
+      }else{
+        lineas.push('2. Busca '+corta(dm)+' (PC '+EQ[d].n+'): no está en la tabla.');
+        otros.forEach(i=>{est.cab[i]='inunda';est.eq[i]=i===d?'recibe':'descarta';});
+        copias+=3;inundadas+=3;
+        const desc=otros.filter(i=>i!==d).map(i=>'PC '+EQ[i].n).join(' y ');
+        lineas.push('<span class="warn">3. Inunda por los puertos '+y(otros.map(i=>i+1))+'. '+desc+' la reciben y la descartan porque no es para ellas.</span>');
+        lineas.push('Cuando PC '+EQ[d].n+' responda, el switch aprenderá dónde está.');
+      }
+    }
+    q('#c04-res').innerHTML=lineas.map(l=>'<span>'+l+'</span>').join('');
+    dibujar(est);
+  }
+  q('#c04-enviar').addEventListener('click',enviar);
+  q('#c04-vaciar').addEventListener('click',()=>{tabla={};ultima=null;copias=0;inundadas=0;dibujar();q('#c04-res').innerHTML='<span>Tabla vacía, como un switch recién encendido. Manda una trama.</span>';});
+  dibujar();
+  q('#c04-res').innerHTML='<span>El switch acaba de encenderse y su tabla está vacía. Manda una trama.</span>';
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const VL={10:{n:'Internet',c:'var(--accent)'},20:{n:'Voz',c:'var(--warm)'},30:{n:'Gestión',c:'var(--good)'}};
+  const MIN={10:'Internet',20:'voz',30:'gestión'};
+  const EQ=[{n:'Computadora',c:'PC',v:10},{n:'Teléfono IP',c:'Teléfono',v:20},{n:'Portátil',c:'Portátil',v:10},{n:'Cámara',c:'Cámara',v:30}];
+  const X=[50,150,250,350];
+  let ultimo=null;
+  q('#c04-puertos').innerHTML=EQ.map((e,i)=>'<label>Puerto '+(i+1)+' · '+e.n+'<select id="c04-vl-p'+i+'">'+
+    [10,20,30].map(v=>'<option value="'+v+'"'+(v===e.v?' selected':'')+'>VLAN '+v+' · '+VL[v].n+'</option>').join('')+'</select></label>').join('');
+  function dibujar(r){
+    r=r||{};
+    let s='';
+    EQ.forEach((e,i)=>{const c=VL[e.v].c,on=r.recibe&&(r.recibe.includes(i)||r.de===i);
+      s+='<line class="cab'+(on?' on':'')+'" x1="'+X[i]+'" y1="62" x2="'+X[i]+'" y2="100" style="stroke:'+(on?c:'var(--line)')+'"/>';});
+    s+='<rect class="sw" x="20" y="100" width="360" height="50" rx="8"/><text class="swt" x="200" y="130">Switch</text>';
+    EQ.forEach((e,i)=>{const c=VL[e.v].c;s+='<circle cx="'+X[i]+'" cy="100" r="5" fill="'+c+'"/>';
+      const cl=r.de===i?'origen':(r.recibe?(r.recibe.includes(i)?'recibe':'no'):'');
+      s+='<g class="eq '+cl+'"><rect x="'+(X[i]-46)+'" y="14" width="92" height="48" rx="8" style="stroke:'+c+'"/><text x="'+X[i]+'" y="35">'+e.c+'</text><text class="sub" x="'+X[i]+'" y="53" style="fill:'+c+'">VLAN '+e.v+'</text></g>';});
+    const tOn=r.troncal!=null, tc=tOn?VL[r.troncal].c:'var(--line)';
+    s+='<line class="cab'+(tOn?' on':'')+'" x1="200" y1="150" x2="200" y2="200" style="stroke:'+tc+'"/>';
+    s+='<text class="tr" x="212" y="166" style="text-anchor:start">puerto 5 · troncal</text>';
+    s+='<rect class="sw" x="105" y="200" width="190" height="38" rx="8"/><text class="tr" x="200" y="224" style="font-size:14px;font-weight:700">Router del operador</text>';
+    if(tOn)s+='<rect x="50" y="164" width="140" height="26" rx="5" fill="var(--card)" stroke="'+tc+'" stroke-width="2"/><text class="eti" x="120" y="182" style="fill:'+tc+'">etiqueta: VLAN '+r.troncal+'</text>';
+    q('#c04-vl-dib').innerHTML=s;
+  }
+  function leer(){EQ.forEach((e,i)=>{e.v=+q('#c04-vl-p'+i).value;});}
+  function mandar(tipo){
+    leer();
+    const de=+q('#c04-vl-de').value, v=EQ[de].v, nom=i=>EQ[i].n+' (puerto '+(i+1)+')';
+    const misma=[0,1,2,3].filter(i=>i!==de&&EQ[i].v===v), otra=[0,1,2,3].filter(i=>i!==de&&EQ[i].v!==v);
+    const l=['La trama entra por el puerto '+(de+1)+', que es de la VLAN '+v+' ('+VL[v].n+'). Entra sin etiqueta: el equipo no sabe que existe una VLAN.'];
+    let r;
+    if(tipo==='bc'){
+      r={de,recibe:misma,troncal:v};
+      l.push(misma.length?'<span class="ok">La reciben: '+misma.map(nom).join(', ')+'.</span>':'<span class="ok">Ningún otro puerto de acceso está en la VLAN '+v+'.</span>');
+      if(otra.length)l.push('<span class="warn">No la reciben: '+otra.map(i=>nom(i)+', VLAN '+EQ[i].v).join('; ')+'. Para ellos es como si fuera otro switch.</span>');
+      l.push('Sale por el troncal con la etiqueta VLAN '+v+', para que el router sepa que es tráfico de '+MIN[v]+'.');
+    }else{
+      r={de,recibe:[],troncal:v};
+      l.push('<span class="ok">Sale solo por el troncal, con la etiqueta VLAN '+v+'. El router la lee y la entrega al servicio de '+MIN[v]+'.</span>');
+      if(otra.length)l.push('Si este equipo quisiera hablar con '+otra.map(nom).join(' o ')+', tendría que pasar por el router, porque están en otra VLAN.');
+    }
+    q('#c04-vl-res').innerHTML=l.map(x=>'<span>'+x+'</span>').join('');
+    ultimo=tipo;dibujar(r);
+  }
+  q('#c04-vl-bc').addEventListener('click',()=>mandar('bc'));
+  q('#c04-vl-rt').addEventListener('click',()=>mandar('rt'));
+  [0,1,2,3].forEach(i=>q('#c04-vl-p'+i).addEventListener('change',()=>{leer();ultimo?mandar(ultimo):dibujar();}));
+  q('#c04-vl-de').addEventListener('change',()=>{ultimo?mandar(ultimo):null;});
+  dibujar();
+  q('#c04-vl-res').innerHTML='<span>Elige un equipo y manda un broadcast. Después cambia la VLAN de algún puerto y vuelve a probar.</span>';
+})();
+</script>
+</body>
+</html>

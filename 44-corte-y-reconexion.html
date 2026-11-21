@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Corte y reconexión · Cómo funciona un telco</title>
+<meta name="description" content="Cobrar un servicio de Internet es un ciclo completo (facturar o recargar, recordar, esperar, suspender, cobrar y reconectar) que une a finanzas, cobranza, atención y red; el modelo de cobro (prepago, postpago o mixto) y la forma de cortar deciden cuánto se recupera, cuántas llamadas llegan y cuántos clientes se pierden.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="44-corte-y-reconexion">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 44 DE 49</span><h1>Corte y reconexión: cómo se cobra el servicio (prepago y postpago)</h1><p class="lede">Cobrar un servicio de Internet es un ciclo completo (facturar o recargar, recordar, esperar, suspender, cobrar y reconectar) que une a finanzas, cobranza, atención y red; el modelo de cobro (prepago, postpago o mixto) y la forma de cortar deciden cuánto se recupera, cuántas llamadas llegan y cuántos clientes se pierden.</p></header>
+<section><div class="prose"><p>Un operador puede tener la mejor red del país y aun así quebrar si no cobra bien. Cobrar parece sencillo (mandar la factura y esperar el pago), pero en un servicio que se usa todos los días hay una decisión delicada en el medio: qué hacer cuando el pago no llega. Si se corta demasiado pronto o de mala manera, el cliente se enoja, llama y se va con la competencia. Si se corta demasiado tarde, o nunca, la deuda crece y el que paga a tiempo termina subsidiando al que no.</p><p>Este capítulo recorre el ciclo completo, de la factura a la reconexión, y muestra por qué la forma de suspender es tanto una decisión técnica como una decisión de negocio.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un gimnasio. Con membresía mensual (postpago) entras todo el mes y pagas después; con pase por días (prepago) pagas antes de entrar. Si el pago no llega, el gimnasio puede cerrarle la puerta al socio o dejarlo pasar solo hasta la recepción, donde puede pagar en un minuto y seguir a entrenar. La segunda opción recupera muchos más socios.</p></div><figure class="fig fig-capas" id="44-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: facturar, cobrar, suspender y reconectar">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class=""><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class="apagado"><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class="apagado"><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class="apagado"><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class="apagado"><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class=""><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class=""><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class=""><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: facturar, cobrar, suspender y reconectar</text>
+</svg></div><figcaption><b>Dónde estamos.</b> El cobro empieza en el BSS (factura, saldo y cobro), llega al cliente por los canales (app, mensajes, portal de pago), pasa por la integración que convierte «suspender» o «reconectar» en órdenes técnicas y termina en la red. En la cadena de valor une facturación, cobranza y retención.</figcaption></figure></section>
+<section><h2>El ciclo de cobro de punta a punta: facturar, avisar, vencer, suspender, cobrar y reconectar</h2><div class="prose"><p>Todo modelo de cobro, por distinto que parezca, recorre las mismas seis estaciones:</p><ol class="steps"><li><span><b>Facturar o recargar.</b> El sistema de facturación emite la factura del mes o el cliente compra días de servicio.</span></li><li><span><b>Avisar.</b> El cliente recibe recordatorios antes de que venza el plazo.</span></li><li><span><b>Vencer.</b> Llega la fecha límite. Si no hay pago, la cuenta entra en <b>mora</b>, es decir, queda con una deuda vencida.</span></li><li><span><b>Suspender.</b> Pasado el plazo de tolerancia, se restringe el servicio.</span></li><li><span><b>Cobrar.</b> El cliente paga por algún canal y el pago se registra en su cuenta.</span></li><li><span><b>Reconectar.</b> El servicio vuelve, idealmente solo y en segundos.</span></li></ol><p>Cada estación tiene un dueño distinto: finanzas define precios y plazos, cobranza diseña los avisos y las etapas, atención recibe las llamadas, la red ejecuta el corte y la reconexión, y sistemas mantiene la cadena que une todo. Un error en cualquiera se nota en todas las demás.</p></div><figure class="fig fig-esquema" id="44-diagrama-9"><div class="lienzo"><svg viewBox="0 0 860 380" style="min-width:640px" role="img" aria-label="El ciclo de cobro en seis estaciones: facturar o recargar, avisar, vencer, suspender, cobrar y reconectar, con el área que ejecuta cada una; lo ideal es pasar del aviso al cobro sin suspender">
+  
+  <g class="ln" style="stroke-width:2">
+    <path d="M538 50 Q640 52 668 78" marker-end="url(#fl)"/>
+    <path d="M690 140 V238" marker-end="url(#fl)"/>
+    <path d="M668 300 Q640 328 538 330" marker-end="url(#fl)"/>
+    <path d="M322 330 Q220 328 192 302" marker-end="url(#fl)"/>
+    <path d="M170 238 V142" marker-end="url(#fl)"/>
+    <path d="M192 78 Q220 52 320 50" marker-end="url(#fl)"/>
+  </g>
+  
+  <path d="M590 140 L272 240" class="ln s-enl ln-d" style="stroke-width:2.4" marker-end="url(#fl-enl)"/>
+  <text x="430" y="150" text-anchor="middle" class="t t-xs t-b t-m">EL CICLO DE COBRO</text>
+  <text x="452" y="222" class="t t-s t-b k-enl">lo ideal: del aviso</text>
+  <text x="452" y="238" class="t t-s t-b k-enl">al pago, sin suspender</text>
+  
+  <rect x="325" y="20" width="210" height="58" rx="10" class="d-sis"/><use href="#i-factura" x="335" y="32" width="32" height="32" class="ico"/><text x="376" y="45" class="t t-b">① Facturar o recargar</text><text x="376" y="64" class="t t-s">BSS · finanzas</text>
+  <rect x="585" y="80" width="210" height="58" rx="10" class="d-casa"/><use href="#i-celular" x="595" y="92" width="32" height="32" class="ico"/><text x="636" y="105" class="t t-b">② Avisar</text><text x="636" y="124" class="t t-s">canales · cobranza</text>
+  <rect x="585" y="242" width="210" height="58" rx="10" class="d-sis"/><use href="#i-factura" x="595" y="254" width="32" height="32" class="ico"/><text x="636" y="267" class="t t-b">③ Vencer</text><text x="636" y="286" class="t t-s">BSS · reglas de mora</text>
+  <rect x="325" y="302" width="210" height="58" rx="10" class="d-oper"/><use href="#i-router-core" x="335" y="314" width="32" height="32" class="ico"/><text x="376" y="327" class="t t-b">④ Suspender</text><text x="376" y="346" class="t t-s">orquestador · red</text>
+  <rect x="65" y="242" width="210" height="58" rx="10" class="d-casa"/><use href="#i-persona" x="75" y="254" width="32" height="32" class="ico"/><text x="116" y="267" class="t t-b">⑤ Cobrar</text><text x="116" y="286" class="t t-s">pasarela · conciliación</text>
+  <rect x="65" y="80" width="210" height="58" rx="10" class="d-oper"/><use href="#i-llave" x="75" y="92" width="32" height="32" class="ico"/><text x="116" y="105" class="t t-b">⑥ Reconectar</text><text x="116" y="124" class="t t-s">orquestador · red</text>
+</svg></div><figcaption><b>El ciclo de cobro.</b> Seis estaciones en rueda, cada una con el área o el sistema que la ejecuta. El ciclo se cierra cuando el cliente reconectado recibe su siguiente factura o hace su siguiente recarga. El objetivo del operador es que la mayoría de los clientes vaya directo de «avisar» a «cobrar» sin pasar nunca por «suspender».</figcaption></figure></section>
+<section><h2>Postpago: ciclos de facturación, fecha de corte, días de gracia y mora</h2><div class="prose"><p>En el <b>postpago</b> el cliente usa el servicio y paga después, como la luz o el agua. El año se divide en <b>ciclos de facturación</b>, normalmente mensuales. Muchos operadores reparten a sus clientes en varios ciclos (los que facturan el día 1, los del día 10, los del día 20) para no concentrar todo el trabajo y todo el ingreso en una misma fecha.</p><p>Un mes típico, con plazos de ejemplo:</p><ul><li><b>Día 1:</b> se emite la factura del ciclo.</li><li><b>Día 12:</b> recordatorio amable: «tu factura vence el 15».</li><li><b>Día 15:</b> <b>fecha de vencimiento</b>. Si no hay pago, la cuenta entra en mora.</li><li><b>Días 16 a 20:</b> <b>días de gracia</b>. El servicio sigue funcionando mientras llegan más avisos. La gracia absorbe olvidos, fines de semana y pagos que tardan en acreditarse.</li><li><b>Día 20:</b> <b>fecha de suspensión</b> (algunos operadores la llaman «fecha de corte»). Si el pago no llegó, se restringe el servicio.</li></ul><p>Una aclaración de vocabulario: en muchos países, «fecha de corte» significa el <b>cierre del ciclo de facturación</b>, no el día en que se suspende el servicio. Conviene que todos en la empresa usen las palabras igual, sobre todo frente al cliente.</p></div><figure class="fig fig-flujo" id="44-diagrama-2"><div class="lienzo"><svg viewBox="0 0 880 650" style="min-width:700px" role="img" aria-label="Ciclo postpago: factura el día 1, recordatorio el día 12, vencimiento el día 15 y gracia, aviso previo el día 18, suspensión el día 20 con redirección al portal de pago, pago el día 22, conciliación y reconexión en segundos">
+  <g class="t t-s t-b">
+    <rect x="56" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-persona" x="62" y="26" width="26" height="26" class="ico"/><text x="92" y="44">Cliente</text>
+    <rect x="176" y="14" width="108" height="52" rx="10" class="d-sis"/><use href="#i-factura" x="182" y="26" width="26" height="26" class="ico"/><text x="212" y="37">BSS</text><text x="212" y="53" class="t t-s">facturación</text>
+    <rect x="296" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-celular" x="302" y="26" width="26" height="26" class="ico"/><text x="332" y="37">Avisos</text><text x="332" y="53" class="t t-s t-m">SMS, app…</text>
+    <rect x="416" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-candado" x="422" y="26" width="26" height="26" class="ico"/><text x="452" y="37">Pasarela</text><text x="452" y="53" class="t t-s t-m">de pago</text>
+    <rect x="536" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-monitor" x="542" y="26" width="26" height="26" class="ico"/><text x="572" y="44">Orquestador</text>
+    <rect x="656" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-router-core" x="662" y="26" width="26" height="26" class="ico"/><text x="692" y="37">RADIUS</text><text x="692" y="53" class="t t-s t-m">y BNG</text>
+  </g>
+  <line x1="110" y1="66" x2="110" y2="630" class="vida"/>
+  <line x1="230" y1="66" x2="230" y2="630" class="vida"/>
+  <line x1="350" y1="66" x2="350" y2="630" class="vida"/>
+  <line x1="470" y1="66" x2="470" y2="630" class="vida"/>
+  <line x1="590" y1="66" x2="590" y2="630" class="vida"/>
+  <line x1="710" y1="66" x2="710" y2="630" class="vida"/>
+  
+  <g class="t t-xs t-b t-m">
+    <text x="8" y="114">DÍA 1</text><text x="8" y="154">DÍA 12</text><text x="8" y="200">DÍA 15</text><text x="8" y="250">DÍA 18</text><text x="8" y="294">DÍA 20</text><text x="8" y="424">DÍA 22</text>
+  </g>
+  
+  <line x1="230" y1="110" x2="112" y2="110" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="118" y="102" class="t t-s">① Factura del mes</text>
+  <line x1="350" y1="150" x2="112" y2="150" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="118" y="142" class="t t-s">② «Vence el 15: paga aquí»</text>
+  <rect x="180" y="180" width="250" height="36" rx="8" class="d-sis"/>
+  <text x="190" y="196" class="t t-s t-b">③ Vence sin pago: mora</text><text x="190" y="210" class="t t-s">empiezan 5 días de gracia</text>
+  <line x1="350" y1="246" x2="112" y2="246" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="118" y="238" class="t t-s">④ «Se suspende el día 20»</text>
+  
+  <line x1="230" y1="290" x2="588" y2="290" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="238" y="282" class="t t-s">⑤ Suspender cliente</text>
+  <line x1="590" y1="326" x2="708" y2="326" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="596" y="318" class="t t-s"><tspan class="t-b">CoA</tspan> ⑥ portal</text>
+  <line x1="710" y1="364" x2="112" y2="364" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="118" y="356" class="t t-s">⑦ Cualquier página lo lleva al portal de pago</text>
+  
+  <line x1="110" y1="420" x2="468" y2="420" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="118" y="412" class="t t-s">⑧ Paga desde el portal</text>
+  <line x1="470" y1="456" x2="232" y2="456" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="238" y="474" class="t t-s">⑨ Pago aprobado</text>
+  <rect x="180" y="488" width="200" height="34" rx="8" class="d-sis"/>
+  <text x="190" y="509" class="t t-s t-b">⑩ Concilia: cuenta al día</text>
+  <line x1="230" y1="546" x2="588" y2="546" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="238" y="538" class="t t-s">⑪ Reconectar cliente</text>
+  <line x1="590" y1="580" x2="708" y2="580" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="596" y="572" class="t t-s"><tspan class="t-b">CoA</tspan> ⑫ normal</text>
+  <line x1="710" y1="614" x2="112" y2="614" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="118" y="606" class="t t-s">⑬ Navega otra vez, en segundos</text>
+  
+  <g class="t t-xs t-b">
+    <path d="M790 96v160" class="ln" style="stroke-width:3"/><text x="798" y="172" class="t-m">FACTURA</text><text x="798" y="186" class="t-m">Y AVISOS</text>
+    <path d="M790 276v96" class="ln s-apl" style="stroke-width:3"/><text x="798" y="322" class="k-apl">SUSPENSIÓN</text>
+    <path d="M790 404v214" class="ln s-enl" style="stroke-width:3"/><text x="798" y="506" class="k-enl">PAGO Y</text><text x="798" y="520" class="k-enl">RECONEXIÓN</text>
+  </g>
+</svg></div><figcaption><b>El ciclo postpago, paso a paso.</b> El tiempo corre hacia abajo y a la izquierda están los días de ejemplo. La facturación emite la factura y los recordatorios; al vencer empieza la gracia; si no hay pago, el BSS le pide al orquestador que suspenda y la red redirige al cliente al portal de pago. Cuando el cliente paga, la pasarela confirma, el pago se concilia y el orquestador reconecta en segundos.</figcaption></figure></section>
+<section><h2>Prepago: recargas, saldo, vigencia por días y corte al vencer</h2><div class="prose"><p>En el <b>prepago</b> el cliente paga antes de usar: compra 7, 15 o 30 días de servicio. El sistema guarda una <b>vigencia</b>, la fecha y hora en que se acaban los días comprados. No hay facturas que perseguir ni mora: cuando la vigencia vence, el servicio se restringe; cuando el cliente recarga, vuelve.</p><p>Para el operador, el prepago tiene ventajas claras: <b>cobra por adelantado</b>, no tiene deuda incobrable y atiende a clientes que no podrían o no querrían firmar un contrato. Su desventaja es que el cliente puede irse con la misma facilidad: no hay permanencia, y cada vencimiento es una oportunidad de cambiarse de operador.</p><p>Por eso, en prepago, la cobranza se convierte en <b>recordar y facilitar la recarga</b>: avisar tres días antes, el día anterior y el mismo día; tener puntos de recarga en todas partes; y que la recarga reactive el servicio al instante.</p></div><figure class="fig fig-flujo" id="44-diagrama-3"><div class="lienzo"><svg viewBox="0 0 880 640" style="min-width:700px" role="img" aria-label="Ciclo prepago: el cliente recarga, el BSS suma la vigencia y el orquestador activa el perfil normal; tres días antes llega un aviso; al vencer, el cliente pasa al portal de recarga; al recargar vuelve el perfil normal sin intervención humana">
+  <g class="t t-s t-b">
+    <rect x="56" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-persona" x="62" y="26" width="26" height="26" class="ico"/><text x="92" y="44">Cliente</text>
+    <rect x="196" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-celular" x="202" y="26" width="26" height="26" class="ico"/><text x="232" y="37">Canal de</text><text x="232" y="53">recarga</text>
+    <rect x="330" y="14" width="120" height="52" rx="10" class="d-sis"/><use href="#i-factura" x="336" y="26" width="26" height="26" class="ico"/><text x="366" y="37">BSS</text><text x="366" y="53" class="t t-s">saldo, vigencia</text>
+    <rect x="476" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-monitor" x="482" y="26" width="26" height="26" class="ico"/><text x="512" y="44">Orquestador</text>
+    <rect x="616" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-router-core" x="622" y="26" width="26" height="26" class="ico"/><text x="652" y="37">RADIUS</text><text x="652" y="53" class="t t-s t-m">y BNG</text>
+  </g>
+  <line x1="110" y1="66" x2="110" y2="620" class="vida"/>
+  <line x1="250" y1="66" x2="250" y2="620" class="vida"/>
+  <line x1="390" y1="66" x2="390" y2="620" class="vida"/>
+  <line x1="530" y1="66" x2="530" y2="620" class="vida"/>
+  <line x1="670" y1="66" x2="670" y2="620" class="vida"/>
+  <g class="t t-xs t-b t-m">
+    <text x="8" y="114">DÍA 0</text><text x="8" y="320">DÍA 27</text><text x="8" y="370">DÍA 30</text><text x="8" y="498">DÍA 31</text>
+  </g>
+  
+  <line x1="110" y1="110" x2="248" y2="110" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="118" y="102" class="t t-s">① Recarga 30 días</text>
+  <line x1="250" y1="146" x2="388" y2="146" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="258" y="138" class="t t-s">② Abono confirmado</text>
+  <rect x="320" y="164" width="200" height="34" rx="8" class="d-sis"/>
+  <text x="330" y="185" class="t t-s t-b">③ Vigencia: día 30, 23:59</text>
+  <line x1="390" y1="226" x2="528" y2="226" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="398" y="218" class="t t-s">④ Activar</text>
+  <line x1="530" y1="262" x2="668" y2="262" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="538" y="254" class="t t-s"><tspan class="t-b">CoA</tspan> ⑤ normal</text>
+  
+  <line x1="390" y1="316" x2="112" y2="316" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="118" y="308" class="t t-s">⑥ «Te quedan 3 días: recarga aquí»</text>
+  
+  <line x1="390" y1="366" x2="528" y2="366" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="398" y="358" class="t t-s">⑦ Vigencia vencida</text>
+  <line x1="530" y1="402" x2="668" y2="402" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="538" y="394" class="t t-s"><tspan class="t-b">CoA</tspan> ⑧ portal</text>
+  <line x1="670" y1="440" x2="112" y2="440" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="118" y="432" class="t t-s">⑨ Portal: «recarga para seguir navegando»</text>
+  
+  <line x1="110" y1="494" x2="248" y2="494" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="118" y="486" class="t t-s">⑩ Recarga</text>
+  <line x1="250" y1="530" x2="388" y2="530" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="258" y="522" class="t t-s">⑪ Abono</text>
+  <line x1="390" y1="566" x2="528" y2="566" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="398" y="558" class="t t-s">⑫ Activar</text>
+  <line x1="530" y1="602" x2="668" y2="602" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="538" y="594" class="t t-s"><tspan class="t-b">CoA</tspan> ⑬ normal</text>
+  
+  <g class="t t-xs t-b">
+    <path d="M760 96v172" class="ln s-enl" style="stroke-width:3"/><text x="768" y="182" class="k-enl">RECARGA</text>
+    <path d="M760 298v26" class="ln" style="stroke-width:3"/><text x="768" y="316" class="t-m">AVISO</text>
+    <path d="M760 350v96" class="ln s-apl" style="stroke-width:3"/><text x="768" y="396" class="k-apl">VENCE:</text><text x="768" y="410" class="k-apl">PORTAL</text>
+    <path d="M760 478v130" class="ln s-enl" style="stroke-width:3"/><text x="768" y="540" class="k-enl">RECARGA</text><text x="768" y="554" class="t-m">segundos</text>
+  </g>
+</svg></div><figcaption><b>El ciclo prepago.</b> El cliente recarga en un canal (app, comercio, banca); el BSS suma los días a su vigencia y el orquestador activa el perfil normal. Tres días antes del vencimiento llega el aviso. Al vencer, el orquestador cambia al cliente al portal de recarga; en cuanto recarga, vuelve el perfil normal, sin intervención humana.</figcaption></figure></section>
+<section><h2>Modelos mixtos: plan base con recargas, pago por días o por semana y planes flexibles</h2><div class="prose"><p>Entre el postpago puro y el prepago puro hay muchas combinaciones, y cada vez son más comunes:</p><div class="tbl"><table><thead><tr><th>Modelo</th><th>Cómo funciona</th><th>Para quién sirve</th></tr></thead><tbody><tr><td>Plan base con recargas</td><td>Un plan mensual barato y paquetes extra (más velocidad, más días) que se pagan por adelantado</td><td>Clientes que quieren controlar el gasto</td></tr><tr><td>Pago por días o por semana</td><td>Vigencias cortas a precio proporcional</td><td>Ingresos diarios o semanales, trabajadores independientes</td></tr><tr><td>Postpago con límite</td><td>Contrato mensual, pero con suspensión automática al llegar a cierta deuda</td><td>Clientes nuevos sin historial de pago</td></tr><tr><td>Prepago con renovación automática</td><td>El cliente deja una tarjeta o un débito y la recarga se hace sola</td><td>Quien quiere la comodidad del postpago sin contrato</td></tr></tbody></table></div><p>Técnicamente, todos se apoyan en las mismas piezas: un saldo o una vigencia en el BSS, reglas que deciden cuándo suspender y un mecanismo de corte y reconexión rápido. La diferencia está en el catálogo y en la comunicación, no en la red.</p></div></section>
+<section><h2>Avisar antes de cortar: SMS, WhatsApp, correo, notificación en la app y en el navegador</h2><div class="prose"><p>La forma más barata de cobrar es que el cliente pague <b>antes</b> de que haya que suspender. Buena parte de la mora no es falta de voluntad, sino olvido o fricción: una tarjeta vencida, un débito rechazado o una fecha que se pasó. Un buen aviso resuelve ese tipo de mora sin costo.</p><div class="tbl"><table><thead><tr><th>Canal</th><th>A favor</th><th>Cuidado</th></tr></thead><tbody><tr><td>SMS</td><td>Llega a cualquier celular</td><td>Poco espacio; los enlaces despiertan desconfianza por las estafas</td></tr><tr><td>Mensajería (por ejemplo WhatsApp)</td><td>Se lee mucho y permite pagar desde la conversación</td><td>Requiere consentimiento y plantillas aprobadas</td></tr><tr><td>Correo</td><td>Puede llevar la factura completa</td><td>Se pierde entre promociones</td></tr><tr><td>Notificación en la app</td><td>Lleva directo al botón de pago</td><td>Solo para quien instaló la app</td></tr><tr><td>Aviso en el navegador</td><td>Lo ve quien está usando el servicio en ese momento</td><td>Debe ser breve y no bloquear la navegación</td></tr></tbody></table></div><p>El <b>aviso en el navegador</b> es exclusivo de un operador de Internet: el BNG puede mostrar una página de aviso una vez («tu factura vence mañana») y después dejar navegar normalmente. Los mejores avisos dicen <b>cuánto</b>, <b>hasta cuándo</b> y <b>cómo pagar en un toque</b>, y salen de un remitente que el cliente reconoce.</p></div></section>
+<section><h2>Formas de suspender: reducir la velocidad, portal cautivo (walled garden) o corte total</h2><div class="prose"><p>Llegó la fecha de suspensión y no hay pago. Hay tres formas de restringir el servicio, de la más suave a la más dura:</p><ul><li><b>Reducir la velocidad.</b> El cliente sigue navegando, pero a una velocidad mínima: alcanza para mensajes y para pagar, no para ver video. Es una advertencia que se siente, pero no deja a nadie incomunicado.</li><li><b>Portal cautivo</b> (en inglés, <i>walled garden</i>, «jardín amurallado»). El cliente solo puede entrar a una lista corta de sitios: el portal de pago, la app del operador y, a veces, servicios de emergencia. Cualquier otra página lo redirige a una pantalla que explica el motivo y ofrece pagar ahí mismo.</li><li><b>Corte total.</b> No pasa nada: ni navegación, ni aviso, ni pago desde la casa.</li></ul><p>La diferencia entre la segunda y la tercera es enorme para el cliente. Con el portal <b>sabe qué pasó</b> y puede resolverlo en un minuto desde su propio sofá. Con el corte total ve exactamente lo mismo que si se hubiera cortado la fibra: no hay Internet y no sabe por qué. Muchos llaman a reportar una avería, otros se enojan y algunos se van.</p></div><figure class="fig fig-comparacion" id="44-diagrama-5"><div class="lienzo"><svg viewBox="0 0 880 434" style="min-width:680px" role="img" aria-label="Comparación de tres formas de suspender: reducir la velocidad, portal cautivo y corte total. El portal cautivo recupera más pagos, genera menos llamadas y pierde menos clientes; el corte total parece una avería, genera más llamadas y más bajas">
+  <rect x="455" y="10" width="200" height="388" rx="12" class="d-casa" style="fill-opacity:.35"/>
+  <text x="345.0" y="36" text-anchor="middle" class="t t-b">Reducir la velocidad</text><text x="345.0" y="54" text-anchor="middle" class="t t-s t-m">velocidad mínima</text>
+  <text x="555.0" y="36" text-anchor="middle" class="t t-b">Portal cautivo</text><text x="555.0" y="54" text-anchor="middle" class="t t-s t-m">solo se puede pagar</text>
+  <text x="765.0" y="36" text-anchor="middle" class="t t-b">Corte total</text><text x="765.0" y="54" text-anchor="middle" class="t t-s t-m">no pasa nada</text>
+  <line x1="20" y1="70" x2="860" y2="70" class="ln" style="stroke-width:.8"/>
+  <text x="24" y="101.0" class="t t-s t-b">Qué vive el cliente</text>
+  <text x="345.0" y="94.0" text-anchor="middle" class="t t-s">navega lento y</text><text x="345.0" y="109.0" text-anchor="middle" class="t t-s">sabe que debe</text>
+  <text x="555.0" y="94.0" text-anchor="middle" class="t t-s">ve el motivo y</text><text x="555.0" y="109.0" text-anchor="middle" class="t t-s">un botón de pago</text>
+  <text x="765.0" y="94.0" text-anchor="middle" class="t t-s">sin Internet:</text><text x="765.0" y="109.0" text-anchor="middle" class="t t-s">parece una avería</text>
+  <line x1="20" y1="124" x2="860" y2="124" class="ln" style="stroke-width:.8"/>
+  <text x="24" y="155.0" class="t t-s t-b">¿Puede pagar desde casa?</text>
+  <text x="345.0" y="155.0" text-anchor="middle" class="t t-s">sí, con lentitud</text>
+  <text x="555.0" y="155.0" text-anchor="middle" class="t t-s">sí, en un minuto</text>
+  <text x="765.0" y="155.0" text-anchor="middle" class="t t-s">no</text>
+  <line x1="20" y1="178" x2="860" y2="178" class="ln" style="stroke-width:.8"/>
+  <text x="24" y="209.0" class="t t-s t-b">Recuperación de pagos</text>
+  <rect x="305.0" y="197.0" width="24" height="16" rx="3" class="c-enl"/>
+  <rect x="333.0" y="197.0" width="24" height="16" rx="3" class="c-enl"/>
+  <rect x="361.0" y="197.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="515.0" y="197.0" width="24" height="16" rx="3" class="c-enl"/>
+  <rect x="543.0" y="197.0" width="24" height="16" rx="3" class="c-enl"/>
+  <rect x="571.0" y="197.0" width="24" height="16" rx="3" class="c-enl"/>
+  <rect x="725.0" y="197.0" width="24" height="16" rx="3" class="c-enl"/>
+  <rect x="753.0" y="197.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="781.0" y="197.0" width="24" height="16" rx="3" class="caja"/>
+  <line x1="20" y1="232" x2="860" y2="232" class="ln" style="stroke-width:.8"/>
+  <text x="24" y="263.0" class="t t-s t-b">Llamadas al centro</text>
+  <rect x="305.0" y="251.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="333.0" y="251.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="361.0" y="251.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="515.0" y="251.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="543.0" y="251.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="571.0" y="251.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="725.0" y="251.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="753.0" y="251.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="781.0" y="251.0" width="24" height="16" rx="3" class="d-sis"/>
+  <line x1="20" y1="286" x2="860" y2="286" class="ln" style="stroke-width:.8"/>
+  <text x="24" y="317.0" class="t t-s t-b">Clientes que se van</text>
+  <rect x="305.0" y="305.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="333.0" y="305.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="361.0" y="305.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="515.0" y="305.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="543.0" y="305.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="571.0" y="305.0" width="24" height="16" rx="3" class="caja"/>
+  <rect x="725.0" y="305.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="753.0" y="305.0" width="24" height="16" rx="3" class="d-sis"/>
+  <rect x="781.0" y="305.0" width="24" height="16" rx="3" class="d-sis"/>
+  <line x1="20" y1="340" x2="860" y2="340" class="ln" style="stroke-width:.8"/>
+  <text x="24" y="371.0" class="t t-s t-b">¿Sigue la voz?</text>
+  <text x="345.0" y="371.0" text-anchor="middle" class="t t-s">sí</text>
+  <text x="555.0" y="371.0" text-anchor="middle" class="t t-s">sí, si se configura</text>
+  <text x="765.0" y="371.0" text-anchor="middle" class="t t-s">no</text>
+  <line x1="20" y1="394" x2="860" y2="394" class="ln" style="stroke-width:.8"/>
+  <rect x="24" y="408" width="16" height="12" rx="3" class="c-enl"/><text x="46" y="418" class="t t-s">favorable</text><rect x="130" y="408" width="16" height="12" rx="3" class="d-sis"/><text x="152" y="418" class="t t-s">desfavorable · tendencias ilustrativas, no datos de un operador</text>
+</svg></div><figcaption><b>Tres formas de suspender.</b> Cada columna es una forma de suspender y cada fila, un efecto. Los bloques verdes indican un resultado favorable y los anaranjados, uno desfavorable; cuantos más bloques, más fuerte el efecto. El portal cautivo suele dar la mejor combinación: recupera más pagos, genera menos llamadas y pierde menos clientes. Las tendencias son ilustrativas, no datos de un operador concreto.</figcaption></figure></section>
+<section><h2>Dónde se corta: en la sesión (RADIUS y BNG) o en la fibra (gestor de OLT), y qué cambia</h2><div class="prose"><p>Además de <b>cómo</b> suspender, hay que decidir <b>dónde</b>. Hay dos lugares posibles en la red, y el cliente vive cosas muy distintas en cada uno.</p><p><b>En la sesión.</b> El orquestador marca al cliente como suspendido en <b>RADIUS</b>, que le manda al <b>BNG</b> un mensaje <b>CoA</b> (el mismo cambio en caliente del capítulo 43) con un perfil de suspensión: velocidad reducida o portal cautivo. La ONT sigue encendida y conectada; solo cambia lo que el BNG le deja hacer. Se pueden mantener abiertos la voz, la app o el portal de pago. Y el equipo sigue visible para el ACS y el monitoreo, así que el diagnóstico del capítulo 42 sigue funcionando.</p><p><b>En la fibra.</b> El orquestador le pide al <b>gestor de OLT</b> (el sistema que administra las OLT, a veces una plataforma en la nube) que <b>deshabilite la ONT</b>. La OLT le ordena a la ONT dejar de transmitir. Caen la navegación, la voz, la TV y la gestión remota. El cliente no ve ningún aviso, el operador pierde de vista el equipo y, al pagar, la ONT tiene que volver a activarse, sincronizarse con la OLT y abrir una sesión nueva: uno a tres minutos, si todo sale bien. Cortar a miles de clientes así significa enviar un comando por cada ONT, lo que puede tardar horas.</p><p>Cortar en la fibra tiene un lugar, pero no es la mora de todos los días: sirve para la <b>baja definitiva</b>, el <b>fraude</b> o el <b>equipo no devuelto</b>, y funciona aunque no exista RADIUS con CoA.</p></div><div class="lab" id="44-lab-7"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Suspensión</h3></div><p class="hint">Elige dónde y cómo suspender a un cliente moroso y cuántos clientes se suspenden hoy. Mira qué ve el cliente, qué servicios pierde, si el operador sigue viendo su equipo, cuántas llamadas llegan y cuánto tarda en volver el servicio cuando paga.</p><style>
+[id="44-lab-7"] .c44s-grid{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:640px){[id="44-lab-7"] .c44s-grid{grid-template-columns:minmax(0,1fr)}}
+[id="44-lab-7"] .c44s-tel{border:2px solid var(--ink);border-radius:22px;padding:14px 12px 18px;min-height:250px;background:var(--card);display:grid;gap:8px;align-content:start;max-width:220px;justify-self:center;width:100%}
+[id="44-lab-7"] .c44s-barra{font:600 .7rem var(--f-mono);color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px}
+[id="44-lab-7"] .c44s-tel h4{margin:0;font:700 .95rem var(--f-display)}
+[id="44-lab-7"] .c44s-tel p{font-size:.82rem;line-height:1.35}
+[id="44-lab-7"] .c44s-btn{display:block;text-align:center;border-radius:8px;padding:7px;font:700 .82rem var(--f-display);background:var(--accent);color:var(--card)}
+[id="44-lab-7"] .c44s-btn.sec{background:var(--paper);color:var(--accent);border:1px solid var(--accent)}
+[id="44-lab-7"] .c44s-err{color:var(--muted);text-align:center;padding-top:30px}
+[id="44-lab-7"] .c44s-err b{display:block;font:700 2rem var(--f-display)}
+[id="44-lab-7"] td.si{color:var(--good);font-weight:600} [id="44-lab-7"] td.no{color:var(--warm);font-weight:600}
+[id="44-lab-7"] .c44s-pasos li span{font-size:.92rem}
+[id="44-lab-7"] .c44s-pasos small{font-family:var(--f-mono);color:var(--muted);margin-left:6px}
+[id="44-lab-7"] [hidden]{display:none}
+</style>
+<div class="btns" id="c44s-modo" role="group" aria-label="Dónde y cómo suspender">
+  <button type="button" data-m="vel">Sesión: velocidad reducida</button>
+  <button type="button" data-m="portal" aria-pressed="true">Sesión: portal cautivo</button>
+  <button type="button" data-m="fibra">Fibra: deshabilitar la ONT</button>
+</div>
+<div class="ctls">
+  <label class="ctl">Clientes que se suspenden hoy <output id="c44s-n-o"></output>
+    <input type="range" id="c44s-n" min="100" max="5000" step="100" value="2000"></label>
+</div>
+<div class="c44s-grid">
+  <div class="c44s-tel" id="c44s-tel" aria-live="polite"></div>
+  <div class="tbl"><table><tbody id="c44s-tabla"></tbody></table></div>
+</div>
+<div class="btns"><button type="button" class="primary" id="c44s-paga">El cliente paga</button></div>
+<div aria-live="polite"><ol class="steps c44s-pasos" id="c44s-pasos" hidden></ol><p class="readout" id="c44s-total" hidden></p></div>
+<p class="hint">Modelo ilustrativo: las llamadas y los tiempos muestran tendencias típicas, no datos de un operador concreto.</p></div></section>
+<section><h2>El esquema por etapas de mora</h2><div class="prose"><p>Las formas de suspender no compiten entre sí: se <b>encadenan</b>. Un buen esquema empieza suave y endurece la medida a medida que la deuda envejece. Un ejemplo con plazos ilustrativos:</p><ol class="steps"><li><span><b>Antes del vencimiento:</b> recordatorios por los canales del cliente.</span></li><li><span><b>Días 1 a 5 de mora:</b> gracia con avisos y un mensaje en el navegador.</span></li><li><span><b>Desde el día 6:</b> velocidad reducida, en la sesión.</span></li><li><span><b>Desde el día 10:</b> portal cautivo, en la sesión. Solo se puede pagar.</span></li><li><span><b>Desde el día 40:</b> corte en la fibra, desde el gestor de OLT.</span></li><li><span><b>Desde el día 70:</b> baja del servicio, retiro del equipo y gestión de la deuda por otras vías.</span></li></ol><p>En cualquier etapa, si el cliente paga, vuelve al servicio normal automáticamente. Lo que cambia según la etapa es <b>cuánto tarda</b>: segundos mientras la suspensión vive en la sesión, minutos si ya se cortó en la fibra, y un trámite completo después de la baja.</p></div><figure class="fig fig-esquema" id="44-diagrama-6"><div class="lienzo"><svg viewBox="0 0 880 320" style="min-width:680px" role="img" aria-label="Esquema por etapas de mora: recordatorios antes del vencimiento, gracia con avisos, velocidad reducida desde el día 6, portal cautivo desde el día 10, corte en la fibra desde el día 40 y baja desde el día 70; pagar en cualquier etapa reconecta, en segundos mientras la suspensión vive en la sesión">
+  <rect x="158" y="18" width="704" height="30" rx="8" class="c-enl"/><text x="510" y="38" text-anchor="middle" class="t t-s t-b">Si paga en cualquier etapa: reconexión automática</text>
+  <rect x="20" y="84" width="138" height="104" rx="10" class="d-casa"/>
+  <text x="30" y="104" class="t t-xs t-b">ANTES DEL DÍA 0</text>
+  <text x="30" y="128" class="t t-s t-b">Recordatorios</text>
+  <text x="30" y="176" class="t t-s t-m">canales</text>
+  <rect x="164" y="84" width="138" height="104" rx="10" class="d-casa"/>
+  <text x="174" y="104" class="t t-xs t-b">DÍAS 1 A 5</text>
+  <text x="174" y="128" class="t t-s t-b">Gracia con</text>
+  <text x="174" y="144" class="t t-s t-b">avisos</text>
+  <text x="174" y="176" class="t t-s t-m">canales y navegador</text>
+  <line x1="233.0" y1="84" x2="233.0" y2="52" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <rect x="308" y="84" width="138" height="104" rx="10" class="d-oper"/>
+  <text x="318" y="104" class="t t-xs t-b">DESDE EL DÍA 6</text>
+  <text x="318" y="128" class="t t-s t-b">Velocidad</text>
+  <text x="318" y="144" class="t t-s t-b">reducida</text>
+  <text x="318" y="176" class="t t-s t-m">sesión: RADIUS, BNG</text>
+  <line x1="377.0" y1="84" x2="377.0" y2="52" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <rect x="452" y="84" width="138" height="104" rx="10" class="d-oper"/>
+  <text x="462" y="104" class="t t-xs t-b">DESDE EL DÍA 10</text>
+  <text x="462" y="128" class="t t-s t-b">Portal cautivo:</text>
+  <text x="462" y="144" class="t t-s t-b">solo pagar</text>
+  <text x="462" y="176" class="t t-s t-m">sesión: RADIUS, BNG</text>
+  <line x1="521.0" y1="84" x2="521.0" y2="52" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <rect x="596" y="84" width="138" height="104" rx="10" class="c-fis"/>
+  <text x="606" y="104" class="t t-xs t-b">DESDE EL DÍA 40</text>
+  <text x="606" y="128" class="t t-s t-b">Corte en</text>
+  <text x="606" y="144" class="t t-s t-b">la fibra</text>
+  <text x="606" y="176" class="t t-s t-m">gestor de OLT</text>
+  <line x1="665.0" y1="84" x2="665.0" y2="52" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <rect x="740" y="84" width="138" height="104" rx="10" class="d-sis"/>
+  <text x="750" y="104" class="t t-xs t-b">DESDE EL DÍA 70</text>
+  <text x="750" y="128" class="t t-s t-b">Baja y retiro</text>
+  <text x="750" y="144" class="t t-s t-b">del equipo</text>
+  <text x="750" y="176" class="t t-s t-m">BSS y logística</text>
+  <line x1="809.0" y1="84" x2="809.0" y2="52" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="20" y="214" class="t t-xs t-b t-m">AL PAGAR, EL SERVICIO VUELVE EN…</text>
+  <path d="M168 224 V232 H586 V224" class="ln" style="stroke-width:1.6"/><text x="377.0" y="250" text-anchor="middle" class="t t-s">segundos: la suspensión vive en la sesión</text>
+  <path d="M600 224 V232 H730 V224" class="ln" style="stroke-width:1.6"/><text x="665.0" y="250" text-anchor="middle" class="t t-s">minutos</text>
+  <path d="M744 224 V232 H874 V224" class="ln" style="stroke-width:1.6"/><text x="809.0" y="250" text-anchor="middle" class="t t-s">trámite</text>
+  <text x="20" y="250" class="t t-s t-m">no hay corte</text>
+  <line x1="20" y1="282" x2="856" y2="282" class="ln" style="stroke-width:2" marker-end="url(#fl)"/><text x="20" y="304" class="t t-xs t-b t-m">LA DEUDA ENVEJECE: CADA ETAPA ES MÁS DURA · PLAZOS DE EJEMPLO</text>
+</svg></div><figcaption><b>El esquema por etapas de mora.</b> De izquierda a derecha, los días desde el vencimiento. Cada etapa dice qué se hace y dónde (BSS, sesión en RADIUS y BNG, gestor de OLT o logística). Las flechas de arriba muestran que pagar en cualquier etapa devuelve el servicio, y la línea indica cuánto tarda esa reconexión. Los plazos son de ejemplo; cada operador y cada regulación fijan los suyos.</figcaption></figure></section>
+<section><h2>Reconectar al pagar: pasarelas, conciliación automática y reconexión en segundos</h2><div class="prose"><p>El cliente pagó. Ahora empieza la carrera más importante del capítulo: que el servicio vuelva <b>antes</b> de que el cliente se canse de esperar. Para eso, tres piezas tienen que funcionar en cadena:</p><ul><li><b>La pasarela de pago</b>: el servicio que procesa la tarjeta, la transferencia o la billetera digital, y que avisa al instante al BSS cuando un pago se aprueba.</li><li><b>La conciliación</b>: asociar cada pago a la cuenta correcta. Con pagos en línea es inmediata, porque el pago trae el número de cliente. Con depósitos bancarios o pagos en comercios puede tardar horas, y ahí nacen muchos problemas.</li><li><b>La orden de reconexión</b>: el BSS ve la cuenta al día, el orquestador marca al cliente como activo en RADIUS y RADIUS le manda al BNG un CoA con el perfil normal.</li></ul><p>Si el corte fue en la sesión, todo esto dura <b>segundos</b>: el cliente paga en el portal cautivo, la página le dice «listo» y ya está navegando. Ninguna persona del operador intervino.</p></div><figure class="fig fig-flujo" id="44-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 630" style="min-width:680px" role="img" aria-label="Corte y reconexión por dentro: el BSS pide suspender, el orquestador marca al cliente en RADIUS, RADIUS envía un CoA al BNG con el perfil de portal, el BNG redirige al cliente al portal de pago; al pagar, el portal avisa al BSS y la misma cadena devuelve el perfil normal; la ONT nunca se apaga">
+  <g class="t t-s t-b">
+    <rect x="16" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-celular" x="22" y="26" width="26" height="26" class="ico"/><text x="52" y="37">Cliente</text><text x="52" y="53" class="t t-s t-m">navegador</text>
+    <rect x="136" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-servidor" x="142" y="26" width="26" height="26" class="ico"/><text x="172" y="37">Portal</text><text x="172" y="53" class="t t-s t-m">de pago</text>
+    <rect x="256" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-router-core" x="262" y="26" width="26" height="26" class="ico"/><text x="292" y="44">BNG</text>
+    <rect x="376" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-llave" x="382" y="26" width="26" height="26" class="ico"/><text x="412" y="44">RADIUS</text>
+    <rect x="496" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-monitor" x="502" y="26" width="26" height="26" class="ico"/><text x="532" y="44">Orquestador</text>
+    <rect x="616" y="14" width="108" height="52" rx="10" class="d-sis"/><use href="#i-factura" x="622" y="26" width="26" height="26" class="ico"/><text x="652" y="37">BSS</text><text x="652" y="53" class="t t-s">cobranza</text>
+  </g>
+  <line x1="70" y1="66" x2="70" y2="570" class="vida"/>
+  <line x1="190" y1="66" x2="190" y2="570" class="vida"/>
+  <line x1="310" y1="66" x2="310" y2="570" class="vida"/>
+  <line x1="430" y1="66" x2="430" y2="570" class="vida"/>
+  <line x1="550" y1="66" x2="550" y2="570" class="vida"/>
+  <line x1="670" y1="66" x2="670" y2="570" class="vida"/>
+  
+  <line x1="670" y1="110" x2="552" y2="110" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="558" y="102" class="t t-s">① Suspender: mora</text>
+  <line x1="550" y1="146" x2="432" y2="146" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="438" y="138" class="t t-s">② Marcar suspendido</text>
+  <line x1="430" y1="186" x2="312" y2="186" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="318" y="178" class="t t-s"><tspan class="t-mono t-b">CoA-Request</tspan> ③</text>
+  <text x="318" y="204" class="t t-s t-m">perfil: portal</text>
+  <line x1="310" y1="222" x2="428" y2="222" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="352" y="240" class="t t-s"><tspan class="t-mono t-b">CoA-ACK</tspan> ④</text>
+  <line x1="70" y1="276" x2="308" y2="276" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="78" y="268" class="t t-s">⑤ Abre www.ejemplo.com</text>
+  <line x1="310" y1="312" x2="72" y2="312" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="78" y="330" class="t t-s">⑥ Redirige al portal: «tu servicio está suspendido»</text>
+  <line x1="70" y1="360" x2="188" y2="360" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="78" y="352" class="t t-s">⑦ Paga</text>
+  
+  <line x1="190" y1="400" x2="668" y2="400" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="198" y="392" class="t t-s">⑧ Pago aprobado, ya conciliado</text>
+  <line x1="670" y1="436" x2="552" y2="436" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="558" y="428" class="t t-s">⑨ Reactivar</text>
+  <line x1="550" y1="472" x2="432" y2="472" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="438" y="464" class="t t-s">⑩ Marcar activo</text>
+  <line x1="430" y1="512" x2="312" y2="512" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="318" y="504" class="t t-s"><tspan class="t-mono t-b">CoA-Request</tspan> ⑪</text>
+  <text x="318" y="530" class="t t-s t-m">perfil: normal</text>
+  <line x1="310" y1="548" x2="428" y2="548" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="352" y="566" class="t t-s"><tspan class="t-mono t-b">CoA-ACK</tspan> ⑫</text>
+  
+  <rect x="16" y="584" width="708" height="36" rx="8" class="c-enl"/>
+  <text x="30" y="607" class="t t-s"><tspan class="t-b">La ONT nunca se apagó:</tspan> la sesión siguió abierta y el equipo, visible para el monitoreo y el diagnóstico.</text>
+  
+  <g class="t t-xs t-b">
+    <path d="M760 96v270" class="ln s-apl" style="stroke-width:3"/><text x="768" y="226" class="k-apl">CORTE</text><text x="768" y="240" class="t-m">segundos</text>
+    <path d="M760 386v180" class="ln s-enl" style="stroke-width:3"/><text x="768" y="470" class="k-enl">RECONEXIÓN</text><text x="768" y="484" class="t-m">segundos</text>
+  </g>
+</svg></div><figcaption><b>El corte y la reconexión por dentro.</b> Arriba, el corte: el BSS pide suspender, el orquestador marca al cliente en RADIUS, RADIUS manda un CoA al BNG y el BNG redirige al cliente al portal de pago. Abajo, la reconexión: el portal confirma el pago al BSS y la misma cadena devuelve el perfil normal. La ONT nunca se apagó, por eso todo dura segundos.</figcaption></figure></section>
+<section><h2>Promesa de pago y reconexión de confianza</h2><div class="prose"><p>No todos los clientes en mora pueden pagar hoy, pero muchos sí pueden pagar el viernes. La <b>promesa de pago</b> reconoce eso: el cliente se compromete a pagar en una fecha cercana y, a cambio, recibe una <b>reconexión de confianza</b>, que le devuelve el servicio por unos días antes de pagar.</p><p>Bien diseñada, la promesa de pago es autoservicio: un botón en el portal cautivo o en la app («pagaré el viernes»), con reglas simples. Una promesa por período, un plazo máximo de pocos días y, si se incumple, vuelta automática a la suspensión, sin nueva promesa por un tiempo. Mal diseñada, se vuelve un hábito: el cliente aprende que siempre puede patear la deuda.</p></div><figure class="fig fig-esquema" id="44-diagrama-10"><div class="lienzo"><svg viewBox="0 0 860 250" style="min-width:660px" role="img" aria-label="Promesa de pago: el cliente suspendido promete pagar en cinco días y recibe una reconexión de confianza; si paga en el plazo sigue normal; si no, vuelve a la suspensión automáticamente y no puede prometer de nuevo por un tiempo">
+  <rect x="20" y="70" width="150" height="64" rx="10" class="d-oper"/><text x="32" y="96" class="t t-s t-b">Suspendido</text><text x="32" y="114" class="t t-s">en el portal de pago</text>
+  <line x1="170" y1="102" x2="196" y2="102" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <rect x="200" y="70" width="150" height="64" rx="10" class="caja"/><text x="212" y="96" class="t t-s t-b">«Pagaré el día 5»</text><text x="212" y="114" class="t t-s">un botón, sin llamar</text>
+  <line x1="350" y1="102" x2="376" y2="102" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <rect x="380" y="70" width="170" height="64" rx="10" class="c-enl"/><text x="392" y="96" class="t t-s t-b">Reconexión de</text><text x="392" y="114" class="t t-s t-b">confianza (CoA)</text>
+  <line x1="550" y1="102" x2="576" y2="102" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <rect x="580" y="78" width="110" height="48" rx="24" class="caja"/><text x="635" y="107" text-anchor="middle" class="t t-s t-b">¿Pagó?</text>
+  <path d="M690 92 L716 56" class="ln" style="stroke-width:2" marker-end="url(#fl)"/><text x="692" y="60" text-anchor="end" class="t t-s t-b">sí</text>
+  <path d="M690 112 L716 148" class="ln" style="stroke-width:2" marker-end="url(#fl)"/><text x="692" y="150" text-anchor="end" class="t t-s t-b">no</text>
+  <rect x="720" y="20" width="130" height="50" rx="10" class="c-enl"/><text x="732" y="42" class="t t-s t-b">Sigue normal</text><text x="732" y="58" class="t t-s">deuda saldada</text>
+  <rect x="720" y="134" width="130" height="64" rx="10" class="d-sis"/><text x="732" y="154" class="t t-s t-b">Vuelve a</text><text x="732" y="170" class="t t-s t-b">suspensión</text><text x="732" y="188" class="t t-s">sin otra promesa</text>
+  
+  <line x1="20" y1="222" x2="700" y2="222" class="ln" marker-end="url(#fl)"/>
+  <g class="t t-xs t-b t-m"><text x="20" y="242">DÍA 0</text><text x="250" y="242">DÍAS 0 A 5: SERVICIO DE CONFIANZA</text><text x="580" y="242">DÍA 5</text></g>
+</svg></div><figcaption><b>La promesa de pago.</b> El cliente suspendido promete pagar en cinco días y recibe una reconexión de confianza. Si paga dentro del plazo, sigue normal. Si no, el sistema lo vuelve a suspender automáticamente y no le ofrece otra promesa durante un tiempo.</figcaption></figure></section>
+<section><h2>Cargos por reconexión, suspensión voluntaria y baja del servicio</h2><div class="prose"><p>Tres situaciones cercanas al corte merecen reglas claras:</p><ul><li><b>Cargo por reconexión.</b> Algunos operadores cobran por reconectar. Tiene sentido cuando la reconexión cuesta, por ejemplo, una visita después de una baja. Si la reconexión es un CoA automático, el cargo es más una penalidad que un costo, y conviene evaluar si espanta al cliente justo cuando estaba por volver.</li><li><b>Suspensión voluntaria.</b> El cliente se va tres meses de viaje y pide pausar el servicio. Técnicamente es la misma suspensión en la sesión, pero comercialmente es lo opuesto: un cliente que quiere quedarse. Ofrecerla evita bajas.</li><li><b>Baja del servicio.</b> Cuando la mora se vuelve definitiva o el cliente se va, se cierra la cuenta, se corta en la fibra, se libera el puerto de la caja para otro cliente y se gestiona la devolución del equipo. Una baja mal cerrada deja puertos ocupados por clientes que ya no existen.</li></ul></div></section>
+<section><h2>Errores que cuestan caro: pagos no conciliados, cortes equivocados y reconexiones que no llegan</h2><div class="prose"><p>Los peores reclamos del área de cobranza no vienen de los clientes que no pagan, sino de los que <b>sí pagaron</b>:</p><ul><li><b>Pagos no conciliados.</b> El cliente depositó, pero el pago no se asoció a su cuenta (referencia equivocada, pago en un comercio que reporta al día siguiente). Para el sistema, sigue debiendo.</li><li><b>Cortes equivocados.</b> El proceso de suspensión masiva corrió antes de que terminara la conciliación de la noche y suspendió a cientos de clientes que habían pagado. O suspendió a quien tenía una promesa de pago vigente o un reclamo abierto.</li><li><b>Reconexiones que no llegan.</b> El pago se registró, pero la orden se perdió en el orquestador, el CoA fue rechazado o la ONT cortada en la fibra no volvió. El cliente pagó y sigue sin servicio: es la llamada más enojada que recibe un centro de atención.</li></ul><p>La defensa es la misma de siempre en este libro: procesos automáticos <b>con verificación</b>. Suspender solo después de conciliar, confirmar cada reconexión con su respuesta de la red y comparar cada día la lista de clientes al día con la lista de clientes suspendidos. Cualquier cliente que esté en las dos es un error que hay que corregir antes de que llame.</p></div><figure class="fig fig-esquema" id="44-diagrama-11"><div class="lienzo"><svg viewBox="0 0 860 330" style="min-width:660px" role="img" aria-label="Dónde se rompe la cadena del pago a la reconexión: pago sin referencia que no se concilia, lote de suspensión que corre antes de conciliar, orden de reconexión que se pierde y CoA que nadie confirma, con el control que evita cada error">
+  <g class="t t-s t-b">
+    <rect x="20" y="40" width="118" height="56" rx="10" class="caja"/><use href="#i-persona" x="28" y="52" width="26" height="26" class="ico"/><text x="58" y="64">Cliente</text><text x="58" y="80" class="t t-s t-m">paga</text>
+    <rect x="160" y="40" width="118" height="56" rx="10" class="caja"/><use href="#i-candado" x="168" y="52" width="26" height="26" class="ico"/><text x="198" y="64">Pasarela</text><text x="198" y="80" class="t t-s t-m">o comercio</text>
+    <rect x="300" y="40" width="118" height="56" rx="10" class="d-sis"/><use href="#i-factura" x="308" y="52" width="26" height="26" class="ico"/><text x="338" y="64">Concilia</text><text x="338" y="80" class="t t-s">a la cuenta</text>
+    <rect x="440" y="40" width="118" height="56" rx="10" class="d-sis"/><use href="#i-factura" x="448" y="52" width="26" height="26" class="ico"/><text x="478" y="64">BSS</text><text x="478" y="80" class="t t-s">¿al día?</text>
+    <rect x="580" y="40" width="118" height="56" rx="10" class="caja"/><use href="#i-monitor" x="588" y="52" width="26" height="26" class="ico"/><text x="618" y="64">Orquestador</text><text x="618" y="80" class="t t-s t-m">la orden</text>
+    <rect x="720" y="40" width="118" height="56" rx="10" class="d-oper"/><use href="#i-router-core" x="728" y="52" width="26" height="26" class="ico"/><text x="758" y="64">RADIUS</text><text x="758" y="80" class="t t-s">y BNG</text>
+  </g>
+  <g class="ln" style="stroke-width:2">
+    <line x1="138" y1="68" x2="156" y2="68" marker-end="url(#fl)"/><line x1="278" y1="68" x2="296" y2="68" marker-end="url(#fl)"/>
+    <line x1="418" y1="68" x2="436" y2="68" marker-end="url(#fl)"/><line x1="558" y1="68" x2="576" y2="68" marker-end="url(#fl)"/>
+    <line x1="698" y1="68" x2="716" y2="68" marker-end="url(#fl)"/>
+  </g>
+  
+  <g class="t t-s t-b" text-anchor="middle">
+    <circle cx="289" cy="26" r="11" class="d-sis"/><text x="289" y="30">1</text>
+    <circle cx="499" cy="26" r="11" class="d-sis"/><text x="499" y="30">2</text>
+    <circle cx="639" cy="26" r="11" class="d-sis"/><text x="639" y="30">3</text>
+    <circle cx="779" cy="26" r="11" class="d-sis"/><text x="779" y="30">4</text>
+  </g>
+  
+  <text x="20" y="134" class="t t-xs t-b t-m">QUÉ FALLA</text><text x="450" y="134" class="t t-xs t-b t-m">EL CONTROL QUE LO ATRAPA</text>
+  <line x1="20" y1="142" x2="840" y2="142" class="ln" style="stroke-width:.8"/>
+  <g class="t t-s">
+    <text x="20" y="168"><tspan class="t-b">1 · Pago sin referencia:</tspan> no se asocia a la cuenta</text>
+    <text x="450" y="168">referencia única y conciliación varias veces al día</text>
+    <text x="20" y="206"><tspan class="t-b">2 · Corte equivocado:</tspan> el lote corre antes de conciliar</text>
+    <text x="450" y="206">suspender solo después de conciliar; excluir promesas</text>
+    <text x="20" y="244"><tspan class="t-b">3 · Reconexión perdida:</tspan> la orden no llega</text>
+    <text x="450" y="244">reintentos y alerta si no hay respuesta en un minuto</text>
+    <text x="20" y="282"><tspan class="t-b">4 · CoA sin confirmar:</tspan> NAK o sin respuesta</text>
+    <text x="450" y="282">plan B: cerrar la sesión para que se reconecte</text>
+  </g>
+  <line x1="20" y1="300" x2="840" y2="300" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="320" class="t t-s t-m">Y cada día: ningún cliente puede estar a la vez «al día» y «suspendido».</text>
+</svg></div><figcaption><b>Dónde se rompe la cadena.</b> De izquierda a derecha, el camino de un pago hasta la reconexión. Los números marcan los puntos donde suelen nacer los errores caros: el pago sin referencia que no se concilia, el lote de suspensión que corre antes de conciliar, la orden que se pierde y el CoA que nadie confirma. Abajo, el control que atrapa cada uno.</figcaption></figure></section>
+<section><h2>Reglas y regulación: avisos previos, plazos y servicios que no se cortan</h2><div class="prose"><p>Cortar un servicio de comunicaciones no es solo una decisión comercial. En casi toda la región la regulación de telecomunicaciones o de protección al consumidor fija condiciones, que varían de país en país. Las más comunes son:</p><ul><li><b>Aviso previo</b> obligatorio antes de suspender, con un plazo mínimo y, a veces, por un medio determinado.</li><li><b>Plazos mínimos de mora</b> antes de suspender o dar de baja.</li><li><b>Reconexión en un plazo máximo</b> después del pago.</li><li><b>Servicios que no se cortan</b>: el acceso a números de emergencia, y en algunos casos ciertos servicios esenciales, aun con la cuenta suspendida.</li><li><b>Reclamos en curso</b>: muchas reglas impiden suspender por un monto que el cliente está disputando.</li></ul><p>El capítulo 47 trata la regulación en detalle. Aquí basta una idea práctica: las reglas de suspensión deben estar <b>escritas en el sistema</b>, no en la memoria de las personas, y revisarse cada vez que cambia la norma.</p></div></section>
+<section><h2>Ideas para cobrar mejor: débito automático, descuento por pronto pago, recargas por apps y comercios, pago desde el portal de corte, recordatorios inteligentes y predecir quién no va a pagar</h2><div class="prose"><p>Cobrar mejor no es cortar más rápido: es lograr que menos clientes lleguen al corte. Las ideas que mejor funcionan:</p><ul><li><b>Débito automático o tarjeta guardada</b>, con un pequeño incentivo para adherirse. Elimina la mora por olvido.</li><li><b>Descuento por pronto pago</b>: pagar antes del vencimiento cuesta un poco menos.</li><li><b>Más lugares para pagar o recargar</b>: apps bancarias, billeteras digitales, comercios de barrio. Cada canal que falta es un cliente que no encuentra cómo pagar.</li><li><b>Pagar desde el portal de corte</b>, sin contraseñas: el portal ya sabe quién es el cliente por su conexión.</li><li><b>Recordatorios inteligentes</b>: no a todos igual. El cliente que siempre paga el día 14 no necesita tres mensajes; el que se atrasó dos veces, sí.</li><li><b>Predecir quién no va a pagar</b>: con el historial de pagos, los reclamos y el uso, un modelo de datos puede señalar a los clientes con más riesgo antes del vencimiento, para ofrecerles una facilidad de pago o un recordatorio personal en lugar de esperar al corte.</li></ul></div><div class="lab" id="44-lab-8"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Diseña tu cobranza</h3></div><p class="hint">Elige el modelo de pago, los días de gracia, los avisos, la forma de suspender y la forma de reconectar. Mira cómo cambian el porcentaje que se recupera, las llamadas al centro de atención y los clientes que se pierden. Es un modelo didáctico: muestra tendencias, no datos de un operador real.</p><style>
+[id="44-lab-8"] .c44c-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:6px 16px;font:500 .88rem var(--f-display)}
+[id="44-lab-8"] .c44c-checks label{display:flex;gap:8px;align-items:flex-start}
+[id="44-lab-8"] .c44c-checks input{margin-top:3px;accent-color:var(--accent)}
+[id="44-lab-8"] .c44c-sub{font:600 .82rem var(--f-display);color:var(--muted)}
+[id="44-lab-8"] .meter{grid-template-columns:minmax(0,150px) minmax(0,1fr) 76px}
+[id="44-lab-8"] .meter .track i{transition:width .25s}
+@media (prefers-reduced-motion: reduce){[id="44-lab-8"] .meter .track i{transition:none}}
+[id="44-lab-8"] .c44c-por{display:grid;gap:4px;font-size:.92rem}
+[id="44-lab-8"] .c44c-por ul{margin:0;padding-left:1.2em}
+@media (max-width:520px){[id="44-lab-8"] .meter{grid-template-columns:minmax(0,1fr) auto}[id="44-lab-8"] .meter .track{grid-column:1/-1;order:3}}
+</style>
+<div class="opciones">
+  <label>Modelo de pago
+    <select id="c44c-modelo">
+      <option value="post" selected>Postpago</option>
+      <option value="pre">Prepago</option>
+      <option value="mix">Mixto: plan base con recargas</option>
+    </select></label>
+  <label>Forma de suspender
+    <select id="c44c-corte">
+      <option value="vel">Reducir la velocidad</option>
+      <option value="portal" selected>Portal cautivo</option>
+      <option value="total">Corte total</option>
+    </select></label>
+  <label>Al pagar, la reconexión es
+    <select id="c44c-recon">
+      <option value="auto" selected>Automática, en segundos</option>
+      <option value="manual">Manual, al día siguiente</option>
+    </select></label>
+</div>
+<div class="ctls">
+  <label class="ctl">Días de gracia <output id="c44c-gracia-o"></output>
+    <input type="range" id="c44c-gracia" min="0" max="20" step="1" value="5"></label>
+</div>
+<p class="c44c-sub">Avisos y facilidades</p>
+<div class="c44c-checks">
+  <label><input type="checkbox" id="c44c-av1" checked> Recordatorio antes del vencimiento</label>
+  <label><input type="checkbox" id="c44c-av2"> Aviso el día del vencimiento</label>
+  <label><input type="checkbox" id="c44c-av3" checked> Aviso previo a la suspensión</label>
+  <label><input type="checkbox" id="c44c-deb"> Débito automático con incentivo</label>
+  <label><input type="checkbox" id="c44c-prom"> Promesa de pago en autoservicio</label>
+</div>
+<div class="meters" aria-live="polite" id="c44c-med">
+  <div class="meter"><span>Se recupera</span><span class="track"><i id="c44c-b1"></i></span><output id="c44c-o1"></output></div>
+  <div class="meter"><span>Llamadas por cada 1000 en mora</span><span class="track"><i id="c44c-b2" style="background:var(--warm)"></i></span><output id="c44c-o2"></output></div>
+  <div class="meter"><span>Clientes que se van</span><span class="track"><i id="c44c-b3" style="background:var(--warm)"></i></span><output id="c44c-o3"></output></div>
+  <div class="meter"><span>Días hasta cobrar</span><span class="track"><i id="c44c-b4" style="background:var(--c-tra)"></i></span><output id="c44c-o4"></output></div>
+</div>
+<div class="c44c-por" aria-live="polite"><b>Por qué:</b><ul id="c44c-por"></ul></div>
+<p class="hint">Modelo didáctico: los números muestran tendencias que la industria describe, no datos de ningún operador.</p></div></section>
+<section><h2>Indicadores: morosidad, recuperación, reconexiones por día, llamadas por corte y bajas después de un corte</h2><div class="prose"><p>Lo que no se mide no mejora. Estos son los indicadores que mejor resumen la salud del ciclo de cobro:</p><div class="tbl"><table><thead><tr><th>Indicador</th><th>Qué mide</th><th>Qué conviene</th></tr></thead><tbody><tr><td>Morosidad</td><td>Porcentaje de lo facturado que está vencido, por antigüedad (30, 60, 90 días)</td><td>Que baje, sobre todo en los tramos largos</td></tr><tr><td>Recuperación</td><td>De los clientes suspendidos, cuántos pagan y en cuántos días</td><td>Que suba y que sea rápida</td></tr><tr><td>Días para cobrar</td><td>Cuántos días pasan en promedio entre facturar y cobrar</td><td>Que bajen</td></tr><tr><td>Reconexiones por día y tiempo de reconexión</td><td>Cuántos clientes vuelven y cuánto tardan desde que pagan</td><td>Segundos, no horas</td></tr><tr><td>Llamadas por corte</td><td>Cuántas llamadas genera cada suspensión</td><td>Que bajen: indica avisos claros y portal útil</td></tr><tr><td>Bajas después de un corte</td><td>Cuántos suspendidos terminan yéndose</td><td>Que bajen: es el costo oculto de cortar mal</td></tr><tr><td>Cortes equivocados</td><td>Clientes suspendidos que ya habían pagado</td><td>Cero</td></tr></tbody></table></div><p>Mirados juntos, cuentan una historia. Si la morosidad baja pero las bajas después del corte suben, se está cobrando a costa de perder clientes. Si la recuperación es alta pero las llamadas por corte también, el portal o los avisos no se entienden.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Imagina dos operadores FTTH de la región, del mismo tamaño y con la misma cantidad de clientes en mora. El primero suspende desde la plataforma que administra sus OLT: deshabilita la ONT. El cliente se queda sin señal y sin aviso, y para él es idéntico a una avería. Los días de corte, el centro de atención se llena de llamadas para reportar «fallas» que son suspensiones, a veces sale un técnico a revisar una casa que solo debía una factura, y quien paga espera minutos, o más, a que la ONT vuelva a activarse. El segundo suspende en la sesión: RADIUS le manda un CoA al BNG con un perfil de portal cautivo que explica el motivo y permite pagar ahí mismo, y la reconexión ocurre sola en segundos; la plataforma de OLT queda solo para bajas, fraude y equipos no devueltos. Lo que la industria observa en casos así es consistente: el segundo recupera más pagos en los primeros días, recibe muchas menos llamadas por cada suspensión y nunca pierde de vista el equipo del cliente.</p></div><div class="ml"><b>En la práctica</b><p>Este capítulo une a cobranza, finanzas, atención al cliente y red alrededor de una decisión con impacto directo en ingresos, llamadas y fidelidad. Si trabajas en finanzas, la forma de cortar cambia cuánto y cuándo entra el dinero. Si trabajas en atención, un portal claro es la diferencia entre un día de corte tranquilo y uno desbordado. Si trabajas en red o en sistemas, eres responsable de que quien paga vuelva en segundos y de que nadie que pagó sea cortado.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué diferencia hay entre la fecha de vencimiento y la fecha de suspensión en postpago?</summary><p>La de vencimiento es el último día para pagar sin estar en mora; la de suspensión llega después de los días de gracia, cuando se restringe el servicio si el pago no llegó.</p></details><details><summary>¿Por qué el portal cautivo recupera más pagos que el corte total?</summary><p>Porque el cliente entiende qué pasó y puede pagar en el momento desde su propia conexión; con el corte total cree que hay una avería, llama y no tiene cómo pagar desde casa.</p></details><details><summary>¿Qué cambia si se suspende en la sesión (RADIUS y BNG) en lugar de en la fibra (gestor de OLT)?</summary><p>En la sesión la ONT sigue conectada y visible, se puede mostrar un aviso y dejar abiertos el pago o la voz, y la reconexión toma segundos. En la fibra se cae todo, no hay aviso, se pierde la gestión y reconectar toma minutos.</p></details><details><summary>¿Para qué casos sí conviene cortar en la fibra?</summary><p>Para la baja definitiva, el fraude, el equipo no devuelto o la mora muy prolongada, y cuando no existe RADIUS con CoA.</p></details><details><summary>Un cliente pagó en un comercio y lo suspendieron igual. ¿Qué falló y cómo se evita?</summary><p>El pago no se concilió a tiempo y el lote de suspensión corrió antes. Se evita suspendiendo solo después de conciliar y comparando cada día la lista de pagos con la de suspendidos.</p></details><details><summary>¿Qué indicador muestra el costo oculto de cortar mal?</summary><p>Las bajas después de un corte: clientes que, en vez de pagar y volver, se van con otro operador.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.rfc-editor.org/rfc/rfc5176" target="_blank" rel="noopener">RFC 5176: autorización dinámica en RADIUS, la base del CoA (IETF) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Portal_cautivo" target="_blank" rel="noopener">Portal cautivo (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Morosidad" target="_blank" rel="noopener">Morosidad: qué es y cómo se mide (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const M={
+    vel:{tel:'<div class="c44s-barra">ejemplo.com · cargando…</div><h4>La página tarda muchísimo</h4><p>Arriba aparece un aviso: «Tu servicio tiene velocidad reducida por un saldo pendiente».</p><span class="c44s-btn">Pagar ahora</span>',
+      inet:['Muy lenta','no'],voz:['Sí','si'],tv:['Con cortes','no'],gest:['Sí','si'],pagar:['Sí, con paciencia','si'],llamadas:0.15,donde:'sesion'},
+    portal:{tel:'<div class="c44s-barra">pago.ejemplo.com</div><h4>Tu servicio está suspendido</h4><p>Tienes un saldo vencido de 25. Paga ahora y vuelves a navegar en segundos.</p><span class="c44s-btn">Pagar ahora</span><span class="c44s-btn sec">Prometer pago</span>',
+      inet:['Solo el portal y la app','no'],voz:['Sí, si se configura','si'],tv:['No','no'],gest:['Sí','si'],pagar:['Sí, en un minuto','si'],llamadas:0.08,donde:'sesion'},
+    fibra:{tel:'<div class="c44s-err"><b>Sin conexión</b>No hay conexión a Internet. Revisa el cable o el router.</div>',
+      inet:['No','no'],voz:['No','no'],tv:['No','no'],gest:['No: el equipo desaparece','no'],pagar:['No: debe usar datos móviles o ir a un comercio','no'],llamadas:0.4,donde:'fibra'}
+  };
+  const PASOS={
+    sesion:[['Paga en el portal o en la app',20],['La pasarela aprueba y el pago se concilia solo',2],['El orquestador marca al cliente activo en RADIUS',1],['RADIUS manda un CoA al BNG con el perfil normal',1],['El cliente navega',0]],
+    fibra:[['Consigue otra conexión o va a un comercio y paga',1800],['El pago se concilia (en un comercio puede tardar horas)',600],['El orquestador pide al gestor de OLT habilitar la ONT',20],['La OLT reactiva la ONT y la vuelve a sincronizar',60],['La ONT abre una sesión nueva con el BNG',30],['El cliente navega',0]]
+  };
+  let modo='portal';
+  const dur=s=>s<60?Math.round(s)+' s':s<3600?Math.round(s/60)+' min':(s/3600).toFixed(1).replace('.',',')+' h';
+  function pintar(){
+    const m=M[modo], n=+q('#c44s-n').value;
+    q('#c44s-n-o').textContent=n.toLocaleString('es');
+    q('#c44s-tel').innerHTML=m.tel;
+    const ejec=m.donde==='sesion'?n/2000*60:n*4;
+    const fila=(t,v)=>'<tr><td>'+t+'</td><td class="'+v[1]+'">'+v[0]+'</td></tr>';
+    q('#c44s-tabla').innerHTML=fila('Internet',m.inet)+fila('Voz',m.voz)+fila('Televisión',m.tv)+
+      fila('El operador sigue viendo el equipo',m.gest)+fila('Puede pagar desde casa',m.pagar)+
+      fila('Tiempo para suspender a los '+n.toLocaleString('es'),[(m.donde==='sesion'?'≈ '+dur(Math.max(ejec,5))+' (miles de CoA por minuto)':'≈ '+dur(ejec)+' (un comando por ONT)'),m.donde==='sesion'||ejec<1800?'si':'no'])+
+      fila('Llamadas esperadas',[Math.round(n*m.llamadas).toLocaleString('es')+' ('+Math.round(m.llamadas*100)+' de cada 100)',m.llamadas<0.2?'si':'no'])+
+      fila('Al pagar, vuelve en',[m.donde==='sesion'?'segundos':'1 a 3 minutos, más lo que tarde en pagar',m.donde==='sesion'?'si':'no']);
+    q('#c44s-pasos').hidden=true;q('#c44s-total').hidden=true;
+    q('#c44s-modo').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===modo?'true':'false'));
+  }
+  q('#c44s-modo').addEventListener('click',e=>{const b=e.target.closest('button');if(b){modo=b.dataset.m;pintar();}});
+  q('#c44s-n').addEventListener('input',pintar);
+  q('#c44s-paga').addEventListener('click',()=>{
+    const p=PASOS[M[modo].donde], tot=p.reduce((s,x)=>s+x[1],0);
+    const ol=q('#c44s-pasos');
+    ol.innerHTML=p.map(x=>'<li><span>'+x[0]+(x[1]?'<small>≈ '+dur(x[1])+'</small>':'')+'</span></li>').join('');
+    ol.hidden=false;
+    const t=q('#c44s-total');t.hidden=false;
+    t.innerHTML=M[modo].donde==='sesion'
+      ?'<span class="ok">Del pago a navegar: ≈ '+dur(tot-20)+' después de pagar. Nadie del operador intervino.</span>'
+      :'<span class="warn">Del corte a navegar: ≈ '+dur(tot)+', y el cliente tuvo que salir de su casa o usar sus datos para pagar.</span>';
+  });
+  pintar();
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  function calcular(){
+    const mod=q('#c44c-modelo').value, corte=q('#c44c-corte').value, recon=q('#c44c-recon').value, g=+q('#c44c-gracia').value;
+    const av1=q('#c44c-av1').checked, av2=q('#c44c-av2').checked, av3=q('#c44c-av3').checked, deb=q('#c44c-deb').checked, prom=q('#c44c-prom').checked;
+    let rec=68, lla=120, baj=3.0, dias=14, por=[];
+    const ef=(r,l,b,d,t)=>{rec+=r;lla+=l;baj+=b;dias+=d;if(t)por.push(t);};
+    if(av1)ef(6,-20,-0.3,-2,'El recordatorio antes de vencer evita la mora por olvido, la más barata de resolver.');
+    if(av2)ef(2,-5,0,-1,null);
+    if(av3)ef(4,-30,-0.3,-1,'Avisar antes de suspender baja mucho las llamadas: el cliente no se sorprende.');
+    if(!av1&&!av2&&!av3)por.push('Sin avisos, muchos clientes descubren la deuda cuando ya están suspendidos.');
+    ef(Math.min(g,7)*0.6-Math.max(0,g-7)*0.5,-Math.min(g,7)*3,0,g*0.7,null);
+    if(g>10)por.push('Una gracia muy larga enseña a pagar tarde: se cobra más lento y se recupera menos.');
+    else if(g===0)por.push('Sin gracia, se suspende a quien solo se atrasó un día: más llamadas y enojo.');
+    if(corte==='vel')ef(4,60,0.5,1,'La velocidad reducida molesta, pero muchos siguen usando el servicio sin pagar.');
+    if(corte==='portal')ef(11,-10,-0.5,-2,'El portal cautivo explica el motivo y permite pagar en el momento.');
+    if(corte==='total')ef(5,230,3.5,2,'El corte total parece una avería: dispara llamadas y empuja a irse.');
+    if(recon==='manual')ef(-4,140,2.5,1,'Reconectar al día siguiente castiga a quien ya pagó: llama, se enoja y a veces se va.');
+    if(deb)ef(6,-15,-0.4,-3,'El débito automático elimina el olvido y los pagos rechazados se detectan antes.');
+    if(prom)ef(4,-25,-0.6,1,'La promesa de pago recupera a quien no puede pagar hoy, sin pasar por una llamada.');
+    if(mod==='pre'){rec+=5;lla*=0.8;baj+=1.5;dias=0;por.push('En prepago se cobra por adelantado: no hay deuda, pero cada vencimiento es una ocasión para irse.');}
+    if(mod==='mix'){rec+=3;lla*=0.9;baj+=0.5;dias*=0.6;por.push('El modelo mixto adelanta parte del cobro y da flexibilidad al cliente.');}
+    rec=Math.max(40,Math.min(97,rec));lla=Math.max(10,lla);baj=Math.max(0.3,baj);dias=Math.max(0,dias);
+    return {rec,lla,baj,dias,por};
+  }
+  function pintar(){
+    q('#c44c-gracia-o').textContent=q('#c44c-gracia').value+' días';
+    const r=calcular();
+    const set=(k,ancho,txt)=>{q('#c44c-b'+k).style.width=Math.min(100,ancho)+'%';q('#c44c-o'+k).textContent=txt;};
+    set(1,r.rec,Math.round(r.rec)+' %');
+    set(2,r.lla/6,Math.round(r.lla));
+    set(3,r.baj*8,r.baj.toFixed(1).replace('.',',')+' %');
+    set(4,r.dias/0.4,r.dias<0.5?'0 (antes)':Math.round(r.dias)+' días');
+    q('#c44c-por').innerHTML=r.por.map(t=>'<li>'+t+'</li>').join('');
+  }
+  document.querySelectorAll('[id^="c44c-"]').forEach(el=>{if(/INPUT|SELECT/.test(el.tagName))el.addEventListener('input',pintar);});
+  pintar();
+})();
+</script>
+</body>
+</html>

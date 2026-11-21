@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ciberseguridad básica · Cómo funciona un telco</title>
+<meta name="description" content="La seguridad informática protege tres cosas (que la información sea confidencial, que no la alteren y que esté disponible), y casi todo se apoya en unas pocas herramientas (cifrado, firmas, certificados, contraseñas con segundo factor, firewalls y actualizaciones) y en el factor humano, que es el blanco más común de los atacantes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="12-ciberseguridad-basica">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 12 DE 49</span><h1>Ciberseguridad básica: proteger la información y las conexiones</h1><p class="lede">La seguridad informática protege tres cosas (que la información sea confidencial, que no la alteren y que esté disponible), y casi todo se apoya en unas pocas herramientas (cifrado, firmas, certificados, contraseñas con segundo factor, firewalls y actualizaciones) y en el factor humano, que es el blanco más común de los atacantes.</p></header>
+<section><div class="prose"><p>En el viaje de un clic hay un momento que pasa casi sin que lo veas: el candado que aparece junto a la dirección del sitio. Ese candado es el resultado de varias ideas de seguridad trabajando juntas. Este capítulo las explica una por una, sin matemáticas, y después baja a lo que más importa en el día a día: cómo nos engañan a las personas y qué hábitos nos protegen.</p><p>No es un capítulo solo para los de sistemas. Un telco guarda datos de cientos de miles de clientes y opera una red de la que depende la vida diaria de una región. Cualquier empleado con un usuario y una contraseña es, para un atacante, una puerta posible.</p></div><div class="analogia"><b>Imagínalo así</b><p>Una casa: cerraduras y llaves (cifrado y contraseñas), el sello de lacre que muestra si alguien abrió la carta (firmas y hash), el documento de identidad avalado por una autoridad (certificados), el portón con vigilante (firewall) y el estafador que toca el timbre haciéndose pasar por el técnico (phishing e ingeniería social).</p></div><figure class="fig fig-capas" id="12-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la seguridad, en todas las capas y en todos los tramos">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class=""><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la seguridad, en todas las capas y en todos los tramos</text>
+</svg></div><figcaption><b>Dónde estamos.</b> La seguridad no vive en una sola capa ni en un solo tramo: el cifrado protege la aplicación, los firewalls cuidan la red, los equipos de la casa y los servidores necesitan parches, y las personas están en todas partes. Por eso este mapa se enciende completo.</figcaption></figure></section>
+<section><h2>Confidencialidad, integridad y disponibilidad</h2><div class="prose"><p>Todo lo que hace la seguridad informática se resume en proteger tres cosas, que en la industria se conocen por sus iniciales en inglés, <b>CIA</b>:</p><ul><li><b>Confidencialidad.</b> Que solo lea la información quien debe. Si alguien ve la factura de otro cliente, o la lista de contraseñas Wi-Fi de una zona, se rompió la confidencialidad.</li><li><b>Integridad.</b> Que nadie la altere sin permiso. Si alguien cambia el monto de una factura, el número de cuenta de un proveedor o la configuración de un router, se rompió la integridad.</li><li><b>Disponibilidad.</b> Que esté ahí cuando se necesita. Si un ataque deja sin servicio al DNS del operador, o un virus bloquea el sistema de facturación, se rompió la disponibilidad.</li></ul><p>Sirve tener las tres a mano porque cada medida de seguridad protege sobre todo una de ellas. El cifrado protege la confidencialidad; las firmas, la integridad; los respaldos y la redundancia del capítulo 11, la disponibilidad. Y cada incidente se puede describir diciendo cuál de las tres se perdió.</p></div></section>
+<section><h2>Cifrado simétrico y asimétrico: una llave o un par de llaves</h2><div class="prose"><p><b>Cifrar</b> es transformar un mensaje con una regla y una llave para que quien no tenga la llave solo vea ruido. La regla (el algoritmo) es pública y conocida por todos; el secreto está únicamente en la llave. Hay dos formas de hacerlo.</p><p><b>Cifrado simétrico: una sola llave.</b> La misma llave cierra y abre, como el candado de una bicicleta. Es muy rápido, y por eso se usa para cifrar casi todo: tu conexión con el banco, el disco de una laptop, el Wi-Fi de la casa. El algoritmo más usado se llama <b>AES</b>. Su problema es práctico: ¿cómo le haces llegar la llave a la otra persona sin que nadie la copie en el camino?</p><p><b>Cifrado asimétrico: un par de llaves.</b> Cada persona tiene dos llaves que van juntas. Una es <b>pública</b>: se la puede dar a todo el mundo, como el buzón de una casa por cuya ranura cualquiera mete una carta. La otra es <b>privada</b> y nunca sale de su dueño: es la única que abre ese buzón. Lo que se cierra con la pública solo se abre con la privada. Así nadie tiene que mandar un secreto por el camino.</p></div><div class="lab" id="12-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Candado y llave</h3></div><p class="hint">Escribe un mensaje y cífralo primero con una llave compartida y después con un par de llaves. Prueba a descifrar con la llave equivocada y mira qué sale. Las llaves de este laboratorio son de juguete; las reales tienen cientos de dígitos.</p><style>
+[id="12-lab-2"] .c12-campo{display:grid;gap:4px;font:600 .82rem var(--f-display);color:var(--muted)}
+[id="12-lab-2"] .c12-campo input{font:500 1rem var(--f-mono);padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);width:100%;text-transform:uppercase}
+[id="12-lab-2"] .c12-flujo{display:grid;gap:10px}
+[id="12-lab-2"] [hidden]{display:none}
+[id="12-lab-2"] .c12-paso{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--paper);display:grid;gap:6px;min-width:0}
+[id="12-lab-2"] .c12-paso b{font:700 .8rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+[id="12-lab-2"] .c12-txt{font:500 1rem var(--f-mono);word-break:break-all;color:var(--ink)}
+[id="12-lab-2"] .c12-txt.cif{color:var(--warm)}
+[id="12-lab-2"] .c12-txt.ok{color:var(--good)}
+[id="12-lab-2"] .c12-llaves{display:flex;flex-wrap:wrap;gap:8px;font:500 .86rem var(--f-display)}
+[id="12-lab-2"] .c12-llaves span{border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--card)}
+</style>
+<div class="btns" role="group" aria-label="Tipo de cifrado">
+  <button type="button" id="c12-m-sim" aria-pressed="true">Llave compartida (simétrico)</button>
+  <button type="button" id="c12-m-asim" aria-pressed="false">Par de llaves (asimétrico)</button>
+</div>
+<label class="c12-campo">Mensaje de Beto para Ana
+  <input id="c12-msg" maxlength="40" value="NOS VEMOS A LAS OCHO" autocomplete="off" spellcheck="false"></label>
+<div id="c12-sim" class="c12-flujo">
+  <label class="c12-campo">Llave compartida (la conocen Beto y Ana)
+    <input id="c12-k1" maxlength="12" value="LUNA" autocomplete="off" spellcheck="false"></label>
+  <div class="c12-paso"><b>Lo que viaja por la red</b><span class="c12-txt cif" id="c12-c1"></span></div>
+  <label class="c12-campo">Ana descifra con la llave
+    <input id="c12-k2" maxlength="12" value="LUNA" autocomplete="off" spellcheck="false"></label>
+  <div class="c12-paso" aria-live="polite"><b>Lo que lee Ana</b><span class="c12-txt" id="c12-d1"></span></div>
+</div>
+<div id="c12-asim" class="c12-flujo" hidden>
+  <div class="c12-llaves"><span>Llave pública de Ana: (17, 3233)</span><span>Llave privada de Ana: secreta</span><span>Llave privada de Carla: secreta</span></div>
+  <div class="c12-paso"><b>Beto cifra con la llave pública de Ana. Viaja por la red:</b><span class="c12-txt cif" id="c12-c2"></span></div>
+  <div class="btns" role="group" aria-label="Con qué llave se intenta descifrar">
+    <button type="button" data-k="priv" aria-pressed="true">Descifrar con la privada de Ana</button>
+    <button type="button" data-k="pub" aria-pressed="false">Con la pública de Ana</button>
+    <button type="button" data-k="otra" aria-pressed="false">Con la privada de Carla</button>
+  </div>
+  <div class="c12-paso" aria-live="polite"><b>Resultado</b><span class="c12-txt" id="c12-d2"></span></div>
+</div>
+<p class="hint" id="c12-nota" aria-live="polite"></p></div><div class="prose"><p>En la práctica se usan las dos juntas. Cuando abres un sitio con candado, el saludo <b>TLS</b> (el del capítulo 1) usa la parte asimétrica para que tu navegador y el servidor acuerden, sin mandarla por el camino, una llave simétrica nueva solo para esa conversación. Después, todo viaja cifrado con esa llave rápida.</p></div></section>
+<section><h2>Hash y firmas digitales: saber si algo fue alterado</h2><div class="prose"><p>Un <b>hash</b> es una huella digital de un archivo o un mensaje: un número corto que se calcula a partir del contenido. Tiene dos propiedades útiles. Siempre da el mismo resultado para el mismo contenido, y si cambias aunque sea una coma, la huella cambia por completo. Además, no se puede volver atrás: de la huella no se puede reconstruir el mensaje.</p><p>Por eso los sitios que publican un programa muestran su hash al lado del enlace: si el archivo que bajaste tiene otra huella, alguien lo cambió en el camino. Y por eso los sistemas bien hechos no guardan tu contraseña, sino su hash: cuando la escribes, calculan la huella y comparan.</p><p>Una <b>firma digital</b> junta el hash con el par de llaves. El autor calcula la huella del documento y la cifra con su llave <b>privada</b>. Cualquiera puede verificarla con su llave pública: si cuadra, sabe dos cosas a la vez, que el documento no cambió (integridad) y que lo firmó quien tiene esa llave privada (autenticidad). Es el sello de lacre de la carta, pero imposible de falsificar. Con firmas se protegen las actualizaciones de los equipos, los correos importantes y, como sigue, los certificados.</p></div></section>
+<section><h2>Certificados y autoridades: por qué confiamos en el candado del navegador</h2><div class="prose"><p>Queda un problema. Cuando tu navegador recibe la llave pública de <code>www.ejemplo.com</code>, ¿cómo sabe que es de verdad de ese sitio y no de un impostor en el camino? La respuesta es el <b>certificado digital</b>: un documento que dice «esta llave pública pertenece a <code>www.ejemplo.com</code>», firmado por una <b>autoridad de certificación</b> (<b>CA</b>).</p><p>Es como un documento de identidad: no lo crees porque lo diga la persona, sino porque lo emitió una oficina en la que confías. Tu sistema operativo y tu navegador traen de fábrica una lista de unas pocas decenas de autoridades confiables, las <b>raíces</b>. Cada certificado lleva la firma de una de ellas, a veces a través de una autoridad intermedia: es la <b>cadena de confianza</b>.</p></div><figure class="fig fig-flujo" id="12-diagrama-4"><div class="lienzo"><svg viewBox="0 0 960 580" style="min-width:720px" role="img" aria-label="Flujo de la verificación de un certificado: el navegador saluda, el servidor manda su certificado y el intermedio, el navegador revisa nombre, vigencia y cadena de firmas hasta una raíz de su lista, consulta opcionalmente la revocación y, si todo cuadra, termina el saludo y aparece el candado">
+  
+  <rect x="50" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-monitor" x="62" y="26" width="32" height="32" class="ico"/><text x="102" y="47" class="t t-b">Navegador</text>
+  <rect x="370" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-servidor" x="382" y="26" width="32" height="32" class="ico"/><text x="422" y="40" class="t t-b">Servidor</text><text x="422" y="57" class="t t-s t-m">www.ejemplo.com</text>
+  <rect x="660" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-llave" x="672" y="26" width="32" height="32" class="ico"/><text x="712" y="40" class="t t-b">Autoridad</text><text x="712" y="57" class="t t-s t-m">de certificación</text>
+  <line x1="130" y1="70" x2="130" y2="560" class="vida"/>
+  <line x1="450" y1="70" x2="450" y2="560" class="vida"/>
+  <line x1="740" y1="70" x2="740" y2="560" class="vida"/>
+
+  
+  <line x1="130" y1="102" x2="448" y2="114" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="140" y="96" class="t t-s"><tspan class="t-mono t-b">ClientHello</tspan> ① Quiero hablar con www.ejemplo.com</text>
+  <line x1="450" y1="138" x2="132" y2="150" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="150" y="168" class="t t-s"><tspan class="t-mono t-b">ServerHello</tspan> ② Este es mi certificado y el de mi autoridad intermedia</text>
+
+  
+  <rect x="142" y="190" width="290" height="132" rx="8" class="caja"/>
+  <text x="154" y="210" class="t t-xs t-b t-m">EL NAVEGADOR REVISA, SIN PREGUNTAR A NADIE</text>
+  <g class="t t-s">
+    <text x="154" y="234">③ ¿El nombre es www.ejemplo.com? <tspan class="t-b">✓</tspan></text>
+    <text x="154" y="258">④ ¿Está vigente (no venció)? <tspan class="t-b">✓</tspan></text>
+    <text x="154" y="282">⑤ ¿La cadena de firmas llega a una</text>
+    <text x="170" y="298">raíz de mi lista? <tspan class="t-b">✓</tspan></text>
+  </g>
+  <path d="M142 290H130" class="ln"/>
+
+  
+  <text x="476" y="196" class="t t-xs t-b t-m">LA CADENA DE CONFIANZA</text>
+  <rect x="476" y="206" width="200" height="34" rx="6" class="d-casa"/><text x="486" y="228" class="t t-s t-b k-casa">Raíz · viene en tu navegador</text>
+  <rect x="476" y="256" width="200" height="34" rx="6" class="caja"/><text x="486" y="278" class="t t-s">Autoridad intermedia</text>
+  <rect x="476" y="306" width="200" height="34" rx="6" class="caja"/><text x="486" y="328" class="t t-s">Certificado de www.ejemplo.com</text>
+  <path d="M576 240v14M576 290v14" class="ln" marker-end="url(#fl)"/>
+  <text x="584" y="251" class="t t-xs t-m">FIRMA A</text><text x="584" y="301" class="t t-xs t-m">FIRMA A</text>
+
+  
+  <line x1="130" y1="370" x2="738" y2="382" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="140" y="364" class="t t-s"><tspan class="t-mono t-b">OCSP</tspan> ⑥ ¿Este certificado fue revocado? (opcional)</text>
+  <line x1="740" y1="400" x2="132" y2="412" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="420" y="428" class="t t-s">⑦ No, sigue válido</text>
+
+  
+  <line x1="130" y1="460" x2="448" y2="472" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="140" y="454" class="t t-s"><tspan class="t-mono t-b">Finished</tspan> ⑧ Acordamos una llave para esta sesión</text>
+  <line x1="450" y1="492" x2="132" y2="504" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="250" y="520" class="t t-s">⑨ Listo, todo va cifrado</text>
+  <use href="#i-candado" x="96" y="524" width="26" height="26" class="ico"/>
+  <text x="140" y="544" class="t t-s t-b">Aparece el candado. Si ③, ④ o ⑤ fallan: pantalla de advertencia.</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M852 96v60" class="ln s-apl" style="stroke-width:3"/><text x="862" y="122" class="k-apl">Saludo</text><text x="862" y="136" class="t-m">1 ida y vuelta</text>
+    <path d="M852 190v150" class="ln" style="stroke-width:3"/><text x="862" y="258" class="t-m">Revisión</text><text x="862" y="272" class="t-m">local</text><text x="862" y="286" class="t-m">milisegundos</text>
+    <path d="M852 362v56" class="ln s-apl ln-d" style="stroke-width:3"/><text x="862" y="386" class="k-apl">Revocación</text><text x="862" y="400" class="t-m">opcional</text>
+    <path d="M852 448v62" class="ln s-apl" style="stroke-width:3"/><text x="862" y="474" class="k-apl">Cifrado</text><text x="862" y="488" class="t-m">1 ida y vuelta</text>
+  </g>
+  <text x="20" y="320" class="t t-xs t-m" transform="rotate(-90 20 320)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Cómo el navegador revisa un certificado.</b> El navegador saluda al servidor; el servidor responde con su certificado y el de la autoridad intermedia. El navegador revisa, sin preguntarle a nadie, que el nombre coincida, que no esté vencido y que la firma lleve hasta una raíz de su lista. Puede consultar además si fue revocado. Solo si todo cuadra aparece el candado; si algo falla, muestra la pantalla de advertencia.</figcaption></figure><div class="prose"><p>Dos cosas que conviene saber. Primero, el candado dice que la conexión es privada y que hablas con el dueño de ese nombre, <b>no que el sitio sea honesto</b>: un estafador puede sacar un certificado válido para <code>ejemplo-pagos-seguros.net</code>. Segundo, la pantalla roja de «la conexión no es privada» no se ignora: puede ser un certificado vencido, pero también alguien interceptando la conexión.</p></div></section>
+<section><h2>Contraseñas, gestores y segundo factor (MFA)</h2><div class="prose"><p>La contraseña sigue siendo la llave más usada, y la más atacada. Los atacantes casi nunca «adivinan» una por una: prueban millones de combinaciones por segundo sobre bases robadas, o usan listas de contraseñas filtradas de otros sitios. Por eso las reglas modernas, como las del NIST de Estados Unidos (guía SP 800-63B), dicen algo distinto de lo que muchos aprendimos:</p><ul><li><b>Largo antes que raro.</b> Una frase de cuatro o cinco palabras sin relación entre sí es más difícil de adivinar que <code>P@ssw0rd!</code> y más fácil de recordar.</li><li><b>Una contraseña distinta para cada sitio.</b> Si se filtra la de una tienda en línea, no debe abrir tu correo del trabajo.</li><li><b>Nada de cambiarla por calendario</b>, solo cuando hay sospecha de que se filtró. Los cambios obligatorios cada mes terminan en <code>Enero2026</code>, <code>Febrero2026</code>…</li><li><b>Un gestor de contraseñas</b>, un programa que las genera y las guarda cifradas, para no tener que recordarlas todas. Solo memorizas una, larga.</li></ul></div><div class="lab" id="12-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Cuánto tarda en caer una contraseña?</h3></div><p class="hint">Mueve el largo, elige qué tipos de caracteres usa y qué tan rápido prueba el atacante. Después marca si la contraseña ya apareció en una filtración, y activa el segundo factor para ver qué cambia.</p><style>
+[id="12-lab-5"] .c12-chk{display:flex;flex-wrap:wrap;gap:8px 16px;font:500 .9rem var(--f-display)}
+[id="12-lab-5"] .c12-chk label{display:flex;align-items:center;gap:6px;cursor:pointer}
+[id="12-lab-5"] .c12-chk input{width:18px;height:18px;accent-color:var(--accent)}
+[id="12-lab-5"] .c12-ej{font:600 1.15rem var(--f-mono);letter-spacing:.04em;word-break:break-all;color:var(--ink)}
+[id="12-lab-5"] .c12-escala{height:18px;border-radius:6px;border:1px solid var(--line);background:var(--paper);overflow:hidden}
+[id="12-lab-5"] .c12-escala i{display:block;height:100%;transition:width .3s}
+[id="12-lab-5"] .c12-marcas{display:flex;justify-content:space-between;font:500 .72rem var(--f-display);color:var(--muted)}
+@media (prefers-reduced-motion: reduce){[id="12-lab-5"] .c12-escala i{transition:none}}
+</style>
+<div class="ctls">
+  <label class="ctl" for="c12-largo">Largo de la contraseña <output id="c12-largo-o"></output>
+    <input type="range" id="c12-largo" min="4" max="24" step="1" value="8"></label>
+</div>
+<div class="c12-chk" role="group" aria-label="Tipos de caracteres">
+  <label><input type="checkbox" id="c12p-min" checked> minúsculas</label>
+  <label><input type="checkbox" id="c12p-may"> mayúsculas</label>
+  <label><input type="checkbox" id="c12p-num" checked> números</label>
+  <label><input type="checkbox" id="c12p-sim"> símbolos</label>
+</div>
+<div class="opciones">
+  <label>Cómo se eligió
+    <select id="c12-origen">
+      <option value="azar" selected>Al azar (con un gestor)</option>
+      <option value="palabra">Una palabra con cambios típicos (P@ssw0rd1)</option>
+      <option value="filtrada">Ya apareció en una filtración</option>
+    </select></label>
+  <label>El atacante
+    <select id="c12-atac">
+      <option value="0.03">Prueba en la página de inicio (con bloqueo)</option>
+      <option value="1e4">Robó la base; el sistema usa un hash lento</option>
+      <option value="1e10" selected>Robó la base; el sistema usa un hash rápido</option>
+    </select></label>
+</div>
+<div class="c12-chk"><label><input type="checkbox" id="c12-mfa"> Tengo activado el segundo factor (MFA)</label></div>
+<div class="readout">
+  <span>Una contraseña así: <span class="c12-ej" id="c12-ej"></span></span>
+  <span id="c12-comb"></span>
+</div>
+<div class="c12-escala" role="img" aria-label="Tiempo para adivinarla, en escala de segundos a siglos"><i id="c12-bar"></i></div>
+<div class="c12-marcas"><span>1 segundo</span><span>1 hora</span><span>1 año</span><span>1 millón de años</span></div>
+<div class="readout" aria-live="polite"><span class="big" id="c12-tiempo"></span><span id="c12-mfa-t"></span></div>
+<p class="hint" id="c12-pnota"></p></div><div class="prose"><p>El <b>segundo factor</b> (<b>MFA</b>, autenticación de varios factores) agrega algo que tienes, además de algo que sabes: un código en una app del celular, una notificación que apruebas o una llave física USB. Así, aunque alguien robe la contraseña, le falta el celular. Es la medida que más ataques frena por sí sola. Una advertencia: si te llega una notificación de aprobación que no pediste, <b>es un ataque</b>. Recházala y avisa.</p></div></section>
+<section><h2>Phishing e ingeniería social: el ataque que entra por las personas</h2><div class="prose"><p>Romper un cifrado es carísimo. Convencer a una persona de que entregue su contraseña es barato. Por eso la mayoría de los ataques empieza con <b>ingeniería social</b>: engañar a alguien para que haga algo que no debería. Su forma más común es el <b>phishing</b> («pesca»): un correo, un SMS (<i>smishing</i>), un mensaje de WhatsApp o una llamada (<i>vishing</i>) que se hace pasar por alguien de confianza.</p><p>Las señales se repiten, y aprender a verlas es la mejor defensa:</p><ul><li><b>Urgencia o miedo.</b> «Tu cuenta se bloquea en 2 horas», «el gerente necesita esto ya».</li><li><b>Remitente o enlace que casi coincide.</b> <code>soporte@ejemp1o.test</code> con un uno en lugar de la ele, o un enlace cuyo texto dice una cosa y cuya dirección real dice otra.</li><li><b>Un pedido fuera de lo normal.</b> Una contraseña, un código que te llegó por SMS, un pago a una cuenta nueva, instalar un programa de acceso remoto.</li><li><b>Saltarse el procedimiento.</b> «No le digas a nadie», «no abras ticket, es urgente».</li></ul></div><div class="lab" id="12-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Es phishing?</h3></div><p class="hint">Te llegan seis mensajes. Decide si cada uno es legítimo o un engaño y después mira qué señales tenía. Ojo: no todos son falsos.</p><style>
+[id="12-lab-3"] [hidden]{display:none}
+[id="12-lab-3"] .c12-msg{border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:14px;display:grid;gap:8px;min-width:0}
+[id="12-lab-3"] .c12-cab{display:grid;gap:2px;font:500 .86rem var(--f-display);color:var(--muted);border-bottom:1px dashed var(--line);padding-bottom:8px;word-break:break-word}
+[id="12-lab-3"] .c12-cab b{color:var(--ink)}
+[id="12-lab-3"] .c12-canal{font:700 .72rem var(--f-display);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+[id="12-lab-3"] .c12-cuerpo{font-size:1rem;line-height:1.5}
+[id="12-lab-3"] .c12-enlace{font:600 .92rem var(--f-display);color:var(--accent);text-decoration:underline;word-break:break-all}
+[id="12-lab-3"] .c12-real{font:500 .85rem var(--f-mono);color:var(--muted);word-break:break-all}
+[id="12-lab-3"] .c12-fb{display:grid;gap:6px;border-radius:8px;padding:10px 12px;background:var(--card);border:1px solid var(--line)}
+[id="12-lab-3"] .c12-fb ul{margin:0;padding-left:1.2em;display:grid;gap:3px}
+[id="12-lab-3"] .c12-fb .si{color:var(--good);font-weight:700;font-family:var(--f-display)}
+[id="12-lab-3"] .c12-fb .no{color:var(--warm);font-weight:700;font-family:var(--f-display)}
+[id="12-lab-3"] .c12-prog{font:600 .82rem var(--f-display);color:var(--muted)}
+</style>
+<div class="c12-prog" id="c12-prog"></div>
+<div class="c12-msg" id="c12-tarjeta"></div>
+<div class="btns" id="c12-resp" role="group" aria-label="Tu respuesta">
+  <button type="button" data-r="phishing">Es phishing</button>
+  <button type="button" data-r="legitimo">Es legítimo</button>
+</div>
+<div id="c12-fb" aria-live="polite"></div></div><figure class="fig fig-flujo" id="12-diagrama-7"><div class="lienzo"><svg viewBox="0 0 1000 490" style="min-width:760px" role="img" aria-label="Flujo de un ataque de phishing: el atacante manda un correo falso, pasa el filtro y llega al empleado, que hace clic y escribe su contraseña en una página falsa; el atacante intenta entrar al sistema de la empresa. A la derecha, los cuatro puntos donde se puede cortar: filtro de correo, la persona que reporta, el segundo factor y el monitoreo">
+  
+  <rect x="16" y="14" width="128" height="56" rx="10" class="caja"/><use href="#i-persona" x="24" y="26" width="30" height="30" class="ico"/><text x="60" y="47" class="t t-b">Atacante</text>
+  <rect x="176" y="14" width="128" height="56" rx="10" class="caja"/><use href="#i-candado" x="184" y="26" width="30" height="30" class="ico"/><text x="220" y="40" class="t t-b">Filtro de</text><text x="220" y="57" class="t t-b">correo</text>
+  <rect x="336" y="14" width="128" height="56" rx="10" class="caja"/><use href="#i-persona" x="344" y="26" width="30" height="30" class="ico"/><text x="380" y="47" class="t t-b">Empleado</text>
+  <rect x="496" y="14" width="128" height="56" rx="10" class="caja"/><use href="#i-servidor" x="504" y="26" width="30" height="30" class="ico"/><text x="540" y="40" class="t t-b">Página</text><text x="540" y="57" class="t t-b">falsa</text>
+  <rect x="656" y="14" width="128" height="56" rx="10" class="caja"/><use href="#i-monitor" x="664" y="26" width="30" height="30" class="ico"/><text x="700" y="40" class="t t-b">Sistema de</text><text x="700" y="57" class="t t-b">la empresa</text>
+  <line x1="80" y1="70" x2="80" y2="470" class="vida"/>
+  <line x1="240" y1="70" x2="240" y2="470" class="vida"/>
+  <line x1="400" y1="70" x2="400" y2="470" class="vida"/>
+  <line x1="560" y1="70" x2="560" y2="470" class="vida"/>
+  <line x1="720" y1="70" x2="720" y2="470" class="vida"/>
+
+  
+  <line x1="80" y1="112" x2="238" y2="120" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="88" y="104" class="t t-s">① Correo «tu cuenta se bloquea hoy»</text>
+  <line x1="240" y1="162" x2="398" y2="170" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="248" y="154" class="t t-s">② Llega a la bandeja</text>
+  <line x1="400" y1="212" x2="558" y2="220" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="408" y="204" class="t t-s">③ Clic en el enlace</text>
+  <line x1="400" y1="252" x2="558" y2="260" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="408" y="244" class="t t-s">④ Escribe su contraseña</text>
+  <line x1="560" y1="286" x2="82" y2="300" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="150" y="318" class="t t-s">⑤ La página falsa le pasa la contraseña al atacante</text>
+  <line x1="80" y1="352" x2="718" y2="362" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="88" y="344" class="t t-s">⑥ Intenta entrar con la contraseña robada</text>
+  <line x1="80" y1="412" x2="718" y2="422" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="88" y="404" class="t t-s">⑦ Sin segundo factor: entra y empieza a copiar datos</text>
+  <text x="88" y="462" class="t t-s t-b">Cada corte que falla deja pasar el ataque al siguiente.</text>
+
+  
+  <g class="t t-s">
+    <rect x="818" y="92" width="170" height="42" rx="8" class="d-casa"/><text x="830" y="109" class="t-b k-casa">Corte 1 · filtro</text><text x="830" y="125">detecta el correo falso</text>
+    <rect x="818" y="146" width="170" height="42" rx="8" class="d-casa"/><text x="830" y="163" class="t-b k-casa">Corte 2 · persona</text><text x="830" y="179">lo reconoce y lo reporta</text>
+    <rect x="818" y="336" width="170" height="42" rx="8" class="d-casa"/><text x="830" y="353" class="t-b k-casa">Corte 3 · MFA</text><text x="830" y="369">le falta el código</text>
+    <rect x="818" y="396" width="170" height="42" rx="8" class="d-casa"/><text x="830" y="413" class="t-b k-casa">Corte 4 · monitoreo</text><text x="830" y="429">acceso raro: bloqueo</text>
+  </g>
+  <path d="M244 116H814M404 166H814M724 357H814M724 417H814" class="ln ln-d" style="stroke-width:1;opacity:.6"/>
+</svg></div><figcaption><b>Un ataque de phishing de punta a punta, y dónde se corta.</b> El atacante manda el correo; el filtro de correo puede detenerlo (corte 1). Si llega, la persona puede reconocerlo y reportarlo (corte 2). Si hace clic y escribe su contraseña en la página falsa, el segundo factor impide que el atacante entre (corte 3). Si aun así entra, el monitoreo puede detectar un acceso raro y bloquear la cuenta (corte 4). Cada capa que falla deja pasar el ataque a la siguiente.</figcaption></figure></section>
+<section><h2>Malware y ransomware</h2><div class="prose"><p><b>Malware</b> es cualquier programa hecho para dañar: virus, troyanos que se esconden dentro de un programa aparentemente útil, programas espía que roban contraseñas. Casi siempre llega por la misma puerta que el phishing: un archivo adjunto, un enlace o un programa descargado de donde no se debía.</p><p>El más dañino hoy es el <b>ransomware</b> (secuestro de datos). Entra en una computadora, se mueve en silencio por la red de la empresa durante días buscando servidores y respaldos, y de golpe cifra todo lo que encuentra. Después pide un rescate por la llave. Rompe a la vez la disponibilidad (nada funciona) y, cada vez más, la confidencialidad: los atacantes copian los datos antes de cifrarlos y amenazan con publicarlos.</p><p>Las defensas son las de todo el capítulo: no abrir lo que no se esperaba, tener parches al día, segmentar la red para que no se mueva libremente y, sobre todo, <b>respaldos fuera de línea</b>, que el ransomware no pueda alcanzar. Con un buen respaldo, el secuestro se convierte en un mal día en vez de un desastre.</p></div></section>
+<section><h2>Firewalls, segmentación y el principio de mínimo privilegio</h2><div class="prose"><p>Un <b>firewall</b> (cortafuegos) es el vigilante del portón: un equipo o programa que mira cada conexión y decide si pasa, según una lista de reglas. Las reglas hablan en el idioma de las capas del capítulo 3: «desde Internet, solo dejar entrar al puerto 443 de este servidor web», «la red de oficinas no puede llegar a los equipos de la red». Tu router de casa ya tiene uno básico: deja salir todo lo que pides y no deja entrar lo que nadie pidió.</p><p>Pero un solo portón no basta. Si el atacante pasa, no debería poder recorrer la casa entera. Por eso las redes se <b>segmentan</b>: se dividen en zonas separadas por firewalls internos, de modo que la computadora de un vendedor no pueda hablar con la gestión de las OLT. El capítulo 32 cuenta cómo lo hace un operador.</p><p>La misma idea vale para las personas: el <b>principio de mínimo privilegio</b>. Cada usuario recibe solo los accesos que necesita para su trabajo, y no más. Un agente de atención ve la cuenta del cliente que atiende, pero no exporta la base completa. Cuando alguien cambia de puesto, se le quitan los accesos viejos. Así, si roban una cuenta, el daño queda acotado.</p></div><figure class="fig fig-capas" id="12-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 530" style="min-width:680px" role="img" aria-label="Defensa en capas: cinco anillos alrededor de los datos. Personas, dispositivos, red, aplicaciones y, en el centro, los datos cifrados y respaldados; un ataque que atraviesa un anillo choca con el siguiente">
+  <rect x="10" y="10" width="880" height="510" rx="18" class="d-casa"/>
+  <text x="28" y="34" class="t t-b k-casa">1 · Personas</text>
+  <text x="28" y="52" class="t t-s">reconocen el phishing · no comparten claves ni códigos · avisan rápido</text>
+
+  <rect x="80" y="66" width="740" height="388" rx="16" class="caja"/>
+  <text x="98" y="90" class="t t-b">2 · Dispositivos</text>
+  <text x="98" y="108" class="t t-s">parches al día · antivirus · disco cifrado · pantalla bloqueada</text>
+
+  <rect x="150" y="122" width="600" height="316" rx="14" class="c-red"/>
+  <text x="168" y="146" class="t t-b k-red">3 · Red</text>
+  <text x="168" y="164" class="t t-s">firewalls · zonas separadas (segmentos) · acceso remoto por VPN</text>
+
+  <rect x="220" y="178" width="460" height="244" rx="12" class="c-apl"/>
+  <text x="238" y="202" class="t t-b k-apl">4 · Aplicaciones</text>
+  <text x="238" y="220" class="t t-s">contraseñas · segundo factor · mínimo privilegio · registros</text>
+
+  <rect x="290" y="236" width="320" height="170" rx="10" class="d-sis"/>
+  <text x="450" y="262" text-anchor="middle" class="t t-b k-sis">5 · Datos</text>
+  <text x="450" y="282" text-anchor="middle" class="t t-s">cifrados · respaldados fuera de línea</text>
+  <use href="#i-candado" x="378" y="300" width="40" height="40" class="ico"/>
+  <use href="#i-factura" x="430" y="300" width="40" height="40" class="ico"/>
+  <use href="#i-persona" x="482" y="300" width="40" height="40" class="ico"/>
+  <text x="450" y="366" text-anchor="middle" class="t t-s t-m">clientes · facturas · configuraciones</text>
+  <text x="450" y="384" text-anchor="middle" class="t t-s t-m">lo que de verdad se protege</text>
+
+  
+  <path d="M860 478 C 830 420 780 380 716 360" class="ln ln-d" style="stroke-width:2" marker-end="url(#fl)"/>
+  <path d="M707 351l14 14M721 351l-14 14" class="ln" style="stroke-width:3"/>
+  <text x="846" y="496" text-anchor="end" class="t t-xs t-b">UN ATAQUE QUE PASÓ DOS CAPAS CHOCA CON LA TERCERA</text>
+</svg></div><figcaption><b>Defensa en capas.</b> Cinco anillos alrededor de lo que se protege, los datos: las personas que reconocen engaños, los dispositivos con parches y antivirus, la red con firewalls y segmentos, las aplicaciones con contraseñas y segundo factor, y los datos cifrados y respaldados. Un ataque tiene que atravesarlos todos; ninguno es perfecto, pero juntos lo hacen muy difícil.</figcaption></figure></section>
+<section><h2>Actualizaciones y vulnerabilidades: por qué parchear</h2><div class="prose"><p>Todo programa tiene errores, y algunos errores son <b>vulnerabilidades</b>: agujeros que permiten a un atacante hacer algo que no debería. Cuando alguien descubre una, el fabricante publica una corrección, el <b>parche</b>. Desde ese día empieza una carrera, porque el parche también le muestra a los atacantes dónde estaba el agujero, y en pocos días ya hay herramientas automáticas que buscan por Internet a quienes no actualizaron.</p></div><figure class="fig fig-esquema" id="12-diagrama-8"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:680px" role="img" aria-label="La vida de una vulnerabilidad en una línea de tiempo: el error existe sin que nadie lo sepa, alguien lo descubre, se publica el parche y empiezan los ataques en masa; un equipo que se actualiza en días tiene una ventana de exposición corta y uno que se actualiza en meses, una ventana larga">
+  
+  <text x="20" y="28" class="t t-xs t-b t-m">ATAQUES QUE CIRCULAN</text>
+  <path d="M250 100 L420 92 L470 70 L540 50 L880 46 L880 100 Z" class="d-sis" style="opacity:.75"/>
+  <text x="620" y="78" class="t t-xs t-b k-sis">EN MASA: HERRAMIENTAS AUTOMÁTICAS</text>
+
+  
+  <line x1="20" y1="130" x2="880" y2="130" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <g class="t t-s" text-anchor="middle">
+    <circle cx="250" cy="130" r="6" class="caja"/><text x="250" y="154" class="t-b">Alguien</text><text x="250" y="168" class="t-b">lo descubre</text>
+    <circle cx="420" cy="130" r="7" class="c-apl"/><text x="420" y="154" class="t-b">Se publica</text><text x="420" y="168" class="t-b">el parche</text>
+  </g>
+  <text x="40" y="154" class="t t-s t-m">El error existe y</text>
+  <text x="40" y="168" class="t t-s t-m">nadie lo sabe</text>
+  <text x="262" y="120" class="t t-xs t-m">«DÍA CERO»: POCOS LO SABEN</text>
+
+  
+  <text x="20" y="210" class="t t-b">Equipo que se</text><text x="20" y="226" class="t t-b">actualiza en días</text>
+  <rect x="420" y="196" width="110" height="34" rx="6" class="d-casa"/>
+  <text x="436" y="218" class="t t-s k-casa t-b">expuesto</text>
+  <rect x="530" y="196" width="350" height="34" rx="6" class="caja"/>
+  <text x="546" y="218" class="t t-s">protegido: el parche ya está instalado</text>
+
+  <text x="20" y="268" class="t t-b">Equipo que se</text><text x="20" y="284" class="t t-b">actualiza en meses</text>
+  <rect x="420" y="254" width="400" height="34" rx="6" class="d-sis"/>
+  <text x="436" y="276" class="t t-s k-sis t-b">expuesto mientras el ataque circula en masa</text>
+  <rect x="820" y="254" width="60" height="34" rx="6" class="caja"/>
+  <text x="850" y="276" text-anchor="middle" class="t t-xs">PARCHE</text>
+
+  <path d="M420 186V300" class="ln ln-d"/>
+  <text x="420" y="320" text-anchor="middle" class="t t-xs t-m">LA VENTANA DE EXPOSICIÓN EMPIEZA AQUÍ</text>
+</svg></div><figcaption><b>La vida de una vulnerabilidad.</b> La línea de tiempo va de izquierda a derecha: el agujero existe sin que nadie lo sepa, alguien lo descubre, el fabricante publica el parche y, desde ese momento, los ataques se multiplican (la franja de arriba). Abajo, dos equipos: el que se actualiza en días queda expuesto un tramo corto; el que se actualiza en meses queda expuesto justo cuando el ataque circula en masa. Parchear rápido es achicar esa ventana.</figcaption></figure><div class="prose"><p>Esto vale para la computadora de cada empleado, pero también para los servidores, los routers, las OLT y los equipos en casa de los clientes, que reciben actualizaciones de firmware (capítulo 41). Por eso aceptar la actualización cuando el sistema la pide, y reiniciar cuando hace falta, es una tarea de seguridad, no una molestia.</p></div></section>
+<section><h2>Detectar y responder: registros, alertas y a quién avisar</h2><div class="prose"><p>Ninguna defensa es perfecta, así que la seguridad también consiste en <b>darse cuenta a tiempo</b>. Cada sistema deja <b>registros</b> (<i>logs</i>): quién entró, desde dónde, a qué hora, qué hizo. Un sistema de monitoreo de seguridad, conocido como <b>SIEM</b>, junta los registros de toda la empresa y levanta alertas cuando algo no cuadra: un usuario que entra desde otro país a las tres de la mañana, cien intentos de contraseña fallidos, una computadora que de pronto habla con cientos de otras.</p><p>Del otro lado de esas alertas hay un equipo de seguridad que sigue un procedimiento: confirmar, contener (bloquear la cuenta, aislar el equipo), limpiar, recuperar y aprender. El marco de ciberseguridad del NIST ordena todo este trabajo en seis funciones: gobernar, identificar, proteger, detectar, responder y recuperar.</p><p>Para un empleado, la parte que le toca es simple y muy valiosa: <b>avisar rápido</b>. Si hiciste clic en algo raro, escribiste tu contraseña donde no debías o ves un comportamiento extraño, repórtalo de inmediato por el canal que tenga la empresa (la mesa de ayuda o el correo de seguridad). Avisar no es confesar una culpa: cada minuto cuenta, y el que avisa a tiempo es el que evita el incidente grande.</p></div><div class="caso"><b>Así lo hace un operador</b><p>El engaño más común contra el personal de un operador no llega por correo sino por teléfono o chat. Alguien llama a un agente de atención o a un técnico, dice ser «de soporte del sistema» o «del NOC», conoce algunos nombres internos que sacó de redes sociales, y pide con urgencia la clave de un sistema, que le lea el código que acaba de llegar por SMS o que cambie el número de teléfono asociado a la cuenta de un cliente. Con eso puede tomar el control de la línea del cliente o entrar al sistema con el usuario del empleado. La defensa es un procedimiento que nadie se salta: soporte nunca pide contraseñas ni códigos, los cambios sensibles se verifican devolviendo la llamada al número oficial, y cualquier pedido así se reporta aunque parezca legítimo.</p></div></section>
+<section><h2>Hábitos de seguridad para cualquier empleado</h2><div class="prose"><p>Todo lo anterior se convierte en una lista corta de hábitos:</p><ol class="steps"><li><span><b>Usa contraseñas largas, distintas para cada sistema</b>, guardadas en un gestor, y activa el segundo factor donde se pueda.</span></li><li><span><b>Nunca compartas tu contraseña ni un código de verificación</b>, ni siquiera con alguien que dice ser de soporte.</span></li><li><span><b>Desconfía de la urgencia.</b> Ante un pedido raro, verifica por otro canal: llama al número que ya conoces, no al que viene en el mensaje.</span></li><li><span><b>Mira la dirección real</b> de los enlaces y de los remitentes antes de hacer clic.</span></li><li><span><b>Actualiza</b> la computadora y el celular cuando lo piden.</span></li><li><span><b>Bloquea la pantalla</b> al levantarte y no dejes documentos de clientes a la vista.</span></li><li><span><b>Usa solo los canales autorizados</b> para mover datos de clientes: nada de reenviarlos a correos personales ni subirlos a servicios no aprobados.</span></li><li><span><b>Reporta rápido</b> cualquier cosa sospechosa, incluso si fuiste tú quien se equivocó.</span></li></ol></div><div class="ml"><b>En la práctica</b><p>Cualquier empleado es una puerta de entrada: el atacante no necesita romper el cifrado si consigue que alguien le dé su contraseña. Reconocer un phishing, no compartir códigos, usar segundo factor y avisar a tiempo protegen a la empresa y, sobre todo, los datos de los clientes, que confían en que su operador los cuida. Y cuando un cliente pregunta si un mensaje «del operador» es real, quien atiende ya sabe qué señales mirar.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué parte de la tríada CIA se rompe si alguien cambia el número de cuenta de un proveedor en el sistema de pagos?</summary><p>La integridad: la información fue alterada sin permiso.</p></details><details><summary>En el cifrado asimétrico, ¿con qué llave se cifra un mensaje para que solo lo lea su destinatario?</summary><p>Con la llave pública del destinatario. Solo su llave privada, que nunca comparte, puede abrirlo.</p></details><details><summary>¿El candado del navegador garantiza que el sitio sea honesto?</summary><p>No. Garantiza que la conexión está cifrada y que hablas con el dueño de ese nombre de dominio, pero un estafador puede tener un certificado válido para un dominio parecido.</p></details><details><summary>¿Por qué el segundo factor frena tantos ataques?</summary><p>Porque al atacante ya no le basta con robar o adivinar la contraseña: también necesita algo que tienes tú, como tu celular o una llave física.</p></details><details><summary>Te llega una notificación para aprobar un inicio de sesión que no hiciste. ¿Qué haces?</summary><p>La rechazas y lo reportas: alguien tiene tu contraseña e intenta entrar.</p></details><details><summary>¿Por qué un respaldo fuera de línea es la mejor defensa contra el ransomware?</summary><p>Porque el ransomware cifra todo lo que alcanza por la red; un respaldo desconectado queda fuera de su alcance y permite recuperar los datos sin pagar.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.incibe.es/ciudadania/tematicas/fraudes-online" target="_blank" rel="noopener">Qué es el phishing (INCIBE, Oficina de Seguridad del Internauta) <small>lectura</small></a><a class="vid" href="https://learn.microsoft.com/es-es/entra/identity/authentication/concept-mfa-howitworks" target="_blank" rel="noopener">Cómo funciona la autenticación multifactor (Microsoft Learn) <small>lectura</small></a><a class="vid" href="https://letsencrypt.org/es/how-it-works/" target="_blank" rel="noopener">Cómo funciona una autoridad de certificación (Let's Encrypt) <small>lectura</small></a><a class="vid" href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener">Marco de Ciberseguridad del NIST 2.0 <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const AB='ABCDEFGHIJKLMNÑOPQRSTUVWXYZ ';
+  const N=AB.length;
+  const limpiar=t=>t.toUpperCase().normalize('NFD').replace(/(N)̃/g,'Ñ').replace(/[̀-ͯ]/g,'').split('').filter(c=>AB.includes(c)).join('');
+  function vig(t,k,sig){
+    k=limpiar(k).replace(/ /g,'');
+    if(!k) return t;
+    return t.split('').map((c,i)=>AB[(AB.indexOf(c)+sig*(AB.indexOf(k[i%k.length])+1)+N*2)%N]).join('');
+  }
+  function modpow(b,e,m){let r=1;b%=m;while(e>0){if(e&1)r=r*b%m;b=b*b%m;e>>=1;}return r;}
+  const ANA={n:3233,e:17,d:2753}, CARLA={n:3233,d:1013};
+  let modo='sim', llave='priv';
+  function sim(){
+    const m=limpiar(q('#c12-msg').value), k1=q('#c12-k1').value, k2=q('#c12-k2').value;
+    const c=vig(m,k1,1), d=vig(c,k2,-1);
+    q('#c12-c1').textContent=c.replace(/ /g,'·')||'—';
+    const ok=d===m;
+    const out=q('#c12-d1');out.textContent=d.replace(/ /g,'·')||'—';out.className='c12-txt '+(ok?'ok':'cif');
+    q('#c12-nota').textContent=ok?
+      'Con la misma llave, Ana recupera el mensaje. Quien espía la red solo ve letras sin sentido. El problema: Beto tuvo que hacerle llegar la llave a Ana antes, por algún camino seguro.':
+      'Con otra llave sale basura: el secreto no está en la regla (cualquiera la conoce), sino en la llave. Prueba a escribir la llave correcta.';
+  }
+  function asim(){
+    const m=limpiar(q('#c12-msg').value);
+    const cod=m.split('').map(c=>AB.indexOf(c)+2);
+    const cif=cod.map(x=>modpow(x,ANA.e,ANA.n));
+    q('#c12-c2').textContent=cif.join(' ')||'—';
+    let r, ok=false, nota;
+    if(llave==='priv'){r=cif.map(c=>modpow(c,ANA.d,ANA.n));ok=true;
+      nota='Solo la llave privada de Ana abre lo que se cerró con su llave pública. Ana nunca tuvo que mandarle un secreto a Beto: la pública se la puede dar a todo el mundo.';}
+    else if(llave==='pub'){r=cif.map(c=>modpow(c,ANA.e,ANA.n));
+      nota='La llave pública cierra, pero no abre. Por eso Ana puede publicarla sin miedo: con ella nadie lee los mensajes que le mandan.';}
+    else{r=cif.map(c=>modpow(c,CARLA.d,CARLA.n));
+      nota='La llave privada de otra persona tampoco sirve: cada par de llaves va junto. En la vida real las llaves tienen cientos de dígitos y probar todas es imposible.';}
+    const txt=r.map(x=>{const i=x-2;return ok&&i>=0&&i<N?AB[i]:AB[x%N];}).join('');
+    const out=q('#c12-d2');out.textContent=(ok?txt.replace(/ /g,'·'):txt.replace(/ /g,'·')+'  ('+r.slice(0,6).join(' ')+'…)')||'—';out.className='c12-txt '+(ok?'ok':'cif');
+    q('#c12-nota').textContent=nota;
+  }
+  function dibujar(){modo==='sim'?sim():asim();}
+  function setModo(m){modo=m;q('#c12-m-sim').setAttribute('aria-pressed',String(m==='sim'));q('#c12-m-asim').setAttribute('aria-pressed',String(m==='asim'));q('#c12-sim').hidden=m!=='sim';q('#c12-asim').hidden=m!=='asim';dibujar();}
+  q('#c12-m-sim').addEventListener('click',()=>setModo('sim'));
+  q('#c12-m-asim').addEventListener('click',()=>setModo('asim'));
+  document.querySelectorAll('#c12-asim [data-k]').forEach(b=>b.addEventListener('click',()=>{llave=b.dataset.k;document.querySelectorAll('#c12-asim [data-k]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));dibujar();}));
+  ['#c12-msg','#c12-k1','#c12-k2'].forEach(s=>q(s).addEventListener('input',dibujar));
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const SETS={min:'abcdefghijkmnopqrstuvwxyz',may:'ABCDEFGHJKLMNPQRSTUVWXYZ',num:'23456789',sim:'!#$%&*+-=?@_'};
+  const SIZE={min:26,may:26,num:10,sim:32};
+  const AÑO=3.156e7;
+  function legible(s){
+    if(s<1) return 'menos de un segundo';
+    const u=[[AÑO*1e6,'millones de años'],[AÑO*1000,'mil años'],[AÑO,'años'],[86400,'días'],[3600,'horas'],[60,'minutos'],[1,'segundos']];
+    if(s>AÑO*1.4e10) return 'más que la edad del universo';
+    for(const [v,n] of u){if(s>=v){const x=s/v;return (x<10?x.toFixed(1).replace('.',','):Math.round(x).toLocaleString('es'))+' '+n;}}
+  }
+  function ejemplo(chars,largo){
+    if(!chars) return '—';
+    const r=new Uint32Array(largo);(window.crypto||{getRandomValues:a=>a.map(()=>Math.random()*1e9)}).getRandomValues(r);
+    return Array.from(r,x=>chars[x%chars.length]).join('');
+  }
+  function dibujar(){
+    const largo=+q('#c12-largo').value; q('#c12-largo-o').textContent=largo+' caracteres';
+    const sel=Object.keys(SETS).filter(k=>q('#c12p-'+k).checked);
+    const origen=q('#c12-origen').value, vel=+q('#c12-atac').value, mfa=q('#c12-mfa').checked;
+    const alfabeto=sel.reduce((s,k)=>s+SIZE[k],0);
+    let combos, ej;
+    if(origen==='azar'){combos=Math.pow(alfabeto||1,largo);ej=ejemplo(sel.map(k=>SETS[k]).join(''),largo);
+      q('#c12-comb').textContent=alfabeto?('Combinaciones posibles: '+alfabeto+' caracteres elevado a '+largo+' ≈ 10 elevado a '+Math.round(Math.log10(combos))):'Elige al menos un tipo de caracter.';}
+    else if(origen==='palabra'){combos=2e8;ej='Verano2026!';
+      q('#c12-comb').textContent='El atacante no prueba al azar: empieza por diccionarios de palabras con los cambios típicos (a→@, o→0, un número y un signo al final). Unos cientos de millones de intentos, sin importar el largo.';}
+    else{combos=1e4;ej='contraseña123';
+      q('#c12-comb').textContent='Las listas de contraseñas filtradas tienen miles de millones de entradas, y las más comunes se prueban primero. Da igual cuán rara parezca.';}
+    q('#c12-ej').textContent=ej;
+    const seg=combos/2/vel;
+    const lg=Math.log10(Math.max(seg,1)), max=Math.log10(AÑO*1e6);
+    const pct=Math.min(100,lg/max*100);
+    const color=seg<86400?'var(--warm)':seg<AÑO*100?'var(--accent)':'var(--good)';
+    const bar=q('#c12-bar');bar.style.width=Math.max(2,pct)+'%';bar.style.background=color;
+    q('#c12-tiempo').textContent='Tiempo promedio para adivinarla: '+legible(seg);
+    q('#c12-mfa-t').innerHTML=mfa?'<span class="ok">Con segundo factor, aunque la adivine le falta tu celular o tu llave física para entrar.</span> Ojo: no te protege si tú mismo le das el código o apruebas una notificación que no pediste.':'<span class="warn">Sin segundo factor, adivinar o robar la contraseña es suficiente para entrar.</span>';
+    let nota;
+    if(vel<1) nota='En la página de inicio el sistema bloquea tras pocos intentos, así que adivinar es lentísimo. Por eso los atacantes prefieren robar la base de contraseñas o pedírtela con un phishing.';
+    else if(origen!=='azar') nota='El largo no ayuda si la contraseña es predecible o ya se filtró. Por eso conviene una distinta para cada sitio, elegida al azar o una frase de varias palabras sin relación.';
+    else if(largo<12) nota='Prueba a sumar largo en vez de símbolos: cada caracter más multiplica el trabajo del atacante. Una frase de cuatro o cinco palabras sin relación entre sí es larga y fácil de recordar.';
+    else nota='Con este largo y al azar, la fuerza bruta deja de ser práctica. El riesgo que queda es que te la roben con un engaño: ahí es donde el segundo factor marca la diferencia.';
+    q('#c12-pnota').textContent=nota;
+  }
+  ['#c12-largo'].forEach(s=>q(s).addEventListener('input',dibujar));
+  ['#c12p-min','#c12p-may','#c12p-num','#c12p-sim','#c12-origen','#c12-atac','#c12-mfa'].forEach(s=>q(s).addEventListener('change',dibujar));
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const M=[
+    {canal:'Correo',de:'Mesa de Ayuda &lt;soporte@ejemplo-ayuda.test&gt;',asunto:'Tu contraseña vence HOY',
+     cuerpo:'Detectamos actividad inusual en tu cuenta. Si no la validas en las próximas 2 horas será bloqueada y perderás tus archivos.',
+     enlace:'Validar mi cuenta',real:'http://ejemplo.com.validar-acceso.test/login',r:'phishing',
+     senales:['Urgencia y amenaza: «2 horas», «perderás tus archivos».','El remitente no es del dominio de la empresa (ejemplo.com), aunque se le parece.','El enlace no va a ejemplo.com: lo que manda es lo que está justo antes de la primera barra, «validar-acceso.test».','Termina pidiendo tu contraseña.']},
+    {canal:'SMS',de:'INFO-ENVIOS',asunto:'',
+     cuerpo:'Tu paquete no pudo ser entregado por falta de pago de 1,50 de reenvío. Regulariza hoy o será devuelto:',
+     enlace:'entregas-pendientes.test/pago',real:'https://entregas-pendientes.test/pago',r:'phishing',
+     senales:['No esperabas ningún paquete, o no de esa empresa.','Un monto pequeño para que no lo pienses: lo que buscan son los datos de tu tarjeta.','Remitente genérico y enlace a un sitio que no es el de ninguna empresa de envíos conocida.']},
+    {canal:'Correo',de:'Recursos Humanos &lt;rrhh@ejemplo.com&gt;',asunto:'Recordatorio: capacitación de seguridad del jueves',
+     cuerpo:'Te recordamos la capacitación de seguridad del jueves a las 10:00. Encuentras el material en la intranet, sección Formación. No necesitas responder este correo.',
+     enlace:'',real:'',r:'legitimo',
+     senales:['El remitente es del dominio correcto.','No pide datos, ni pagos, ni hacer clic: te manda a un sitio que ya conoces y al que llegas por tu cuenta.','No tiene urgencia ni amenazas. Aun así, si dudas, verifica por otro canal.']},
+    {canal:'Llamada',de:'Número desconocido · «Martín, del NOC»',asunto:'',
+     cuerpo:'«Hola, estamos con una caída grave y tengo que validar tu usuario ya. Te acaba de llegar un código de 6 dígitos por SMS: léemelo, por favor, que se nos cae la red.»',
+     enlace:'',real:'',r:'phishing',
+     senales:['Pide un código de verificación: nadie legítimo te lo pide, nunca. Ese código es tu segundo factor.','Urgencia y presión («se nos cae la red»).','Usa un área y un nombre creíbles para ganar confianza. Corta y llama tú al número oficial del área.']},
+    {canal:'WhatsApp',de:'+00 000 000 0000 · foto de tu gerente',asunto:'',
+     cuerpo:'«Hola, soy tu gerente, estoy en una reunión y no puedo hablar. Necesito que compres 5 tarjetas de regalo para un cliente y me mandes los códigos. Te lo devuelvo hoy. No le comentes a nadie, es una sorpresa.»',
+     enlace:'',real:'',r:'phishing',
+     senales:['Número nuevo con una foto sacada de redes sociales.','Pedido fuera de lo normal: tarjetas de regalo, transferencias o pagos urgentes.','«No le comentes a nadie»: busca que te saltes el procedimiento. Verifica llamando al número que ya tenías.']},
+    {canal:'Correo',de:'Sistema de tickets &lt;tickets@ejemplo.com&gt;',asunto:'Se te asignó el ticket 48213',
+     cuerpo:'Se te asignó el ticket 48213: «Cliente sin servicio, zona norte». Ábrelo desde el sistema de tickets para ver el detalle.',
+     enlace:'Abrir el ticket 48213',real:'https://tickets.ejemplo.com/48213',r:'legitimo',
+     senales:['El remitente y el enlace son del dominio de la empresa: tickets.ejemplo.com es parte de ejemplo.com.','Es algo que esperas en tu trabajo y no pide la contraseña en el correo.','Buena costumbre igual: entrar al sistema desde tus favoritos y no desde el enlace.']}
+  ];
+  let i=0, aciertos=0, respondido=false;
+  function mostrar(){
+    const m=M[i];respondido=false;
+    q('#c12-prog').textContent='Mensaje '+(i+1)+' de '+M.length+' · aciertos: '+aciertos;
+    let h='<div class="c12-cab"><span class="c12-canal">'+m.canal+'</span><span>De: <b>'+m.de+'</b></span>'+(m.asunto?'<span>Asunto: <b>'+m.asunto+'</b></span>':'')+'</div>';
+    h+='<p class="c12-cuerpo">'+m.cuerpo+'</p>';
+    if(m.enlace) h+='<div><span class="c12-enlace">'+m.enlace+'</span> <button type="button" id="c12-ver">Ver adónde lleva</button><div class="c12-real" id="c12-real" hidden>Lleva a: '+m.real+'</div></div>';
+    q('#c12-tarjeta').innerHTML=h;
+    const v=q('#c12-ver');if(v)v.addEventListener('click',()=>{q('#c12-real').hidden=false;v.hidden=true;});
+    q('#c12-fb').innerHTML='';
+    document.querySelectorAll('#c12-resp button').forEach(b=>{b.hidden=false;b.setAttribute('aria-pressed','false');});
+  }
+  function responder(r,b){
+    if(respondido) return; respondido=true;
+    const m=M[i], ok=r===m.r; if(ok) aciertos++;
+    b.setAttribute('aria-pressed','true');
+    const rv=q('#c12-real');if(rv){rv.hidden=false;const v=q('#c12-ver');if(v)v.hidden=true;}
+    const fin=i===M.length-1;
+    q('#c12-fb').innerHTML='<div class="c12-fb"><span class="'+(ok?'si':'no')+'">'+(ok?'¡Bien visto!':'Esta vez no.')+' Era '+(m.r==='phishing'?'phishing':'legítimo')+'.</span><ul>'+m.senales.map(s=>'<li>'+s+'</li>').join('')+'</ul>'+
+      '<div class="btns"><button type="button" class="primary" id="c12-sig">'+(fin?'Ver resultado':'Siguiente mensaje')+'</button></div></div>';
+    q('#c12-prog').textContent='Mensaje '+(i+1)+' de '+M.length+' · aciertos: '+aciertos;
+    q('#c12-sig').addEventListener('click',()=>{if(fin)final();else{i++;mostrar();q('#c12-tarjeta').focus();}});
+  }
+  function final(){
+    q('#c12-tarjeta').innerHTML='<p class="c12-cuerpo"><b>Acertaste '+aciertos+' de '+M.length+'.</b> Las señales se repiten: urgencia, remitente o enlace que casi coincide, pedidos fuera de lo normal (claves, códigos, pagos) y pedidos de saltarse el procedimiento. Ante la duda, verifica por otro canal y reporta.</p>';
+    document.querySelectorAll('#c12-resp button').forEach(b=>b.hidden=true);
+    q('#c12-fb').innerHTML='<div class="btns"><button type="button" id="c12-otra">Empezar de nuevo</button></div>';
+    q('#c12-prog').textContent='Resultado final';
+    q('#c12-otra').addEventListener('click',()=>{i=0;aciertos=0;mostrar();});
+  }
+  q('#c12-tarjeta').tabIndex=-1;
+  document.querySelectorAll('#c12-resp button').forEach(b=>b.addEventListener('click',()=>responder(b.dataset.r,b)));
+  mostrar();
+})();
+</script>
+</body>
+</html>

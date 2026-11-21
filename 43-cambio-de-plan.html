@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cambio de plan · Cómo funciona un telco</title>
+<meta name="description" content="Subir o bajar de plan, agregar un servicio o activar una promoción se aplica a la sesión del cliente en segundos y sin cortarla, siempre que la velocidad viva en un solo lugar y los sistemas del negocio y de la red estén de acuerdo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="43-cambio-de-plan">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 43 DE 49</span><h1>Cambio de plan: la velocidad en caliente</h1><p class="lede">Subir o bajar de plan, agregar un servicio o activar una promoción se aplica a la sesión del cliente en segundos y sin cortarla, siempre que la velocidad viva en un solo lugar y los sistemas del negocio y de la red estén de acuerdo.</p></header>
+<section><div class="prose"><p>Un cliente abre la app del operador un martes por la noche, ve que el plan de 600 Mbps está en oferta y toca «Mejorar mi plan». ¿Qué tiene que pasar para que, un minuto después, su prueba de velocidad marque el doble y su próxima factura cobre lo justo?</p><p>La respuesta junta tres mundos que en muchos operadores trabajan separados: el que vende (el catálogo y el CRM), el que cobra (la facturación) y el que entrega (la red). Cuando los tres se coordinan, el cambio ocurre en segundos, sin que la conexión se corte y sin que nadie escriba un comando. Cuando no, el cliente paga 600 y sigue navegando a 300.</p></div><div class="analogia"><b>Imagínalo así</b><p>La pulsera de un hotel todo incluido. El color de la pulsera dice a qué tienes derecho: el bar, el restaurante a la carta, el spa. Si mejoras tu paquete, en la recepción te cambian la pulsera y ya está: nadie te saca de la piscina ni te pide que hagas el registro otra vez. Eso sí, todos los bares del hotel tienen que reconocer el color nuevo.</p></div><figure class="fig fig-capas" id="43-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: del cambio vendido a la velocidad y la factura">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class="apagado"><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class="apagado"><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class=""><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class=""><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class="apagado"><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class="apagado"><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class=""><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: del cambio vendido a la velocidad y la factura</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Un cambio de plan nace en el BSS (el catálogo, el CRM y la facturación), pasa por la capa de integración que lo traduce a órdenes técnicas y termina en la red, en el equipo que controla la velocidad. En la cadena de valor toca la venta, la activación y la facturación a la vez.</figcaption></figure></section>
+<section><h2>Cambio de plan en caliente</h2><div class="prose"><p>En el capítulo 19 vimos que, cuando la ONT del cliente se conecta, el <b>BNG</b> (el portero de la red) le pregunta a <b>RADIUS</b> quién es y qué plan tiene. RADIUS responde con un <b>perfil</b>: un nombre o un conjunto de valores que dice «este cliente navega a 300 Mbps de bajada y 150 de subida». El BNG aplica ese perfil durante toda la <b>sesión</b>, que puede durar días o semanas sin interrumpirse.</p><p>¿Qué pasa si el plan cambia en medio de esa sesión? Hay tres maneras de hacerlo, de peor a mejor:</p><ol class="steps"><li><span><b>Esperar.</b> Se cambia el plan en RADIUS y se espera a que el cliente se reconecte solo: cuando reinicie el equipo, se vaya la luz o pase la noche. Puede tardar días, y mientras tanto el cliente ya paga el plan nuevo.</span></li><li><span><b>Cortar y reconectar.</b> Se cambia el plan y se cierra la sesión a la fuerza. El equipo se vuelve a conectar en unos segundos y esta vez RADIUS le da el perfil nuevo. Funciona, pero el cliente sufre un corte: se le cae la videollamada, el juego en línea o la película.</span></li><li><span><b>Cambiar en caliente.</b> Se le pide al BNG que cambie el perfil <b>de la sesión que ya está abierta</b>, sin cerrarla. Es la pulsera nueva sin salir de la piscina.</span></li></ol><p>La tercera forma usa un mensaje de RADIUS pensado justo para esto: el <b>CoA</b> (<i>Change of Authorization</i>, «cambio de autorización»), definido en el estándar RFC 5176. Lo normal en RADIUS es que el BNG pregunte y RADIUS responda. Con CoA es al revés: el sistema le <b>avisa</b> al BNG, por iniciativa propia, que algo cambió en una sesión. El BNG aplica el perfil nuevo y contesta <b>CoA-ACK</b> («hecho») o <b>CoA-NAK</b> («no pude»).</p></div><figure class="fig fig-flujo" id="43-diagrama-2"><div class="lienzo"><svg viewBox="0 0 880 560" style="min-width:700px" role="img" aria-label="Flujo del cambio de plan con CoA: la app pide el plan nuevo al BSS, el BSS avisa al orquestador, el orquestador actualiza el perfil en RADIUS, RADIUS envía un CoA-Request al BNG, el BNG aplica el perfil sin cortar la sesión y responde CoA-ACK, y la confirmación vuelve hasta la app">
+  <g class="t t-s t-b">
+    <rect x="10" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-celular" x="16" y="26" width="26" height="26" class="ico"/><text x="46" y="37">App del</text><text x="46" y="53">cliente</text>
+    <rect x="140" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-factura" x="146" y="26" width="26" height="26" class="ico"/><text x="176" y="37">BSS</text><text x="176" y="53" class="t t-s t-m">venta y cobro</text>
+    <rect x="270" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-monitor" x="276" y="26" width="26" height="26" class="ico"/><text x="306" y="44">Orquestador</text>
+    <rect x="400" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-llave" x="406" y="26" width="26" height="26" class="ico"/><text x="436" y="44">RADIUS</text>
+    <rect x="530" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-router-core" x="536" y="26" width="26" height="26" class="ico"/><text x="566" y="44">BNG</text>
+    <g class="apagado"><rect x="660" y="14" width="112" height="52" rx="10" class="caja ln-d"/><use href="#i-olt" x="666" y="26" width="26" height="26" class="ico"/><text x="696" y="37">OLT</text><text x="696" y="53" class="t t-s t-m">opcional</text></g>
+  </g>
+  <line x1="66" y1="66" x2="66" y2="540" class="vida"/>
+  <line x1="196" y1="66" x2="196" y2="540" class="vida"/>
+  <line x1="326" y1="66" x2="326" y2="540" class="vida"/>
+  <line x1="456" y1="66" x2="456" y2="540" class="vida"/>
+  <line x1="586" y1="66" x2="586" y2="540" class="vida"/>
+  <line x1="716" y1="66" x2="716" y2="540" class="vida apagado"/>
+
+  
+  <line x1="66" y1="110" x2="194" y2="110" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="74" y="102" class="t t-s">① Quiero 600 Mbps</text>
+  <line x1="196" y1="150" x2="324" y2="150" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="204" y="142" class="t t-s">② Cambio 300 → 600</text>
+  <line x1="326" y1="190" x2="454" y2="190" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="334" y="182" class="t t-s">③ Guarda el perfil nuevo</text>
+
+  
+  <line x1="456" y1="236" x2="584" y2="236" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="464" y="228" class="t t-s"><tspan class="t-mono t-b">CoA-Request</tspan> ④</text>
+  <text x="464" y="254" class="t t-s t-m">perfil 600 Mbps</text>
+  <rect x="540" y="266" width="200" height="44" rx="8" class="c-red"/>
+  <text x="552" y="284" class="t t-s t-b">Aplica el perfil a la sesión</text>
+  <text x="552" y="300" class="t t-s">abierta, sin cortarla</text>
+  <line x1="586" y1="332" x2="458" y2="332" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="464" y="350" class="t t-s"><tspan class="t-mono t-b">CoA-ACK</tspan> ⑤ Hecho</text>
+
+  
+  <rect x="300" y="366" width="470" height="56" rx="8" class="caja ln-d" style="fill:none"/>
+  <text x="310" y="382" class="t t-xs t-b t-m">SOLO SI EL LÍMITE TAMBIÉN VIVE EN LA OLT (NO RECOMENDADO)</text>
+  <line x1="326" y1="404" x2="714" y2="404" class="ln s-enl ln-d" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="470" y="398" class="t t-s">⑥ Cambia el perfil de tráfico de la ONT</text>
+
+  
+  <line x1="456" y1="446" x2="328" y2="446" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="334" y="464" class="t t-s">⑦ Confirmado</text>
+  <line x1="326" y1="486" x2="198" y2="486" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="204" y="504" class="t t-s">⑧ Aplicado: prorratear</text>
+  <line x1="196" y1="526" x2="68" y2="526" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="74" y="520" class="t t-s">⑨ ¡Ya tienes 600!</text>
+
+  <g class="t t-xs t-b">
+    <path d="M800 96v100" class="ln" style="stroke-width:3"/><text x="808" y="142" class="t-m">ORDEN</text>
+    <path d="M800 222v130" class="ln s-apl" style="stroke-width:3"/><text x="808" y="282" class="k-apl">CoA</text><text x="808" y="296" class="t-m">&lt; 5 S</text>
+    <path d="M800 434v100" class="ln" style="stroke-width:3"/><text x="808" y="484" class="t-m">AVISO</text>
+  </g>
+</svg></div><figcaption><b>El cambio de plan con CoA, paso a paso.</b> El tiempo corre hacia abajo. El BSS registra la venta y se la pasa al orquestador; el orquestador actualiza el perfil del cliente en la base de RADIUS; RADIUS le manda un CoA al BNG con el perfil nuevo; el BNG lo aplica a la sesión abierta y confirma. Solo entonces el orquestador avisa al BSS que el plan quedó aplicado. Todo dura menos de cinco segundos y la sesión no se corta.</figcaption></figure><div class="prose"><p>Fíjate en un detalle: el <b>orquestador</b> (capítulo 38) es el que coordina. El BSS no le habla directamente al BNG; le dice «este cliente ahora tiene el plan de 600» y el orquestador sabe en qué sistemas hay que reflejarlo y en qué orden. Si mañana cambia la marca del BNG, se adapta el orquestador y el BSS ni se entera.</p></div></section>
+<section><h2>Un solo lugar para la velocidad</h2><div class="prose"><p>El CoA funciona de maravilla con una condición: que la velocidad del cliente se controle <b>en un solo lugar</b>. Parece obvio, pero en muchas redes no lo es, porque hay varios equipos capaces de limitar la velocidad:</p><ul><li>El <b>BSS</b> no limita nada, pero define el plan: «Hogar 600, 600 Mbps de bajada».</li><li><b>RADIUS</b> guarda el perfil técnico de cada cliente y se lo entrega al BNG.</li><li>El <b>BNG</b> aplica el límite real, paquete por paquete, a cada sesión.</li><li>La <b>OLT</b> también puede limitar: reparte el turno de cada ONT para hablar en la fibra y puede asignarle un máximo de capacidad (en GPON se configura con perfiles de tráfico, como el T-CONT del capítulo 18).</li><li>Incluso la <b>ONT</b> puede traer un límite configurado.</li></ul><p>Si la velocidad se limita en el BNG <b>y</b> en la OLT, cada cambio de plan exige dos operaciones en dos sistemas distintos. Basta que una falle para que el cliente quede atrapado en el límite más bajo. La regla de oro es la siguiente: <b>la velocidad vive en el BNG</b>, que la cambia en caliente con CoA. La OLT se configura con un perfil amplio, igual para todos, que no estorba a ningún plan.</p></div><figure class="fig fig-arquitectura" id="43-diagrama-3"><div class="lienzo"><svg viewBox="0 0 860 340" style="min-width:660px" role="img" aria-label="Dónde vive el perfil de velocidad: el BSS define el plan, el orquestador lo traduce, RADIUS guarda el perfil y lo envía por CoA al BNG, que aplica el límite real; la OLT tiene un perfil amplio igual para todos">
+  <rect x="20" y="16" width="820" height="114" rx="10" class="d-sis"/>
+  <text x="34" y="36" class="t t-xs t-b k-sis">SISTEMAS DEL NEGOCIO E INTEGRACIÓN · LA ORDEN</text>
+  <rect x="44" y="50" width="200" height="64" rx="10" class="caja"/><use href="#i-factura" x="54" y="64" width="34" height="34" class="ico"/><text x="98" y="76" class="t t-b">BSS</text><text x="98" y="96" class="t t-s t-mono">plan «Hogar 600»</text>
+  <rect x="330" y="50" width="200" height="64" rx="10" class="caja"/><use href="#i-monitor" x="340" y="64" width="34" height="34" class="ico"/><text x="384" y="76" class="t t-b">Orquestador</text><text x="384" y="96" class="t t-s">traduce y coordina</text>
+  <rect x="616" y="50" width="200" height="64" rx="10" class="caja"/><use href="#i-llave" x="626" y="64" width="34" height="34" class="ico"/><text x="670" y="76" class="t t-b">RADIUS</text><text x="670" y="96" class="t t-s t-mono">perfil 600/300</text>
+  <line x1="244" y1="82" x2="326" y2="82" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <line x1="530" y1="82" x2="612" y2="82" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+
+  
+  <rect x="20" y="186" width="160" height="136" rx="10" class="d-casa"/>
+  <rect x="190" y="186" width="510" height="136" rx="10" class="d-oper"/>
+  <rect x="710" y="186" width="130" height="136" rx="10" class="d-inet"/>
+  <text x="100" y="308" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="445" y="308" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR · EL TRÁFICO</text>
+  <text x="775" y="308" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <use href="#i-ont" x="80" y="226" width="34" height="34" class="ico"/><text x="97" y="276" text-anchor="middle" class="t t-s">ONT</text>
+  <rect x="216" y="206" width="200" height="76" rx="10" class="caja ln-d"/><use href="#i-olt" x="226" y="226" width="34" height="34" class="ico"/><text x="270" y="232" class="t t-b">OLT</text><text x="270" y="252" class="t t-s">perfil amplio,</text><text x="270" y="268" class="t t-s">igual para todos</text>
+  <rect x="476" y="206" width="200" height="76" rx="10" class="c-red"/><use href="#i-router-core" x="486" y="226" width="34" height="34" class="ico"/><text x="530" y="232" class="t t-b">BNG</text><text x="530" y="252" class="t t-s">límite real:</text><text x="530" y="268" class="t t-s t-b">600 Mbps</text>
+  <use href="#i-nube" x="758" y="226" width="34" height="34" class="ico"/>
+  <line x1="116" y1="243" x2="214" y2="246" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="416" y1="246" x2="474" y2="246" class="ln"/>
+  <line x1="676" y1="246" x2="754" y2="243" class="ln"/>
+  
+  <line x1="700" y1="114" x2="600" y2="203" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="664" y="160" class="t t-s t-b k-apl">CoA: perfil nuevo</text>
+  <line x1="400" y1="114" x2="330" y2="203" class="ln ln-d" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <text x="412" y="152" class="t t-s t-m">evitar: un segundo límite</text>
+  <text x="412" y="168" class="t t-s t-m">obliga a dos operaciones</text>
+
+</svg></div><figcaption><b>Dónde vive el perfil de velocidad.</b> De izquierda a derecha, el camino de una orden: el BSS define el plan, el orquestador lo traduce, RADIUS guarda el perfil y el BNG lo aplica. Abajo, el camino del tráfico: la ONT, la OLT y el BNG. Lo recomendable es que el límite real esté solo en el BNG (recuadro lleno) y que la OLT tenga un perfil amplio igual para todos (recuadro punteado). Si el límite también vive en la OLT, cada cambio de plan exige dos operaciones.</figcaption></figure></section>
+<section><h2>Subir y bajar de plan: prorrateo en la factura</h2><div class="prose"><p>La red cambió en segundos. Ahora le toca a la factura, que tiene su propio reloj: el <b>ciclo de facturación</b>, normalmente un mes. Si el cliente cambia de plan el día 10 de un ciclo de 30 días, ¿qué se cobra?</p><p>Lo más justo es el <b>prorrateo</b>: cobrar cada plan solo por los días que se usó. Un ejemplo con números redondos, en una moneda cualquiera:</p><ul><li>El plan de 300 Mbps cuesta 30 al mes y el de 600 Mbps, 45.</li><li>El cliente ya pagó el ciclo completo del plan de 300. Le quedan 20 de 30 días.</li><li>Se le devuelve lo que no va a usar del plan viejo: 20/30 × 30 = <b>20 de crédito</b>.</li><li>Se le cobra lo que va a usar del plan nuevo: 20/30 × 45 = <b>30 de cargo</b>.</li><li>Diferencia: <b>10</b> que aparecen en la próxima factura como un ajuste.</li></ul><p>Al <b>bajar</b> de plan, la cuenta da al revés: crédito a favor del cliente. Por eso muchos operadores aplican las bajadas <b>al inicio del ciclo siguiente</b>: evitan devolver dinero, y el cliente sigue con la velocidad alta hasta fin de mes. Las subidas, en cambio, se aplican en el acto: el cliente quiere la velocidad ya, y el operador quiere cobrarla desde hoy.</p></div><figure class="fig fig-comparacion" id="43-diagrama-5"><div class="lienzo"><svg viewBox="0 0 860 360" style="min-width:660px" role="img" aria-label="Prorrateo: una subida el día 10 deja un ajuste de 10 a cobrar; una bajada prorrateada el día 10 deja un crédito de 10 para el cliente; una bajada aplicada al ciclo siguiente no deja ajuste">
+  <g class="t t-s t-mono t-m" text-anchor="middle">
+    <text x="200" y="30">día 0</text><text x="350" y="30">10</text><text x="500" y="30">20</text><text x="650" y="30">30</text>
+  </g>
+  <line x1="350" y1="38" x2="350" y2="300" class="ln ln-d"/>
+  
+  <text x="20" y="72" class="t t-b">Subida</text><text x="20" y="90" class="t t-s t-m">el día 10</text>
+  <rect x="200" y="56" width="150" height="40" rx="4" class="c-red"/><text x="275" y="81" text-anchor="middle" class="t t-s t-b">300 Mbps · 10 d</text>
+  <rect x="350" y="56" width="300" height="40" rx="4" class="c-tra"/><text x="500" y="81" text-anchor="middle" class="t t-s t-b">600 Mbps · 20 días</text>
+  <text x="670" y="66" class="t t-s">crédito −20 (20/30 de 30)</text>
+  <text x="670" y="82" class="t t-s">cargo +30 (20/30 de 45)</text>
+  <text x="670" y="100" class="t t-s t-b">ajuste: +10 a cobrar</text>
+  
+  <text x="20" y="162" class="t t-b">Bajada</text><text x="20" y="180" class="t t-s t-m">prorrateada en el acto</text>
+  <rect x="200" y="146" width="150" height="40" rx="4" class="c-tra"/><text x="275" y="171" text-anchor="middle" class="t t-s t-b">600 Mbps · 10 d</text>
+  <rect x="350" y="146" width="300" height="40" rx="4" class="c-red"/><text x="500" y="171" text-anchor="middle" class="t t-s t-b">300 Mbps · 20 días</text>
+  <text x="670" y="156" class="t t-s">crédito −30 (20/30 de 45)</text>
+  <text x="670" y="172" class="t t-s">cargo +20 (20/30 de 30)</text>
+  <text x="670" y="190" class="t t-s t-b">ajuste: −10 a favor</text>
+  
+  <text x="20" y="252" class="t t-b">Bajada</text><text x="20" y="270" class="t t-s t-m">al ciclo siguiente</text>
+  <rect x="200" y="236" width="450" height="40" rx="4" class="c-tra"/><text x="500" y="261" text-anchor="middle" class="t t-s t-b">600 Mbps los 30 días</text>
+  <path d="M350 290 l-6 10 h12 z" class="c-apl"/><text x="350" y="318" text-anchor="middle" class="t t-s">pide la bajada</text>
+  <text x="650" y="318" text-anchor="end" class="t t-s">pasa a 300 el día 1 del ciclo siguiente</text>
+  <text x="670" y="252" class="t t-s">sin crédito ni cargo</text>
+  <text x="670" y="270" class="t t-s t-b">ajuste: 0</text>
+  <text x="20" y="350" class="t t-xs t-m">EJEMPLO: PLAN DE 300 MBPS = 30 AL MES · PLAN DE 600 MBPS = 45 AL MES · CICLO DE 30 DÍAS</text>
+</svg></div><figcaption><b>Prorrateo al subir y al bajar de plan a mitad de ciclo.</b> Cada barra es un ciclo de 30 días. Arriba, una subida el día 10: diez días del plan viejo más veinte del nuevo, con un ajuste de 10 a cobrar. Abajo, dos formas de manejar una bajada: prorratear en el acto (crédito de 10 para el cliente) o esperar al ciclo siguiente (sin crédito, y el cliente conserva la velocidad alta hasta el cierre).</figcaption></figure><div class="prose"><p>Las reglas exactas las define el catálogo de productos: si hay prorrateo, si las bajadas esperan, si hay permanencia mínima, si una promoción se pierde al cambiar. Lo importante es que el sistema que cobra y el que cambia la velocidad usen <b>la misma fecha</b>: la del CoA confirmado, no la del clic en la app.</p></div></section>
+<section><h2>Servicios adicionales: IP pública, TV, mesh y telefonía</h2><div class="prose"><p>No todo lo que se vende es velocidad. Cada servicio adicional toca un lugar distinto de la red, y no todos se pueden activar en caliente:</p><div class="tbl"><table><thead><tr><th>Servicio</th><th>Qué se configura y dónde</th><th>¿En caliente?</th></tr></thead><tbody><tr><td>IP pública fija</td><td>RADIUS le asigna al cliente una dirección propia, siempre la misma, en lugar de una compartida</td><td>No del todo: la dirección cambia, así que hace falta reconectar la sesión (unos segundos)</td></tr><tr><td>Televisión por IP</td><td>La OLT y la ONT habilitan el canal de la TV; el decodificador se configura desde el ACS</td><td>Sí, salvo que haya que entregar el decodificador</td></tr><tr><td>Wi-Fi mesh</td><td>Se entrega el equipo y el ACS lo enlaza con el router de la casa</td><td>Requiere entregar el equipo; la configuración es remota</td></tr><tr><td>Telefonía</td><td>El ACS carga en la ONT la cuenta de voz (capítulo 22) y la central de voz la registra</td><td>Sí, en minutos</td></tr></tbody></table></div><p>La lección es la misma que con la velocidad: cada servicio tiene <b>un dueño técnico</b>, y el orquestador tiene que conocer el mapa. Vender una IP fija sin avisar que la conexión se va a reiniciar unos segundos es una llamada al centro de atención esperando a ocurrir.</p></div></section>
+<section><h2>Promociones temporales y velocidades de prueba</h2><div class="prose"><p>El CoA también abre la puerta a productos que antes eran imposibles: <b>velocidad de prueba</b> («prueba 900 Mbps gratis por 7 días»), <b>turbo por horas</b> («el doble de velocidad esta noche para el estreno»), o una velocidad extra mientras dure una promoción.</p><p>Todos funcionan igual: un CoA para subir, un tiempo de espera y otro CoA para volver. La parte difícil no es la red, sino <b>acordarse de volver</b>. Si el sistema olvida el segundo CoA, el operador regala velocidad indefinidamente. Si lo manda antes de tiempo, el cliente siente que lo engañaron. Por eso la fecha de fin vive en el BSS, junto al contrato, y el orquestador la ejecuta como cualquier otra orden, con su confirmación y su registro.</p></div><figure class="fig fig-esquema" id="43-diagrama-6"><div class="lienzo"><svg viewBox="0 0 860 330" style="min-width:640px" role="img" aria-label="Velocidad de prueba: el día 2 un CoA sube al cliente de 300 a 900 Mbps; el día 9 otro CoA lo devuelve a 300; la sesión nunca se corta; si el regreso no llega se regala velocidad, si llega antes el cliente se siente engañado">
+  <line x1="80" y1="40" x2="80" y2="214" class="ln"/>
+  <line x1="80" y1="214" x2="800" y2="214" class="ln"/>
+  <g class="t t-s t-mono t-m" text-anchor="end">
+    <text x="72" y="84">900</text><text x="72" y="184">300</text><text x="72" y="218">0</text>
+  </g>
+  <text x="20" y="30" class="t t-xs t-b t-m">MBPS</text>
+  <g class="t t-s t-mono t-m" text-anchor="middle">
+    <text x="80" y="232">0</text><text x="152" y="232">1</text><text x="224" y="232">2</text><text x="296" y="232">3</text><text x="368" y="232">4</text><text x="440" y="232">5</text><text x="512" y="232">6</text><text x="584" y="232">7</text><text x="656" y="232">8</text><text x="728" y="232">9</text><text x="800" y="232">10</text>
+  </g>
+  <text x="800" y="250" text-anchor="end" class="t t-xs t-m">DÍAS</text>
+  <path d="M80 180 H224 V80 H728 V180 H800" class="ln s-red" style="stroke-width:3"/>
+  <path d="M728 80 H800" class="ln ln-d" style="stroke-width:2"/>
+  <text x="764" y="70" text-anchor="middle" class="t t-s t-m">¿y si no vuelve?</text>
+  <circle cx="224" cy="130" r="6" class="c-apl"/><text x="234" y="134" class="t t-s t-b k-apl">CoA ↑ prueba 900</text>
+  <circle cx="728" cy="130" r="6" class="c-apl"/><text x="718" y="134" text-anchor="end" class="t t-s t-b k-apl">CoA ↓ vuelve a 300</text>
+  <text x="476" y="104" text-anchor="middle" class="t t-s">7 días de prueba: la app ofrece quedarse con 900</text>
+  <rect x="80" y="262" width="720" height="12" rx="6" class="c-enl"/>
+  <text x="440" y="292" text-anchor="middle" class="t t-s t-b k-enl">La sesión nunca se corta</text>
+  <text x="80" y="320" class="t t-s"><tspan class="t-b">Si el segundo CoA nunca llega:</tspan> velocidad regalada. <tspan class="t-b">Si llega antes de tiempo:</tspan> el cliente se siente engañado.</text>
+</svg></div><figcaption><b>La vida de una velocidad de prueba.</b> La línea es la velocidad del cliente a lo largo de diez días. El día 2 un CoA la sube de 300 a 900 Mbps; el día 9 otro CoA la devuelve a 300, salvo que el cliente haya decidido quedarse con el plan mayor. La sesión nunca se corta. Lo que puede salir mal está marcado abajo: un regreso que nunca llega o uno que llega antes de tiempo.</figcaption></figure><div class="prose"><p>Hay un beneficio comercial claro: la velocidad de prueba <b>se vende sola</b>. El cliente que probó 900 Mbps durante una semana y vuelve a 300 nota la diferencia, y la app le ofrece quedarse con un solo toque.</p></div></section>
+<section><h2>Qué pasa si el cambio falla a mitad de camino</h2><div class="prose"><p>Un cambio de plan pasa por cuatro sistemas. Cualquiera puede fallar, y el peor resultado no es que el cambio no ocurra: es que ocurra <b>a medias</b>. Los casos típicos:</p><ul><li><b>El BNG responde CoA-NAK.</b> Suele pasar porque el perfil nuevo no existe en ese BNG (alguien creó el plan en el catálogo, pero no en la red) o porque la sesión del cliente ya no está activa.</li><li><b>El CoA no tiene respuesta.</b> El BNG no contestó a tiempo: congestión, un equipo reiniciándose o un problema de red entre RADIUS y el BNG.</li><li><b>El perfil está en dos lugares.</b> El BNG aceptó el cambio, pero la OLT sigue limitando a la velocidad vieja. Todos los sistemas dicen «600»; el cliente mide 300.</li></ul><p>Un buen orquestador trata el cambio como una <b>transacción</b>: no le dice al BSS «aplicado» hasta tener el ACK, reintenta si no hubo respuesta y, si el BNG insiste en rechazar el CoA, manda un <b>Disconnect-Request</b>: cierra la sesión para que el equipo se reconecte y reciba el perfil nuevo desde RADIUS. Es el plan B: un corte de segundos, pero un estado coherente.</p><p>Y siempre hace falta una red de seguridad: un proceso nocturno que <b>concilia</b>, es decir, compara lo que dice el BSS, lo que guarda RADIUS y lo que aplica de verdad el BNG en cada sesión, y levanta una alerta por cada diferencia. Pruébalo en el laboratorio.</p></div><div class="lab" id="43-lab-4"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Sube de plan</h3></div><p class="hint">El cliente navega a 300 Mbps. Elige el plan nuevo y cómo se aplica el cambio, y mira qué pasa con la velocidad y con la sesión. Después enciende las fallas: el perfil repetido en la OLT o un perfil que no existe en el BNG.</p><style>
+[id="43-lab-4"] .c43-checks{display:grid;gap:6px;font:500 .88rem var(--f-display)}
+[id="43-lab-4"] .c43-checks label{display:flex;gap:8px;align-items:flex-start}
+[id="43-lab-4"] .c43-checks input{margin-top:3px;accent-color:var(--accent)}
+[id="43-lab-4"] .opciones label{min-width:0}
+[id="43-lab-4"] .opciones select{width:100%}
+[id="43-lab-4"] .c43-exp{font-size:.95rem;border-left:3px solid var(--good);padding-left:10px}
+[id="43-lab-4"] .c43-exp.mal{border-color:var(--warm)}
+[id="43-lab-4"] .c43-log{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);display:grid;gap:2px}
+</style>
+<div class="opciones">
+  <label>El cliente tiene hoy
+    <select id="c43-actual" disabled><option>300 Mbps</option></select></label>
+  <label>Nuevo plan
+    <select id="c43-nuevo">
+      <option value="100">100 Mbps (baja)</option>
+      <option value="600" selected>600 Mbps (sube)</option>
+      <option value="900">900 Mbps (sube)</option>
+    </select></label>
+  <label>Cómo se aplica el cambio
+    <select id="c43-metodo">
+      <option value="coa" selected>CoA: en caliente</option>
+      <option value="disc">Cortar la sesión y reconectar</option>
+      <option value="nada">Solo en RADIUS, sin avisar al BNG</option>
+    </select></label>
+</div>
+<div class="c43-checks">
+  <label><input type="checkbox" id="c43-olt"> El límite de 300 Mbps también está configurado en la OLT</label>
+  <label><input type="checkbox" id="c43-nak"> El perfil del plan nuevo todavía no existe en el BNG</label>
+</div>
+<canvas id="c43-cv" role="img" aria-label="Velocidad del cliente durante un minuto, con el cambio de plan en el segundo 20"></canvas>
+<div class="legend"><span><i style="background:var(--c-red)"></i>Velocidad que mide el cliente</span><span><i style="background:var(--muted)"></i>Plan que factura el BSS</span><span><i style="background:var(--warm)"></i>Sesión cortada</span></div>
+<div aria-live="polite" style="display:grid;gap:8px"><div class="readout" id="c43-res"></div><p class="c43-exp" id="c43-exp"></p></div>
+<div class="c43-log" id="c43-log"></div></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región recibía todos los meses reclamos del mismo tipo: clientes que habían subido de plan, pagaban el plan nuevo y seguían midiendo la velocidad vieja. RADIUS y el BNG mostraban el perfil correcto, así que el centro de atención no encontraba nada raro. La causa estaba más abajo: cuando la red se construyó, la velocidad se había configurado también en la OLT, en el perfil de tráfico de cada ONT. El CoA cambiaba el límite del BNG, pero el de la OLT seguía en 300 y mandaba el más bajo de los dos. La solución tuvo dos partes: un perfil amplio igual para todas las ONT en la OLT, para que la velocidad viviera solo en el BNG, y un proceso que compara cada noche el plan facturado con la velocidad medida desde el equipo del cliente.</p></div><div class="ml"><b>En la práctica</b><p>Este capítulo une ventas, facturación y red: lo que se vende debe verse en la velocidad y en la factura el mismo día. Si trabajas en producto, cada promoción que diseñes necesita un perfil en la red y una fecha de regreso. Si trabajas en facturación, la fecha que importa es la del cambio confirmado. Y si atiendes clientes, «subí de plan y sigo igual» casi nunca es el Wi-Fi: es un cambio que quedó a medias entre dos sistemas.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué hace un mensaje CoA?</summary><p>Le pide al BNG que cambie el perfil de una sesión que ya está abierta, por ejemplo la velocidad, sin cortarla. El BNG responde CoA-ACK si lo aplicó o CoA-NAK si no pudo.</p></details><details><summary>¿Por qué conviene que la velocidad viva solo en el BNG?</summary><p>Porque así cada cambio de plan es una sola operación en caliente. Si la OLT también limita, hay que cambiar dos sistemas y, si uno falla, el cliente queda atrapado en el límite más bajo.</p></details><details><summary>Un cliente sube de un plan de 30 a uno de 45 el día 10 de un ciclo de 30 días. ¿Cuánto es el ajuste?</summary><p>Crédito de 20 (20/30 de 30) y cargo de 30 (20/30 de 45): un ajuste de 10 a cobrar.</p></details><details><summary>¿Por qué muchos operadores aplican las bajadas de plan al ciclo siguiente?</summary><p>Para no devolver dinero a mitad de ciclo; el cliente conserva la velocidad alta hasta el cierre y el cambio entra limpio en la factura siguiente.</p></details><details><summary>El BNG responde CoA-NAK una y otra vez. ¿Qué puede hacer el orquestador?</summary><p>Revisar que el perfil exista en ese BNG y, como plan B, mandar un Disconnect-Request para que la sesión se reconecte y reciba el perfil nuevo desde RADIUS.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.rfc-editor.org/rfc/rfc5176" target="_blank" rel="noopener">RFC 5176: extensiones de autorización dinámica para RADIUS (IETF) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/RADIUS" target="_blank" rel="noopener">RADIUS: el protocolo de autenticación y contabilidad (Wikipedia) <small>lectura</small></a><a class="vid" href="https://docs.stripe.com/billing/subscriptions/prorations" target="_blank" rel="noopener">Prorrateo de suscripciones al cambiar de plan (Stripe) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab, q=s=>document.querySelector(s);
+  const VIEJO=300, T=20;
+  function simular(){
+    const nuevo=+q('#c43-nuevo').value, m=q('#c43-metodo').value, olt=q('#c43-olt').checked, nak=q('#c43-nak').checked;
+    const tope=v=>olt?Math.min(v,300):v;
+    let bng=VIEJO, corte=null, sinServicio=false, log=[], estado, ok=false;
+    log.push('BSS → orquestador: cambio de plan '+VIEJO+' → '+nuevo+' Mbps');
+    log.push('Orquestador → RADIUS: perfil del cliente = '+nuevo+' Mbps');
+    if(m==='nada'){
+      estado='Nadie le avisó al BNG: la sesión abierta sigue con el perfil viejo hasta que el equipo se reconecte (puede tardar días). Mientras tanto, el BSS ya factura el plan nuevo.';
+    }else if(m==='coa'){
+      if(nak){log.push('RADIUS → BNG: CoA-Request (perfil '+nuevo+')');log.push('BNG → RADIUS: CoA-NAK, perfil desconocido');
+        estado='El BNG rechazó el cambio: el cliente sigue en '+VIEJO+' y el BSS ya cobra '+nuevo+'. Hay que crear el perfil en la red antes de venderlo, y el orquestador no debió confirmar la venta sin el ACK.';}
+      else{bng=nuevo;log.push('RADIUS → BNG: CoA-Request (perfil '+nuevo+')');log.push('BNG → RADIUS: CoA-ACK, aplicado sin cortar la sesión');ok=!(olt&&nuevo>300);
+        estado=ok?'Cambio en caliente: la velocidad cambió en un segundo y la sesión siguió abierta.':'El BNG ya aplica '+nuevo+' Mbps, pero la OLT sigue limitando a 300: todos los sistemas dicen '+nuevo+' y el cliente mide 300. Es el caso del perfil en dos lugares.';}
+    }else{
+      corte=[T,T+6];log.push('Orquestador → BNG: Disconnect-Request: se cierra la sesión');
+      if(nak){sinServicio=true;log.push('La ONT se reconecta; RADIUS entrega el perfil '+nuevo+', que el BNG no conoce: sesión rechazada');
+        estado='Peor que antes: al reconectar, el BNG no reconoce el perfil y rechaza la sesión. El cliente se quedó sin servicio por un error de catálogo.';}
+      else{bng=nuevo;log.push('La ONT se reconecta y RADIUS entrega el perfil '+nuevo+' Mbps');ok=!(olt&&nuevo>300);
+        estado=ok?'Funciona, pero con un corte de unos segundos: se cayó la videollamada o el juego en línea del cliente.':'Hubo corte y, aun así, la OLT sigue limitando a 300: el cliente sufrió el corte y no recibió la velocidad.';}
+    }
+    const final=sinServicio?0:tope(bng);
+    const v=t=>{
+      if(corte&&t>=corte[0]&&t<corte[1])return 0;
+      const base=t<T+1?tope(VIEJO):(sinServicio?0:final);
+      return base*(0.93+0.035*Math.sin(t*1.7)+0.02*Math.sin(t*4.3));
+    };
+    return {nuevo,v,final,corte,sinServicio,log,estado,ok,olt,m};
+  }
+  let S=simular();
+  const cv=q('#c43-cv');
+  const dibujar=L.canvasWidget(cv,w=>w<520?0.72:0.4,(ctx,w,h)=>{
+    const F=L.frame(ctx,w,h,{x0:0,x1:60,y0:0,y1:1000,sx:10,sy:200});
+    if(S.corte){ctx.fillStyle=L.tok('--warm-soft');ctx.fillRect(F.X(S.corte[0]),F.p.t,F.X(S.corte[1])-F.X(S.corte[0]),F.ph);}
+    L.curve(ctx,F,t=>t<T?VIEJO:S.nuevo,L.tok('--muted'),2,[6,5]);
+    L.curve(ctx,F,S.v,L.tok('--c-red'),2.6);
+    ctx.strokeStyle=L.tok('--accent');ctx.lineWidth=1;ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(F.X(T),F.p.t);ctx.lineTo(F.X(T),F.p.t+F.ph);ctx.stroke();ctx.setLineDash([]);
+    ctx.font='600 11px '+L.tok('--f-display');ctx.fillStyle=L.tok('--accent');ctx.textAlign='left';ctx.textBaseline='top';
+    ctx.fillText('cambio',F.X(T)+4,F.p.t+2);
+    ctx.fillStyle=L.tok('--muted');ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText('segundos',F.p.l+F.pw,F.p.t+F.ph-2);
+    ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('Mbps',F.p.l+4,F.p.t+2);
+  });
+  function actualizar(){
+    S=simular();dibujar();
+    const sesion=S.sinServicio?'<span class="warn">Sesión: rechazada, sin servicio</span>':S.corte?'<span class="warn">Sesión: cortada 6 segundos</span>':'<span class="ok">Sesión: abierta todo el tiempo</span>';
+    q('#c43-res').innerHTML='<span class="big">El cliente mide '+Math.round(S.final*0.95)+' Mbps · el BSS factura '+S.nuevo+' Mbps</span>'+sesion;
+    const ex=q('#c43-exp');ex.textContent=S.estado;ex.classList.toggle('mal',!S.ok);
+    q('#c43-log').innerHTML=S.log.map((l,i)=>'<span>'+(i+1)+'. '+l+'</span>').join('');
+  }
+  ['#c43-nuevo','#c43-metodo','#c43-olt','#c43-nak'].forEach(s=>q(s).addEventListener('change',actualizar));
+  actualizar();
+})();
+</script>
+</body>
+</html>

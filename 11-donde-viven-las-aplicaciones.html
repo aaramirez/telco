@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dónde viven las aplicaciones · Cómo funciona un telco</title>
+<meta name="description" content="Detrás de cada página, app o sistema del telco hay servidores que corren en un data center propio o en la nube, y hoy casi nunca son máquinas sueltas: son máquinas virtuales y contenedores que se crean, se mueven y se duplican por software para que el servicio no se caiga.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="11-donde-viven-las-aplicaciones">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 11 DE 49</span><h1>Dónde viven las aplicaciones: servidores, data center, virtualización y nube</h1><p class="lede">Detrás de cada página, app o sistema del telco hay servidores que corren en un data center propio o en la nube, y hoy casi nunca son máquinas sueltas: son máquinas virtuales y contenedores que se crean, se mueven y se duplican por software para que el servicio no se caiga.</p></header>
+<section><div class="prose"><p>En el capítulo 1 el viaje de un clic terminaba en «el servidor de <code>www.ejemplo.com</code>», como si fuera una sola máquina esperando en algún lugar. En la práctica, ese servidor casi nunca es una sola máquina, y casi nunca está sola. Vive en un edificio preparado para no apagarse, comparte el hierro con decenas de otros programas y tiene copias listas para reemplazarlo si falla.</p><p>Lo mismo pasa con los sistemas de un telco: la factura, el registro de clientes, el servidor que configura las ONT, el que autoriza cada conexión. Este capítulo cuenta dónde viven todas esas aplicaciones y cómo se las arreglan para no caerse.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un edificio de oficinas: el data center es el edificio con energía, aire acondicionado y seguridad; un servidor es un piso; las máquinas virtuales son oficinas separadas por tabiques dentro del piso, y los contenedores son cubículos que se arman y desarman en minutos; la nube es alquilar oficinas amuebladas en vez de construir el edificio.</p></div><figure class="fig fig-capas" id="11-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el servidor y el data center donde termina el viaje">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class="apagado"><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: el servidor y el data center donde termina el viaje</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo se para al final del viaje del clic, en el servidor, y en el edificio donde viven los servidores del operador, junto al core. Las capas que más importan son las de arriba: la aplicación y el transporte, que es lo que el servidor atiende.</figcaption></figure></section>
+<section><h2>Qué es un servidor y en qué se diferencia de una computadora de escritorio</h2><div class="prose"><p>Un <b>servidor</b> es una computadora cuyo trabajo es atender pedidos de otras: «dame esta página», «guarda esta factura», «¿este cliente puede navegar?». Por dentro tiene las mismas piezas que tu computadora: un procesador (<b>CPU</b>) que hace los cálculos, memoria (<b>RAM</b>) donde guarda lo que está usando, discos donde guarda lo que debe durar y tarjetas de red para conversar.</p><p>La diferencia está en para qué está hecho:</p><ul><li><b>No se apaga.</b> Está pensado para funcionar años sin parar, las 24 horas.</li><li><b>Tiene piezas repetidas.</b> Dos fuentes de energía, varios discos que se copian entre sí y dos o más conexiones de red. Si una pieza falla, la otra sigue y la pieza dañada se cambia en caliente, sin apagar.</li><li><b>Es mucho más grande por dentro.</b> Un servidor típico tiene decenas de núcleos de procesador y cientos de gigabytes de memoria, diez o veinte veces lo que tiene una computadora de oficina.</li><li><b>No tiene pantalla ni teclado.</b> Se administra a distancia, por la red, y tiene una tarjeta de gestión propia para encenderlo o reiniciarlo aunque el sistema esté colgado.</li><li><b>Tiene forma de bandeja.</b> Es plano y se atornilla en un mueble estándar, el <b>rack</b>.</li></ul><p>Fíjate que «servidor» nombra un papel, no un aparato. Tu computadora puede hacer de servidor si comparte una carpeta, y un servidor puede hacer de cliente cuando le pide algo a otro. Por eso en este capítulo vas a ver la palabra usada para el hierro (el equipo físico) y para el programa que atiende.</p></div></section>
+<section><h2>El sistema operativo del servidor: Linux y Windows Server</h2><div class="prose"><p>Sobre el hierro corre un <b>sistema operativo</b>, el programa que administra el procesador, la memoria y los discos y se los presta a las aplicaciones. En los servidores reinan dos familias:</p><ul><li><b>Linux</b>, gratuito y de código abierto, en sus distintas variantes (Debian, Ubuntu, Red Hat y otras). Es mayoría en Internet, en la nube y en los equipos de red: muchos routers y OLT llevan un Linux adentro. Se maneja casi siempre escribiendo comandos.</li><li><b>Windows Server</b>, de Microsoft, que se usa mucho para los servicios internos de oficina: las cuentas de los empleados, las carpetas compartidas, el correo de algunas empresas y aplicaciones de proveedores que solo corren en Windows.</li></ul><p>Para alguien que no es de sistemas, lo importante es una idea: el sistema operativo también hay que <b>mantenerlo</b>. Recibe actualizaciones de seguridad todos los meses (el capítulo 12 explica por qué), y cada actualización es una pequeña operación que se planifica, porque muchas obligan a reiniciar. Es una de las razones por las que los sistemas tienen «ventanas de mantenimiento» de madrugada.</p></div></section>
+<section><h2>El data center por dentro: racks, energía, enfriamiento, conectividad y seguridad</h2><div class="prose"><p>Un <b>data center</b> (centro de datos) es un edificio, o una sala, hecho para que los servidores no se apaguen nunca. Visto desde afuera es aburrido: paredes sin ventanas y una puerta con mucho control. Adentro hay filas de racks, ruido de ventiladores y aire frío.</p><p>Lo que lo hace especial son cinco servicios que le da a los servidores, igual que un edificio de oficinas da luz, agua y portería a sus inquilinos:</p><ol class="steps"><li><span><b>Racks.</b> Muebles metálicos estándar de unos dos metros de alto. Su altura se mide en «unidades» (<b>U</b>) de 4,45 cm; un servidor común ocupa 1 o 2 U, así que en un rack caben varias decenas.</span></li><li><span><b>Energía.</b> Dos alimentaciones independientes que llegan a cada rack, baterías (<b>UPS</b>) que sostienen todo durante los segundos o minutos que tarda en arrancar el generador, y combustible para horas o días. El capítulo 15 lo cuenta en detalle.</span></li><li><span><b>Enfriamiento.</b> Cada servidor convierte en calor casi toda la electricidad que consume. El aire acondicionado de precisión arma <b>pasillos fríos</b>, por donde los servidores aspiran, y <b>pasillos calientes</b>, por donde expulsan, para que el aire caliente no se mezcle con el frío.</span></li><li><span><b>Conectividad.</b> Fibras de al menos dos operadores, que entran al edificio por caminos distintos para que una sola excavación no deje al data center aislado. Adentro, switches en cada rack y switches centrales que los unen.</span></li><li><span><b>Seguridad física.</b> Guardias, cámaras, tarjetas, a veces huella digital, y un registro de quién entró a qué sala y cuándo. Proteger los datos empieza por proteger la puerta.</span></li></ol></div><figure class="fig fig-arquitectura" id="11-diagrama-3"><div class="lienzo"><svg viewBox="0 0 900 500" style="min-width:720px" role="img" aria-label="Arquitectura de un data center: fibras de dos operadores por caminos distintos, dos routers de borde, dos switches centrales, cuatro racks con su switch superior y sus servidores, dos caminos de energía con UPS y generador, y el enfriamiento que manda aire frío por el piso">
+  <defs>
+    <symbol id="i11-bateria" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="16" height="11" rx="1.6"/><path d="M19 10.5h2v4h-2"/><path d="M7 12.5h4M9 10.5v4"/></g></symbol>
+    <symbol id="i11-generador" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="1.6"/><path d="M13 8.5l-3 4.5h4l-3 4.5"/><path d="M6 19v2M18 19v2"/></g></symbol>
+    <symbol id="i11-frio" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7"/><path d="M9.5 3.5 12 6l2.5-2.5M9.5 20.5 12 18l2.5 2.5"/></g></symbol>
+  </defs>
+
+  
+  <rect x="10" y="10" width="880" height="62" rx="12" class="d-inet"/>
+  <text x="450" y="30" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET Y OTROS OPERADORES</text>
+  <use href="#i-nube" x="96" y="24" width="40" height="40" class="ico"/><text x="142" y="50" class="t t-s t-b">Operador A</text>
+  <use href="#i-nube" x="696" y="24" width="40" height="40" class="ico"/><text x="742" y="50" class="t t-s t-b">Operador B</text>
+
+  
+  <rect x="10" y="82" width="880" height="408" rx="12" class="d-oper"/>
+  <text x="24" y="102" class="t t-xs t-b k-oper">DATA CENTER</text>
+
+  
+  <path d="M116 64V140H290" class="ln s-fis" style="stroke-width:3"/>
+  <path d="M716 64V140H610" class="ln s-fis" style="stroke-width:3"/>
+  <text x="124" y="110" class="t t-xs k-fis">FIBRA · CAMINO 1</text>
+  <text x="604" y="110" class="t t-xs k-fis">FIBRA · CAMINO 2</text>
+
+  
+  <rect x="290" y="116" width="150" height="48" rx="8" class="caja"/><use href="#i-router-core" x="298" y="123" width="32" height="32" class="ico"/><text x="336" y="137" class="t t-s t-b">Router de</text><text x="336" y="152" class="t t-s t-b">borde 1</text>
+  <rect x="460" y="116" width="150" height="48" rx="8" class="caja"/><use href="#i-router-core" x="468" y="123" width="32" height="32" class="ico"/><text x="506" y="137" class="t t-s t-b">Router de</text><text x="506" y="152" class="t t-s t-b">borde 2</text>
+
+  
+  <path d="M365 164 365 186M535 164 535 186M365 164 535 186M535 164 365 186" class="ln"/>
+  <rect x="290" y="186" width="150" height="34" rx="8" class="caja"/><text x="365" y="208" text-anchor="middle" class="t t-s t-b">Switch central 1</text>
+  <rect x="460" y="186" width="150" height="34" rx="8" class="caja"/><text x="535" y="208" text-anchor="middle" class="t t-s t-b">Switch central 2</text>
+
+  
+  <path d="M340 220 250 250M340 220 380 250M340 220 510 250M340 220 640 250" class="ln"/>
+  <path d="M560 220 250 250M560 220 380 250M560 220 510 250M560 220 640 250" class="ln"/>
+
+  
+  <g class="t t-xs" text-anchor="middle">
+    <rect x="200" y="250" width="100" height="150" rx="6" class="caja"/>
+    <rect x="208" y="258" width="84" height="18" rx="3" class="c-enl"/><text x="250" y="271" class="k-enl">SWITCH TOR</text>
+    <rect x="330" y="250" width="100" height="150" rx="6" class="caja"/>
+    <rect x="338" y="258" width="84" height="18" rx="3" class="c-enl"/><text x="380" y="271" class="k-enl">SWITCH TOR</text>
+    <rect x="460" y="250" width="100" height="150" rx="6" class="caja"/>
+    <rect x="468" y="258" width="84" height="18" rx="3" class="c-enl"/><text x="510" y="271" class="k-enl">SWITCH TOR</text>
+    <rect x="590" y="250" width="100" height="150" rx="6" class="caja"/>
+    <rect x="598" y="258" width="84" height="18" rx="3" class="c-enl"/><text x="640" y="271" class="k-enl">SWITCH TOR</text>
+  </g>
+  <g class="caja">
+    <rect x="208" y="282" width="84" height="14" rx="2"/><rect x="208" y="300" width="84" height="14" rx="2"/><rect x="208" y="318" width="84" height="14" rx="2"/><rect x="208" y="336" width="84" height="14" rx="2"/><rect x="208" y="354" width="84" height="14" rx="2"/>
+    <rect x="338" y="282" width="84" height="14" rx="2"/><rect x="338" y="300" width="84" height="14" rx="2"/><rect x="338" y="318" width="84" height="14" rx="2"/><rect x="338" y="336" width="84" height="14" rx="2"/><rect x="338" y="354" width="84" height="14" rx="2"/>
+    <rect x="468" y="282" width="84" height="14" rx="2"/><rect x="468" y="300" width="84" height="14" rx="2"/><rect x="468" y="318" width="84" height="14" rx="2"/><rect x="468" y="336" width="84" height="14" rx="2"/><rect x="468" y="354" width="84" height="14" rx="2"/>
+    <rect x="598" y="282" width="84" height="14" rx="2"/><rect x="598" y="300" width="84" height="14" rx="2"/><rect x="598" y="318" width="84" height="14" rx="2"/><rect x="598" y="336" width="84" height="14" rx="2"/><rect x="598" y="354" width="84" height="14" rx="2"/>
+  </g>
+  <path d="M216 289h.01M216 307h.01M216 325h.01M216 343h.01M216 361h.01M346 289h.01M346 307h.01M346 325h.01M346 343h.01M346 361h.01M476 289h.01M476 307h.01M476 325h.01M476 343h.01M476 361h.01M606 289h.01M606 307h.01M606 325h.01M606 343h.01M606 361h.01" class="ln s-enl" style="stroke-width:4;stroke-linecap:round"/>
+  <g class="t t-xs t-m" text-anchor="middle"><text x="250" y="388">RACK 1</text><text x="380" y="388">RACK 2</text><text x="510" y="388">RACK 3</text><text x="640" y="388">RACK 4</text></g>
+
+  
+  <text x="24" y="242" class="t t-xs t-b t-m">ENERGÍA · CAMINO A</text>
+  <rect x="24" y="252" width="150" height="38" rx="8" class="caja"/><text x="99" y="276" text-anchor="middle" class="t t-s">Red eléctrica A</text>
+  <rect x="24" y="300" width="150" height="38" rx="8" class="caja"/><use href="#i11-bateria" x="30" y="304" width="30" height="30" class="ico"/><text x="66" y="324" class="t t-s">UPS A (baterías)</text>
+  <rect x="24" y="348" width="150" height="38" rx="8" class="caja"/><use href="#i11-generador" x="30" y="352" width="30" height="30" class="ico"/><text x="66" y="372" class="t t-s">Generador A</text>
+  <path d="M99 290v10M99 348v-10" class="ln"/>
+  <path d="M174 319H190V408H640V400M250 408V400M380 408V400M510 408V400" class="ln" style="stroke-width:2"/>
+  <text x="196" y="422" class="t t-xs t-m">A</text>
+
+  
+  <text x="726" y="242" class="t t-xs t-b t-m">ENERGÍA · CAMINO B</text>
+  <rect x="726" y="252" width="150" height="38" rx="8" class="caja"/><text x="801" y="276" text-anchor="middle" class="t t-s">Red eléctrica B</text>
+  <rect x="726" y="300" width="150" height="38" rx="8" class="caja"/><use href="#i11-bateria" x="732" y="304" width="30" height="30" class="ico"/><text x="768" y="324" class="t t-s">UPS B (baterías)</text>
+  <rect x="726" y="348" width="150" height="38" rx="8" class="caja"/><use href="#i11-generador" x="732" y="352" width="30" height="30" class="ico"/><text x="768" y="372" class="t t-s">Generador B</text>
+  <path d="M801 290v10M801 348v-10" class="ln"/>
+  <path d="M726 319H710V414H262V400M392 414V400M522 414V400M652 414V400" class="ln ln-d" style="stroke-width:2"/>
+  <text x="700" y="428" class="t t-xs t-m">B</text>
+
+  
+  <rect x="24" y="436" width="200" height="44" rx="8" class="caja"/><use href="#i11-frio" x="32" y="443" width="30" height="30" class="ico"/><text x="70" y="455" class="t t-s t-b">Enfriamiento</text><text x="70" y="470" class="t t-xs t-m">DE PRECISIÓN</text>
+  <path d="M224 458H690" class="ln" style="stroke-width:6;opacity:.35"/>
+  <path d="M290 452V424M420 452V424M550 452V424M680 452V424" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="300" y="476" class="t t-xs t-m">AIRE FRÍO POR EL PISO → PASILLO FRÍO → SERVIDORES → VUELVE CALIENTE</text>
+</svg></div><figcaption><b>Un data center por dentro.</b> Las fibras de dos operadores entran por caminos distintos y llegan a los routers de borde; de ahí a los switches centrales y a un switch en lo alto de cada rack. Abajo, la energía llega por dos caminos (A y B), cada uno con su UPS y su generador. El aire frío sale del piso hacia el pasillo frío, atraviesa los servidores y vuelve caliente al equipo de enfriamiento.</figcaption></figure><div class="prose"><p>Los data centers se clasifican según cuánta redundancia tienen. La escala más conocida va del nivel I, con un solo camino para todo y que hay que apagar para darle mantenimiento, al nivel IV, donde cada sistema está duplicado y el edificio aguanta una falla cualquiera sin que se note. Las normas TIA-942 y las del Uptime Institute describen esos niveles.</p></div></section>
+<section><h2>Virtualización: varias máquinas dentro de una</h2><div class="prose"><p>Durante años cada aplicación tenía su propio servidor. El resultado era un data center lleno de máquinas que pasaban la mayor parte del día al 10 % de su capacidad, consumiendo energía y espacio igual.</p><p>La <b>virtualización</b> resolvió eso. Un programa especial, el <b>hipervisor</b>, se instala directo sobre el hierro y lo reparte en varias <b>máquinas virtuales</b> (<b>VM</b>, por sus siglas en inglés). Cada máquina virtual cree que es una computadora completa: tiene su procesador, su memoria, su disco y su sistema operativo. En realidad, todas comparten el mismo hierro, y el hipervisor se encarga de que una no pueda ver ni tocar lo que hace la otra. Son las oficinas separadas por tabiques dentro del mismo piso.</p><p>Las ventajas para un telco son muy concretas:</p><ul><li><b>Se aprovecha el hierro.</b> Un servidor físico puede alojar diez o veinte máquinas virtuales.</li><li><b>Se crean en minutos.</b> Pedir una máquina nueva ya no es comprar, esperar el envío e instalar; es llenar un formulario.</li><li><b>Se mueven en caliente.</b> Una máquina virtual puede pasar de un servidor físico a otro mientras funciona. Así se da mantenimiento al hierro sin apagar el servicio.</li><li><b>Se copian enteras.</b> Una máquina virtual es, en el fondo, un conjunto de archivos: se puede respaldar, clonar o recuperar de una sola vez.</li></ul><p>Hay hipervisores comerciales y libres; VMware, Hyper-V, Proxmox y KVM son ejemplos del mercado. Los operadores también virtualizan funciones de red que antes eran equipos dedicados, como el BNG o el firewall. A eso la industria le llama <b>NFV</b> (virtualización de funciones de red), y vuelve a aparecer en el capítulo 49.</p></div></section>
+<section><h2>Contenedores y orquestadores (Docker y Kubernetes) explicados simple</h2><div class="prose"><p>Una máquina virtual trae su sistema operativo completo, y eso pesa: varios gigabytes y un minuto o más para arrancar. Los <b>contenedores</b> son una idea más liviana. En lugar de simular una computadora entera, empaquetan solo la aplicación con lo que necesita para correr (sus bibliotecas y su configuración) y comparten el sistema operativo de la máquina donde corren.</p><p>El resultado es un paquete de pocos megabytes que arranca en segundos y funciona igual en la computadora del programador, en el data center o en la nube. Son los cubículos que se arman y se desarman en minutos. <b>Docker</b> es la herramienta que popularizó esta forma de empaquetar.</p><p>Cuando una aplicación se parte en decenas de contenedores, y cada uno corre en varias copias, hace falta alguien que los ubique y los vigile. Ese alguien es el <b>orquestador</b>, y el más usado es <b>Kubernetes</b>. Le dices «quiero cinco copias de este contenedor siempre funcionando» y él decide en qué máquinas ponerlas, reemplaza la que se cae, agrega copias cuando sube la demanda y las quita cuando baja.</p></div><figure class="fig fig-capas" id="11-diagrama-2"><div class="lienzo"><svg viewBox="0 0 800 380" style="min-width:680px" role="img" aria-label="La pila de un servidor moderno: edificio, hierro, hipervisor, máquinas virtuales con su sistema operativo, contenedores y aplicaciones; y qué capas cuida la empresa y cuáles el proveedor en un servidor propio, en IaaS, en PaaS y en SaaS">
+  <text x="20" y="22" class="t t-xs t-b t-m">LA PILA, DE ABAJO HACIA ARRIBA</text>
+  <text x="625" y="22" text-anchor="middle" class="t t-xs t-b t-m">QUIÉN CUIDA CADA CAPA</text>
+  <g class="t t-s t-b" text-anchor="middle">
+    <text x="506" y="44">Propio</text><text x="584" y="44">IaaS</text><text x="662" y="44">PaaS</text><text x="740" y="44">SaaS</text>
+  </g>
+
+  
+  <rect x="20" y="54" width="420" height="42" rx="8" class="caja"/>
+  <text x="32" y="80" class="t t-b">Aplicaciones</text>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="186" y="61" width="78" height="28" rx="5" class="c-apl"/><text x="225" y="79">web</text>
+    <rect x="272" y="61" width="78" height="28" rx="5" class="c-apl"/><text x="311" y="79">facturación</text>
+    <rect x="358" y="61" width="74" height="28" rx="5" class="c-apl"/><text x="395" y="79">tickets</text>
+  </g>
+
+  <rect x="20" y="102" width="420" height="42" rx="8" class="caja"/>
+  <text x="32" y="128" class="t t-b">Contenedores</text>
+  <g class="t t-xs" text-anchor="middle">
+    <rect x="186" y="109" width="36" height="28" rx="4" class="caja ln-d"/><text x="204" y="127">C</text>
+    <rect x="228" y="109" width="36" height="28" rx="4" class="caja ln-d"/><text x="246" y="127">C</text>
+    <rect x="272" y="109" width="24" height="28" rx="4" class="caja ln-d"/><text x="284" y="127">C</text>
+    <rect x="299" y="109" width="24" height="28" rx="4" class="caja ln-d"/><text x="311" y="127">C</text>
+    <rect x="326" y="109" width="24" height="28" rx="4" class="caja ln-d"/><text x="338" y="127">C</text>
+    <text x="395" y="127" class="t-m">sin contenedor</text>
+  </g>
+
+  <rect x="20" y="150" width="420" height="42" rx="8" class="caja"/>
+  <text x="32" y="168" class="t t-b">Sistema operativo</text>
+  <text x="32" y="183" class="t t-xs t-m">UNO POR MÁQUINA VIRTUAL</text>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="186" y="157" width="78" height="28" rx="5" class="caja"/><text x="225" y="175">VM 1 · Linux</text>
+    <rect x="272" y="157" width="78" height="28" rx="5" class="caja"/><text x="311" y="175">VM 2 · Linux</text>
+    <rect x="358" y="157" width="74" height="28" rx="5" class="caja"/><text x="395" y="175">VM 3 · Win.</text>
+  </g>
+
+  <rect x="20" y="198" width="420" height="42" rx="8" class="caja"/>
+  <text x="32" y="224" class="t t-b">Hipervisor</text>
+  <rect x="186" y="205" width="246" height="28" rx="5" class="caja ln-d"/>
+  <text x="309" y="223" text-anchor="middle" class="t t-s">reparte el hierro entre las VM</text>
+
+  <rect x="20" y="246" width="420" height="42" rx="8" class="caja"/>
+  <text x="32" y="272" class="t t-b">Hierro</text>
+  <use href="#i-servidor" x="150" y="252" width="30" height="30" class="ico"/>
+  <text x="309" y="272" text-anchor="middle" class="t t-s">procesador · memoria · discos · red</text>
+
+  <rect x="20" y="294" width="420" height="42" rx="8" class="caja"/>
+  <text x="32" y="320" class="t t-b">Data center</text>
+  <text x="309" y="320" text-anchor="middle" class="t t-s">energía · enfriamiento · fibra · seguridad</text>
+
+  
+  <g class="t t-xs" text-anchor="middle">
+    
+    <rect x="470" y="58" width="72" height="34" rx="5" class="d-casa"/><text x="506" y="79" class="k-casa">empresa</text>
+    <rect x="470" y="106" width="72" height="34" rx="5" class="d-casa"/><text x="506" y="127" class="k-casa">empresa</text>
+    <rect x="470" y="154" width="72" height="34" rx="5" class="d-casa"/><text x="506" y="175" class="k-casa">empresa</text>
+    <rect x="470" y="202" width="72" height="34" rx="5" class="d-casa"/><text x="506" y="223" class="k-casa">empresa</text>
+    <rect x="470" y="250" width="72" height="34" rx="5" class="d-casa"/><text x="506" y="271" class="k-casa">empresa</text>
+    <rect x="470" y="298" width="72" height="34" rx="5" class="d-casa"/><text x="506" y="319" class="k-casa">empresa</text>
+    
+    <rect x="548" y="58" width="72" height="34" rx="5" class="d-casa"/><text x="584" y="79" class="k-casa">empresa</text>
+    <rect x="548" y="106" width="72" height="34" rx="5" class="d-casa"/><text x="584" y="127" class="k-casa">empresa</text>
+    <rect x="548" y="154" width="72" height="34" rx="5" class="d-casa"/><text x="584" y="175" class="k-casa">empresa</text>
+    <rect x="548" y="202" width="72" height="34" rx="5" class="d-oper"/><text x="584" y="223" class="k-oper">proveedor</text>
+    <rect x="548" y="250" width="72" height="34" rx="5" class="d-oper"/><text x="584" y="271" class="k-oper">proveedor</text>
+    <rect x="548" y="298" width="72" height="34" rx="5" class="d-oper"/><text x="584" y="319" class="k-oper">proveedor</text>
+    
+    <rect x="626" y="58" width="72" height="34" rx="5" class="d-casa"/><text x="662" y="79" class="k-casa">empresa</text>
+    <rect x="626" y="106" width="72" height="34" rx="5" class="d-oper"/><text x="662" y="127" class="k-oper">proveedor</text>
+    <rect x="626" y="154" width="72" height="34" rx="5" class="d-oper"/><text x="662" y="175" class="k-oper">proveedor</text>
+    <rect x="626" y="202" width="72" height="34" rx="5" class="d-oper"/><text x="662" y="223" class="k-oper">proveedor</text>
+    <rect x="626" y="250" width="72" height="34" rx="5" class="d-oper"/><text x="662" y="271" class="k-oper">proveedor</text>
+    <rect x="626" y="298" width="72" height="34" rx="5" class="d-oper"/><text x="662" y="319" class="k-oper">proveedor</text>
+    
+    <rect x="704" y="58" width="72" height="34" rx="5" class="d-oper"/><text x="740" y="79" class="k-oper">proveedor</text>
+    <rect x="704" y="106" width="72" height="34" rx="5" class="d-oper"/><text x="740" y="127" class="k-oper">proveedor</text>
+    <rect x="704" y="154" width="72" height="34" rx="5" class="d-oper"/><text x="740" y="175" class="k-oper">proveedor</text>
+    <rect x="704" y="202" width="72" height="34" rx="5" class="d-oper"/><text x="740" y="223" class="k-oper">proveedor</text>
+    <rect x="704" y="250" width="72" height="34" rx="5" class="d-oper"/><text x="740" y="271" class="k-oper">proveedor</text>
+    <rect x="704" y="298" width="72" height="34" rx="5" class="d-oper"/><text x="740" y="319" class="k-oper">proveedor</text>
+  </g>
+  <text x="20" y="366" class="t t-s t-m">C = contenedor. En SaaS la empresa solo usa la aplicación y cuida sus datos y sus usuarios.</text>
+</svg></div><figcaption><b>La pila de un servidor moderno.</b> De abajo hacia arriba: el hierro (procesador, memoria, discos, red), el hipervisor que lo reparte, las máquinas virtuales con su sistema operativo, el motor de contenedores y, arriba de todo, las aplicaciones. A la derecha, quién se ocupa de cada capa según el modelo de nube: en un servidor propio, todo es tuyo; en IaaS, PaaS y SaaS, el proveedor se va quedando con más capas.</figcaption></figure><div class="prose"><p>Un aviso para no confundir los nombres: un contenedor no es «una máquina virtual chiquita». La máquina virtual aísla con un sistema operativo propio y es más fuerte como frontera; el contenedor comparte el sistema operativo y es más rápido y liviano. En la práctica se usan juntos: casi siempre los contenedores corren dentro de máquinas virtuales.</p></div></section>
+<section><h2>La nube: infraestructura, plataforma y software como servicio</h2><div class="prose"><p>La <b>nube</b> es usar servidores, almacenamiento o aplicaciones de otro, por Internet, pagando por lo que usas y pidiéndolo tú mismo desde una página o una API, sin hablar con nadie. Esa última parte es la clave. El instituto de normas de Estados Unidos (NIST) la define con cinco rasgos: autoservicio, acceso por la red, recursos compartidos entre muchos clientes, crecimiento rápido según la demanda y cobro por uso medido.</p><p>Hay tres formas principales de comprarla, según cuánta pila de la figura anterior te entregan hecha:</p><ul><li><b>IaaS (infraestructura como servicio).</b> Te alquilan máquinas virtuales, discos y redes. Tú instalas y cuidas el sistema operativo y la aplicación. Es alquilar la oficina vacía.</li><li><b>PaaS (plataforma como servicio).</b> Te dan una base de datos lista o un lugar donde subir tu código, y el proveedor cuida todo lo de abajo. Es la oficina amueblada: solo traes tu trabajo.</li><li><b>SaaS (software como servicio).</b> Te dan la aplicación terminada y la usas desde el navegador: el correo, la hoja de cálculo en línea o un sistema de atención al cliente. Es contratar el servicio de recepción completo.</li></ul></div><figure class="fig fig-comparacion" id="11-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 400" style="min-width:740px" role="img" aria-label="Comparación de servidor físico, máquina virtual, contenedor y servicio en la nube según cuánto tarda en estar listo, cuánto pesa, cuánto aislamiento da, cómo se paga y quién lo mantiene">
+  
+  <g class="t t-b" text-anchor="middle">
+    <rect x="170" y="10" width="170" height="70" rx="10" class="caja"/>
+    <use href="#i-servidor" x="238" y="16" width="34" height="34" class="ico"/><text x="255" y="68">Servidor físico</text>
+    <rect x="350" y="10" width="170" height="70" rx="10" class="caja"/>
+    <rect x="416" y="18" width="38" height="30" rx="4" class="caja ln-d"/><rect x="422" y="24" width="26" height="8" rx="2" class="caja"/><rect x="422" y="35" width="26" height="8" rx="2" class="caja"/>
+    <text x="435" y="68">Máquina virtual</text>
+    <rect x="530" y="10" width="170" height="70" rx="10" class="caja"/>
+    <rect x="596" y="24" width="12" height="12" rx="2" class="caja ln-d"/><rect x="610" y="24" width="12" height="12" rx="2" class="caja ln-d"/><rect x="603" y="38" width="12" height="12" rx="2" class="caja ln-d"/>
+    <text x="615" y="68">Contenedor</text>
+    <rect x="710" y="10" width="170" height="70" rx="10" class="caja"/>
+    <use href="#i-nube" x="778" y="14" width="34" height="34" class="ico"/><text x="795" y="68">Servicio en la nube</text>
+  </g>
+
+  
+  <g class="t t-b">
+    <text x="16" y="118">Listo en</text>
+    <text x="16" y="180">Peso y arranque</text>
+    <text x="16" y="242">Aislamiento</text>
+    <text x="16" y="304">Cómo se paga</text>
+    <text x="16" y="366">Quién lo mantiene</text>
+  </g>
+  <path d="M10 92H890M10 154H890M10 216H890M10 278H890M10 340H890" class="ln" style="stroke-width:1;opacity:.5"/>
+
+  
+  <rect x="534" y="160" width="162" height="50" rx="6" class="d-casa"/>
+  <rect x="174" y="222" width="162" height="50" rx="6" class="d-casa"/>
+  <rect x="714" y="98" width="162" height="50" rx="6" class="d-casa"/>
+  <rect x="714" y="284" width="162" height="50" rx="6" class="d-casa"/>
+  <rect x="714" y="346" width="162" height="50" rx="6" class="d-casa"/>
+
+  <g class="t t-s" text-anchor="middle">
+    
+    <text x="255" y="116">semanas</text><text x="255" y="132" class="t-m">comprar, enviar, instalar</text>
+    <text x="435" y="116">minutos</text><text x="435" y="132" class="t-m">un formulario</text>
+    <text x="615" y="116">segundos</text><text x="615" y="132" class="t-m">si ya hay dónde correrlo</text>
+    <text x="795" y="116" class="t-b">minutos</text><text x="795" y="132" class="t-m">lo pides en una página</text>
+    
+    <text x="255" y="178">el equipo entero</text><text x="255" y="194" class="t-m">arranca en minutos</text>
+    <text x="435" y="178">gigabytes</text><text x="435" y="194" class="t-m">trae su sistema operativo</text>
+    <text x="615" y="178" class="t-b">megabytes</text><text x="615" y="194" class="t-m">arranca en segundos</text>
+    <text x="795" y="178">no lo ves</text><text x="795" y="194" class="t-m">depende del proveedor</text>
+    
+    <text x="255" y="240" class="t-b">total</text><text x="255" y="256" class="t-m">nadie más lo usa</text>
+    <text x="435" y="240">fuerte</text><text x="435" y="256" class="t-m">sistema operativo propio</text>
+    <text x="615" y="240">medio</text><text x="615" y="256" class="t-m">comparte el sistema</text>
+    <text x="795" y="240">lo promete el proveedor</text><text x="795" y="256" class="t-m">compartes su edificio</text>
+    
+    <text x="255" y="302">compra + energía</text><text x="255" y="318" class="t-m">+ espacio + personas</text>
+    <text x="435" y="302">una parte del hierro</text><text x="435" y="318" class="t-m">propio o alquilado</text>
+    <text x="615" y="302">una parte de la VM</text><text x="615" y="318" class="t-m">muy aprovechado</text>
+    <text x="795" y="302" class="t-b">por uso, cada mes</text><text x="795" y="318" class="t-m">sin compra inicial</text>
+    
+    <text x="255" y="364">la empresa: todo</text><text x="255" y="380" class="t-m">del hierro a la app</text>
+    <text x="435" y="364">la empresa</text><text x="435" y="380" class="t-m">del sistema a la app</text>
+    <text x="615" y="364">la empresa</text><text x="615" y="380" class="t-m">la app y su paquete</text>
+    <text x="795" y="364" class="t-b">el proveedor</text><text x="795" y="380" class="t-m">tú usas y configuras</text>
+  </g>
+  <rect x="16" y="380" width="12" height="12" rx="3" class="d-casa"/>
+  <text x="34" y="390" class="t t-xs t-m">LA MÁS CÓMODA</text>
+</svg></div><figcaption><b>Cuatro formas de tener un servidor.</b> Las columnas comparan un servidor físico propio, una máquina virtual, un contenedor y un servicio en la nube en cinco aspectos: cuánto tarda en estar listo, cuánto pesa, cuánto aislamiento da, cómo se paga y quién lo mantiene. Ninguna es la mejor en todo: cada fila tiene un ganador distinto.</figcaption></figure></section>
+<section><h2>Nube pública, privada e híbrida: costos, control y riesgos</h2><div class="prose"><p>La nube puede ser de tres tipos según de quién es el edificio:</p><ul><li><b>Pública.</b> El proveedor (Amazon Web Services, Microsoft Azure, Google Cloud y otros) comparte su infraestructura entre miles de clientes, cada uno aislado de los demás.</li><li><b>Privada.</b> La empresa arma en su propio data center la misma experiencia de autoservicio, solo para ella.</li><li><b>Híbrida.</b> Una mezcla: algunos sistemas en casa, otros en la nube pública, conectados entre sí. Es lo más común en un telco.</li></ul><p>¿Cuál conviene? Depende sobre todo de <b>cómo se usa</b>. La nube brilla cuando la demanda sube y baja, porque solo pagas las horas de más. Los servidores propios brillan cuando la carga es pareja y dura años, porque el hierro comprado se paga una vez. Además hay costos que no se ven en la primera cuenta: en la nube, sacar datos hacia Internet se cobra aparte; en casa, la energía, el espacio y las personas que cuidan los equipos.</p></div><div class="lab" id="11-lab-7"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Comprar o alquilar?</h3></div><p class="hint">Mueve la carga normal, el pico y cuántas horas al día dura el pico. El gráfico suma mes a mes lo que cuesta tener servidores propios y lo que cuesta alquilarlos en la nube. Busca el punto donde las líneas se cruzan. Las cifras son de ejemplo, no precios reales.</p><div class="ctls">
+  <label class="ctl" for="c11-base">Servidores en carga normal <output id="c11-base-o"></output>
+    <input type="range" id="c11-base" min="2" max="40" step="1" value="6"></label>
+  <label class="ctl" for="c11-pico">Servidores en el pico <output id="c11-pico-o"></output>
+    <input type="range" id="c11-pico" min="2" max="60" step="1" value="20"></label>
+  <label class="ctl" for="c11-horas">Horas de pico al día <output id="c11-horas-o"></output>
+    <input type="range" id="c11-horas" min="0" max="24" step="1" value="3"></label>
+  <label class="ctl" for="c11-meses">Meses a comparar <output id="c11-meses-o"></output>
+    <input type="range" id="c11-meses" min="12" max="60" step="6" value="36"></label>
+</div>
+<div class="opciones">
+  <label>En la nube, la carga normal se paga
+    <select id="c11-reserva">
+      <option value="0" selected>Por hora, sin compromiso</option>
+      <option value="1">Reservada por años (35 % menos)</option>
+    </select></label>
+</div>
+<canvas id="c11-cv" role="img" aria-label="Costo acumulado de servidores propios y de la nube, mes a mes"></canvas>
+<div class="legend"><span><i style="background:var(--accent)"></i>Servidores propios</span><span><i style="background:var(--warm)"></i>Nube</span><span>Eje vertical: miles de unidades acumuladas · eje horizontal: meses</span></div>
+<div class="readout" id="c11-cres" aria-live="polite"></div>
+<p class="hint" id="c11-cnota"></p></div><div class="prose"><p>El costo no es lo único. Con la nube se gana velocidad y se pierde algo de <b>control</b>: los datos quedan en un edificio ajeno, a veces en otro país, y la ley de protección de datos o el regulador pueden pedir que ciertos datos de clientes se queden dentro de las fronteras. Y la nube no es infalible: los grandes proveedores también tienen caídas, y una configuración mal hecha (un depósito de archivos abierto a todo Internet, por ejemplo) es responsabilidad del cliente, no del proveedor.</p></div></section>
+<section><h2>Bases de datos: dónde se guardan clientes, facturas y equipos</h2><div class="prose"><p>Casi todos los sistemas de un telco son, en el fondo, una aplicación que lee y escribe en una <b>base de datos</b>. La base de datos es el archivo ordenado: guarda que el cliente 10 245 vive en tal dirección, tiene tal plan, su ONT tiene tal número de serie y su última factura venció el día 5.</p><p>Hay dos grandes estilos:</p><ul><li><b>Relacionales</b>, que guardan todo en tablas con filas y columnas relacionadas entre sí (la tabla de clientes, la de facturas, la de pagos) y se consultan con el lenguaje <b>SQL</b>. Son las preferidas para el dinero, porque garantizan que una operación se haga completa o no se haga: un pago no puede quedar registrado a medias. PostgreSQL, MySQL, Oracle y SQL Server son ejemplos del mercado.</li><li><b>No relacionales</b> (a veces llamadas NoSQL), que guardan documentos, pares de clave y valor o series de tiempo. Son útiles para volúmenes enormes que cambian rápido, como las mediciones de tráfico de miles de equipos cada cinco minutos.</li></ul><p>Hay que separar dos ideas que se confunden: el <b>servidor de aplicación</b>, que tiene la lógica («si el cliente no pagó, suspender»), y el <b>servidor de base de datos</b>, que guarda los datos. Puedes tener diez copias del primero repartiendo trabajo, pero la base de datos es más delicada de duplicar, porque todas las copias tienen que decir lo mismo. Por eso, cuando «el sistema está lento», muchas veces el cuello de botella es la base de datos.</p></div></section>
+<section><h2>Alta disponibilidad: balanceadores, réplicas y respaldos</h2><div class="prose"><p>La <b>disponibilidad</b> es el porcentaje del tiempo que un servicio funciona. Suena bien decir 99,9 %, pero ese 0,1 % que falta son casi nueve horas de caída al año. Cada nueve más divide la caída por diez: 99,99 % son unos 53 minutos al año, y 99,999 %, unos 5 minutos. Cada nueve cuesta bastante más que el anterior.</p><p>La receta para subir la disponibilidad es siempre la misma: <b>no depender de una sola pieza</b>. Tres herramientas la hacen posible:</p><ul><li><b>El balanceador de carga.</b> Es la recepcionista que reparte. Los usuarios le hablan a una sola dirección, y el balanceador pasa cada pedido a uno de varios servidores iguales. Cada pocos segundos les pregunta «¿estás bien?» (una <b>revisión de salud</b>), y si uno no contesta, deja de mandarle trabajo.</li><li><b>Las réplicas.</b> La base de datos se copia en tiempo real a una segunda base de datos, en otra máquina o en otro edificio. Si la principal muere, la réplica toma su lugar.</li><li><b>Los respaldos.</b> Copias guardadas aparte, para volver atrás si alguien borra algo por error o un virus cifra los datos. Una réplica no sirve para eso: copia el error en el acto. La regla clásica es <b>3-2-1</b>: tres copias, en dos medios distintos, una fuera del edificio.</li></ul></div><figure class="fig fig-flujo" id="11-diagrama-4"><div class="lienzo"><svg viewBox="0 0 960 610" style="min-width:720px" role="img" aria-label="Flujo de alta disponibilidad: el balanceador pasa un pedido al servidor A; revisa su salud; A se cae y no responde dos revisiones; el balanceador lo saca de la lista y el siguiente pedido lo atiende el servidor B">
+  
+  <rect x="40" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-persona" x="52" y="26" width="32" height="32" class="ico"/><text x="92" y="47" class="t t-b">Usuarios</text>
+  <rect x="262" y="14" width="156" height="56" rx="10" class="caja"/><use href="#i-router-core" x="272" y="26" width="32" height="32" class="ico"/><text x="312" y="47" class="t t-b">Balanceador</text>
+  <rect x="490" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-servidor" x="502" y="26" width="32" height="32" class="ico"/><text x="542" y="47" class="t t-b">Servidor A</text>
+  <rect x="670" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-servidor" x="682" y="26" width="32" height="32" class="ico"/><text x="722" y="47" class="t t-b">Servidor B</text>
+  <line x1="110" y1="70" x2="110" y2="590" class="vida"/>
+  <line x1="340" y1="70" x2="340" y2="590" class="vida"/>
+  <line x1="560" y1="70" x2="560" y2="300" class="vida"/>
+  <line x1="560" y1="300" x2="560" y2="590" class="vida apagado"/>
+  <line x1="740" y1="70" x2="740" y2="590" class="vida"/>
+
+  
+  <line x1="110" y1="100" x2="338" y2="112" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="118" y="94" class="t t-s"><tspan class="t-mono t-b">GET /factura</tspan> ① Pedido</text>
+  <line x1="340" y1="136" x2="558" y2="148" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="348" y="130" class="t t-s">② Se lo paso a A</text>
+  <line x1="560" y1="172" x2="112" y2="196" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="150" y="212" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> ③ La respuesta vuelve por el balanceador</text>
+
+  <line x1="340" y1="236" x2="558" y2="246" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="348" y="230" class="t t-s">④ ¿Estás bien?</text>
+  <line x1="560" y1="258" x2="342" y2="268" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="456" y="282" class="t t-s">Sí</text>
+
+  
+  <path d="M548 288l24 24M572 288l-24 24" class="ln" style="stroke-width:3"/>
+  <text x="580" y="304" class="t t-s t-b">⑤ El servidor A se cae</text>
+
+  <line x1="340" y1="336" x2="556" y2="346" class="ln s-tra ln-d" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="348" y="330" class="t t-s">⑥ ¿Estás bien? … sin respuesta</text>
+  <line x1="340" y1="384" x2="556" y2="394" class="ln s-tra ln-d" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="348" y="378" class="t t-s">⑦ ¿Estás bien? … sin respuesta</text>
+  <rect x="190" y="402" width="146" height="34" rx="6" class="caja"/>
+  <text x="263" y="416" text-anchor="middle" class="t t-xs t-b">A FUERA DE LA LISTA</text>
+  <text x="263" y="430" text-anchor="middle" class="t t-xs t-m">SOLO QUEDA B</text>
+
+  
+  <line x1="110" y1="462" x2="338" y2="474" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="118" y="456" class="t t-s"><tspan class="t-mono t-b">GET /factura</tspan> ⑧ Otro pedido</text>
+  <line x1="340" y1="498" x2="738" y2="512" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="348" y="492" class="t t-s">⑨ Se lo paso a B</text>
+  <line x1="740" y1="532" x2="112" y2="556" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="400" y="566" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> ⑩ Respuesta desde B</text>
+  <text x="118" y="590" class="t t-s t-b">El usuario no nota nada</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M834 96v176" class="ln s-apl" style="stroke-width:3"/><text x="844" y="170" class="k-apl">Normal</text><text x="844" y="184" class="t-m">A y B trabajan</text>
+    <path d="M834 288v150" class="ln s-tra" style="stroke-width:3"/><text x="844" y="350" class="k-tra">Falla y</text><text x="844" y="364" class="k-tra">detección</text><text x="844" y="378" class="t-m">2 revisiones,</text><text x="844" y="392" class="t-m">unos segundos</text>
+    <path d="M834 456v104" class="ln s-apl" style="stroke-width:3"/><text x="844" y="502" class="k-apl">Sin A</text><text x="844" y="516" class="t-m">B atiende todo</text>
+  </g>
+  <text x="20" y="320" class="t t-xs t-m" transform="rotate(-90 20 320)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Un servidor se cae y nadie lo nota.</b> El balanceador reparte los pedidos entre los servidores A y B y les pregunta periódicamente si están bien. En el paso ⑤ el servidor A deja de responder; tras fallar dos revisiones seguidas, el balanceador lo saca de la lista y desde el paso ⑧ todo va a B. Los usuarios que tenían un pedido en curso en A lo reintentan; los demás no se enteran.</figcaption></figure><div class="lab" id="11-lab-6"><div class="lab-title"><span class="tag">Laboratorio</span><h3>El servidor que se cae</h3></div><p class="hint">Hay tres servidores detrás de un balanceador. Apaga uno, o dos, y mira qué notan los usuarios. Después desactiva la revisión de salud del balanceador o cambia dónde se guardan las sesiones, y vuelve a probar.</p><style>
+[id="11-lab-6"] .c11-esc{width:100%;max-width:560px;margin-inline:auto;height:auto;display:block;background:var(--paper);border-radius:8px}
+[id="11-lab-6"] .c11-esc text{font-family:var(--f-display);fill:var(--ink)}
+[id="11-lab-6"] .c11-barras{display:grid;gap:6px}
+[id="11-lab-6"] .c11-barra{display:grid;grid-template-columns:92px 1fr 54px;gap:8px;align-items:center;font:500 .86rem var(--f-display)}
+[id="11-lab-6"] .c11-barra .track{display:flex;height:16px;border-radius:5px;overflow:hidden;border:1px solid var(--line);background:var(--paper)}
+[id="11-lab-6"] .c11-barra .track i{display:block;height:100%;transition:width .3s}
+[id="11-lab-6"] .c11-barra output{font-family:var(--f-mono);text-align:right}
+@media (prefers-reduced-motion: reduce){[id="11-lab-6"] .c11-barra .track i{transition:none}}
+</style>
+<div class="btns" role="group" aria-label="Encender o apagar servidores">
+  <button type="button" id="c11-s0" aria-pressed="true">Servidor 1: encendido</button>
+  <button type="button" id="c11-s1" aria-pressed="true">Servidor 2: encendido</button>
+  <button type="button" id="c11-s2" aria-pressed="true">Servidor 3: encendido</button>
+</div>
+<div class="ctls">
+  <label class="ctl" for="c11-usu">Usuarios conectados <output id="c11-usu-o"></output>
+    <input type="range" id="c11-usu" min="300" max="3000" step="100" value="1500"></label>
+</div>
+<div class="opciones">
+  <label>El balanceador
+    <select id="c11-salud">
+      <option value="1" selected>Revisa la salud cada 5 segundos</option>
+      <option value="0">No revisa la salud</option>
+    </select></label>
+  <label>La sesión de cada usuario se guarda
+    <select id="c11-ses">
+      <option value="local" selected>En el servidor que lo atiende</option>
+      <option value="comp">En una base compartida</option>
+    </select></label>
+</div>
+<svg class="c11-esc" id="c11-esc" viewBox="0 0 440 236" role="img" aria-label="Usuarios, balanceador y tres servidores con su carga"></svg>
+<div class="c11-barras" id="c11-barras"></div>
+<div class="legend"><span><i style="background:var(--good)"></i>atendidos bien</span><span><i style="background:var(--warm)"></i>atendidos lento</span><span><i style="background:var(--muted)"></i>con error</span></div>
+<div class="readout" id="c11-res" aria-live="polite"></div>
+<p class="hint" id="c11-nota"></p></div></section>
+<section><h2>Recuperación ante desastres: qué pasa si se pierde un data center</h2><div class="prose"><p>La alta disponibilidad protege de que falle una pieza. Pero ¿y si falla el edificio entero? Un incendio, una inundación, un corte de energía largo o el cable de fibra que se corta en el único camino de salida. Para eso existe el <b>plan de recuperación ante desastres</b>: tener un segundo sitio, lejos del primero, listo para tomar el trabajo.</p><p>Dos números ordenan ese plan, y cualquiera que trabaje en un telco los va a escuchar:</p><ul><li><b>RPO (punto de recuperación):</b> cuántos datos estamos dispuestos a perder. Si el respaldo se hace cada noche, el RPO es de hasta 24 horas: lo que pasó en el día se pierde. Con réplica en tiempo real, el RPO es casi cero.</li><li><b>RTO (tiempo de recuperación):</b> cuánto tarda el servicio en volver. Puede ser minutos, si el segundo sitio está encendido y sincronizado, o días, si hay que reinstalar todo desde las copias.</li></ul><p>Menos RPO y menos RTO cuestan más, así que cada sistema recibe el suyo según su importancia. No necesitan lo mismo el sistema que autoriza la conexión de cada cliente que el reporte mensual de ventas. Y un plan que nunca se probó no es un plan: los operadores serios simulan la pérdida del sitio principal al menos una vez al año.</p></div></section>
+<section><h2>Dónde corren los sistemas de un telco: BSS, OSS, ACS, RADIUS y DNS</h2><div class="prose"><p>Con todo esto, ya se puede dibujar el mapa de dónde viven los sistemas de un operador. Hay dos grandes grupos, con necesidades distintas:</p><ul><li><b>Los sistemas de la red</b>, que participan en cada conexión: <b>RADIUS</b>, que dice si un cliente puede navegar y a qué velocidad (capítulo 20); el <b>DNS</b>, que traduce nombres (capítulo 8); el <b>DHCP</b>, que reparte direcciones; y el <b>ACS</b>, que configura los equipos de la casa a distancia (capítulo 28). Si se caen, los clientes se quedan sin servicio en minutos. Por eso viven cerca del core, en el data center propio, duplicados en dos sitios.</li><li><b>Los sistemas del negocio y de operación</b>: el <b>BSS</b> (clientes, catálogo, facturación y cobro) y el <b>OSS</b> (inventario, órdenes, fallas), que se explican en la parte 4. Si se caen, nadie pierde Internet, pero no se puede vender, instalar ni cobrar. Son candidatos naturales para la nube o para un modelo híbrido.</li></ul></div><figure class="fig fig-arquitectura" id="11-diagrama-8"><div class="lienzo"><svg viewBox="0 0 900 420" style="min-width:720px" role="img" aria-label="Dónde vive cada sistema de un operador: RADIUS, DNS, DHCP, ACS, gestor de OLT y base de clientes en el data center principal junto al core, con copia en un sitio de respaldo; la web, la app, los tickets, el correo y los análisis en la nube pública, unidos por un enlace privado cifrado">
+  
+  <rect x="10" y="10" width="330" height="214" rx="12" class="d-oper"/>
+  <text x="24" y="32" class="t t-xs t-b k-oper">DATA CENTER PRINCIPAL (PROPIO)</text>
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="24" y="46" width="96" height="40" rx="8" class="caja"/><text x="72" y="71">RADIUS</text>
+    <rect x="128" y="46" width="96" height="40" rx="8" class="caja"/><text x="176" y="71">DNS</text>
+    <rect x="232" y="46" width="96" height="40" rx="8" class="caja"/><text x="280" y="71">DHCP</text>
+    <rect x="24" y="96" width="96" height="40" rx="8" class="caja"/><text x="72" y="121">ACS</text>
+    <rect x="128" y="96" width="96" height="40" rx="8" class="caja"/><text x="176" y="114">Gestor</text><text x="176" y="128">de OLT</text>
+    <rect x="232" y="96" width="96" height="40" rx="8" class="caja"/><text x="280" y="114">Base de</text><text x="280" y="128">clientes</text>
+  </g>
+  <rect x="24" y="148" width="304" height="62" rx="8" class="d-sis"/>
+  <text x="176" y="170" text-anchor="middle" class="t t-s t-b k-sis">BSS y OSS</text>
+  <text x="176" y="186" text-anchor="middle" class="t t-s">facturación, CRM, inventario, órdenes</text>
+  <text x="176" y="201" text-anchor="middle" class="t t-xs t-m">EN CASA O EN LA NUBE, SEGÚN EL OPERADOR</text>
+
+  
+  <rect x="10" y="276" width="330" height="134" rx="12" class="d-oper ln-d"/>
+  <text x="24" y="298" class="t t-xs t-b k-oper">SITIO DE RESPALDO (OTRA CIUDAD)</text>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="24" y="310" width="96" height="34" rx="8" class="caja ln-d"/><text x="72" y="332">RADIUS</text>
+    <rect x="128" y="310" width="96" height="34" rx="8" class="caja ln-d"/><text x="176" y="332">DNS</text>
+    <rect x="232" y="310" width="96" height="34" rx="8" class="caja ln-d"/><text x="280" y="332">DHCP</text>
+    <rect x="24" y="352" width="96" height="34" rx="8" class="caja ln-d"/><text x="72" y="374">ACS</text>
+    <rect x="128" y="352" width="96" height="34" rx="8" class="caja ln-d"/><text x="176" y="374">Gestor OLT</text>
+    <rect x="232" y="352" width="96" height="34" rx="8" class="caja ln-d"/><text x="280" y="374">Réplica base</text>
+  </g>
+  <path d="M176 224V276" class="ln ln-d" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="186" y="254" class="t t-xs t-m">RÉPLICA DE DATOS</text>
+
+  
+  <rect x="400" y="60" width="140" height="56" rx="10" class="caja"/><use href="#i-router-core" x="410" y="72" width="32" height="32" class="ico"/><text x="450" y="85" class="t t-b">Core</text><text x="450" y="101" class="t t-xs t-m">DE LA RED</text>
+  <path d="M340 88H400" class="ln" style="stroke-width:2"/>
+  <path d="M470 116V150" class="ln"/>
+  <rect x="400" y="150" width="140" height="56" rx="10" class="caja"/><use href="#i-ont" x="410" y="162" width="32" height="32" class="ico"/><text x="450" y="175" class="t t-b">Clientes</text><text x="450" y="191" class="t t-xs t-m">CADA CONEXIÓN</text>
+  <text x="470" y="236" text-anchor="middle" class="t t-s t-m">Cada vez que un cliente</text>
+  <text x="470" y="252" text-anchor="middle" class="t t-s t-m">se conecta, el core consulta</text>
+  <text x="470" y="268" text-anchor="middle" class="t t-s t-m">RADIUS, DHCP y DNS</text>
+  <path d="M340 340H600" class="ln" style="stroke-width:2"/>
+  <path d="M470 60V40H600" class="ln" style="stroke-width:2"/>
+  <use href="#i-candado" x="456" y="314" width="26" height="26" class="ico"/>
+  <text x="470" y="362" text-anchor="middle" class="t t-xs t-m">ENLACE PRIVADO CIFRADO</text>
+  <use href="#i-candado" x="520" y="18" width="22" height="22" class="ico"/>
+
+  
+  <rect x="600" y="10" width="290" height="400" rx="12" class="d-inet"/>
+  <use href="#i-nube" x="614" y="16" width="30" height="30" class="ico"/>
+  <text x="650" y="36" class="t t-xs t-b k-inet">NUBE PÚBLICA</text>
+  <g class="t t-s">
+    <rect x="616" y="56" width="258" height="44" rx="8" class="caja"/><text x="630" y="76" class="t-b">Web de ventas</text><text x="630" y="91" class="t-m">crece en campañas</text>
+    <rect x="616" y="108" width="258" height="44" rx="8" class="caja"/><text x="630" y="128" class="t-b">App de autogestión</text><text x="630" y="143" class="t-m">la usan los clientes desde Internet</text>
+    <rect x="616" y="160" width="258" height="44" rx="8" class="caja"/><text x="630" y="180" class="t-b">Tickets y atención (SaaS)</text><text x="630" y="195" class="t-m">se alquila terminado</text>
+    <rect x="616" y="212" width="258" height="44" rx="8" class="caja"/><text x="630" y="232" class="t-b">Correo de empleados (SaaS)</text><text x="630" y="247" class="t-m">no toca la red de clientes</text>
+    <rect x="616" y="264" width="258" height="44" rx="8" class="caja"/><text x="630" y="284" class="t-b">Análisis de datos</text><text x="630" y="299" class="t-m">mucho cálculo, pocas horas</text>
+  </g>
+  <text x="745" y="340" text-anchor="middle" class="t t-s t-b">Si se cae, frena al negocio,</text>
+  <text x="745" y="356" text-anchor="middle" class="t t-s t-b">pero nadie pierde Internet</text>
+  <text x="470" y="392" text-anchor="middle" class="t t-s t-b">← Si lo de casa se cae,</text>
+  <text x="470" y="408" text-anchor="middle" class="t t-s t-b">los clientes pierden el servicio</text>
+</svg></div><figcaption><b>Dónde vive cada sistema en un operador típico.</b> A la izquierda, el data center principal y el de respaldo, pegados al core de la red: allí corren RADIUS, DNS, DHCP y el ACS, duplicados. A la derecha, la nube pública con las aplicaciones del negocio que no tocan cada conexión. En el medio, enlaces privados y cifrados. La línea punteada muestra la réplica de los datos al sitio de respaldo.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH mediano de la región suele tener un data center propio junto a su core, con un segundo sitio más chico en otra ciudad. Ahí guarda siempre lo que toca cada conexión: RADIUS, DNS, DHCP, el gestor de las OLT y el ACS, y la base de datos de clientes. En la nube pública pone lo que crece y decrece o se beneficia de estar en Internet: la web de ventas, la app de autogestión, el correo de los empleados, el sistema de tickets como servicio y los análisis de datos. La regla que siguen casi todos es sencilla: si al caerse deja a los clientes sin Internet, se queda en casa y duplicado; si al caerse solo frena al negocio, puede vivir afuera.</p></div><div class="ml"><b>En la práctica</b><p>Cuando alguien dice «se cayó el sistema», puede tratarse de cosas muy distintas: el servidor de la aplicación, la base de datos que está saturada, la red entre la oficina y el data center, o el proveedor de nube. Preguntar «¿se cayó para todos o solo para mí?» y «¿qué pantalla falla?» ayuda a quien lo va a resolver. Y cuando se discute pasar algo a la nube, conviene recordar que la nube no es gratis (cobra cada hora y cada gigabyte que sale) ni infalible (también se cae, y la configuración sigue siendo responsabilidad de la empresa).</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué diferencia a un servidor de una computadora de escritorio, además del tamaño?</summary><p>Está hecho para no apagarse: tiene piezas duplicadas (fuentes, discos, red) que se cambian en caliente, se administra a distancia y vive en un rack dentro de un data center.</p></details><details><summary>¿Qué hace un hipervisor?</summary><p>Reparte un servidor físico en varias máquinas virtuales aisladas entre sí, cada una con su propio sistema operativo.</p></details><details><summary>¿Por qué un contenedor arranca más rápido que una máquina virtual?</summary><p>Porque no trae un sistema operativo completo: empaqueta solo la aplicación y sus dependencias y comparte el sistema operativo de la máquina donde corre.</p></details><details><summary>Si el balanceador no hace revisiones de salud y se cae uno de tres servidores, ¿qué pasa?</summary><p>Sigue mandándole pedidos, así que cerca de un tercio de los usuarios recibe errores hasta que alguien lo saque a mano.</p></details><details><summary>¿Por qué una réplica de la base de datos no reemplaza a un respaldo?</summary><p>Porque copia todo en el acto, también los errores: si alguien borra datos o un virus los cifra, la réplica queda igual de dañada. El respaldo permite volver a un momento anterior.</p></details><details><summary>¿Qué sistemas de un telco conviene mantener en el data center propio y duplicados?</summary><p>Los que participan en cada conexión, como RADIUS, DNS, DHCP y el ACS, porque si se caen los clientes se quedan sin servicio.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.ibm.com/es-es/think/topics/data-centers" target="_blank" rel="noopener">¿Qué es un centro de datos? (IBM) <small>lectura</small></a><a class="vid" href="https://www.redhat.com/es/topics/virtualization/what-is-virtualization" target="_blank" rel="noopener">¿Qué es la virtualización? (Red Hat) <small>lectura</small></a><a class="vid" href="https://www.docker.com/resources/what-container/" target="_blank" rel="noopener">¿Qué es un contenedor? (Docker) <small>lectura</small></a><a class="vid" href="https://csrc.nist.gov/pubs/sp/800/145/final" target="_blank" rel="noopener">La definición de computación en la nube (NIST SP 800-145) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab, q=s=>document.querySelector(s);
+  // Cifras de ejemplo (unidades de dinero ficticias), no precios reales.
+  const COMPRA=7000, OPEX=150, HORA=0.75, HORAS_MES=730, DESC=0.35;
+  const v=id=>+q(id).value;
+  const n=x=>Math.round(x).toLocaleString('es');
+  function modelo(){
+    let base=v('#c11-base'), pico=Math.max(v('#c11-pico'),base);
+    const horas=v('#c11-horas'), meses=v('#c11-meses'), reserva=q('#c11-reserva').value==='1';
+    const propios=pico+1; // se compra para el pico, más uno de repuesto
+    const inicial=propios*COMPRA, mesPropio=propios*OPEX;
+    const mesNube=base*HORAS_MES*HORA*(reserva?1-DESC:1)+(pico-base)*horas*30*HORA;
+    return {base,pico,horas,meses,reserva,propios,inicial,mesPropio,mesNube,
+      propio:m=>inicial+mesPropio*m, nube:m=>mesNube*m};
+  }
+  let M=modelo();
+  const draw=L.canvasWidget(q('#c11-cv'),L.wide,(ctx,w,h)=>{
+    const maxY=Math.max(M.propio(M.meses),M.nube(M.meses))/1000*1.1;
+    const F=L.frame(ctx,w,h,{x0:0,x1:M.meses,y0:0,y1:maxY,sx:M.meses>36?12:6});
+    L.curve(ctx,F,m=>M.propio(m)/1000,L.tok('--accent'),3);
+    L.curve(ctx,F,m=>M.nube(m)/1000,L.tok('--warm'),3);
+    const cruce=M.mesNube>M.mesPropio?M.inicial/(M.mesNube-M.mesPropio):Infinity;
+    if(cruce>0&&cruce<M.meses){L.dot(ctx,F.X(cruce),F.Y(M.nube(cruce)/1000),L.tok('--ink'),5);}
+  });
+  function actualizar(){
+    if(v('#c11-pico')<v('#c11-base')) q('#c11-pico').value=v('#c11-base');
+    [['#c11-base',x=>x],['#c11-pico',x=>x],['#c11-horas',x=>x+' h'],['#c11-meses',x=>x]].forEach(([id,f])=>q(id+'-o').textContent=f(v(id)));
+    M=modelo(); draw();
+    const p=M.propio(M.meses), c=M.nube(M.meses), gana=p<c?'propios':'nube';
+    const cruce=M.mesNube>M.mesPropio?M.inicial/(M.mesNube-M.mesPropio):Infinity;
+    q('#c11-cres').innerHTML='<span>Propios: compra de '+M.propios+' servidores ('+n(M.inicial)+') + '+n(M.mesPropio)+' al mes → <b>'+n(p)+'</b></span>'+
+      '<span>Nube: '+n(M.mesNube)+' al mes → <b>'+n(c)+'</b></span>'+
+      '<span class="big">En '+M.meses+' meses conviene '+(gana==='propios'?'tener servidores propios':'la nube')+' (diferencia: '+n(Math.abs(p-c))+')</span>'+
+      (isFinite(cruce)&&cruce>0?'<span>Las líneas se cruzan cerca del mes '+Math.round(cruce)+(cruce>M.meses?' (fuera del gráfico)':'')+'.</span>':'<span>Con esta carga, la nube cuesta menos cada mes: las líneas no se cruzan.</span>');
+    const pico=M.pico>M.base&&M.horas<12;
+    q('#c11-cnota').textContent=pico?
+      'Los servidores propios se compran para el pico y pasan la mayor parte del día ociosos; en la nube solo pagas las '+M.horas+' horas de pico. Cuanto más corto y alto es el pico, más gana la nube.':
+      'Con una carga pareja, los servidores propios trabajan todo el día y la compra inicial se paga con los meses. Prueba a reservar la carga normal en la nube o a acortar el plazo, y mira cómo se mueve el cruce. Falta sumar a la nube lo que cobra por sacar datos hacia Internet.';
+  }
+  ['#c11-base','#c11-pico','#c11-horas','#c11-meses'].forEach(id=>q(id).addEventListener('input',actualizar));
+  q('#c11-reserva').addEventListener('change',actualizar);
+  actualizar();
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const CAP=1000, TOPE=1400;
+  const on=[true,true,true];
+  const pct=(a,b)=>b?Math.round(a/b*100):0;
+  const n=v=>Math.round(v).toLocaleString('es');
+  function calcular(){
+    const usu=+q('#c11-usu').value, salud=q('#c11-salud').value==='1';
+    const vivos=on.filter(Boolean).length;
+    const destinos=salud?vivos:3;
+    const srv=on.map(v=>{
+      if(salud&&!v) return {v,carga:0,ok:0,lento:0,err:0};
+      const carga=destinos?usu/destinos:0;
+      if(!v) return {v,carga,ok:0,lento:0,err:carga};
+      return {v,carga,ok:Math.min(carga,CAP),lento:Math.min(Math.max(carga-CAP,0),TOPE-CAP),err:Math.max(carga-TOPE,0)};
+    });
+    if(destinos===0) return {usu,salud,vivos,srv,ok:0,lento:0,err:usu};
+    const sum=k=>srv.reduce((s,x)=>s+x[k],0);
+    return {usu,salud,vivos,srv,ok:sum('ok'),lento:sum('lento'),err:sum('err')};
+  }
+  function escena(r){
+    const ys=[40,118,196];
+    let h='';
+    h+='<use href="#i-persona" x="14" y="88" width="44" height="44" style="color:var(--ink)"/>';
+    h+='<text x="36" y="152" text-anchor="middle" font-size="17" font-weight="700">'+n(r.usu)+'</text>';
+    h+='<text x="36" y="169" text-anchor="middle" font-size="15">usuarios</text>';
+    h+='<line x1="64" y1="118" x2="124" y2="118" style="stroke:var(--accent);stroke-width:4"/>';
+    h+='<rect x="124" y="92" width="122" height="52" rx="8" style="fill:var(--card);stroke:var(--ink);stroke-width:1.4"/>';
+    h+='<text x="185" y="115" text-anchor="middle" font-size="17" font-weight="700">Balanceador</text>';
+    h+='<text x="185" y="134" text-anchor="middle" font-size="14" style="fill:var(--muted)">'+(r.salud?'revisa la salud':'sin revisión')+'</text>';
+    r.srv.forEach((s,i)=>{
+      const y=ys[i], lleva=s.carga>0, w=lleva?Math.max(1.5,Math.min(10,s.carga/180)):0;
+      if(lleva) h+='<line x1="246" y1="118" x2="300" y2="'+y+'" style="stroke:'+(s.v?'var(--accent)':'var(--warm)')+';stroke-width:'+w+(s.v?'':';stroke-dasharray:6 4')+'"/>';
+      else h+='<line x1="246" y1="118" x2="300" y2="'+y+'" style="stroke:var(--line);stroke-width:1.4;stroke-dasharray:3 5"/>';
+      h+='<rect x="300" y="'+(y-30)+'" width="132" height="60" rx="8" style="fill:var(--card);stroke:'+(s.v?'var(--ink)':'var(--warm)')+';stroke-width:1.4'+(s.v?'':';opacity:.8')+'"/>';
+      h+='<use href="#i-servidor" x="306" y="'+(y-22)+'" width="30" height="30" style="color:'+(s.v?'var(--ink)':'var(--muted)')+'"/>';
+      h+='<text x="342" y="'+(y-5)+'" font-size="17" font-weight="700">Servidor '+(i+1)+'</text>';
+      const est=!s.v?(lleva?'caído: falla':'fuera de lista'):(s.carga>TOPE?'saturado':s.carga>CAP?'lento':'bien');
+      h+='<text x="342" y="'+(y+16)+'" font-size="14" style="fill:'+(!s.v||s.carga>CAP?'var(--warm)':'var(--good)')+'">'+est+'</text>';
+      if(!s.v) h+='<path d="M'+(308)+' '+(y-20)+'l26 26M'+(334)+' '+(y-20)+'l-26 26" style="stroke:var(--warm);stroke-width:3"/>';
+    });
+    q('#c11-esc').innerHTML=h;
+  }
+  function dibujar(){
+    const r=calcular();
+    escena(r);
+    q('#c11-barras').innerHTML=r.srv.map((s,i)=>{
+      const t=Math.max(s.carga,TOPE), f=x=>(x/t*100)+'%';
+      return '<div class="c11-barra"><span>Servidor '+(i+1)+'</span><div class="track" title="carga">'+
+        '<i style="width:'+f(s.ok)+';background:var(--good)"></i><i style="width:'+f(s.lento)+';background:var(--warm)"></i><i style="width:'+f(s.err)+';background:var(--muted)"></i></div>'+
+        '<output>'+(s.v?pct(s.carga,CAP)+' %':'—')+'</output></div>';
+    }).join('');
+    const ses=q('#c11-ses').value;
+    let res='<span class="big">'+pct(r.ok,r.usu)+' % de los usuarios atendidos bien</span>';
+    res+='<span>'+n(r.ok)+' bien · <span class="'+(r.lento?'warn':'')+'">'+n(r.lento)+' lento</span> · <span class="'+(r.err?'warn':'')+'">'+n(r.err)+' con error</span></span>';
+    q('#c11-res').innerHTML=res;
+    let nota;
+    const caidos=3-r.vivos;
+    if(r.vivos===0) nota='Sin servidores encendidos no hay balanceador que valga: todos los usuarios ven un error. Por eso los sistemas críticos tienen además un segundo sitio (recuperación ante desastres).';
+    else if(caidos===0) nota='Con los tres servidores encendidos, cada uno lleva un tercio de los usuarios. La capacidad cómoda de cada servidor es de '+n(CAP)+' usuarios; por encima responde lento. Prueba a apagar uno.';
+    else if(!r.salud) nota='Sin revisión de salud, el balanceador no sabe que '+(caidos===1?'un servidor está caído':'hay servidores caídos')+' y le sigue mandando su parte: '+n(r.err)+' usuarios ven errores hasta que alguien lo saque a mano. La revisión de salud es lo que convierte tres servidores en un servicio que no se cae.';
+    else{
+      const afectados=r.usu/3*caidos;
+      nota='El balanceador detectó la caída en unos 10 segundos (dos revisiones sin respuesta) y repartió todo entre '+(r.vivos===1?'el servidor que queda':'los '+r.vivos+' servidores que quedan')+'. En esos segundos, unos '+n(afectados)+' usuarios que estaban en el servidor caído vieron un error y reintentaron. ';
+      nota+=ses==='local'?'Como su sesión estaba guardada en ese servidor, además tienen que volver a iniciar sesión.':'Como la sesión está en una base compartida, el otro servidor los reconoce y siguen donde estaban.';
+      if(r.lento||r.err) nota+=' Ojo: los que quedan no alcanzan para tantos usuarios. Por eso se calcula la capacidad pensando en que uno puede faltar (N+1).';
+    }
+    q('#c11-nota').textContent=nota;
+  }
+  on.forEach((_,i)=>{
+    const b=q('#c11-s'+i);
+    b.addEventListener('click',()=>{on[i]=!on[i];b.setAttribute('aria-pressed',String(on[i]));b.textContent='Servidor '+(i+1)+': '+(on[i]?'encendido':'apagado');dibujar();});
+  });
+  const u=q('#c11-usu'),uo=q('#c11-usu-o');
+  u.addEventListener('input',()=>{uo.textContent=n(+u.value);dibujar();});uo.textContent=n(+u.value);
+  ['#c11-salud','#c11-ses'].forEach(s=>q(s).addEventListener('change',dibujar));
+  dibujar();
+})();
+</script>
+</body>
+</html>

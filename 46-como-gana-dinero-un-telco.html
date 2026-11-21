@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo gana dinero un telco · Cómo funciona un telco</title>
+<meta name="description" content="Un telco invierte mucho por adelantado para construir la red y recupera esa inversión cobrando poco cada mes a muchos clientes durante años, así que su negocio depende de llenar la red, retener clientes y gastar poco en operarla.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="46-como-gana-dinero-un-telco">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 46 DE 49</span><h1>Cómo gana dinero un telco</h1><p class="lede">Un telco invierte mucho por adelantado para construir la red y recupera esa inversión cobrando poco cada mes a muchos clientes durante años, así que su negocio depende de llenar la red, retener clientes y gastar poco en operarla.</p></header>
+<section><div class="prose"><p>A lo largo del libro seguimos el viaje de un clic por cables, equipos y sistemas. Este capítulo mira el mismo viaje con otros lentes: los del dinero. ¿Quién pagó la fibra que pasa frente a tu casa? ¿Cuánto tiene que quedarse un cliente para que esa fibra se pague? ¿Por qué una visita técnica de más o un cliente que se va a los pocos meses pesan tanto en los números?</p><p>No hace falta saber contabilidad. Basta con cinco o seis ideas, y casi todas caben en la analogía de la autopista.</p></div><div class="analogia"><b>Imagínalo así</b><p>Construir una autopista de peaje: se invierte todo al principio y se recupera de a poco, siempre que pasen suficientes autos y no se vayan a otra ruta.</p></div><figure class="fig fig-capas" id="46-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el negocio, de la inversión en red al cobro y la retención">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class="apagado"><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class="apagado"><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class="apagado"><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class="apagado"><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class=""><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class=""><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class=""><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class="apagado"><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class="apagado"><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class=""><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class=""><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class=""><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class=""><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: el negocio, de la inversión en red al cobro y la retención</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo no mira un sistema en particular sino el negocio entero: cómo la inversión en red, las ventas, la factura, el cobro y la retención se convierten en dinero. Por eso enciende el BSS, donde viven los ingresos, y los eslabones de la cadena de valor que más mueven los números.</figcaption></figure></section>
+<section><h2>Un negocio de infraestructura</h2><div class="prose"><p>Un telco se parece más a una empresa de agua o de electricidad que a una tienda. La tienda compra un producto, lo vende con un margen y repite. El telco, en cambio, primero construye una red enorme, que cuesta mucho y tarda meses o años en estar lista, y solo después empieza a vender. Cada cliente paga una cuota pequeña comparada con lo que costó llevarle la fibra, pero la paga todos los meses durante años.</p><p>Ese orden, <b>gastar primero y cobrar después</b>, define todo lo demás:</p><ul><li>Al principio, el operador pierde dinero. Cada zona nueva es un hoyo que hay que llenar.</li><li>El hoyo se llena con la cuota mensual de muchos clientes, así que importa <b>cuántos</b> se conectan en cada zona.</li><li>También importa <b>cuánto tiempo</b> se quedan, porque un cliente que se va a los seis meses no alcanza a pagar lo que costó conectarlo.</li><li>Y importa <b>cuánto cuesta atenderlos</b> cada mes, porque eso es lo que se resta de la cuota antes de que algo quede para pagar la red.</li></ul><p>Por eso las palabras que más se oyen en las reuniones de resultados de un telco son ocupación, permanencia y eficiencia. Las siglas que siguen son solo los nombres técnicos de esas tres preocupaciones.</p></div></section>
+<section><h2>CAPEX y OPEX</h2><div class="prose"><p>Los gastos de un telco se separan en dos cajones, y conviene tener claro cuál es cuál.</p><p>El <b>CAPEX</b> (de <i>capital expenditure</i>, gasto de capital) es lo que se compra o se construye una vez y dura años: la fibra tendida, los postes y ductos, las cajas con splitters, la OLT de la central, los routers del core, los servidores, las ONT que se instalan en las casas. Es la autopista. En el balance se reparte entre los años de vida útil del equipo, lo que se llama <b>depreciación</b>: una fibra puede durar veinte años o más; una ONT, cinco o seis.</p><p>El <b>OPEX</b> (de <i>operating expenditure</i>, gasto de operación) es lo que se paga todos los meses para que la autopista funcione: sueldos, alquiler de espacios en postes y centrales, electricidad, la salida a Internet que se compra a otros operadores, licencias de software, el centro de atención, los vehículos de los técnicos, las reparaciones. Es el peaje que el propio operador paga para mantener la vía abierta.</p><p>La diferencia importa porque las decisiones cambian de cajón. Comprar una OLT más potente es CAPEX; alquilar capacidad a otro operador es OPEX. Hacer una instalación bien hecha cuesta un poco más de CAPEX (mejor conector, mejor fijación del cable), pero ahorra OPEX en visitas de reparación durante años.</p></div><div class="ml"><b>En la práctica</b><p>Cuando oigas «esto es CAPEX» en una reunión, piensa «es algo que se compra una vez y dura años». Cuando oigas «esto sube el OPEX», piensa «es un gasto que vamos a pagar todos los meses mientras exista». Muchas discusiones de presupuesto son, en el fondo, decidir en qué cajón conviene poner el gasto.</p></div></section>
+<section><h2>Pasar casas frente a conectar casas: la penetración</h2><div class="prose"><p>La inversión en red se hace por <b>zonas</b>, no por clientes. Para llevar fibra a una calle hay que tender el cable por toda la calle, aunque al principio solo una casa quiera el servicio. A cada vivienda por la que pasa la red, lista para conectarse, se le llama <b>hogar pasado</b> (<i>home passed</i>, en inglés). A la que de verdad compró el servicio y está activa, <b>hogar conectado</b>.</p><p>La relación entre los dos es la <b>penetración</b> o <i>take rate</i>: de cada cien hogares pasados, cuántos son clientes. Si una zona tiene 1.000 hogares pasados y 350 clientes, la penetración es del 35 %.</p><p>La penetración es el número que más influye en si una zona gana o pierde dinero, porque el costo de pasar los hogares ya se gastó, haya muchos o pocos clientes. Con pocos clientes, cada uno carga con una parte enorme de la red. Con muchos, la carga se reparte. El diagrama siguiente lo muestra con un puerto PON, la unidad mínima de la red de fibra.</p></div><figure class="fig fig-esquema" id="46-diagrama-3"><div class="lienzo"><svg viewBox="0 0 880 390" style="min-width:700px" role="img" aria-label="Economía de un puerto PON: pasar 64 hogares cuesta 19.200 dólares de ejemplo; con 20 % de penetración cada cliente cuesta unos 1.727 dólares, con 40 % unos 988 y con 60 % unos 755">
+<text x="20" y="26" class="t t-xs t-b t-m">LA RED DE UN PUERTO</text>
+<rect x="20" y="44" width="92" height="76" rx="10" class="caja"/><use href="#i-olt" x="49" y="50" width="34" height="34" class="ico"/><text x="66" y="100" text-anchor="middle" class="t t-s t-b">OLT</text><text x="66" y="113" text-anchor="middle" class="t t-xs t-m">1 puerto</text>
+<line x1="112" y1="82" x2="150" y2="82" class="ln s-fis" style="stroke-width:3"/>
+<use href="#i-splitter" x="150" y="65" width="34" height="34" class="ico"/>
+<line x1="184" y1="82" x2="212" y2="60" class="ln s-fis"/>
+<line x1="184" y1="82" x2="212" y2="74" class="ln s-fis"/>
+<line x1="184" y1="82" x2="212" y2="90" class="ln s-fis"/>
+<line x1="184" y1="82" x2="212" y2="104" class="ln s-fis"/>
+<text x="218" y="70" class="t t-b">64</text><text x="218" y="86" class="t t-s">hogares</text><text x="218" y="100" class="t t-s">pasados</text>
+<rect x="20" y="146" width="250" height="70" rx="10" class="d-oper"/><text x="32" y="166" class="t t-xs t-b k-oper">PASAR LOS HOGARES (FIJO)</text><text x="32" y="186" class="t t-s">64 × 300 US$ por hogar pasado</text><text x="32" y="205" class="t t-b">= 19.200 US$</text>
+<rect x="20" y="228" width="250" height="70" rx="10" class="c-fis"/><text x="32" y="248" class="t t-xs t-b k-fis">CONECTAR CADA CLIENTE</text><text x="32" y="268" class="t t-s">ONT, acometida e instalación</text><text x="32" y="287" class="t t-b">≈ 250 US$ por cliente</text>
+<rect x="20" y="316" width="12" height="12" rx="2" class="caja"/><text x="38" y="326" class="t t-s t-m">hogar sin servicio</text>
+<rect x="150" y="316" width="12" height="12" rx="2" class="d-casa"/><text x="168" y="326" class="t t-s t-m">cliente</text>
+<text x="20" y="352" class="t t-s t-m">Montos de ejemplo, en dólares.</text>
+<text x="300" y="26" class="t t-xs t-b t-m">COSTO POR CLIENTE CONECTADO SEGÚN LA PENETRACIÓN</text>
+<rect x="300" y="40" width="180" height="340" rx="12" class="caja"/>
+<text x="390" y="62" text-anchor="middle" class="t t-b">Penetración 20 %</text>
+<rect x="330" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="345" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="360" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="375" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="390" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="405" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="420" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="435" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="330" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="345" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="360" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="375" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="390" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="405" y="89" width="12" height="12" rx="2" class="caja"/>
+<rect x="420" y="89" width="12" height="12" rx="2" class="caja"/>
+<rect x="435" y="89" width="12" height="12" rx="2" class="caja"/>
+<rect x="330" y="104" width="12" height="12" rx="2" class="caja"/>
+<rect x="345" y="104" width="12" height="12" rx="2" class="caja"/>
+<rect x="360" y="104" width="12" height="12" rx="2" class="caja"/>
+<rect x="375" y="104" width="12" height="12" rx="2" class="caja"/>
+<rect x="390" y="104" width="12" height="12" rx="2" class="caja"/>
+<rect x="405" y="104" width="12" height="12" rx="2" class="caja"/>
+<rect x="420" y="104" width="12" height="12" rx="2" class="caja"/>
+<rect x="435" y="104" width="12" height="12" rx="2" class="caja"/>
+<rect x="330" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="345" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="360" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="375" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="390" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="405" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="420" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="435" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="330" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="345" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="360" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="375" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="390" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="405" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="420" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="435" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="330" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="345" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="360" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="375" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="390" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="405" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="420" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="435" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="330" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="345" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="360" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="375" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="390" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="405" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="420" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="435" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="330" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="345" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="360" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="375" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="390" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="405" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="420" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="435" y="179" width="12" height="12" rx="2" class="caja"/>
+<text x="390" y="210" text-anchor="middle" class="t t-s">13 clientes de 64</text>
+<rect x="360" y="340.7" width="60" height="15.3" class="c-fis"/>
+<rect x="360" y="250.5" width="60" height="90.3" class="d-oper"/>
+<text x="390" y="242.5" text-anchor="middle" class="t t-b">1.727 US$</text>
+<text x="390" y="372" text-anchor="middle" class="t t-xs t-m">POR CLIENTE</text>
+<rect x="492" y="40" width="180" height="340" rx="12" class="caja"/>
+<text x="582" y="62" text-anchor="middle" class="t t-b">Penetración 40 %</text>
+<rect x="522" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="537" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="552" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="567" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="582" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="597" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="612" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="627" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="522" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="537" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="552" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="567" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="582" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="597" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="612" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="627" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="522" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="537" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="552" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="567" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="582" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="597" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="612" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="627" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="522" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="537" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="552" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="567" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="582" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="597" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="612" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="627" y="119" width="12" height="12" rx="2" class="caja"/>
+<rect x="522" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="537" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="552" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="567" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="582" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="597" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="612" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="627" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="522" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="537" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="552" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="567" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="582" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="597" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="612" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="627" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="522" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="537" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="552" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="567" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="582" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="597" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="612" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="627" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="522" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="537" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="552" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="567" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="582" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="597" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="612" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="627" y="179" width="12" height="12" rx="2" class="caja"/>
+<text x="582" y="210" text-anchor="middle" class="t t-s">26 clientes de 64</text>
+<rect x="552" y="340.7" width="60" height="15.3" class="c-fis"/>
+<rect x="552" y="295.6" width="60" height="45.1" class="d-oper"/>
+<text x="582" y="287.6" text-anchor="middle" class="t t-b">988 US$</text>
+<text x="582" y="372" text-anchor="middle" class="t t-xs t-m">POR CLIENTE</text>
+<rect x="684" y="40" width="180" height="340" rx="12" class="caja"/>
+<text x="774" y="62" text-anchor="middle" class="t t-b">Penetración 60 %</text>
+<rect x="714" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="729" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="744" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="759" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="774" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="789" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="804" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="819" y="74" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="714" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="729" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="744" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="759" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="774" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="789" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="804" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="819" y="89" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="714" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="729" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="744" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="759" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="774" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="789" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="804" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="819" y="104" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="714" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="729" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="744" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="759" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="774" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="789" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="804" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="819" y="119" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="714" y="134" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="729" y="134" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="744" y="134" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="759" y="134" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="774" y="134" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="789" y="134" width="12" height="12" rx="2" class="d-casa"/>
+<rect x="804" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="819" y="134" width="12" height="12" rx="2" class="caja"/>
+<rect x="714" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="729" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="744" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="759" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="774" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="789" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="804" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="819" y="149" width="12" height="12" rx="2" class="caja"/>
+<rect x="714" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="729" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="744" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="759" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="774" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="789" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="804" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="819" y="164" width="12" height="12" rx="2" class="caja"/>
+<rect x="714" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="729" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="744" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="759" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="774" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="789" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="804" y="179" width="12" height="12" rx="2" class="caja"/>
+<rect x="819" y="179" width="12" height="12" rx="2" class="caja"/>
+<text x="774" y="210" text-anchor="middle" class="t t-s">38 clientes de 64</text>
+<rect x="744" y="340.7" width="60" height="15.3" class="c-fis"/>
+<rect x="744" y="309.8" width="60" height="30.9" class="d-oper"/>
+<text x="774" y="301.8" text-anchor="middle" class="t t-b">755 US$</text>
+<text x="774" y="372" text-anchor="middle" class="t t-xs t-m">POR CLIENTE</text>
+</svg></div><figcaption><b>La economía de un puerto PON.</b> Un puerto de la OLT y su árbol de splitters cubren 64 hogares pasados. Pasarlos cuesta lo mismo con 13 clientes que con 38: lo que cambia es entre cuántos se reparte. Las tres columnas muestran cuánto cuesta, en promedio, cada cliente conectado con penetración del 20 %, del 40 % y del 60 %. La parte azul es la red repartida; la naranja, lo que cuesta conectar a cada cliente. Los montos son de ejemplo, en dólares, para ver la proporción.</figcaption></figure><div class="prose"><p>Con estos números de ejemplo, pasar de 20 % a 60 % de penetración baja el costo por cliente de unos 1.700 a unos 750 dólares, sin cambiar un solo metro de fibra. Por eso, después de construir una zona, la tarea más rentable del operador es <b>llenarla</b>: vender casa por casa donde la red ya existe. Y por eso también el análisis de demanda (capítulo 48) es tan importante antes de construir: una zona con mucha competencia o con poco poder adquisitivo puede quedarse para siempre en el 15 %.</p></div></section>
+<section><h2>ARPU, churn y costo de adquisición</h2><div class="prose"><p>Con la red construida y los clientes conectados, hay tres números que cuentan cómo va el negocio día a día.</p><p>El <b>ARPU</b> (<i>average revenue per user</i>, ingreso promedio por usuario) es cuánto paga, en promedio, cada cliente al mes. Si una base de 10.000 clientes factura 250.000 dólares al mes, el ARPU es 25 dólares. El ARPU sube cuando los clientes pasan a planes más rápidos, cuando suman servicios (televisión, telefonía, Wi-Fi extendido) o cuando el precio se actualiza. Baja con descuentos, promociones eternas y guerras de precios.</p><p>El <b>churn</b> (tasa de bajas) es qué porcentaje de clientes se va cada mes. Un churn del 2 % mensual parece pequeño, pero significa que en un año se fue casi uno de cada cuatro clientes y hubo que conseguir otros tantos solo para quedar igual. Un cliente se va por precio, por mudanza, por una oferta mejor de la competencia o, muy a menudo, por cansancio: fallas repetidas, una atención que no resolvió, una factura con un cobro que no entendió.</p><p>El <b>CAC</b> (<i>customer acquisition cost</i>, costo de adquisición de cliente) es cuánto cuesta conseguir cada cliente nuevo: publicidad, comisiones de vendedores, promociones del primer mes. En un telco de fibra se le suele sumar el <b>costo de conexión</b>: la ONT, el cable de acometida desde la caja hasta la casa y la mano de obra del técnico. Es el dinero que sale antes de que el cliente pague su primera factura.</p><p>El siguiente diagrama abre la cuota mensual de un cliente típico para ver a dónde va cada dólar.</p></div><figure class="fig fig-esquema" id="46-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 320" style="min-width:660px" role="img" aria-label="Cascada de la cuota de un cliente: de 25 dólares se descuentan tributos 3, red e Internet 4, atención 3, cobranza 1 y administración 4; quedan 10 de margen">
+<text x="20" y="24" class="t t-xs t-b t-m">US$ AL MES DE UN CLIENTE (EJEMPLO)</text>
+<rect x="30" y="60.0" width="76" height="210.0" rx="4" class="d-casa"/>
+<text x="68" y="53.0" text-anchor="middle" class="t t-b">25,0</text>
+<text x="68" y="288" text-anchor="middle" class="t t-s t-b">Cuota del plan</text>
+<line x1="106" y1="60.0" x2="146" y2="60.0" class="ln ln-d"/>
+<rect x="146" y="60.0" width="76" height="25.2" rx="4" class="d-sis"/>
+<text x="184" y="53.0" text-anchor="middle" class="t t-b">−3,0</text>
+<text x="184" y="288" text-anchor="middle" class="t t-s t-b">Tributos</text>
+<text x="184" y="302" text-anchor="middle" class="t t-s t-m">y aportes</text>
+<line x1="222" y1="85.2" x2="262" y2="85.2" class="ln ln-d"/>
+<rect x="262" y="85.2" width="76" height="33.6" rx="4" class="d-sis"/>
+<text x="300" y="78.2" text-anchor="middle" class="t t-b">−4,0</text>
+<text x="300" y="288" text-anchor="middle" class="t t-s t-b">Red e Internet</text>
+<text x="300" y="302" text-anchor="middle" class="t t-s t-m">energía, tránsito</text>
+<line x1="338" y1="118.8" x2="378" y2="118.8" class="ln ln-d"/>
+<rect x="378" y="118.8" width="76" height="25.2" rx="4" class="d-sis"/>
+<text x="416" y="111.8" text-anchor="middle" class="t t-b">−3,0</text>
+<text x="416" y="288" text-anchor="middle" class="t t-s t-b">Atención</text>
+<text x="416" y="302" text-anchor="middle" class="t t-s t-m">y soporte</text>
+<line x1="454" y1="144.0" x2="494" y2="144.0" class="ln ln-d"/>
+<rect x="494" y="144.0" width="76" height="8.4" rx="4" class="d-sis"/>
+<text x="532" y="137.0" text-anchor="middle" class="t t-b">−1,0</text>
+<text x="532" y="288" text-anchor="middle" class="t t-s t-b">Cobranza</text>
+<text x="532" y="302" text-anchor="middle" class="t t-s t-m">medios de pago</text>
+<line x1="570" y1="152.4" x2="610" y2="152.4" class="ln ln-d"/>
+<rect x="610" y="152.4" width="76" height="33.6" rx="4" class="d-sis"/>
+<text x="648" y="145.4" text-anchor="middle" class="t t-b">−4,0</text>
+<text x="648" y="288" text-anchor="middle" class="t t-s t-b">Administración</text>
+<text x="648" y="302" text-anchor="middle" class="t t-s t-m">y sistemas</text>
+<line x1="686" y1="186.0" x2="726" y2="186.0" class="ln ln-d"/>
+<rect x="726" y="186.0" width="76" height="84.0" rx="4" class="c-enl"/>
+<text x="764" y="179.0" text-anchor="middle" class="t t-b">10,0</text>
+<text x="764" y="288" text-anchor="middle" class="t t-s t-b">Margen</text>
+<text x="764" y="302" text-anchor="middle" class="t t-s t-m">por cliente</text>
+<line x1="20" y1="270" x2="840" y2="270" class="ln"/>
+<text x="836" y="96" text-anchor="end" class="t t-s t-m">Lo que queda paga la red</text><text x="836" y="111" text-anchor="end" class="t t-s t-m">y la conexión del cliente</text>
+</svg></div><figcaption><b>A dónde va la cuota de un cliente.</b> Se lee de izquierda a derecha, como una cascada. La primera barra es lo que paga el cliente; cada escalón que baja es un costo que se descuenta; la última barra es lo que queda cada mes para pagar la red y la conexión de ese cliente. Los montos son de ejemplo y cambian mucho entre operadores y países.</figcaption></figure><div class="prose"><p>Lo que queda al final de la cascada se llama <b>margen</b> por cliente. En el ejemplo son 10 dólares de cada 25. Con ese margen hay que devolver todo lo que se invirtió: la parte de la red que le toca y su costo de adquisición y conexión.</p></div></section>
+<section><h2>Valor del cliente en el tiempo</h2><div class="prose"><p>Si cada cliente deja 10 dólares de margen al mes y costó 330 dólares conseguirlo y conectarlo, hacen falta 33 meses solo para recuperar ese gasto. Ese plazo se llama <b>período de recuperación</b> o <i>payback</i>. Antes de él, el cliente todavía es una deuda; después, empieza a dejar ganancia.</p><p>El <b>LTV</b> (<i>lifetime value</i>, valor del cliente en el tiempo) es todo el margen que un cliente deja mientras se queda. Una forma sencilla de estimarlo es dividir el margen mensual por el churn: con 10 dólares de margen y un churn del 1,5 % mensual, el cliente promedio se queda unos 67 meses y deja unos 670 dólares. Si el churn sube al 3 %, se queda unos 33 meses y deja apenas 330: justo lo que costó. Ese cliente no dio ganancia; solo devolvió lo que se invirtió en él.</p><p>Por eso los operadores miran la relación <b>LTV/CAC</b>. Si el valor de un cliente es tres o más veces lo que costó conseguirlo, el negocio es sano. Si se acerca a uno, cada venta nueva es un esfuerzo que no deja nada.</p></div><figure class="fig fig-flujo" id="46-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 530" style="min-width:700px" role="img" aria-label="Flujo de caja de un cliente: el operador paga 80 dólares de venta y 250 de conexión; el cliente deja 10 de margen por mes; en el mes 33 el saldo llega a cero y desde el mes 34 deja ganancia; si se va en el mes 20 la pérdida es de 130">
+<rect x="30" y="14" width="200" height="56" rx="10" class="caja"/><use href="#i-persona" x="42" y="26" width="32" height="32" class="ico"/>
+<text x="82" y="40" class="t t-b">Vendedores, técnicos</text><text x="82" y="57" class="t t-b">y proveedores</text>
+<rect x="330" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-router-core" x="342" y="26" width="32" height="32" class="ico"/>
+<text x="382" y="47" class="t t-b">Operador</text>
+<rect x="540" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-persona" x="552" y="26" width="32" height="32" class="ico"/>
+<text x="592" y="47" class="t t-b">Cliente</text>
+<line x1="130" y1="70" x2="130" y2="515" class="vida"/>
+<line x1="405" y1="70" x2="405" y2="515" class="vida"/>
+<line x1="610" y1="70" x2="610" y2="515" class="vida"/>
+<text x="680" y="96" class="t t-xs t-b t-m">SALDO</text>
+<line x1="405" y1="116" x2="132" y2="128" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="108" class="t t-s">① Comisión y publicidad (CAC) <tspan class="t-b t-mono">−80</tspan></text>
+<text x="680" y="126" class="t t-b t-mono k-apl">−80</text>
+<line x1="405" y1="170" x2="132" y2="182" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="162" class="t t-s">② ONT, acometida e instalación <tspan class="t-b t-mono">−250</tspan></text>
+<text x="680" y="180" class="t t-b t-mono k-apl">−330</text>
+<line x1="610" y1="230" x2="407" y2="242" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="415" y="222" class="t t-s">③ Primera cuota <tspan class="t-b t-mono">+10</tspan></text>
+<text x="680" y="240" class="t t-b t-mono k-apl">−320</text>
+<line x1="610" y1="286" x2="407" y2="298" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="415" y="278" class="t t-s">④ Cuotas, meses 2 a 32 <tspan class="t-b t-mono">+310</tspan></text>
+<text x="680" y="296" class="t t-b t-mono k-apl">−10</text>
+<line x1="610" y1="342" x2="407" y2="354" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="415" y="334" class="t t-s">⑤ Cuota del mes 33 <tspan class="t-b t-mono">+10</tspan></text>
+<text x="680" y="352" class="t t-b t-mono ">0</text>
+<line x1="610" y1="398" x2="407" y2="410" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="415" y="390" class="t t-s">⑥ Desde el mes 34 <tspan class="t-b t-mono">+10/mes</tspan></text>
+<text x="680" y="408" class="t t-b t-mono k-enl">+10, +20…</text>
+<rect x="330" y="430" width="380" height="70" rx="10" class="caja ln-d"/>
+<text x="344" y="452" class="t t-s t-b">¿Y si el cliente se va en el mes 20?</text>
+<text x="344" y="470" class="t t-s">Devolvió solo 200 de los 330 invertidos:</text>
+<text x="344" y="488" class="t t-s">el operador pierde <tspan class="t-b k-apl">130 US$</tspan> con ese cliente.</text>
+<g class="t t-xs t-b">
+<path d="M780 104v80" class="ln s-apl" style="stroke-width:3"/><text x="790" y="140" class="k-apl">INVERSIÓN</text><text x="790" y="154" class="t-m">mes 0</text>
+<path d="M780 212v146" class="ln s-red" style="stroke-width:3"/><text x="790" y="280" class="k-red">RECUPERACIÓN</text><text x="790" y="294" class="t-m">meses 1 a 33</text>
+<path d="M780 384v36" class="ln s-enl" style="stroke-width:3"/><text x="790" y="400" class="k-enl">GANANCIA</text><text x="790" y="414" class="t-m">desde el mes 34</text>
+</g>
+<text x="14" y="300" class="t t-xs t-m" transform="rotate(-90 14 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+<text x="30" y="524" class="t t-s t-m">Cada cuota ya descuenta los costos del mes: es el margen. Montos de ejemplo, en US$.</text>
+</svg></div><figcaption><b>El dinero de un cliente, mes a mes.</b> Como en un diagrama de secuencia, el tiempo corre hacia abajo. Las flechas rosadas son dinero que sale del operador hacia proveedores, vendedores y técnicos; las verdes, dinero que entra del cliente. A la derecha, el saldo acumulado de ese cliente: empieza en negativo el día de la instalación, se va acercando a cero con cada cuota y recién en el mes 33 empieza a dejar ganancia. Si el cliente se va antes, la pérdida queda.</figcaption></figure><div class="prose"><p>Ahora juntemos todo: una zona entera, con su red, sus clientes que llegan y se van, y su caja acumulada. Prueba ser el dueño de un telco pequeño.</p></div><div class="lab" id="46-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Mi primer telco</h3></div><p class="hint">Elige cuántos hogares pasa tu red, cuánto cuesta pasar cada uno, el precio del plan, la penetración que alcanzas y el churn. La curva muestra la caja acumulada durante diez años: el punto donde cruza el cero es cuándo se recupera la inversión.</p><div class="ctls">
+  <label class="ctl">Hogares pasados por la red <output id="c46-h-o"></output><input type="range" id="c46-h" min="1000" max="20000" step="500" value="5000"></label>
+  <label class="ctl">Costo de pasar cada hogar <output id="c46-cph-o"></output><input type="range" id="c46-cph" min="100" max="600" step="10" value="200"></label>
+  <label class="ctl">Precio del plan al mes <output id="c46-p-o"></output><input type="range" id="c46-p" min="12" max="45" step="1" value="25"></label>
+  <label class="ctl">Costo de atender a cada cliente al mes <output id="c46-op-o"></output><input type="range" id="c46-op" min="4" max="20" step="1" value="9"></label>
+  <label class="ctl">Penetración que alcanzas <output id="c46-pen-o"></output><input type="range" id="c46-pen" min="5" max="80" step="1" value="45"></label>
+  <label class="ctl">Churn: bajas al mes <output id="c46-ch-o"></output><input type="range" id="c46-ch" min="0.3" max="5" step="0.1" value="1.2"></label>
+  <label class="ctl">Costo de conseguir y conectar un cliente <output id="c46-cac-o"></output><input type="range" id="c46-cac" min="100" max="600" step="10" value="330"></label>
+</div>
+<canvas id="c46-cv" role="img" aria-label="Caja acumulada de la zona durante diez años"></canvas>
+<div class="legend"><span><i style="background:var(--accent)"></i>Caja acumulada (millones de US$)</span><span><i style="background:var(--good)"></i>Mes en que se recupera la inversión</span><span><i style="background:var(--warm)"></i>El hoyo más hondo</span></div>
+<div class="readout" id="c46-out" aria-live="polite"></div>
+<p class="hint" id="c46-nota" aria-live="polite"></p></div><div class="prose"><p>Hay tres lecciones que el laboratorio enseña rápido. La primera: con la misma red, subir la penetración acorta el plazo más que casi cualquier otra cosa. La segunda: el churn alto es una trampa silenciosa, porque obliga a gastar CAC sin parar solo para reponer a los que se van. La tercera: bajar el precio para vender más rara vez compensa, a menos que de verdad suba mucho la penetración.</p></div></section>
+<section><h2>Costos que no se ven: soporte, visitas, reemplazo de equipos</h2><div class="prose"><p>En la cascada de la cuota hay un escalón que parece pequeño y no lo es: el costo de atender al cliente. Cada llamada al centro de atención, cada chat, cada visita técnica y cada ONT reemplazada sale del margen. Y esos costos no son iguales para todos los clientes: la mayoría casi nunca llama, y unos pocos con problemas repetidos consumen buena parte del presupuesto de soporte.</p><p>Los costos más caros son los que mueven gente y vehículos:</p><ul><li><b>La visita técnica.</b> Un técnico, una camioneta, combustible, a veces materiales y casi siempre medio día de agenda. Una sola visita puede comerse varios meses del margen de ese cliente.</li><li><b>La visita repetida.</b> Si la primera visita no resolvió, la segunda cuesta lo mismo, y el cliente ya está más cerca de irse.</li><li><b>El reemplazo de equipos.</b> Una ONT o un router que se cambia sin estar dañado, porque fue más fácil cambiarlo que diagnosticarlo, es CAPEX que se pierde.</li><li><b>La llamada que no resuelve.</b> Cada contacto que termina en «lo vamos a revisar» suele generar otro contacto.</li></ul></div><figure class="fig fig-comparacion" id="46-diagrama-6"><div class="lienzo"><svg viewBox="0 0 860 340" style="min-width:660px" role="img" aria-label="Costo de ejemplo de resolver una falla: autogestión 0,3 dólares, llamada 3, llamada con diagnóstico remoto 4, visita técnica 40, visita con ONT cambiada 75, segunda visita 80 acumulados">
+<text x="20" y="24" class="t t-xs t-b t-m">FORMA DE RESOLVER</text><text x="250" y="24" class="t t-xs t-b t-m">COSTO DE EJEMPLO (US$)</text><text x="840" y="24" text-anchor="end" class="t t-xs t-b t-m">MESES DE MARGEN</text>
+<rect x="250" y="34" width="12" height="12" rx="2" class="c-enl"/><text x="268" y="44" class="t t-s t-m">a distancia</text><rect x="350" y="34" width="12" height="12" rx="2" class="c-fis"/><text x="368" y="44" class="t t-s t-m">con alguien en la calle</text>
+<text x="20" y="76" class="t t-s t-b">Autogestión en la app</text><text x="20" y="90" class="t t-s t-m">a distancia</text>
+<rect x="250" y="66" width="3.0" height="24" rx="4" class="c-enl"/>
+<text x="261.0" y="83" class="t t-b t-mono">0,3</text>
+<text x="840" y="83" text-anchor="end" class="t t-mono">menos de 0,1</text>
+<text x="20" y="118" class="t t-s t-b">Llamada o chat que resuelve</text><text x="20" y="132" class="t t-s t-m">a distancia</text>
+<rect x="250" y="108" width="16.9" height="24" rx="4" class="c-enl"/>
+<text x="274.9" y="125" class="t t-b t-mono">3</text>
+<text x="840" y="125" text-anchor="end" class="t t-mono">0,3</text>
+<text x="20" y="160" class="t t-s t-b">Llamada con diagnóstico</text><text x="20" y="174" class="t t-s t-m">remoto de la ONT</text>
+<rect x="250" y="150" width="22.5" height="24" rx="4" class="c-enl"/>
+<text x="280.5" y="167" class="t t-b t-mono">4</text>
+<text x="840" y="167" text-anchor="end" class="t t-mono">0,4</text>
+<text x="20" y="202" class="t t-s t-b">Visita técnica</text><text x="20" y="216" class="t t-s t-m">en la calle</text>
+<rect x="250" y="192" width="225.0" height="24" rx="4" class="c-fis"/>
+<text x="483.0" y="209" class="t t-b t-mono">40</text>
+<text x="840" y="209" text-anchor="end" class="t t-mono">4</text>
+<text x="20" y="244" class="t t-s t-b">Visita y ONT cambiada</text><text x="20" y="258" class="t t-s t-m">sin estar dañada</text>
+<rect x="250" y="234" width="421.9" height="24" rx="4" class="c-fis"/>
+<text x="679.9" y="251" class="t t-b t-mono">75</text>
+<text x="840" y="251" text-anchor="end" class="t t-mono">7,5</text>
+<text x="20" y="286" class="t t-s t-b">Segunda visita</text><text x="20" y="300" class="t t-s t-m">(la primera no resolvió)</text>
+<rect x="250" y="276" width="450.0" height="24" rx="4" class="c-fis"/>
+<text x="708.0" y="293" class="t t-b t-mono">80</text>
+<text x="840" y="293" text-anchor="end" class="t t-mono">8</text>
+<text x="20" y="332" class="t t-s t-m">Con un margen de ejemplo de 10 US$ al mes por cliente.</text>
+</svg></div><figcaption><b>Cuánto cuesta resolver el mismo problema.</b> Cada barra es una forma de resolver una falla de un cliente, de la más barata (que el cliente lo resuelva solo desde la app) a la más cara (una segunda visita después de una primera que no resolvió). A la derecha, a cuántos meses del margen de ese cliente equivale. Los montos son de ejemplo: lo que importa es la proporción.</figcaption></figure><div class="prose"><p>Muchos capítulos del libro tratan, en el fondo, de evitar estos costos: el diagnóstico por capas del capítulo 42, la gestión remota del equipo del cliente del capítulo 28, la autogestión del Wi-Fi del capítulo 41 y el monitoreo proactivo del capítulo 45.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región revisó por qué salían sus técnicos y encontró que una parte importante de las visitas por «Internet lento» terminaba con el técnico moviendo el router de lugar o cambiando el canal del Wi-Fi: cosas que podían resolverse a distancia. Una visita evitable cuesta el traslado, las horas del técnico y un turno de agenda que otro cliente esperaba, y suele equivaler a varios meses del margen de ese cliente. Resolver a distancia, con el diagnóstico remoto de la ONT y una guía clara para el agente, cuesta una fracción: unos minutos de atención. El operador entrenó a su primer nivel para revisar la señal óptica y el Wi-Fi desde la plataforma de gestión antes de agendar, y las visitas por esa causa bajaron de forma notable. El cliente, además, quedó resuelto el mismo día.</p></div></section>
+<section><h2>Cómo cada capítulo del libro mueve un indicador</h2><div class="prose"><p>Con estas ideas, el libro entero se puede leer como un tablero de palancas. Cada tecnología, sistema o proceso que vimos mueve al menos uno de estos números:</p><div class="tbl"><table><thead><tr><th>Indicador</th><th>Qué lo mejora</th><th>Capítulos</th></tr></thead><tbody><tr><td>CAPEX por hogar pasado</td><td>Diseño de red, planificación en el mapa, buena elección de splitters</td><td>17, 18, 37, 39</td></tr><tr><td>Penetración</td><td>Saber dónde hay demanda, vender bien, instalar rápido</td><td>34, 39, 40, 48</td></tr><tr><td>ARPU</td><td>Planes más rápidos, cambio de plan en caliente, servicios adicionales</td><td>22, 23, 25, 43</td></tr><tr><td>Churn</td><td>Calidad de servicio, Wi-Fi estable, atención que resuelve</td><td>25, 26, 35, 42, 49</td></tr><tr><td>CAC y costo de conexión</td><td>Instalación sin tocar nada, activación automática</td><td>36, 38, 40</td></tr><tr><td>OPEX de soporte</td><td>Gestión remota, diagnóstico por capas, monitoreo proactivo</td><td>28, 31, 41, 42, 45</td></tr><tr><td>Caja (lo que realmente se cobra)</td><td>Factura correcta, cobro y corte ordenados, reconexión inmediata</td><td>34, 44</td></tr></tbody></table></div><p>Un agente de atención que resuelve en la primera llamada baja el OPEX y el churn. Un técnico que deja una instalación limpia baja las visitas futuras. Alguien de sistemas que automatiza la activación acorta el tiempo entre la venta y el cobro. Un analista que detecta una zona con buena demanda sube la penetración. Nadie en un telco está lejos de los números.</p></div><div class="ml"><b>En la práctica</b><p>Cuando te pregunten para qué sirve tu trabajo, busca tu fila en la tabla. Si estás en ventas, mueves penetración y CAC; en atención, churn y OPEX; en red, churn y CAPEX; en facturación y cobranza, la caja; en sistemas, casi todas a la vez. Y cuando propongas una mejora, dila en esos términos: «esto evita una visita por cada cien clientes» se entiende en cualquier gerencia.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Cuál es la diferencia entre CAPEX y OPEX?</summary><p>El CAPEX es lo que se compra o construye una vez y dura años, como la fibra o la OLT; el OPEX es lo que se paga todos los meses para operar, como sueldos, energía o la salida a Internet.</p></details><details><summary>Una zona tiene 2.000 hogares pasados y 500 clientes. ¿Cuál es su penetración?</summary><p>25 %: de cada cien hogares por los que pasa la red, veinticinco compraron el servicio.</p></details><details><summary>¿Por qué subir la penetración baja el costo por cliente aunque no se tienda más fibra?</summary><p>Porque el costo de pasar los hogares ya se gastó y es el mismo con pocos o muchos clientes; con más clientes se reparte entre más personas.</p></details><details><summary>Un cliente deja 10 dólares de margen al mes y costó 330 conseguirlo y conectarlo. Si se va en el mes 20, ¿ganó o perdió dinero el operador?</summary><p>Perdió: solo devolvió 200 de los 330 invertidos. Necesitaba quedarse al menos 33 meses para recuperar la inversión.</p></details><details><summary>¿Por qué un churn alto aumenta también el gasto en adquisición?</summary><p>Porque cada cliente que se va hay que reemplazarlo con otro nuevo, y cada nuevo cuesta su CAC y su conexión.</p></details><details><summary>¿Qué indicador mejora cuando un problema de Wi-Fi se resuelve a distancia en vez de con una visita?</summary><p>Baja el OPEX de soporte (una llamada cuesta mucho menos que una visita) y suele bajar el churn, porque el cliente queda resuelto antes.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/ARPU" target="_blank" rel="noopener">Ingreso promedio por usuario, ARPU (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Tasa_de_cancelaci%C3%B3n_de_clientes" target="_blank" rel="noopener">Tasa de cancelación de clientes, churn (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Valor_del_tiempo_de_vida_del_cliente" target="_blank" rel="noopener">Valor del tiempo de vida del cliente, LTV (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.ftthcouncil.eu/" target="_blank" rel="noopener">FTTH Council Europe: recursos sobre el negocio de la fibra <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab, $=L.$;
+  const MESES=120, RAMPA=24, MANT=0.3; // mantenimiento de planta: US$ por hogar pasado al mes
+  const ids=['h','cph','p','op','pen','ch','cac'];
+  const v=k=>parseFloat($('#c46-'+k).value);
+  const miles=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  const usd=n=>'US$ '+miles(n);
+  const coma=(n,d)=>L.fmt(n,d).replace('.',',');
+  L.bindOut('#c46-h',miles);
+  L.bindOut('#c46-cph',usd);
+  L.bindOut('#c46-p',usd);
+  L.bindOut('#c46-op',usd);
+  L.bindOut('#c46-pen',x=>x+' %');
+  L.bindOut('#c46-ch',x=>coma(x,1)+' %');
+  L.bindOut('#c46-cac',usd);
+
+  function simular(churnMes){
+    const H=v('h'), meta=H*v('pen')/100, ch=(churnMes===undefined?v('ch'):churnMes)/100;
+    const margen=v('p')-v('op'), cac=v('cac');
+    let cli=0, caja=-H*v('cph'), min=caja, mesMin=0, pay=null;
+    const serie=[caja];
+    for(let m=1;m<=MESES;m++){
+      const bajas=cli*ch, deseado=meta*Math.min(1,m/RAMPA);
+      const altas=Math.max(0,deseado-(cli-bajas));
+      cli=cli-bajas+altas;
+      caja+=cli*margen-altas*cac-H*MANT;
+      serie.push(caja);
+      if(caja<min){min=caja;mesMin=m;}
+      if(pay===null&&caja>=0)pay=m;
+    }
+    return {serie,pay,min,mesMin,cli,margen,cac,ch};
+  }
+  let r=simular();
+  const dibujar=L.canvasWidget($('#c46-cv'),L.wide,(ctx,w,h)=>{
+    const s=r.serie.map(x=>x/1e6);
+    let lo=Math.min(...s), hi=Math.max(...s,0.2);
+    const pad=(hi-lo)*0.08;
+    const F=L.frame(ctx,w,h,{x0:0,x1:MESES,y0:lo-pad,y1:hi+pad,sx:12});
+    F.clip();
+    ctx.strokeStyle=L.tok('--accent');ctx.lineWidth=2.5;ctx.beginPath();
+    s.forEach((y,i)=>{const X=F.X(i),Y=F.Y(y);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);});
+    ctx.stroke();ctx.restore();
+    L.dot(ctx,F.X(r.mesMin),F.Y(r.min/1e6),L.tok('--warm'),5);
+    if(r.pay!==null)L.dot(ctx,F.X(r.pay),F.Y(0),L.tok('--good'),6);
+    ctx.font='11px '+L.tok('--f-display');ctx.fillStyle=L.tok('--muted');ctx.textAlign='right';ctx.textBaseline='bottom';
+    ctx.fillText('meses →',F.p.l+F.pw-4,F.p.t+F.ph-4);
+  });
+  function anio(m){const a=Math.floor((m-1)/12)+1;return 'mes '+m+' (año '+a+')';}
+  function actualizar(){
+    r=simular();dibujar();
+    const ltv=r.ch>0?r.margen/r.ch:0, rel=ltv/r.cac;
+    const out=[];
+    out.push('<span class="big">'+(r.pay!==null?'La inversión se recupera en el '+anio(r.pay):'En diez años la zona no se paga')+'</span>');
+    out.push('<span>Hoyo más hondo: <b>'+usd(-r.min)+'</b> en el mes '+r.mesMin+'</span>');
+    out.push('<span>Clientes al final: '+miles(r.cli)+' · margen por cliente: '+usd(r.margen)+' al mes</span>');
+    out.push('<span class="'+(rel>=3?'ok':'warn')+'">Valor de un cliente (LTV) ≈ '+usd(ltv)+' · LTV/CAC = '+coma(rel,1)+(rel>=3?' (sano)':' (flojo: menos de 3)')+'</span>');
+    $('#c46-out').innerHTML=out.join('');
+    $('#c46-cv').setAttribute('aria-label','Caja acumulada de la zona durante diez años. '+(r.pay!==null?'Cruza el cero en el mes '+r.pay+'.':'No cruza el cero.'));
+    let nota;
+    if(r.margen<=0) nota='El precio no cubre lo que cuesta atender a cada cliente: cada cliente nuevo agranda la pérdida.';
+    else{
+      const mitad=simular(v('ch')/2);
+      nota='Si el churn fuera la mitad ('+coma(v('ch')/2,1)+' %), '+(mitad.pay!==null?'se recuperaría en el '+anio(mitad.pay):'tampoco se recuperaría en diez años')+'. ';
+      nota+=v('pen')<25?'Con tan poca penetración, la red pasada pesa sobre muy pocos clientes.':'Cada punto de churn obliga a gastar de nuevo el costo de conseguir y conectar un cliente.';
+    }
+    $('#c46-nota').textContent=nota;
+  }
+  ids.forEach(k=>$('#c46-'+k).addEventListener('input',actualizar));
+  actualizar();
+})();
+</script>
+</body>
+</html>

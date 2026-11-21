@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La planta en el mapa · Cómo funciona un telco</title>
+<meta name="description" content="Una red de fibra que no está dibujada no se puede vender, instalar ni reparar bien: los sistemas de documentación de planta (GIS), como OZMap, registran sobre un mapa cada poste, cable, caja, splitter y fibra, y con eso responden quién puede contratar, en qué puerto conectar al cliente y a quién afecta un corte.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="37-la-planta-en-el-mapa">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 37 DE 49</span><h1>La planta en el mapa: GIS e inventario de red (OZMap y similares)</h1><p class="lede">Una red de fibra que no está dibujada no se puede vender, instalar ni reparar bien: los sistemas de documentación de planta (GIS), como OZMap, registran sobre un mapa cada poste, cable, caja, splitter y fibra, y con eso responden quién puede contratar, en qué puerto conectar al cliente y a quién afecta un corte.</p></header>
+<section><div class="prose"><p>Un operador de fibra tiene miles de kilómetros de cable colgados de postes o enterrados en ductos, miles de cajas en las esquinas y, dentro de cada cable, decenas de hilos de vidrio que se empalman uno por uno. A todo eso se le llama la <b>planta externa</b>. Es la parte más cara de la red y la más difícil de ver: no avisa cuando está mal documentada, simplemente hace que las cosas salgan mal más tarde.</p><p>Este capítulo trata de cómo se dibuja esa planta en un mapa digital, qué preguntas responde ese mapa y por qué mantenerlo al día es un trabajo de todos, no solo de los ingenieros.</p></div><div class="analogia"><b>Imagínalo así</b><p>El plano de tuberías de una ciudad: sin él, cada excavación es a ciegas y se rompe lo que no se veía. Con él, se sabe qué tubo pasa por cada calle, qué casas alimenta y qué válvula cerrar cuando algo revienta. La red de fibra es una tubería de luz, y el mapa es su plano.</p></div><figure class="fig fig-capas" id="37-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el inventario de planta sobre el mapa (GIS)">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class="apagado"><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class="apagado"><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class="apagado"><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class="apagado"><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class=""><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class=""><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class=""><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class=""><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class=""><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class="apagado"><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: el inventario de planta sobre el mapa (GIS)</text>
+</svg></div><figcaption><b>Dónde estamos.</b> En el mapa de sistemas, este capítulo vive en el OSS, en la parte del inventario. En la cadena de valor toca cinco eslabones que se apoyan en el mismo mapa: dónde hay cobertura, cómo es la red, dónde se puede vender, cómo se instala y cómo se opera.</figcaption></figure></section>
+<section><h2>Por qué documentar la planta</h2><div class="prose"><p>Imagina tres escenas de un mismo día. A las nueve, un vendedor cierra un contrato en una casa que parecía tener cobertura; a las tres, el técnico llega y la caja del poste está llena. A las once, una retroexcavadora corta un cable y el NOC ve caer decenas de ONT, pero no sabe dónde está el corte ni a quién avisar. A las cinco, un ingeniero diseña una ampliación sin saber que dos cuadras más allá había fibras libres en un cable que ya estaba tendido.</p><p>Las tres escenas tienen la misma causa: la planta no está dibujada, o está dibujada mal. Un <b>sistema de información geográfica</b> (<b>GIS</b>, por sus siglas en inglés) para planta de telecomunicaciones es un mapa digital donde cada elemento de la red tiene su lugar, sus datos y sus conexiones. Con él, el vendedor consulta la viabilidad antes de vender, el NOC ve el tramo cortado y la lista de clientes afectados, y el ingeniero diseña sobre lo que realmente existe.</p></div></section>
+<section><h2>Inventario físico e inventario lógico</h2><div class="prose"><p>El capítulo 36 presentó las dos mitades del inventario: la física (lo que se puede tocar) y la lógica (lo que se configura). Los GIS de planta se especializan en la mitad física, y la organizan en <b>capas</b> apiladas sobre el mapa, como hojas transparentes:</p></div><figure class="fig fig-capas" id="37-diagrama-2"><div class="lienzo"><svg viewBox="0 0 860 380" style="min-width:680px" role="img" aria-label="Capas del inventario de planta, de abajo hacia arriba: mapa base, infraestructura, cables y fibras, equipos pasivos, servicios y clientes; cada una con la pregunta que responde">
+  <text x="30" y="22" class="t t-xs t-b t-m">CAPA DEL MAPA</text><text x="590" y="22" class="t t-xs t-b t-m">QUÉ PREGUNTA RESPONDE</text>
+  <rect x="30" y="34" width="530" height="44" rx="8" class="c-apl"/>
+  <text x="46" y="61" class="t t-b">Clientes</text><text x="210" y="61" class="t t-s">dirección, contrato, ONT</text>
+  <line x1="562" y1="56" x2="586" y2="56" class="ln ln-d"/><text x="590" y="61" class="t t-s t-b">¿Quién es y qué contrató?</text>
+  <rect x="30" y="88" width="530" height="44" rx="8" class="c-tra"/>
+  <text x="46" y="115" class="t t-b">Servicios</text><text x="210" y="115" class="t t-s">puerto de la caja que usa cada cliente</text>
+  <line x1="562" y1="110" x2="586" y2="110" class="ln ln-d"/><text x="590" y="115" class="t t-s t-b">¿En qué puerto está conectado?</text>
+  <rect x="30" y="142" width="530" height="44" rx="8" class="c-red"/>
+  <text x="46" y="169" class="t t-b">Equipos pasivos</text><text x="210" y="169" class="t t-s">cajas de empalme, splitters, cajas terminales</text>
+  <line x1="562" y1="164" x2="586" y2="164" class="ln ln-d"/><text x="590" y="169" class="t t-s t-b">¿Hay un puerto libre?</text>
+  <rect x="30" y="196" width="530" height="44" rx="8" class="c-enl"/>
+  <text x="46" y="223" class="t t-b">Cables y fibras</text><text x="210" y="223" class="t t-s">recorrido, cantidad de hilos, fusiones</text>
+  <line x1="562" y1="218" x2="586" y2="218" class="ln ln-d"/><text x="590" y="223" class="t t-s t-b">¿Por qué hilo va la luz?</text>
+  <rect x="30" y="250" width="530" height="44" rx="8" class="c-fis"/>
+  <text x="46" y="277" class="t t-b">Infraestructura</text><text x="210" y="277" class="t t-s">postes, ductos, cámaras</text>
+  <line x1="562" y1="272" x2="586" y2="272" class="ln ln-d"/><text x="590" y="277" class="t t-s t-b">¿Por dónde pasa el cable?</text>
+  <rect x="30" y="304" width="530" height="44" rx="8" class="caja"/>
+  <text x="46" y="331" class="t t-b">Mapa base</text><text x="210" y="331" class="t t-s">calles, manzanas, direcciones</text>
+  <line x1="562" y1="326" x2="586" y2="326" class="ln ln-d"/><text x="590" y="331" class="t t-s t-b">¿Dónde queda esta dirección?</text>
+  <path d="M14 354V44" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="30" y="372" class="t t-xs t-m">↑ HACIA ARRIBA, CAMBIA MÁS SEGUIDO: CADA INSTALACIÓN Y CADA BAJA</text>
+</svg></div><figcaption><b>Las capas del inventario de planta.</b> De abajo hacia arriba: el mapa base (calles y manzanas), la infraestructura que sostiene la red (postes, ductos, cámaras), los cables y sus fibras, los equipos pasivos (cajas de empalme, splitters y cajas terminales), los servicios (qué puerto de qué caja usa cada cliente) y los clientes. Cada capa se apoya en la de abajo, y la columna de la derecha dice qué pregunta responde.</figcaption></figure><div class="prose"><p>Las capas de abajo cambian poco: una calle o un poste duran años. Las de arriba cambian todos los días, con cada instalación y cada baja. Por eso el mapa necesita dos tipos de cuidado: un buen levantamiento inicial y una disciplina diaria para registrar cada cambio.</p></div></section>
+<section><h2>Qué se dibuja: postes, ductos, cables, cajas, splitters, fibras y clientes</h2><div class="prose"><p>Un GIS de planta no dibuja líneas sueltas; cada elemento es un objeto con datos:</p><ul><li><b>Postes y ductos</b>: dónde están, de quién son (muchas veces se alquilan a la empresa eléctrica) y qué cables llevan.</li><li><b>Cables</b>: su recorrido sobre el mapa, su largo, su tipo y cuántas fibras tienen (12, 24, 48, 144…). Un cable troncal sale de la central; los de distribución reparten por el barrio.</li><li><b>Cajas de empalme</b>: donde un cable se une con otro o se ramifica. Adentro se decide qué fibra sigue hacia dónde.</li><li><b>Splitters</b>: dónde están (en la central, en una caja de empalme o en la caja terminal), de qué relación (1:4, 1:8, 1:16) y qué salidas están usadas.</li><li><b>Cajas terminales (CTO)</b>: las cajitas en el poste donde se conecta la acometida de cada cliente, con su número de puertos y cuáles están ocupados.</li><li><b>Clientes</b>: la dirección, el puerto que usan y la acometida que los une a la caja.</li></ul></div><figure class="fig fig-mapa" id="37-diagrama-7"><div class="lienzo"><svg viewBox="0 0 880 470" style="min-width:700px" role="img" aria-label="Un barrio en el GIS: la central con la OLT, el cable troncal por la avenida, dos cajas de empalme con splitter, cables de distribución por las calles, cajas terminales en los postes con puertos ocupados y libres, y casas conectadas con su acometida; leyenda de símbolos abajo">
+  <g class="d-inet" style="stroke-width:0"><rect x="0" y="186" width="880" height="28"/><rect x="286" y="20" width="28" height="350"/><rect x="586" y="20" width="28" height="350"/></g>
+  <g class="t t-xs t-m"><text x="760" y="180">AVENIDA</text></g>
+  <rect x="14" y="164" width="96" height="72" rx="8" class="c-red"/><use href="#i-olt" x="46" y="170" width="32" height="32" class="ico"/><text x="62" y="218" text-anchor="middle" class="t t-s t-b">Central</text><text x="62" y="230" text-anchor="middle" class="t t-xs">OLT</text>
+  <line x1="110" y1="200" x2="860" y2="200" class="ln s-fis" style="stroke-width:4"/>
+  <path d="M300 200V70M300 200V320M600 200V70M600 200V330" class="ln s-fis" style="stroke-width:2"/>
+  <g><circle cx="170" cy="200" r="4" class="caja" style="stroke-width:1.6"/><circle cx="230" cy="200" r="4" class="caja" style="stroke-width:1.6"/><circle cx="420" cy="200" r="4" class="caja" style="stroke-width:1.6"/><circle cx="480" cy="200" r="4" class="caja" style="stroke-width:1.6"/><circle cx="540" cy="200" r="4" class="caja" style="stroke-width:1.6"/><circle cx="720" cy="200" r="4" class="caja" style="stroke-width:1.6"/><circle cx="800" cy="200" r="4" class="caja" style="stroke-width:1.6"/><circle cx="300" cy="140" r="4" class="caja" style="stroke-width:1.6"/><circle cx="300" cy="260" r="4" class="caja" style="stroke-width:1.6"/><circle cx="600" cy="140" r="4" class="caja" style="stroke-width:1.6"/><circle cx="600" cy="260" r="4" class="caja" style="stroke-width:1.6"/></g>
+  <rect x="288" y="188" width="24" height="24" rx="3" transform="rotate(45 300 200)" class="c-enl" style="stroke-width:2"/>
+  <rect x="588" y="188" width="24" height="24" rx="3" transform="rotate(45 600 200)" class="c-enl" style="stroke-width:2"/>
+  <text x="318" y="232" class="t t-xs t-b k-enl">EMPALME + SPLITTER 1:4</text><text x="618" y="232" class="t t-xs t-b k-enl">EMPALME + SPLITTER 1:4</text>
+  <line x1="300" y1="70" x2="200" y2="50" class="ln ln-d"/><path d="M189 60V48L200 38L211 48V60Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="300" y1="70" x2="200" y2="100" class="ln ln-d"/><path d="M189 110V98L200 88L211 98V110Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="300" y1="70" x2="420" y2="110" class="ln ln-d"/><path d="M409 120V108L420 98L431 108V120Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="300" y1="70" x2="400" y2="40" class="ln ln-d"/><path d="M389 50V38L400 28L411 38V50Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="300" y1="320" x2="200" y2="300" class="ln ln-d"/><path d="M189 310V298L200 288L211 298V310Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="300" y1="320" x2="200" y2="350" class="ln ln-d"/><path d="M189 360V348L200 338L211 348V360Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="300" y1="320" x2="420" y2="350" class="ln ln-d"/><path d="M409 360V348L420 338L431 348V360Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="600" y1="70" x2="500" y2="40" class="ln ln-d"/><path d="M489 50V38L500 28L511 38V50Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="600" y1="70" x2="500" y2="110" class="ln ln-d"/><path d="M489 120V108L500 98L511 108V120Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="600" y1="70" x2="720" y2="60" class="ln ln-d"/><path d="M709 70V58L720 48L731 58V70Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="600" y1="70" x2="720" y2="120" class="ln ln-d"/><path d="M709 130V118L720 108L731 118V130Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="600" y1="330" x2="720" y2="310" class="ln ln-d"/><path d="M709 320V308L720 298L731 308V320Z" class="d-casa" style="stroke-width:1.6"/>
+  <line x1="600" y1="330" x2="720" y2="360" class="ln ln-d"/><path d="M709 370V358L720 348L731 358V370Z" class="d-casa" style="stroke-width:1.6"/>
+  <rect x="270" y="54" width="60" height="32" rx="5" class="caja" style="stroke-width:2"/><circle cx="279" cy="64" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="293" cy="64" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="307" cy="64" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="321" cy="64" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="279" cy="76" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="293" cy="76" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="307" cy="76" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="321" cy="76" r="4.5" class="caja" style="stroke-width:1.4"/><text x="300" y="46" text-anchor="middle" class="t t-s t-b">CTO-11 · <tspan class="t-m" style="font-weight:400">6 de 8</tspan></text>
+  <rect x="270" y="304" width="60" height="32" rx="5" class="caja" style="stroke-width:2"/><circle cx="279" cy="314" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="293" cy="314" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="307" cy="314" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="321" cy="314" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="279" cy="326" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="293" cy="326" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="307" cy="326" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="321" cy="326" r="4.5" class="caja" style="stroke-width:1.4"/><text x="300" y="352" text-anchor="middle" class="t t-s t-b">CTO-12 · <tspan class="t-m" style="font-weight:400">3 de 8</tspan></text>
+  <rect x="570" y="54" width="60" height="32" rx="5" class="caja" style="stroke-width:2"/><circle cx="579" cy="64" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="593" cy="64" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="607" cy="64" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="621" cy="64" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="579" cy="76" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="593" cy="76" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="607" cy="76" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="621" cy="76" r="4.5" class="c-red" style="stroke-width:1.4"/><text x="600" y="46" text-anchor="middle" class="t t-s t-b">CTO-21 · <tspan class="t-m" style="font-weight:400">8 de 8</tspan></text>
+  <rect x="570" y="314" width="60" height="32" rx="5" class="caja" style="stroke-width:2"/><circle cx="579" cy="324" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="593" cy="324" r="4.5" class="c-red" style="stroke-width:1.4"/><circle cx="607" cy="324" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="621" cy="324" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="579" cy="336" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="593" cy="336" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="607" cy="336" r="4.5" class="caja" style="stroke-width:1.4"/><circle cx="621" cy="336" r="4.5" class="caja" style="stroke-width:1.4"/><text x="600" y="362" text-anchor="middle" class="t t-s t-b">CTO-22 · <tspan class="t-m" style="font-weight:400">2 de 8</tspan></text>
+  <path d="M459 310V298L470 288L481 298V310Z" class="caja" style="stroke-width:1.6"/><text x="470" y="326" text-anchor="middle" class="t t-xs t-m">SIN SERVICIO</text>
+  <line x1="10" y1="388" x2="870" y2="388" class="ln ln-d"/>
+  <g class="t t-s"><line x1="20" y1="414" x2="56" y2="414" class="ln s-fis" style="stroke-width:4"/><text x="62" y="418">cable troncal</text><line x1="170" y1="414" x2="206" y2="414" class="ln s-fis" style="stroke-width:2"/><text x="212" y="418">distribución</text><rect x="320" y="406" width="16" height="16" rx="2" transform="rotate(45 328 414)" class="c-enl"/><text x="344" y="418">caja de empalme</text><circle cx="470" cy="414" r="4.5" class="c-red"/><text x="480" y="418">puerto ocupado</text><circle cx="600" cy="414" r="4.5" class="caja"/><text x="610" y="418">puerto libre</text><circle cx="712" cy="414" r="4" class="caja"/><text x="722" y="418">poste</text><line x1="20" y1="446" x2="56" y2="446" class="ln ln-d"/><text x="62" y="450">acometida</text><path d="M171 456V444L182 434L193 444V456Z" class="d-casa" style="stroke-width:1.6"/><text x="200" y="450">casa conectada</text><rect x="320" y="436" width="40" height="22" rx="4" class="caja"/><text x="368" y="450">caja terminal (CTO) con 8 puertos</text></g>
+</svg></div><figcaption><b>Un barrio en el GIS.</b> Así se ve un tramo de planta en un mapa: la central con la OLT, el cable troncal que recorre la avenida, una caja de empalme con un splitter, los cables de distribución que suben por las calles, las cajas terminales en los postes con sus puertos ocupados y libres, y las casas conectadas con su acometida. La leyenda de abajo explica cada símbolo.</figcaption></figure></section>
+<section><h2>El empalme fibra por fibra</h2><div class="prose"><p>Dentro de un cable de 48 fibras viajan 48 caminos de luz independientes. En cada caja de empalme, el técnico decide qué fibra del cable que entra se une con qué fibra del cable que sale, o con qué entrada de un splitter. Esas uniones se hacen por <b>fusión</b>: los dos extremos de vidrio se alinean y se sueldan con un arco eléctrico.</p><p>Para no perderse, las fibras se identifican por <b>colores</b>, agrupadas en tubos que también tienen color: azul, naranja, verde, marrón, gris, blanco, rojo, negro, amarillo, violeta, rosa y celeste, en un orden normalizado. «Tubo 2, fibra verde» identifica un hilo exacto dentro del cable.</p></div><figure class="fig fig-esquema" id="37-diagrama-8"><div class="lienzo"><svg viewBox="0 0 880 330" style="min-width:700px" role="img" aria-label="Caja de empalme por dentro: entra el cable troncal; la fibra azul se fusiona y sigue directa por un cable de distribución; la fibra naranja entra a un splitter 1:8 cuyas ocho salidas van a otro cable de distribución; las fibras verde, marrón y gris siguen de largo sin cortarse">
+  <rect x="190" y="30" width="490" height="270" rx="16" class="d-oper"/>
+  <text x="206" y="52" class="t t-xs t-b k-oper">CAJA DE EMPALME CE-1</text>
+
+  
+  <rect x="20" y="146" width="170" height="48" rx="24" class="caja" style="stroke-width:2"/>
+  <text x="34" y="166" class="t t-s t-b">Cable troncal</text>
+  <text x="34" y="182" class="t t-xs t-m">12 FIBRAS</text>
+
+  
+  <path d="M190 160C230 160 240 92 290 92H560" class="ln s-red" style="stroke-width:3"/>
+  <path d="M190 166C240 166 250 140 290 140H380" class="ln s-fis" style="stroke-width:3"/>
+  <path d="M190 172C260 172 260 236 300 236H680" class="ln s-enl" style="stroke-width:3"/>
+  <path d="M190 178C260 178 260 254 300 254H680" class="ln" style="stroke-width:3"/>
+  <path d="M190 184C260 184 260 272 300 272H680" class="ln ln-d" style="stroke-width:3"/>
+  <g class="t t-s">
+    <text x="300" y="84" class="k-red t-b">azul</text>
+    <text x="300" y="132" class="k-fis t-b">naranja</text>
+    <text x="316" y="230" class="k-enl t-b">verde</text>
+    <text x="370" y="249" class="t-m t-b">marrón</text>
+    <text x="430" y="267" class="t-m t-b">gris…</text>
+  </g>
+  
+  <circle cx="340" cy="92" r="6" class="c-enl" style="stroke-width:2"/>
+  <circle cx="350" cy="140" r="6" class="c-enl" style="stroke-width:2"/>
+  <text x="340" y="112" text-anchor="middle" class="t t-xs t-m">FUSIÓN</text>
+
+  
+  <rect x="380" y="116" width="80" height="48" rx="6" class="c-fis" style="stroke-width:2"/>
+  <use href="#i-splitter" x="386" y="122" width="34" height="34" class="ico"/>
+  <text x="424" y="145" class="t t-s t-b">1:8</text>
+  <path d="M460 122L560 156M460 128L560 160M460 134L560 164M460 140L560 168M460 146L560 172M460 152L560 176M460 158L560 180M460 164L560 184" class="ln s-fis" style="stroke-width:1.4"/>
+  <path d="M560 92H680" class="ln s-red" style="stroke-width:3"/>
+  <path d="M560 170H680" class="ln s-fis" style="stroke-width:6"/>
+
+  
+  <rect x="680" y="70" width="190" height="44" rx="22" class="caja" style="stroke-width:2"/>
+  <text x="694" y="89" class="t t-s t-b">Distribución A</text><text x="694" y="104" class="t t-xs t-m">LA AZUL SIGUE DIRECTA</text>
+  <rect x="680" y="148" width="190" height="44" rx="22" class="caja" style="stroke-width:2"/>
+  <text x="694" y="167" class="t t-s t-b">Distribución B</text><text x="694" y="182" class="t t-xs t-m">8 SALIDAS DEL SPLITTER</text>
+  <rect x="680" y="226" width="190" height="56" rx="22" class="caja" style="stroke-width:2"/>
+  <text x="694" y="246" class="t t-s t-b">El troncal sigue</text><text x="694" y="261" class="t t-xs t-m">FIBRAS SIN CORTAR,</text><text x="694" y="274" class="t t-xs t-m">RESERVADAS</text>
+
+  <text x="440" y="320" text-anchor="middle" class="t t-s t-m">Los colores reales de las fibras siguen un código normalizado; aquí se usan los del libro.</text>
+</svg></div><figcaption><b>Una caja de empalme por dentro.</b> A la izquierda entra el cable troncal; a la derecha salen dos cables de distribución. Las líneas de colores son las fusiones: la fibra azul del troncal sigue directo por un cable de distribución; la naranja entra a un splitter 1:8 cuyas salidas alimentan otro cable; las demás fibras siguen de largo sin cortarse, reservadas para el futuro. El GIS guarda exactamente este dibujo para cada caja.</figcaption></figure><div class="prose"><p>Si el mapa solo dijera «hay un cable entre la central y el barrio», no serviría para trazar el camino de un cliente. Lo que hace útil al GIS es que registra cada fusión: así puede seguir la luz hilo por hilo, como se verá más adelante.</p></div></section>
+<section><h2>Viabilidad de venta: ¿hay una caja con puerto libre cerca de esta dirección?</h2><div class="prose"><p>La pregunta más frecuente que recibe el mapa viene de ventas: ¿se puede instalar en esta dirección? El capítulo 36 la planteó como factibilidad; aquí se ve cómo la responde el GIS, paso a paso.</p></div><figure class="fig fig-flujo" id="37-diagrama-3"><div class="lienzo"><svg viewBox="0 0 900 520" style="min-width:720px" role="img" aria-label="Flujo de viabilidad de venta: ventas consulta al GIS con la dirección; el GIS la geocodifica en un punto del mapa; busca cajas terminales al alcance de una acometida; revisa puertos libres; consulta al gestor de la OLT la capacidad del puerto PON; y responde a ventas con la caja, el puerto y la distancia, o con no viable y el motivo">
+  <g class="t t-b">
+    <rect x="22" y="14" width="156" height="56" rx="10" class="caja"/><use href="#i-persona" x="34" y="26" width="30" height="30" class="ico"/><text x="70" y="40">Ventas</text><text x="70" y="57" class="t-s t-m" style="font-weight:400">CRM</text>
+    <rect x="222" y="14" width="156" height="56" rx="10" class="caja"/><use href="#i-guia" x="234" y="26" width="30" height="30" class="ico"/><text x="270" y="40">Geocodificador</text><text x="270" y="57" class="t-s t-m" style="font-weight:400">dirección → punto</text>
+    <rect x="422" y="14" width="156" height="56" rx="10" class="caja"/><use href="#i-monitor" x="434" y="26" width="30" height="30" class="ico"/><text x="470" y="40">GIS</text><text x="470" y="57" class="t-s t-m" style="font-weight:400">de planta</text>
+    <rect x="622" y="14" width="156" height="56" rx="10" class="caja"/><use href="#i-olt" x="634" y="26" width="30" height="30" class="ico"/><text x="670" y="40">Gestor</text><text x="670" y="57" class="t-s t-m" style="font-weight:400">de la OLT</text>
+  </g>
+  <line x1="100" y1="70" x2="100" y2="506" class="vida"/>
+  <line x1="300" y1="70" x2="300" y2="506" class="vida"/>
+  <line x1="500" y1="70" x2="500" y2="506" class="vida"/>
+  <line x1="700" y1="70" x2="700" y2="506" class="vida"/>
+
+  <line x1="100" y1="106" x2="498" y2="112" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="108" y="100" class="t t-s">① ¿Es viable «Calle 5 n.º 120»?</text>
+  <line x1="500" y1="140" x2="302" y2="146" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="308" y="134" class="t t-s">② Ubica esta dirección</text>
+  <line x1="300" y1="172" x2="498" y2="178" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="308" y="194" class="t t-s">③ Punto en el mapa (lat., long.)</text>
+
+  <rect x="430" y="212" width="250" height="56" rx="8" class="c-red"/>
+  <text x="440" y="232" class="t t-s t-b">④ Cajas al alcance de una acometida</text>
+  <text x="440" y="252" class="t t-s">CTO-14 a 80 m · CTO-15 a 130 m</text>
+  <rect x="430" y="280" width="250" height="56" rx="8" class="c-red"/>
+  <text x="440" y="300" class="t t-s t-b">⑤ ¿Puertos libres?</text>
+  <text x="440" y="320" class="t t-s">CTO-14 llena · CTO-15: 3 libres</text>
+
+  <line x1="500" y1="360" x2="698" y2="366" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="508" y="354" class="t t-s">⑥ ¿Capacidad del PON 2/3?</text>
+  <line x1="700" y1="392" x2="502" y2="398" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="508" y="416" class="t t-s">⑦ 42 de 64 ONT, tráfico normal</text>
+
+  <line x1="500" y1="446" x2="102" y2="452" class="ln s-enl" style="stroke-width:2.6" marker-end="url(#fl-enl)"/>
+  <text x="108" y="440" class="t t-s t-b">⑧ Viable: CTO-15, puerto 6, acometida de 130 m</text>
+  <text x="108" y="474" class="t t-s t-m">si no: «no viable» y el motivo (caja llena, lejos, PON saturado)</text>
+
+  <g class="t t-xs t-b">
+    <path d="M800 96v100" class="ln s-apl" style="stroke-width:3"/><text x="810" y="140" class="k-apl">DIRECCIÓN</text><text x="810" y="152" class="t-m">dónde queda</text>
+    <path d="M800 212v56" class="ln s-red" style="stroke-width:3"/><text x="810" y="236" class="k-red">CAJA</text><text x="810" y="248" class="t-m">la más cercana</text>
+    <path d="M800 280v140" class="ln s-red" style="stroke-width:3"/><text x="810" y="344" class="k-red">PUERTO</text><text x="810" y="356" class="t-m">y capacidad</text>
+    <path d="M800 436v44" class="ln s-enl" style="stroke-width:3"/><text x="810" y="456" class="k-enl">RESPUESTA</text><text x="810" y="468" class="t-m">a ventas</text>
+  </g>
+  <text x="14" y="300" class="t t-xs t-m" transform="rotate(-90 14 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Viabilidad de venta, paso a paso.</b> El tiempo corre hacia abajo. Ventas ingresa la dirección del cliente; el GIS la convierte en un punto del mapa; busca las cajas terminales dentro del alcance de una acometida; revisa cuáles tienen puertos libres y si la cadena hacia atrás tiene capacidad; y responde a ventas con la caja, la distancia y el puerto sugerido, o con un «no viable» y el motivo.</figcaption></figure><div class="prose"><p>Dos detalles hacen la diferencia en la práctica. El primero es la <b>geocodificación</b>: convertir una dirección escrita («Calle 5 n.º 120, casa del fondo») en un punto exacto del mapa. En muchos barrios de América Latina las direcciones son ambiguas, y un punto mal ubicado da una respuesta equivocada. El segundo es que la distancia que importa es la del recorrido real de la acometida, siguiendo postes y calles, no la línea recta.</p></div></section>
+<section><h2>Reservar el puerto al vender y confirmarlo al instalar</h2><div class="prose"><p>Que haya un puerto libre a la hora de vender no garantiza que siga libre el día de la instalación: otro vendedor puede venderlo en la misma tarde. Por eso los operadores ordenados <b>reservan</b> el puerto en el momento de la venta. La reserva lo saca de la lista de disponibles durante un plazo, hasta que se instala o se cancela.</p></div><figure class="fig fig-flujo" id="37-diagrama-4"><div class="lienzo"><svg viewBox="0 0 960 560" style="min-width:740px" role="img" aria-label="Flujo de instalación documentada: ventas pide reservar el puerto al GIS; el GIS lo reserva y lo pasa a la orden de trabajo; la orden llega a la app del técnico; el técnico conecta y mide la luz; confirma el puerto usado con fotos y número de serie; el GIS pasa el puerto a ocupado y dibuja la acometida; el gestor de la OLT activa la ONT y confirma que está en línea">
+  <g class="t t-b">
+    <rect x="24" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-persona" x="34" y="26" width="30" height="30" class="ico"/><text x="72" y="47">Ventas</text>
+    <rect x="184" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-monitor" x="194" y="26" width="30" height="30" class="ico"/><text x="232" y="40">GIS</text><text x="232" y="57" class="t-s t-m" style="font-weight:400">de planta</text>
+    <rect x="344" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-factura" x="354" y="26" width="30" height="30" class="ico"/><text x="392" y="40">Órdenes</text><text x="392" y="57" class="t-s t-m" style="font-weight:400">de trabajo</text>
+    <rect x="504" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-celular" x="514" y="26" width="30" height="30" class="ico"/><text x="552" y="40">Técnico</text><text x="552" y="57" class="t-s t-m" style="font-weight:400">con su app</text>
+    <rect x="664" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-olt" x="674" y="26" width="30" height="30" class="ico"/><text x="712" y="40">Gestor</text><text x="712" y="57" class="t-s t-m" style="font-weight:400">de la OLT</text>
+  </g>
+  <line x1="90" y1="70" x2="90" y2="546" class="vida"/>
+  <line x1="250" y1="70" x2="250" y2="546" class="vida"/>
+  <line x1="410" y1="70" x2="410" y2="546" class="vida"/>
+  <line x1="570" y1="70" x2="570" y2="546" class="vida"/>
+  <line x1="730" y1="70" x2="730" y2="546" class="vida"/>
+
+  <line x1="90" y1="106" x2="248" y2="112" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="98" y="100" class="t t-s">① Reservar CTO-15/6</text>
+  <rect x="188" y="124" width="124" height="40" rx="8" class="c-fis"/>
+  <text x="198" y="149" class="t t-s t-b">② Puerto reservado</text>
+  <line x1="250" y1="180" x2="408" y2="186" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="258" y="174" class="t t-s">③ Puerto en la orden</text>
+
+  <line x1="410" y1="220" x2="568" y2="226" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="418" y="214" class="t t-s">④ Caja, puerto y ruta</text>
+  <rect x="500" y="242" width="150" height="56" rx="8" class="c-tra"/>
+  <text x="510" y="262" class="t t-s t-b">⑤ Conecta y mide</text>
+  <text x="510" y="282" class="t t-s">luz en la roseta: buena</text>
+  <line x1="570" y1="320" x2="412" y2="326" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="418" y="314" class="t t-s">⑥ Usé CTO-15/6 · fotos · serie</text>
+
+  <line x1="410" y1="360" x2="252" y2="366" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="258" y="354" class="t t-s">⑦ Confirmar puerto</text>
+  <rect x="160" y="380" width="180" height="56" rx="8" class="c-enl"/>
+  <text x="170" y="400" class="t t-s t-b">⑧ Reservado → ocupado</text>
+  <text x="170" y="420" class="t t-s">y dibuja la acometida</text>
+
+  <line x1="410" y1="462" x2="728" y2="468" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="418" y="456" class="t t-s">⑨ Activar la ONT de esa serie</text>
+  <line x1="730" y1="500" x2="572" y2="506" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="578" y="524" class="t t-s">⑩ En línea</text>
+
+  <rect x="20" y="470" width="200" height="58" rx="8" class="caja ln-d"/>
+  <text x="30" y="490" class="t t-s t-b">¿Usó otro puerto?</text>
+  <text x="30" y="506" class="t t-s">el GIS libera el reservado</text>
+  <text x="30" y="521" class="t t-s">y ocupa el real</text>
+
+  <g class="t t-xs t-b">
+    <path d="M830 96v94" class="ln s-apl" style="stroke-width:3"/><text x="840" y="138" class="k-apl">VENTA</text><text x="840" y="150" class="t-m">se reserva</text>
+    <path d="M830 206v124" class="ln s-tra" style="stroke-width:3"/><text x="840" y="262" class="k-tra">VISITA</text><text x="840" y="274" class="t-m">el técnico trabaja</text>
+    <path d="M830 346v94" class="ln s-enl" style="stroke-width:3"/><text x="840" y="392" class="k-enl">CONFIRMACIÓN</text><text x="840" y="404" class="t-m">el mapa se corrige</text>
+    <path d="M830 450v76" class="ln s-red" style="stroke-width:3"/><text x="840" y="484" class="k-red">ACTIVACIÓN</text><text x="840" y="496" class="t-m">la red se entera</text>
+  </g>
+  <text x="10" y="300" class="t t-xs t-m" transform="rotate(-90 10 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Instalación documentada.</b> El tiempo corre hacia abajo. Al vender, el GIS reserva el puerto; la orden de trabajo lleva ese puerto a la app del técnico; el técnico conecta la acometida, mide la luz y confirma en la app el puerto realmente usado, con fotos; el GIS pasa el puerto de reservado a ocupado y dibuja la acometida; el gestor de la OLT activa la ONT. Si el técnico usó otro puerto, el mapa se corrige en ese mismo momento.</figcaption></figure><div class="prose"><p>La confirmación es tan importante como la reserva. Si el técnico encuentra el puerto reservado ocupado (por una instalación vieja que nunca se registró) y conecta al cliente en otro, ese cambio tiene que volver al mapa. Si no vuelve, la próxima venta en esa caja usará datos falsos, y el error se multiplica.</p></div></section>
+<section><h2>Trazar el camino óptico de un cliente, de la OLT a la roseta</h2><div class="prose"><p>Con todas las fusiones registradas, el GIS puede hacer algo muy útil: <b>trazar</b> el camino completo de la luz de un cliente. Desde el puerto PON de la OLT, por qué fibra del cable troncal sale, en qué caja de empalme entra a qué splitter, por qué salida y qué fibra del cable de distribución sigue, a qué caja terminal llega, por qué puerto, y hasta la <b>roseta</b>, la cajita en la pared de la casa donde termina la fibra.</p><p>Ese trazado sirve para diagnosticar. Cada elemento del camino le quita un poco de luz a la señal: los splitters, mucho; los empalmes y los conectores, poco; la fibra, un poco por kilómetro. Sumando esas pérdidas se calcula el <b>presupuesto óptico</b>: cuánta luz debería llegarle a la ONT. Si la ONT mide bastante menos que lo calculado, hay algo dañado en el camino, y el trazado dice dónde buscar.</p></div><div class="lab" id="37-lab-6"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Sigue la fibra</h3></div><p class="hint">Elige un cliente y sigue su camino de luz desde la OLT, por cada splitter y cada empalme, hasta su casa. La tabla suma la pérdida de cada tramo y compara la luz que debería llegar con la que mide la ONT. Activa una falla para ver cómo el trazado ayuda a encontrarla.</p><div id="c37-traz">
+<style>
+#c37-traz{display:grid;gap:12px}
+#c37-traz svg{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--line);border-radius:10px;font-family:var(--f-display)}
+#c37-traz .c37-eje{stroke:var(--grid);stroke-width:1}
+#c37-traz .c37-et{fill:var(--muted);font-size:13px;font-family:var(--f-mono)}
+#c37-traz .c37-sens{stroke:var(--warm);stroke-width:2;stroke-dasharray:6 5}
+#c37-traz .c37-sens-t{fill:var(--warm);font-size:13px;font-weight:700}
+#c37-traz .c37-luz{stroke:var(--c-fis);stroke-width:3.5;fill:none}
+#c37-traz .c37-med{fill:var(--accent)}
+#c37-traz .c37-med-t{fill:var(--accent);font-size:13px;font-weight:700}
+#c37-traz .c37-mal{fill:var(--warm)}
+#c37-traz .tbl td{padding:5px 8px}
+#c37-traz td.c37-n{text-align:right;font-family:var(--f-mono);white-space:nowrap}
+#c37-traz tr.c37-falla td{background:var(--warm-soft)}
+#c37-traz tr.c37-fin td{font-weight:700;border-top:2px solid var(--ink)}
+#c37-traz .readout span{white-space:normal}
+</style>
+<div class="opciones">
+  <label>Cliente
+    <select id="c37-cli">
+      <option value="0">Calle 1 · CTO-A, puerto 3</option>
+      <option value="1" selected>Calle 2 · CTO-D, puerto 7</option>
+      <option value="2">Fin de la ruta · CTO-E, puerto 1</option>
+    </select></label>
+  <label>Falla en el camino
+    <select id="c37-fal">
+      <option value="-1" selected>Ninguna</option>
+      <option value="emp">Empalme mal hecho en E1</option>
+      <option value="aco">Acometida doblada</option>
+      <option value="ros">Conector sucio en la roseta</option>
+    </select></label>
+</div>
+<svg viewBox="0 0 640 250" role="img" aria-label="Escalera de la luz: cuánta potencia queda después de cada elemento del camino" id="c37-esc"></svg>
+<div class="tbl"><table><thead><tr><th>Elemento del camino</th><th class="num">Pierde</th><th class="num">Queda</th></tr></thead><tbody id="c37-filas"></tbody></table></div>
+<div class="readout" id="c37t-out" aria-live="polite"></div>
+<p class="hint">Valores típicos de ejemplo: transmisor de la OLT +3 dBm; fibra 0,35 dB por kilómetro; empalme por fusión 0,1 dB; conector 0,5 dB; splitter 1:4, 7,2 dB; splitter 1:8, 10,5 dB. La ONT deja de funcionar por debajo de unos −28 dBm. El dBm mide potencia: cada 3 dB menos es la mitad de luz.</p>
+</div></div></section>
+<section><h2>Impacto de un corte: qué clientes quedan sin servicio</h2><div class="prose"><p>La misma información, recorrida al revés, responde la pregunta más urgente del NOC: si se corta este cable aquí, <b>¿a quién afecta?</b> El GIS sigue todas las fibras que pasan por el punto del corte, todos los splitters que alimentan y todas las cajas terminales que cuelgan de ellos, hasta llegar a la lista de clientes.</p><p>Con esa lista, el NOC hace tres cosas a la vez: despacha a la cuadrilla al punto exacto, avisa a atención al cliente para que responda «hay una falla en tu zona» antes de que lleguen las llamadas, y prioriza a los clientes empresa con acuerdos de servicio. El capítulo 45 recorre ese proceso completo.</p></div><div class="lab" id="37-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Quién se queda sin servicio?</h3></div><p class="hint">Marca un corte en cualquier tramo de la red del barrio. El mapa ilumina los clientes afectados y cuenta cuántos son. Prueba cortar el cable troncal, un cable de distribución y una sola acometida.</p><div id="c37-corte">
+<style>
+#c37-corte{display:grid;gap:12px}
+#c37-corte svg{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--line);border-radius:10px;font-family:var(--f-display)}
+#c37-corte .c37-tr{stroke:var(--c-fis);fill:none;stroke-linecap:round}
+#c37-corte .c37-tr.troncal{stroke-width:7}
+#c37-corte .c37-tr.dist{stroke-width:4}
+#c37-corte .c37-tr.acom{stroke-width:2;stroke-dasharray:5 4}
+#c37-corte .c37-tr.muerto{stroke:var(--line)}
+#c37-corte .c37-hit{stroke:transparent;stroke-width:22;fill:none;cursor:pointer}
+#c37-corte .c37-hit:hover + .c37-tr,#c37-corte .c37-hit:focus + .c37-tr{stroke:var(--accent)}
+#c37-corte .c37-nodo{fill:var(--card);stroke:var(--d-oper);stroke-width:2.5}
+#c37-corte .c37-emp{fill:var(--c-enl-s);stroke:var(--c-enl);stroke-width:2.5}
+#c37-corte .c37-txt{fill:var(--ink);font-size:15px;font-weight:700}
+#c37-corte .c37-txt.s{font-size:13px;font-weight:600;fill:var(--muted)}
+#c37-corte .c37-casa path{fill:var(--good-soft);stroke:var(--good);stroke-width:2.5;cursor:pointer}
+#c37-corte .c37-casa.caida path{fill:var(--warm-soft);stroke:var(--warm)}
+#c37-corte .c37-casa.emp path{stroke-width:4}
+#c37-corte .c37-x{stroke:var(--warm);stroke-width:5;stroke-linecap:round}
+#c37-corte .readout span{white-space:normal}
+</style>
+<div class="btns" role="group" aria-label="Dónde cortar" id="c37-btns"></div>
+<svg viewBox="0 0 700 380" role="img" aria-label="Red del barrio: la central, el cable troncal, dos empalmes con splitter, cables de distribución, cinco cajas terminales y diecisiete casas" id="c37-mapa"></svg>
+<div class="readout" id="c37c-out" aria-live="polite"></div>
+<p class="hint">También puedes tocar un tramo del mapa o una casa para cortar su acometida. La casa de borde grueso es un cliente empresa.</p>
+</div></div></section>
+<section><h2>Proyectar la red: diseño de nuevas zonas y cálculo de materiales</h2><div class="prose"><p>El GIS no solo documenta lo que existe; también es la mesa de dibujo de lo que se va a construir. Para llevar fibra a un barrio nuevo, el ingeniero dibuja sobre el mapa base: por qué postes irá el cable, dónde van las cajas de empalme y las terminales, qué relación de splitter usar y cuántos hogares quedarán cubiertos (los <b>hogares pasados</b>, una métrica clave del negocio).</p><p>Del dibujo salen dos cosas automáticamente. Una es la <b>lista de materiales</b>: metros de cable de cada tipo, cantidad de cajas, splitters, herrajes y empalmes, que se convierte en presupuesto y en pedido de compra. La otra es el <b>presupuesto óptico</b> de cada camino, para comprobar antes de construir que la luz alcanzará al cliente más lejano. El capítulo 39 cuenta el proceso completo de construir una zona.</p></div></section>
+<section><h2>Ejemplos de herramientas: OZMap y otros GIS de planta, NetBox para el inventario lógico y las direcciones IP</h2><div class="prose"><p>Hay varias familias de herramientas, y cada una cubre una parte del inventario:</p><ul><li><b>GIS de planta para fibra</b>: OZMap es un ejemplo del mercado, muy usado por proveedores de Internet de América Latina; dibuja postes, cables, cajas y fusiones sobre el mapa, calcula viabilidad y presupuesto óptico, y tiene una app para técnicos. Hay otras alternativas comerciales con enfoques parecidos, y también quien construye la suya sobre un GIS general como QGIS.</li><li><b>Inventario lógico y de centro de datos</b>: NetBox es una herramienta de código abierto muy difundida para documentar equipos, racks, interfaces, conexiones, VLAN y, sobre todo, la administración de direcciones IP (lo que se llama <b>IPAM</b>). No dibuja la planta externa sobre el mapa, pero es una buena fuente de verdad para la parte lógica.</li><li><b>Módulos de mapa en plataformas de gestión para ISP</b>: algunas de las plataformas del capítulo 34 incluyen un mapa básico con cajas y clientes, suficiente para empezar.</li></ul></div><figure class="fig fig-comparacion" id="37-diagrama-9"><div class="lienzo"><svg viewBox="0 0 820 380" style="min-width:660px" role="img" aria-label="Qué guarda cada tipo de herramienta: el GIS de planta cubre postes, cables, fusiones, cajas y puertos; el inventario lógico cubre equipos, interfaces, VLAN y direcciones IP; la plataforma ISP o CRM cubre clientes y contratos; ninguna cubre todo">
+  <text x="390" y="26" text-anchor="middle" class="t t-s t-b">GIS de planta</text><text x="390" y="42" text-anchor="middle" class="t t-xs t-m">EJ.: OZMAP</text>
+  <text x="555" y="26" text-anchor="middle" class="t t-s t-b">Inventario lógico</text><text x="555" y="42" text-anchor="middle" class="t t-xs t-m">EJ.: NETBOX</text>
+  <text x="720" y="26" text-anchor="middle" class="t t-s t-b">Plataforma ISP o CRM</text><text x="720" y="42" text-anchor="middle" class="t t-xs t-m">MAPA BÁSICO</text>
+  <text x="20" y="82" class="t t-b">Postes y ductos</text>
+  <rect x="320" y="58" width="140" height="34" rx="6" class="c-enl"/><text x="390" y="80" text-anchor="middle" class="t t-s t-b">sí</text>
+  <rect x="485" y="58" width="140" height="34" rx="6" class="caja ln-d"/><text x="555" y="80" text-anchor="middle" class="t t-s t-m">—</text>
+  <rect x="650" y="58" width="140" height="34" rx="6" class="caja ln-d"/><text x="720" y="80" text-anchor="middle" class="t t-s t-m">—</text>
+  <text x="20" y="124" class="t t-b">Cables, fibras y fusiones</text>
+  <rect x="320" y="100" width="140" height="34" rx="6" class="c-enl"/><text x="390" y="122" text-anchor="middle" class="t t-s t-b">sí</text>
+  <rect x="485" y="100" width="140" height="34" rx="6" class="c-fis"/><text x="555" y="122" text-anchor="middle" class="t t-s">a medias</text>
+  <rect x="650" y="100" width="140" height="34" rx="6" class="caja ln-d"/><text x="720" y="122" text-anchor="middle" class="t t-s t-m">—</text>
+  <text x="20" y="166" class="t t-b">Cajas, splitters y puertos</text>
+  <rect x="320" y="142" width="140" height="34" rx="6" class="c-enl"/><text x="390" y="164" text-anchor="middle" class="t t-s t-b">sí</text>
+  <rect x="485" y="142" width="140" height="34" rx="6" class="caja ln-d"/><text x="555" y="164" text-anchor="middle" class="t t-s t-m">—</text>
+  <rect x="650" y="142" width="140" height="34" rx="6" class="c-fis"/><text x="720" y="164" text-anchor="middle" class="t t-s">a medias</text>
+  <text x="20" y="208" class="t t-b">Equipos y racks de la central</text>
+  <rect x="320" y="184" width="140" height="34" rx="6" class="c-fis"/><text x="390" y="206" text-anchor="middle" class="t t-s">a medias</text>
+  <rect x="485" y="184" width="140" height="34" rx="6" class="c-enl"/><text x="555" y="206" text-anchor="middle" class="t t-s t-b">sí</text>
+  <rect x="650" y="184" width="140" height="34" rx="6" class="caja ln-d"/><text x="720" y="206" text-anchor="middle" class="t t-s t-m">—</text>
+  <text x="20" y="250" class="t t-b">Interfaces y VLAN</text>
+  <rect x="320" y="226" width="140" height="34" rx="6" class="caja ln-d"/><text x="390" y="248" text-anchor="middle" class="t t-s t-m">—</text>
+  <rect x="485" y="226" width="140" height="34" rx="6" class="c-enl"/><text x="555" y="248" text-anchor="middle" class="t t-s t-b">sí</text>
+  <rect x="650" y="226" width="140" height="34" rx="6" class="caja ln-d"/><text x="720" y="248" text-anchor="middle" class="t t-s t-m">—</text>
+  <text x="20" y="292" class="t t-b">Direcciones IP (IPAM)</text>
+  <rect x="320" y="268" width="140" height="34" rx="6" class="caja ln-d"/><text x="390" y="290" text-anchor="middle" class="t t-s t-m">—</text>
+  <rect x="485" y="268" width="140" height="34" rx="6" class="c-enl"/><text x="555" y="290" text-anchor="middle" class="t t-s t-b">sí</text>
+  <rect x="650" y="268" width="140" height="34" rx="6" class="c-fis"/><text x="720" y="290" text-anchor="middle" class="t t-s">a medias</text>
+  <text x="20" y="334" class="t t-b">Clientes y contratos</text>
+  <rect x="320" y="310" width="140" height="34" rx="6" class="c-fis"/><text x="390" y="332" text-anchor="middle" class="t t-s">a medias</text>
+  <rect x="485" y="310" width="140" height="34" rx="6" class="caja ln-d"/><text x="555" y="332" text-anchor="middle" class="t t-s t-m">—</text>
+  <rect x="650" y="310" width="140" height="34" rx="6" class="c-enl"/><text x="720" y="332" text-anchor="middle" class="t t-s t-b">sí</text>
+  <text x="20" y="368" class="t t-s t-m">Clasificación general y simplificada; cada producto y cada versión cubre más o menos.</text>
+</svg></div><figcaption><b>Qué guarda cada tipo de herramienta.</b> Las filas son los datos del inventario y las columnas, tres tipos de herramienta. Un cuadro verde indica que esa herramienta es una buena fuente de verdad para ese dato; uno ámbar, que lo cubre a medias; uno punteado, que no lo cubre. La lección es que ninguna cubre todo: hay que decidir cuál manda en cada dato e integrarlas.</figcaption></figure></section>
+<section><h2>Integración con ventas, gestor de OLT, órdenes de trabajo y NOC</h2><div class="prose"><p>El mapa vale por las preguntas que responde a otros sistemas. Las integraciones típicas son cuatro:</p><ul><li><b>Ventas y CRM</b> consultan la viabilidad y reservan el puerto al cerrar la venta.</li><li><b>Órdenes de trabajo</b> llevan el puerto reservado a la app del técnico y traen de vuelta la confirmación, las fotos y la potencia medida.</li><li><b>El gestor de la OLT</b> aporta lo que está vivo: qué ONT están en línea en cada puerto PON y con cuánta luz. Cruzarlo con el mapa detecta diferencias entre lo dibujado y lo conectado.</li><li><b>El NOC</b> recibe la lista de clientes afectados por un corte y la ubicación del tramo.</li></ul></div><figure class="fig fig-arquitectura" id="37-diagrama-10"><div class="lienzo"><svg viewBox="0 0 880 380" style="min-width:700px" role="img" aria-label="El GIS de planta en el centro: ventas consulta viabilidad y reserva puertos; las órdenes de trabajo reciben el puerto reservado y devuelven la confirmación con fotos; el gestor de la OLT aporta las ONT en línea por puerto PON; el NOC marca el tramo cortado y recibe la lista de clientes afectados">
+  <rect x="10" y="10" width="860" height="84" rx="12" class="d-sis"/>
+  <rect x="10" y="104" width="860" height="266" rx="12" class="d-oper"/>
+  <text x="24" y="30" class="t t-xs t-b k-sis">NEGOCIO</text>
+  <text x="24" y="124" class="t t-xs t-b k-oper">OPERACIÓN (OSS) Y RED</text>
+
+  <rect x="330" y="26" width="220" height="54" rx="10" class="caja"/>
+  <use href="#i-persona" x="342" y="36" width="32" height="32" class="ico"/>
+  <text x="384" y="49" class="t t-b">Ventas y CRM</text><text x="384" y="67" class="t t-s t-m">venden donde hay puerto</text>
+
+  <rect x="320" y="190" width="240" height="80" rx="14" class="c-red" style="stroke-width:2.5"/>
+  <use href="#i-monitor" x="334" y="206" width="36" height="36" class="ico"/>
+  <text x="380" y="222" class="t t-b">GIS de planta</text><text x="380" y="242" class="t t-s">inventario físico</text><text x="380" y="258" class="t t-s">sobre el mapa</text>
+
+  <rect x="30" y="196" width="210" height="68" rx="10" class="caja"/>
+  <use href="#i-celular" x="40" y="212" width="32" height="32" class="ico"/>
+  <text x="80" y="222" class="t t-b">Órdenes de trabajo</text><text x="80" y="242" class="t t-s t-m">y app del técnico</text>
+
+  <rect x="640" y="140" width="210" height="60" rx="10" class="caja"/>
+  <use href="#i-olt" x="650" y="154" width="32" height="32" class="ico"/>
+  <text x="690" y="166" class="t t-b">Gestor de la OLT</text><text x="690" y="184" class="t t-s t-m">lo que está vivo</text>
+
+  <rect x="640" y="270" width="210" height="60" rx="10" class="caja"/>
+  <use href="#i-monitor" x="650" y="284" width="32" height="32" class="ico"/>
+  <text x="690" y="296" class="t t-b">NOC</text><text x="690" y="314" class="t t-s t-m">fallas y cortes</text>
+
+  
+  <line x1="410" y1="80" x2="410" y2="188" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <line x1="470" y1="188" x2="470" y2="82" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="402" y="150" text-anchor="end" class="t t-s">¿viable? · reservar</text>
+  <text x="478" y="150" class="t t-s">caja y puerto</text>
+  
+  <line x1="318" y1="214" x2="242" y2="214" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <line x1="242" y1="250" x2="318" y2="250" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="280" y="206" text-anchor="middle" class="t t-xs t-m">PUERTO</text>
+  <text x="274" y="268" text-anchor="middle" class="t t-xs t-m">CONFIRMACIÓN</text>
+  <text x="140" y="290" text-anchor="middle" class="t t-s">puerto usado, fotos, luz medida</text>
+  
+  <path d="M640 170H600V210H562" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="606" y="134" class="t t-s">ONT en línea por puerto PON</text>
+  
+  <path d="M640 290H600V252H562" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <path d="M562 262H590V306H638" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="560" y="350" class="t t-s">tramo cortado → clientes afectados</text>
+</svg></div><figcaption><b>El GIS en el centro.</b> El inventario de planta en el medio y, alrededor, los cuatro sistemas que lo consultan o lo alimentan. Cada flecha dice qué viaja en cada sentido: ventas pregunta por viabilidad y recibe un puerto; la orden de trabajo lleva el puerto y trae la confirmación; el gestor de la OLT aporta las ONT en línea; el NOC recibe los clientes afectados.</figcaption></figure></section>
+<section><h2>Cuando el mapa no coincide con la calle: la deuda de documentación</h2><div class="prose"><p>Todo lo anterior supone que el mapa dice la verdad. En la práctica, casi ningún operador tiene su planta documentada al cien por ciento. Hay redes construidas a las apuradas que nunca se dibujaron, reparaciones de emergencia que cambiaron empalmes sin registrarlos, instalaciones donde el técnico usó otro puerto y no lo anotó, y bajas que liberaron puertos que el mapa sigue dando por ocupados. A esa diferencia acumulada se le llama <b>deuda de documentación</b>.</p><p>Como toda deuda, cobra intereses: ventas que no se pueden instalar, visitas fallidas, cortes que tardan más en localizarse y ampliaciones que se construyen donde no hacían falta. Pagarla requiere dos cosas. Primero, <b>levantamientos</b> en campo para recorrer zonas y corregir el mapa. Segundo, y más importante, <b>no seguir endeudándose</b>: que ninguna orden de trabajo se cierre sin confirmar el puerto, que las reparaciones de emergencia se documenten después, y que la conciliación entre el mapa y las ONT en línea corra todos los días.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región tenía una tasa alta de instalaciones fallidas: el técnico llegaba y no había puerto, o la caja estaba demasiado lejos. El problema venía de vender con un mapa de cobertura por zonas, que decía «hay fibra en este barrio» sin mirar cajas ni puertos. El cambio fue obligar a que cada venta pasara por la consulta de viabilidad en el GIS, con la dirección geocodificada, la caja y el puerto concretos, y reservar ese puerto en el mismo momento. Al principio la consulta rechazó ventas que antes se aceptaban, y eso generó quejas en el área comercial. Pero las instalaciones fallidas bajaron, las que quedaban apuntaban a errores del mapa que se corrigieron uno por uno, y los rechazos se convirtieron en una lista de lugares donde valía la pena ampliar la red.</p></div><div class="ml"><b>En la práctica</b><p>El mapa de la planta une a tres áreas que rara vez se sientan juntas: ventas vende donde hay puertos, instalaciones conecta en el puerto correcto y el NOC sabe al instante a quién avisar ante un corte. Cualquiera que toque la red (un técnico que cambia un puerto, un vendedor que fuerza una venta, un ingeniero que repara de urgencia) puede sumar deuda de documentación o ayudar a pagarla. Mantener el mapa al día no es burocracia: es lo que permite vender, instalar y reparar sin adivinar.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué es un GIS de planta y qué guarda?</summary><p>Un mapa digital de la red física: postes, ductos, cables, fibras, cajas de empalme, splitters, cajas terminales y clientes, cada uno con sus datos y sus conexiones.</p></details><details><summary>¿Por qué se reserva el puerto al vender?</summary><p>Para que nadie más lo venda antes de la instalación. La reserva lo saca de los disponibles hasta que se instala o se cancela.</p></details><details><summary>¿Para qué sirve registrar cada fusión en las cajas de empalme?</summary><p>Para poder trazar el camino de la luz hilo por hilo, calcular el presupuesto óptico y saber qué clientes cuelgan de cada fibra.</p></details><details><summary>Se corta un cable de distribución. ¿Cómo sabe el NOC a quién afecta?</summary><p>El GIS sigue las fibras de ese cable hasta los splitters y las cajas terminales que alimentan, y de ahí a los clientes conectados en cada puerto.</p></details><details><summary>¿Qué diferencia a NetBox de un GIS de planta como OZMap?</summary><p>NetBox documenta sobre todo el inventario lógico y de equipos (interfaces, VLAN, direcciones IP); un GIS de planta dibuja la red física externa sobre el mapa, con cables, cajas y fusiones.</p></details><details><summary>¿Qué es la deuda de documentación y cómo se evita que crezca?</summary><p>La diferencia acumulada entre el mapa y la red real. Se evita confirmando el puerto en cada instalación, documentando las reparaciones y conciliando a diario el mapa con las ONT en línea.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Sistema_de_informaci%C3%B3n_geogr%C3%A1fica" target="_blank" rel="noopener">Sistema de información geográfica (Wikipedia) <small>lectura</small></a><a class="vid" href="https://ozmap.com.br/" target="_blank" rel="noopener">OZMap, sitio del producto, en portugués <small>lectura</small></a><a class="vid" href="https://netboxlabs.com/docs/netbox/" target="_blank" rel="noopener">Documentación de NetBox, en inglés <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Passive_optical_network" target="_blank" rel="noopener">Passive optical network, en inglés (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const CLI=[
+    {tr:2.1,inter:1,di:0.4,ac:0.08,cto:'CTO-A',pto:3,sal:1,hiloT:'azul',hiloD:'verde'},
+    {tr:4.5,inter:2,di:0.6,ac:0.05,cto:'CTO-D',pto:7,sal:3,hiloT:'naranja',hiloD:'marrón'},
+    {tr:9.0,inter:4,di:1.2,ac:0.15,cto:'CTO-E',pto:1,sal:4,hiloT:'naranja',hiloD:'gris'}];
+  const FALLA={emp:{k:'e1',l:2.0},aco:{k:'aco',l:6.0},ros:{k:'ros',l:3.0}};
+  const c2=n=>n.toFixed(1).replace('.',',').replace('-','−');
+  function camino(c){
+    const m=v=>Math.round(v*100)/100;
+    return [
+      {k:'olt',n:'Conector en la central (puerto PON de la OLT)',l:0.5},
+      {k:'tr',n:'Fibra troncal: '+c2(c.tr)+' km, hilo '+c.hiloT,l:m(c.tr*0.35)},
+      {k:'int',n:'Empalmes intermedios del troncal ('+c.inter+')',l:m(c.inter*0.1)},
+      {k:'e1',n:'Empalme de entrada al splitter',l:0.1},
+      {k:'sp1',n:'Splitter 1:4, salida '+c.sal,l:7.2},
+      {k:'di',n:'Fibra de distribución: '+c2(c.di)+' km, hilo '+c.hiloD,l:m(c.di*0.35+0.1)},
+      {k:'sp2',n:'Splitter 1:8 en '+c.cto+', puerto '+c.pto,l:10.5},
+      {k:'cto',n:'Conector del puerto de la caja',l:0.5},
+      {k:'aco',n:'Acometida: '+Math.round(c.ac*1000)+' m',l:m(c.ac*0.35)},
+      {k:'ros',n:'Roseta en la pared (conector)',l:0.5}];
+  }
+  const TX=3, SENS=-28;
+  function dibujar(){
+    const c=CLI[+$('#c37-cli').value], f=FALLA[$('#c37-fal').value]||null, pasos=camino(c);
+    let p=TX, filas='<tr><td>Transmisor de la OLT</td><td class="c37-n"></td><td class="c37-n">+'+c2(TX)+' dBm</td></tr>';
+    const puntos=[TX]; let pReal=TX; const reales=[TX];
+    pasos.forEach(s=>{p-=s.l;puntos.push(p);const extra=f&&f.k===s.k?f.l:0;pReal-=s.l+extra;reales.push(pReal);
+      filas+='<tr'+(extra?' class="c37-falla"':'')+'><td>'+s.n+(extra?' <b>(aquí está la falla: pierde '+c2(extra)+' dB de más)</b>':'')+'</td><td class="c37-n">−'+(s.l<0.1?s.l.toFixed(2).replace('.',','):c2(s.l))+' dB</td><td class="c37-n">'+c2(p)+' dBm</td></tr>';});
+    filas+='<tr class="c37-fin"><td>Luz esperada en la ONT</td><td class="c37-n">−'+c2(TX-p)+' dB</td><td class="c37-n">'+c2(p)+' dBm</td></tr>';
+    $('#c37-filas').innerHTML=filas;
+    // escalera
+    const W=640,H=250,L=56,R=16,Tp=14,B=40,y=v=>Tp+(5-v)/(5+32)*(H-Tp-B),n=puntos.length,x=i=>L+(W-L-R)*i/(n-1);
+    let s='';
+    [0,-10,-20,-30].forEach(v=>{s+='<line class="c37-eje" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'"/><text class="c37-et" x="'+(L-6)+'" y="'+(y(v)+4)+'" text-anchor="end">'+(v===0?'0':'−'+(-v))+'</text>';});
+    s+='<text class="c37-et" x="6" y="'+(H-10)+'">dBm</text>';
+    s+='<line class="c37-sens" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(SENS)+'" y2="'+y(SENS)+'"/><text class="c37-sens-t" x="'+(L+6)+'" y="'+(y(SENS)-6)+'">límite de la ONT (−28)</text>';
+    let d='M'+x(0)+' '+y(puntos[0]);for(let i=1;i<n;i++)d+='H'+x(i)+'V'+y(puntos[i]);
+    s+='<path class="c37-luz" d="'+d+'"/>';
+    const etq=['OLT','','','','1:4','','1:8','','','roseta'];
+    etq.forEach((t,i)=>{if(t)s+='<text class="c37-et" x="'+x(i+1)+'" y="'+(H-14)+'" text-anchor="'+(i===etq.length-1?'end':'middle')+'">'+t+'</text>';});
+    const med=pReal+(f?0:-0.3);
+    s+='<circle class="'+(f?'c37-mal':'c37-med')+'" cx="'+(x(n-1)-4)+'" cy="'+y(med)+'" r="7"/><text class="c37-med-t" x="'+(x(n-1)-14)+'" y="'+(y(med)-12)+'" text-anchor="end">ONT mide '+c2(med)+'</text>';
+    $('#c37-esc').innerHTML=s;
+    const dif=p-med;
+    let h='<span>Esperado según el trazado: <b>'+c2(p)+' dBm</b> · la ONT mide: <b>'+c2(med)+' dBm</b> · diferencia: '+c2(dif)+' dB</span>';
+    if(dif<1)h+='<span class="ok">Coinciden: el camino está sano. La mayor pérdida la ponen los dos splitters, no la distancia.</span>';
+    else{h+='<span class="warn">Faltan '+c2(dif)+' dB: algo está dañado en el camino.'+(med<SENS?' Además, la luz quedó por debajo del límite: el cliente no tiene servicio.':' El cliente todavía navega, pero cerca del límite cualquier cambio lo deja sin servicio.')+'</span>'+
+      '<span>Con el trazado, el técnico sabe qué caja, qué empalme y qué acometida revisar, y mide por tramos hasta encontrar la pérdida. Sin el mapa, buscaría a ciegas.</span>';}
+    $('#c37t-out').innerHTML=h;
+  }
+  ['#c37-cli','#c37-fal'].forEach(s2=>$(s2).addEventListener('change',dibujar));
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const N={OLT:[40,180],E1:[200,180],E2:[500,180],A:[200,100],B:[330,100],C:[200,290],D:[500,100],E:[500,290]};
+  const T=[ // tramo: id, desde, hasta, tipo, nombre
+    ['T1','OLT','E1','troncal','Cable troncal, tramo 1 (central → empalme E1)'],
+    ['T2','E1','E2','troncal','Cable troncal, tramo 2 (E1 → empalme E2)'],
+    ['D1a','E1','A','dist','Distribución norte, hasta CTO-A'],
+    ['D1b','A','B','dist','Distribución norte, de CTO-A a CTO-B'],
+    ['D2','E1','C','dist','Distribución sur, hasta CTO-C'],
+    ['D3','E2','D','dist','Distribución norte 2, hasta CTO-D'],
+    ['D4','E2','E','dist','Distribución sur 2, hasta CTO-E']];
+  const CASAS=[['A',130,60],['A',130,130],['A',255,50],['B',330,40],['B',395,60],['B',395,140],
+    ['C',130,255],['C',130,325],['C',265,330],['C',265,245],['D',445,40],['D',565,50],['D',580,125],
+    ['E',435,335],['E',570,245],['E',585,320],['E',500,355]];
+  const EMPRESA=16;
+  const hijos=n=>T.filter(t=>t[1]===n);
+  function aguas(n){let c=CASAS.map((h,i)=>h[0]===n?i:-1).filter(i=>i>=0);hijos(n).forEach(t=>c=c.concat(aguas(t[2])));return c;}
+  let corte=null; // {tipo:'tramo',k} o {tipo:'casa',k}
+  function afectados(){ if(!corte)return []; return corte.tipo==='casa'?[corte.k]:aguas(T[corte.k][2]); }
+  $('#c37-btns').innerHTML=T.map((t,k)=>'<button type="button" aria-pressed="false" data-k="'+k+'">'+t[0]+'</button>').join('')+'<button type="button" id="c37-sin">Quitar el corte</button>';
+  $('#c37-btns').querySelectorAll('[data-k]').forEach(b=>b.addEventListener('click',()=>{corte={tipo:'tramo',k:+b.dataset.k};dibujar();}));
+  $('#c37-sin').addEventListener('click',()=>{corte=null;dibujar();});
+  const casaP=(x,y)=>'M'+(x-12)+' '+(y+11)+'V'+(y-2)+'L'+x+' '+(y-13)+'L'+(x+12)+' '+(y-2)+'V'+(y+11)+'Z';
+  function dibujar(){
+    const af=new Set(afectados());
+    const muertoT=k=>corte&&corte.tipo==='tramo'&&(k===corte.k||aguasT(T[corte.k][2]).includes(k));
+    let s='';
+    T.forEach((t,k)=>{const a=N[t[1]],b=N[t[2]];const d='M'+a[0]+' '+a[1]+'L'+b[0]+' '+b[1];
+      s+='<path class="c37-hit" d="'+d+'" data-k="'+k+'" tabindex="-1"/><path class="c37-tr '+t[3]+(muertoT(k)?' muerto':'')+'" d="'+d+'"/>';});
+    CASAS.forEach((h,i)=>{const c=N[h[0]];s+='<path class="c37-tr acom'+(af.has(i)?' muerto':'')+'" d="M'+c[0]+' '+c[1]+'L'+h[1]+' '+h[2]+'"/>';});
+    s+='<rect class="c37-nodo" x="8" y="156" width="64" height="48" rx="8"/><text class="c37-txt" x="40" y="186" text-anchor="middle">OLT</text>';
+    ['E1','E2'].forEach(e=>{const p=N[e];s+='<rect class="c37-emp" x="'+(p[0]-13)+'" y="'+(p[1]-13)+'" width="26" height="26" rx="3" transform="rotate(45 '+p[0]+' '+p[1]+')"/><text class="c37-txt s" x="'+(p[0]+20)+'" y="'+(p[1]+30)+'">'+e+'</text>';});
+    ['A','B','C','D','E'].forEach(c=>{const p=N[c];s+='<rect class="c37-nodo" x="'+(p[0]-26)+'" y="'+(p[1]-15)+'" width="52" height="30" rx="6"/><text class="c37-txt" x="'+p[0]+'" y="'+(p[1]+5)+'" text-anchor="middle">'+c+'</text>';});
+    CASAS.forEach((h,i)=>{s+='<g class="c37-casa'+(af.has(i)?' caida':'')+(i===EMPRESA?' emp':'')+'" data-i="'+i+'"><path d="'+casaP(h[1],h[2])+'"/></g>';});
+    if(corte){let x,y;if(corte.tipo==='tramo'){const t=T[corte.k],a=N[t[1]],b=N[t[2]];x=(a[0]+b[0])/2;y=(a[1]+b[1])/2;}else{const h=CASAS[corte.k],c=N[h[0]];x=(c[0]+h[1])/2;y=(c[1]+h[2])/2;}
+      s+='<path class="c37-x" d="M'+(x-11)+' '+(y-11)+'L'+(x+11)+' '+(y+11)+'M'+(x+11)+' '+(y-11)+'L'+(x-11)+' '+(y+11)+'"/>';}
+    $('#c37-mapa').innerHTML=s;
+    $('#c37-mapa').querySelectorAll('.c37-hit').forEach(p=>p.addEventListener('click',()=>{corte={tipo:'tramo',k:+p.dataset.k};dibujar();}));
+    $('#c37-mapa').querySelectorAll('.c37-casa').forEach(g=>g.addEventListener('click',()=>{corte={tipo:'casa',k:+g.dataset.i};dibujar();}));
+    $('#c37-btns').querySelectorAll('[data-k]').forEach(b=>b.setAttribute('aria-pressed',corte&&corte.tipo==='tramo'&&+b.dataset.k===corte.k?'true':'false'));
+    let h;
+    if(!corte){h='<span class="ok">Sin cortes: los '+CASAS.length+' clientes tienen servicio.</span><span>Elige un tramo para cortarlo.</span>';}
+    else{
+      const lista=[...af], cajas=[...new Set(lista.map(i=>'CTO-'+CASAS[i][0]))];
+      const nombre=corte.tipo==='tramo'?T[corte.k][4]:'Acometida de una casa de la CTO-'+CASAS[corte.k][0];
+      h='<span>Corte: '+nombre+'</span><span class="big">'+lista.length+' de '+CASAS.length+' clientes sin servicio</span><span>Cajas afectadas: '+cajas.join(', ')+'</span>';
+      if(af.has(EMPRESA))h+='<span class="warn">Incluye un cliente empresa con acuerdo de servicio: se avisa y se prioriza.</span>';
+      const tipo=corte.tipo==='casa'?'acom':T[corte.k][3];
+      h+='<span>'+(tipo==='troncal'?'Un corte en el troncal se lleva todo lo que cuelga aguas abajo: es el peor caso, y el NOC lo ve como un incidente masivo.':
+        tipo==='dist'?'Un corte en distribución afecta solo a las cajas que alimenta ese cable. Las demás, aunque estén cerca, siguen funcionando.':
+        'Una acometida cortada afecta a una sola casa: no es una falla de red, es una visita técnica.')+'</span>';
+    }
+    $('#c37c-out').innerHTML=h;
+  }
+  function aguasT(n){let r=[];hijos(n).forEach(t=>{const k=T.indexOf(t);r.push(k);r=r.concat(aguasT(t[2]));});return r;}
+  dibujar();
+})();
+</script>
+</body>
+</html>

@@ -91,7 +91,7 @@ section{background:var(--card);border:1px solid var(--line);border-radius:14px;p
 .eq{font-size:1.25rem;padding:12px 16px;background:var(--paper);border-radius:8px;overflow-x:auto;white-space:nowrap}
 .eq small{font-size:.8rem;color:var(--muted);font-family:var(--f-display);margin-left:10px;white-space:normal}
 .ml{border-left:4px solid var(--good);background:var(--good-soft);padding:12px 16px;border-radius:0 8px 8px 0;display:grid;gap:4px}
-.ml b{font-family:var(--f-display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--good)}
+.ml>b{font-family:var(--f-display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--good)}
 .tbl{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -300,9 +300,9 @@ figure{margin:0}
 }
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 .analogia{border-left:4px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;display:grid;gap:4px}
-.analogia b:first-child{font-family:var(--f-display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.analogia>b:first-child{font-family:var(--f-display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .caso{border-left:4px solid var(--warm);background:var(--warm-soft);padding:12px 16px;border-radius:0 8px 8px 0;display:grid;gap:4px}
-.caso b:first-child{font-family:var(--f-display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm)}
+.caso>b:first-child{font-family:var(--f-display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm)}
 .analogia p,.caso p,.ml p{margin:0}
 .fig{margin:0;display:grid;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
 .fig .lienzo{overflow-x:auto}
@@ -350,3 +350,11 @@ figure{margin:0}
 section{grid-template-columns:minmax(0,1fr)}
 .fig{grid-template-columns:minmax(0,1fr)}
 .fig .lienzo{min-width:0}
+.lab{grid-template-columns:minmax(0,1fr)}
+.lab select{width:100%}
+.lab .opciones label{min-width:0}
+.prose code{overflow-wrap:anywhere}
+[hidden]{display:none!important}
+.lab>*{min-width:0}
+.fig .k-warm{fill:var(--warm)} .fig .s-warm{stroke:var(--warm)}
+.readout.texto{font-family:var(--f-body);white-space:normal}

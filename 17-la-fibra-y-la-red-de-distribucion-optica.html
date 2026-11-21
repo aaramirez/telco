@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La fibra y la red de distribución óptica · Cómo funciona un telco</title>
+<meta name="description" content="En FTTH una sola fibra que sale de la central se divide con divisores pasivos (splitters) para llegar a decenas de casas, y todo el diseño físico consiste en repartir bien la luz para que llegue con fuerza suficiente a cada una.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="17-la-fibra-y-la-red-de-distribucion-optica">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 17 DE 49</span><h1>La fibra y la red de distribución óptica: luz por la calle</h1><p class="lede">En FTTH una sola fibra que sale de la central se divide con divisores pasivos (splitters) para llegar a decenas de casas, y todo el diseño físico consiste en repartir bien la luz para que llegue con fuerza suficiente a cada una.</p></header>
+<section><div class="prose"><p>En el capítulo 1 seguimos un clic que salía de la casa convertido en luz. Aquí nos quedamos en ese tramo: los pocos kilómetros de vidrio, cajas y divisores que unen la central del operador con cada casa. Es la parte más cara de construir, la que más dura y la que más visitas técnicas genera. También es la más silenciosa: no tiene electricidad, no tiene software y no avisa cuando algo se rompe.</p><p>Entender esta red es entender una sola idea: la luz que sale de la central es un presupuesto. Cada metro de fibra, cada caja y cada división gasta un poco, y lo que queda tiene que alcanzar para que el equipo de la casa la reciba bien.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un prisma que reparte un haz de luz en varios haces más débiles: cuantas más divisiones, menos luz le toca a cada uno. Si divides demasiado, o si la luz tiene que cruzar un vidrio sucio por el camino, al final de alguna de las ramas llega tan poca que ya no se distingue de la oscuridad.</p></div><figure class="fig fig-capas" id="17-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la capa física, la fibra entre la OLT y la ONT">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class=""><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class="apagado"><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la capa física, la fibra entre la OLT y la ONT</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo vive en la capa física: la fibra y los splitters entre la OLT de la central y la ONT de la casa. No hay direcciones ni protocolos en este tramo, solo luz que se reparte y se pierde por el camino.</figcaption></figure></section>
+<section><h2>La fibra óptica por dentro: núcleo, revestimiento y por qué la luz no se escapa</h2><div class="prose"><p>Una fibra óptica es un hilo de vidrio muy puro, de 125 micras de diámetro: un poco más grueso que un cabello. Pero no es un vidrio uniforme. Tiene dos partes hechas de vidrios ligeramente distintos:</p><ul><li>El <b>núcleo</b>, en el centro, por donde viaja la luz. En la fibra que usan los operadores mide unas 9 micras: diez veces más fino que un cabello.</li><li>El <b>revestimiento</b>, que rodea al núcleo hasta completar las 125 micras. Es vidrio también, pero con un índice de refracción un poco menor, es decir, la luz viaja en él un poco más rápido.</li></ul><p>Esa pequeña diferencia es todo el truco. Cuando la luz que va por el núcleo choca con el borde del revestimiento en un ángulo rasante, no lo cruza: rebota hacia adentro, como una piedra plana que rebota sobre el agua en vez de hundirse. Ese fenómeno se llama <b>reflexión total interna</b>, y gracias a él la luz puede recorrer decenas de kilómetros encerrada en el núcleo aunque la fibra haga curvas suaves.</p><p>El vidrio es frágil, así que encima van capas de protección: un <b>recubrimiento</b> de plástico que lleva la fibra a 250 micras y le da color para identificarla, un tubo o <b>buffer</b>, hilos de refuerzo y la <b>chaqueta</b> exterior del cable. Un cable puede llevar desde una sola fibra, para la casa, hasta cientos, para las rutas principales.</p></div><figure class="fig fig-esquema" id="17-diagrama-6"><div class="lienzo"><svg viewBox="0 0 880 350" style="min-width:700px" role="img" aria-label="La fibra en corte: de frente, el núcleo de unas 9 micras, el revestimiento de 125, el recubrimiento de 250, el tubo y la chaqueta; de costado, la luz rebota en el borde del núcleo y avanza; en una curva cerrada parte de la luz escapa">
+  
+  <text x="20" y="26" class="t t-xs t-b t-m">DE FRENTE (NO ESTÁ A ESCALA)</text>
+  <circle cx="150" cy="180" r="125" class="caja"/>
+  <circle cx="150" cy="180" r="100" class="caja ln-d"/>
+  <circle cx="150" cy="180" r="72" class="d-inet"/>
+  <circle cx="150" cy="180" r="46" class="caja"/>
+  <circle cx="150" cy="180" r="13" class="c-fis" style="stroke-width:2"/>
+
+  <g class="ln">
+    <polyline points="230,84 262,58 292,58"/>
+    <polyline points="241,138 266,120 292,120"/>
+    <polyline points="210,180 292,180"/>
+    <polyline points="193,196 240,240 292,240"/>
+    <polyline points="160,188 200,300 292,300"/>
+  </g>
+  <g class="t t-s">
+    <text x="298" y="56" class="t-b">Chaqueta</text><text x="298" y="70" class="t-xs t-m">y refuerzos</text>
+    <text x="298" y="118" class="t-b">Tubo (buffer)</text><text x="298" y="132" class="t-xs t-m">protege la fibra</text>
+    <text x="298" y="178" class="t-b">Recubrimiento</text><text x="298" y="192" class="t-xs t-m">250 µm, con color</text>
+    <text x="298" y="238" class="t-b">Revestimiento</text><text x="298" y="252" class="t-xs t-m">vidrio, 125 µm</text>
+    <text x="298" y="298" class="t-b k-fis">Núcleo</text><text x="298" y="312" class="t-xs t-m">vidrio, ≈ 9 µm</text>
+  </g>
+
+  
+  <text x="440" y="26" class="t t-xs t-b t-m">DE COSTADO</text>
+  <rect x="440" y="44" width="420" height="104" rx="4" class="d-inet"/>
+  <rect x="440" y="80" width="420" height="32" class="c-fis"/>
+  <text x="450" y="64" class="t t-xs t-m">REVESTIMIENTO</text>
+  <text x="450" y="136" class="t t-xs t-m">REVESTIMIENTO</text>
+  <polyline points="440,96 466,82 516,110 566,82 616,110 666,82 716,110 766,82 816,110 852,90" class="ln s-fis" style="stroke-width:2.4" marker-end="url(#fl-fis)"/>
+  <text x="440" y="172" class="t t-s">La luz choca con el borde en ángulo rasante y rebota hacia adentro:</text>
+  <text x="440" y="188" class="t t-s"><tspan class="t-b">reflexión total interna</tspan>. Así recorre kilómetros encerrada.</text>
+
+  
+  <path d="M440 238H600Q630 238 630 268V340" class="ln" style="stroke-width:30;stroke-opacity:.22"/>
+  <path d="M440 238H600Q630 238 630 268V340" class="ln s-fis" style="stroke-width:7;stroke-opacity:.55"/>
+  <line x1="612" y1="240" x2="660" y2="214" class="ln s-fis ln-d" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <line x1="622" y1="248" x2="676" y2="240" class="ln s-fis ln-d" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="684" y="236" class="t t-s t-b">Curva demasiado cerrada:</text>
+  <text x="684" y="252" class="t t-s">parte de la luz ya no rebota,</text>
+  <text x="684" y="268" class="t t-s">escapa y la señal se debilita</text>
+  <text x="684" y="284" class="t t-s">aunque la fibra no esté rota.</text>
+</svg></div><figcaption><b>La fibra en corte.</b> A la izquierda, la fibra vista de frente: el núcleo de unas 9 micras, el revestimiento de 125, el recubrimiento de color de 250 y la chaqueta que la protege. A la derecha, la fibra vista de costado: la luz rebota en el borde entre núcleo y revestimiento y sigue su camino. Si la fibra se dobla demasiado, el ángulo deja de ser rasante y parte de la luz escapa.</figcaption></figure><div class="prose"><p>Ese último detalle importa en la calle. Una fibra <b>doblada demasiado</b> pierde luz aunque no esté rota, porque en la curva cerrada la luz choca con el borde en un ángulo que ya no la devuelve. Un cable mal amarrado en un poste, o una acometida apretada contra el marco de una puerta, puede dejar a un cliente con una señal débil sin que nadie vea nada roto.</p></div></section>
+<section><h2>Fibra monomodo y multimodo</h2><div class="prose"><p>Hay dos grandes familias de fibra, y se distinguen por el grosor del núcleo:</p><ul><li><b>Multimodo</b>: núcleo ancho, de 50 o 62,5 micras. La luz entra por muchos caminos a la vez (los «modos»), unos más rectos y otros con más rebotes. Como esos caminos tienen largos distintos, el pulso se va estirando y a partir de unos cientos de metros los destellos se confunden. Es barata de conectar y se usa dentro de edificios y centros de datos.</li><li><b>Monomodo</b>: núcleo de unas 9 micras, tan fino que la luz solo puede ir por un camino. El pulso llega limpio a decenas de kilómetros. Es la que usan los operadores en toda su red, de la central a la casa.</li></ul><p>Dentro de la monomodo hay normas que fijan sus características. La más común en cables de planta externa es la que la UIT llama <b>G.652</b>. Para los tramos que se doblan mucho, como la acometida que entra a la casa o el cableado dentro de un edificio, se usa la <b>G.657</b>, una fibra diseñada para tolerar curvas más cerradas sin perder luz.</p><p>Por una misma fibra monomodo pueden viajar varios «colores» de luz a la vez sin mezclarse, porque cada uno tiene su longitud de onda. Una red GPON, por ejemplo, baja hacia la casa con luz de 1.490 nanómetros y sube hacia la central con luz de 1.310. Son colores infrarrojos, invisibles al ojo: por eso nunca hay que mirar dentro de una fibra encendida, porque el láser puede dañar la vista sin que lo notes.</p></div></section>
+<section><h2>Red óptica pasiva: sin electricidad en la calle</h2><div class="prose"><p>Llevar una fibra exclusiva desde la central hasta cada casa sería lo ideal, pero carísimo: harían falta miles de fibras saliendo de cada central y un puerto de equipo por cliente. La red FTTH resuelve ese problema con un <b>splitter</b>, un divisor que toma la luz de una fibra y la reparte en 2, 4, 8, 16, 32 o 64 fibras.</p><p>El splitter es un pequeño chip de vidrio, sin electrónica y sin enchufe. Divide la luz por pura geometría, como una bifurcación en un tubo de agua. Por eso a esta red se le llama <b>red óptica pasiva</b> o <b>PON</b> (por sus siglas en inglés), y a todo el conjunto de fibras, cajas y splitters entre la central y las casas se le llama <b>red de distribución óptica</b> u <b>ODN</b>.</p><p>Que sea pasiva tiene ventajas enormes:</p><ul><li><b>Un apagón en el barrio no tumba la calle.</b> Solo necesitan energía los dos extremos: la OLT en la central y la ONT en la casa (el capítulo 15 trata ese tema).</li><li><b>No hay nada que se dañe por calor ni que se robe por su batería.</b> La planta externa bien construida dura más de 25 años.</li><li><b>Sirve para varias generaciones.</b> La misma fibra y los mismos splitters llevan GPON hoy y XGS-PON o tecnologías de 25 y 50 Gbps mañana, porque cada una usa colores de luz distintos. Para crecer se cambian los equipos de las puntas, no la calle.</li></ul><p>También tiene límites. Los clientes de un mismo splitter <b>comparten</b> la capacidad de un puerto de la OLT. Cada división <b>gasta luz</b>, y eso limita la distancia y la cantidad de casas por puerto. Y como en la calle no hay nada que hable, una falla no manda alarmas: se adivina desde la OLT, cuando varias ONT se apagan al mismo tiempo, y se busca con instrumentos. El capítulo 18 explica cómo la OLT reparte los turnos entre las ONT que comparten la fibra.</p></div></section>
+<section><h2>Splitters y topologías (centralizada, en cascada, desbalanceada)</h2><div class="prose"><p>Un splitter divide la potencia en partes iguales. Si reparte en dos, a cada salida le toca la mitad de la luz; en cuatro, un cuarto. En la escala que usan los técnicos, los <b>decibeles</b> (dB), dividir a la mitad cuesta unos 3 dB, y a eso hay que sumarle una pequeña pérdida del propio chip. Las pérdidas típicas de un splitter son:</p><div class="tbl"><table><thead><tr><th>División</th><th>Pérdida típica</th><th>Luz que llega a cada salida</th></tr></thead><tbody><tr><td>1:2</td><td>3,5 dB</td><td>menos de la mitad</td></tr><tr><td>1:4</td><td>7,2 dB</td><td>menos de un cuarto</td></tr><tr><td>1:8</td><td>10,5 dB</td><td>menos de un octavo</td></tr><tr><td>1:16</td><td>13,8 dB</td><td>1/24 aprox.</td></tr><tr><td>1:32</td><td>17,1 dB</td><td>1/50 aprox.</td></tr><tr><td>1:64</td><td>20,5 dB</td><td>1/110 aprox.</td></tr></tbody></table></div><p>Los decibeles se suman: dos splitters de 1:8 en serie cuestan unos 21 dB, casi lo mismo que uno solo de 1:64. La diferencia entre las topologías no está en cuánta luz se gasta, sino en <b>dónde</b> se ponen los divisores:</p><ul><li><b>Centralizada</b>: un solo splitter grande (1:32 o 1:64) en un gabinete, y de ahí una fibra por cliente. Tiene pocos puntos de falla y aprovecha bien los puertos de la OLT, pero necesita cables con muchas fibras. Se usa en zonas densas y edificios.</li><li><b>En cascada</b>: dos niveles, por ejemplo 1:8 en el gabinete y 1:8 en la caja del poste, o 1:4 y 1:16. Necesita mucha menos fibra y se despliega rápido. Es la más común en barrios residenciales.</li><li><b>Desbalanceada</b>: splitters que no reparten por igual (90/10, 80/20, 70/30) colocados uno tras otro a lo largo de una ruta. En cada caja se «saca» un poquito de luz para unas pocas casas y el resto sigue. Sirve para rutas largas y rurales con casas dispersas, pero el diseño es delicado: cualquier cambio afecta a todos los que siguen.</li></ul></div><figure class="fig fig-esquema" id="17-diagrama-7"><div class="lienzo"><svg viewBox="0 0 960 400" style="min-width:760px" role="img" aria-label="Tres topologías de splitters: centralizada con un splitter 1:32 y una fibra por casa; en cascada con 1:8 en el gabinete y 1:8 en cada caja; desbalanceada con derivaciones 90/10 a lo largo de una carretera">
+  <defs><symbol id="i17-casa" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></g></symbol></defs>
+  <rect x="10" y="10" width="300" height="380" rx="12" class="caja"/>
+  <text x="160" y="34" text-anchor="middle" class="t t-b">Centralizada</text>
+  <rect x="130" y="48" width="60" height="40" rx="8" class="caja"/><use href="#i-olt" x="134" y="54" width="28" height="28" class="ico"/><text x="166" y="73" class="t t-s t-b">OLT</text>
+  <line x1="160" y1="88" x2="160" y2="136" class="ln s-fis" style="stroke-width:2.4"/>
+  <circle cx="160" cy="155" r="19.0" class="c-fis"/><use href="#i-splitter" x="144.0" y="139.0" width="32" height="32" class="ico"/>
+  <text x="186" y="150" class="t t-s t-b">1:32</text><text x="186" y="165" class="t t-xs t-m">17,1 dB</text>
+  <line x1="160" y1="174" x2="38" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="27.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="160" y1="174" x2="70" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="59.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="160" y1="174" x2="102" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="91.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="160" y1="174" x2="134" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="123.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="160" y1="174" x2="186" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="175.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="160" y1="174" x2="218" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="207.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="160" y1="174" x2="250" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="239.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="160" y1="174" x2="282" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="271.0" y="300" width="22" height="22" class="ico"/>
+  <text x="160" y="300" text-anchor="middle" class="t t-b">…</text>
+  <text x="160" y="346" text-anchor="middle" class="t t-s">Un splitter grande y una fibra</text><text x="160" y="362" text-anchor="middle" class="t t-s">por casa: cables con muchas fibras.</text>
+  <text x="160" y="380" text-anchor="middle" class="t t-xs t-m">ZONAS DENSAS Y EDIFICIOS</text>
+  <rect x="330" y="10" width="300" height="380" rx="12" class="caja"/>
+  <text x="480" y="34" text-anchor="middle" class="t t-b">En cascada</text>
+  <rect x="450" y="48" width="60" height="40" rx="8" class="caja"/><use href="#i-olt" x="454" y="54" width="28" height="28" class="ico"/><text x="486" y="73" class="t t-s t-b">OLT</text>
+  <line x1="480" y1="88" x2="480" y2="126" class="ln s-fis" style="stroke-width:2.4"/>
+  <circle cx="480" cy="145" r="18.0" class="c-fis"/><use href="#i-splitter" x="465.0" y="130.0" width="30" height="30" class="ico"/>
+  <text x="504" y="140" class="t t-s t-b">1:8 gabinete</text><text x="504" y="155" class="t t-xs t-m">10,5 dB</text>
+  <line x1="480" y1="163" x2="380" y2="216" class="ln s-fis" style="stroke-width:2.4"/>
+  <circle cx="380" cy="232" r="16.0" class="c-fis"/><use href="#i-splitter" x="367.0" y="219.0" width="26" height="26" class="ico"/>
+  <line x1="380" y1="248" x2="358" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="347.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="380" y1="248" x2="380" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="369.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="380" y1="248" x2="402" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="391.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="480" y1="163" x2="480" y2="216" class="ln s-fis" style="stroke-width:2.4"/>
+  <circle cx="480" cy="232" r="16.0" class="c-fis"/><use href="#i-splitter" x="467.0" y="219.0" width="26" height="26" class="ico"/>
+  <line x1="480" y1="248" x2="458" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="447.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="480" y1="248" x2="480" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="469.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="480" y1="248" x2="502" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="491.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="480" y1="163" x2="580" y2="216" class="ln s-fis" style="stroke-width:2.4"/>
+  <circle cx="580" cy="232" r="16.0" class="c-fis"/><use href="#i-splitter" x="567.0" y="219.0" width="26" height="26" class="ico"/>
+  <line x1="580" y1="248" x2="558" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="547.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="580" y1="248" x2="580" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="569.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="580" y1="248" x2="602" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="591.0" y="300" width="22" height="22" class="ico"/>
+  <text x="430" y="236" text-anchor="middle" class="t t-b">…</text><text x="530" y="236" text-anchor="middle" class="t t-b">…</text>
+  <text x="430" y="268" text-anchor="middle" class="t t-xs t-m">1:8 NAP</text>
+  <text x="480" y="346" text-anchor="middle" class="t t-s">1:8 × 1:8 = 64 casas, unos 21 dB.</text><text x="480" y="362" text-anchor="middle" class="t t-s">Poca fibra y despliegue rápido.</text>
+  <text x="480" y="380" text-anchor="middle" class="t t-xs t-m">BARRIOS RESIDENCIALES</text>
+  <rect x="650" y="10" width="300" height="380" rx="12" class="caja"/>
+  <text x="800" y="34" text-anchor="middle" class="t t-b">Desbalanceada</text>
+  <rect x="670" y="48" width="60" height="40" rx="8" class="caja"/><use href="#i-olt" x="674" y="54" width="28" height="28" class="ico"/><text x="706" y="73" class="t t-s t-b">OLT</text>
+  <path d="M700 88V150H930" class="ln s-fis" style="stroke-width:2.4"/>
+  <text x="746" y="198" class="t t-xs t-m">10 %</text>
+  <rect x="722" y="140" width="36" height="20" rx="4" class="c-fis"/><text x="740" y="135" text-anchor="middle" class="t t-xs t-b">90/10</text>
+  <line x1="740" y1="160" x2="740" y2="226" class="ln s-fis" style="stroke-width:1.4"/>
+  <circle cx="740" cy="240" r="14.0" class="c-fis"/><use href="#i-splitter" x="729.0" y="229.0" width="22" height="22" class="ico"/>
+  <line x1="740" y1="252" x2="724" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="713.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="740" y1="252" x2="756" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="745.0" y="300" width="22" height="22" class="ico"/>
+  <text x="826" y="198" class="t t-xs t-m">20 %</text>
+  <rect x="802" y="140" width="36" height="20" rx="4" class="c-fis"/><text x="820" y="135" text-anchor="middle" class="t t-xs t-b">80/20</text>
+  <line x1="820" y1="160" x2="820" y2="226" class="ln s-fis" style="stroke-width:1.4"/>
+  <circle cx="820" cy="240" r="14.0" class="c-fis"/><use href="#i-splitter" x="809.0" y="229.0" width="22" height="22" class="ico"/>
+  <line x1="820" y1="252" x2="804" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="793.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="820" y1="252" x2="836" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="825.0" y="300" width="22" height="22" class="ico"/>
+  <text x="906" y="198" class="t t-xs t-m">50 %</text>
+  <rect x="882" y="140" width="36" height="20" rx="4" class="c-fis"/><text x="900" y="135" text-anchor="middle" class="t t-xs t-b">50/50</text>
+  <line x1="900" y1="160" x2="900" y2="226" class="ln s-fis" style="stroke-width:1.4"/>
+  <circle cx="900" cy="240" r="14.0" class="c-fis"/><use href="#i-splitter" x="889.0" y="229.0" width="22" height="22" class="ico"/>
+  <line x1="900" y1="252" x2="884" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="873.0" y="300" width="22" height="22" class="ico"/>
+  <line x1="900" y1="252" x2="916" y2="296" class="ln s-fis" style="stroke-width:1.4"/>
+  <use href="#i17-casa" x="905.0" y="300" width="22" height="22" class="ico"/>
+  <text x="760" y="124" class="t t-xs t-m">el resto sigue →</text>
+  <text x="800" y="346" text-anchor="middle" class="t t-s">En cada caja se deriva un poco</text><text x="800" y="362" text-anchor="middle" class="t t-s">de luz y el resto sigue la ruta.</text>
+  <text x="800" y="380" text-anchor="middle" class="t t-xs t-m">RUTAS RURALES</text>
+</svg></div><figcaption><b>Tres formas de repartir la luz.</b> Cada columna es una topología, con la OLT arriba y las casas abajo. En la centralizada, un solo splitter grande y una fibra por casa; en cascada, dos niveles de 1:8; en la desbalanceada, una fibra que recorre una carretera y en cada caja deja un poco de luz. Los números indican la división de cada splitter, cuánta luz pierde o qué parte de la luz se deriva en cada caja.</figcaption></figure><div class="lab" id="17-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Cuántas casas caben en un puerto</h3></div><p class="hint">Elige la división de cada nivel y la tecnología del puerto. Mira cuántos clientes comparten la fibra, cuánta luz se gasta en los splitters y cuánta velocidad le toca a cada uno si todos navegan a la vez o si navegan como en una noche normal.</p><style>
+[id="17-lab-3"] .c17s-casas{display:flex;flex-wrap:wrap;gap:3px;padding:10px;background:var(--paper);border-radius:8px;border:1px solid var(--line)}
+[id="17-lab-3"] .c17s-casas i{width:10px;height:10px;border-radius:2px;background:var(--line)}
+[id="17-lab-3"] .c17s-casas i.on{background:var(--c-fis)}
+[id="17-lab-3"] .c17s-casas small{font:500 .8rem var(--f-display);color:var(--muted);align-self:center;margin-left:6px}
+</style>
+<div class="btns" role="group" aria-label="Tecnología del puerto PON">
+  <button type="button" id="c17s-gpon" aria-pressed="true">GPON · 2,5 Gbps baja / 1,25 sube</button>
+  <button type="button" id="c17s-xgs" aria-pressed="false">XGS-PON · 10 Gbps baja / 10 sube</button>
+</div>
+<div class="opciones">
+  <label>Splitter del gabinete
+    <select id="c17s-s1">
+      <option value="1">Ninguno</option><option value="2">1:2</option><option value="4">1:4</option>
+      <option value="8" selected>1:8</option><option value="16">1:16</option><option value="32">1:32</option><option value="64">1:64</option>
+    </select></label>
+  <label>Splitter de la caja NAP
+    <select id="c17s-s2">
+      <option value="1">Ninguno</option><option value="2">1:2</option><option value="4">1:4</option>
+      <option value="8" selected>1:8</option><option value="16">1:16</option><option value="32">1:32</option>
+    </select></label>
+  <label>Plan de cada cliente
+    <select id="c17s-plan">
+      <option value="100">100 Mbps</option><option value="300" selected>300 Mbps</option>
+      <option value="600">600 Mbps</option><option value="1000">1 Gbps</option>
+    </select></label>
+</div>
+<div class="ctls">
+  <label class="ctl">Clientes descargando a la vez en la hora pico <output id="c17s-pico-o"></output>
+    <input type="range" id="c17s-pico" min="5" max="100" step="5" value="20"></label>
+</div>
+<div class="c17s-casas" id="c17s-casas" role="img" aria-label="Casas que comparten el puerto"></div>
+<div class="readout" id="c17s-out" aria-live="polite"></div>
+<p class="hint" id="c17s-nota"></p></div></section>
+<section><h2>Del nodo a la casa: ODF, gabinete, caja NAP, acometida y roseta</h2><div class="prose"><p>Sigamos la luz desde la central hasta el televisor de un cliente. Cada pieza tiene su nombre en la jerga de los técnicos:</p><ol class="steps"><li><span><b>OLT y ODF.</b> En el nodo o la central, cada puerto PON de la OLT se conecta con un cordón de fibra a un <b>ODF</b> (repartidor óptico), un gran panel donde también terminan los cables que salen a la calle. Allí se puede cambiar qué puerto alimenta qué zona sin tocar la calle.</span></li><li><span><b>Cable troncal o de alimentación.</b> Sale del nodo por ductos o postes con decenas o cientos de fibras, hacia los barrios.</span></li><li><span><b>Gabinete.</b> Un armario en la acera o en un poste donde vive el splitter de primer nivel. Atiende varias manzanas.</span></li><li><span><b>Cable de distribución.</b> Recorre las calles con menos fibras y pasa por cada caja.</span></li><li><span><b>Caja NAP</b> (punto de acceso a la red, también llamada caja terminal o CTO). Va en el poste, en la fachada o en una cámara bajo la acera. Tiene el splitter de segundo nivel y puertos con conector, listos para enchufar clientes.</span></li><li><span><b>Acometida.</b> El cable delgado de una o dos fibras que va de la caja NAP a la casa. Es el único tramo que se tiende el día de la instalación.</span></li><li><span><b>Roseta.</b> La cajita en la pared de la casa donde termina la acometida. Desde ahí un cordón corto llega a la <b>ONT</b>.</span></li></ol></div><figure class="fig fig-arquitectura" id="17-diagrama-4"><div class="lienzo"><svg viewBox="0 0 1000 290" style="min-width:760px" role="img" aria-label="Recorrido físico de una red xPON: OLT y ODF en el nodo, cable troncal al gabinete con splitter 1:8, cable de distribución a la caja NAP con splitter 1:8, acometida a la roseta y la ONT en la casa; todo entre la OLT y la ONT es red pasiva sin electricidad">
+  <defs>
+    <symbol id="i17-odf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><circle cx="7.5" cy="9" r="1.3"/><circle cx="12" cy="9" r="1.3"/><circle cx="16.5" cy="9" r="1.3"/><circle cx="7.5" cy="15" r="1.3"/><circle cx="12" cy="15" r="1.3"/><circle cx="16.5" cy="15" r="1.3"/></g></symbol>
+    <symbol id="i17-roseta" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><rect x="9.5" y="9" width="5" height="6" rx="1"/></g></symbol>
+  </defs>
+  <rect x="10" y="14" width="780" height="266" rx="12" class="d-oper"/>
+  <rect x="800" y="14" width="190" height="266" rx="12" class="d-casa"/>
+  <text x="80" y="38" text-anchor="middle" class="t t-xs t-b k-oper">NODO</text>
+  <text x="520" y="38" text-anchor="middle" class="t t-xs t-b k-oper">PLANTA EXTERNA (LA CALLE)</text>
+  <text x="895" y="38" text-anchor="middle" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+
+  
+  <rect x="128" y="52" width="778" height="196" rx="10" class="ln ln-d" style="stroke-width:1.6"/>
+  <text x="510" y="238" text-anchor="middle" class="t t-xs t-b k-fis">RED ÓPTICA PASIVA (ODN): SOLO VIDRIO, SIN ELECTRICIDAD</text>
+
+  
+  <line x1="98" y1="110" x2="146" y2="110" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="222" y1="110" x2="338" y2="110" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="414" y1="110" x2="568" y2="110" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="644" y1="110" x2="822" y2="110" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="898" y1="110" x2="912" y2="110" class="ln s-fis" style="stroke-width:3"/>
+  <g class="t t-s" text-anchor="middle">
+    <text x="280" y="100">cable troncal</text><text x="280" y="128" class="t-xs t-m">decenas de fibras</text>
+    <text x="491" y="100">cable de distribución</text><text x="491" y="128" class="t-xs t-m">pocas fibras</text>
+    <text x="733" y="100">acometida</text><text x="733" y="128" class="t-xs t-m">1 o 2 fibras</text>
+  </g>
+  
+  <path d="M400 160 432 196M392 160 412 200M408 160 452 188" class="ln s-fis ln-d" style="stroke-width:1.6"/>
+  <text x="458" y="200" class="t t-xs t-m">a las otras 7 cajas</text>
+  <path d="M630 160 662 196M622 160 642 200M638 160 682 188" class="ln s-fis ln-d" style="stroke-width:1.6"/>
+  <text x="688" y="200" class="t t-xs t-m">a otras 7 casas</text>
+
+  
+  <rect x="22" y="62" width="76" height="100" rx="10" class="caja"/>
+  <use href="#i-olt" x="41" y="70" width="38" height="38" class="ico"/>
+  <text x="60" y="128" text-anchor="middle" class="t t-s t-b">OLT</text><text x="60" y="145" text-anchor="middle" class="t t-xs t-m">puerto PON</text>
+  <text x="60" y="186" text-anchor="middle" class="t t-xs t-b k-fis">con energía</text>
+
+  <rect x="146" y="62" width="76" height="100" rx="10" class="caja"/>
+  <use href="#i17-odf" x="165" y="70" width="38" height="38" class="ico"/>
+  <text x="184" y="128" text-anchor="middle" class="t t-s t-b">ODF</text><text x="184" y="145" text-anchor="middle" class="t t-xs t-m">repartidor</text>
+
+  <rect x="338" y="62" width="76" height="100" rx="10" class="caja"/>
+  <use href="#i-splitter" x="357" y="70" width="38" height="38" class="ico"/>
+  <text x="376" y="128" text-anchor="middle" class="t t-s t-b">Gabinete</text><text x="376" y="145" text-anchor="middle" class="t t-xs t-m">splitter 1:8</text>
+
+  <rect x="568" y="62" width="76" height="100" rx="10" class="caja"/>
+  <use href="#i-splitter" x="587" y="70" width="38" height="38" class="ico"/>
+  <text x="606" y="128" text-anchor="middle" class="t t-s t-b">Caja NAP</text><text x="606" y="145" text-anchor="middle" class="t t-xs t-m">splitter 1:8</text>
+
+  <rect x="822" y="62" width="76" height="100" rx="10" class="caja"/>
+  <use href="#i17-roseta" x="841" y="70" width="38" height="38" class="ico"/>
+  <text x="860" y="128" text-anchor="middle" class="t t-s t-b">Roseta</text><text x="860" y="145" text-anchor="middle" class="t t-xs t-m">en la pared</text>
+
+  <rect x="912" y="62" width="70" height="100" rx="10" class="caja"/>
+  <use href="#i-ont" x="928" y="70" width="38" height="38" class="ico"/>
+  <text x="947" y="128" text-anchor="middle" class="t t-s t-b">ONT</text><text x="947" y="145" text-anchor="middle" class="t t-xs t-m">en la casa</text>
+  <text x="947" y="270" text-anchor="middle" class="t t-xs t-b k-fis">con energía</text>
+
+  <text x="510" y="268" text-anchor="middle" class="t t-s t-m">1 puerto PON × 1:8 × 1:8 = hasta 64 casas</text>
+</svg></div><figcaption><b>El recorrido físico de la luz.</b> De izquierda a derecha: la OLT y el ODF en el nodo del operador; el cable troncal hasta el gabinete con el primer splitter 1:8; el cable de distribución hasta la caja NAP con el segundo splitter 1:8; la acometida hasta la roseta y la ONT en la casa. Todo lo que está dentro del recuadro punteado es la red pasiva: no lleva electricidad.</figcaption></figure><div class="prose"><p>Esta división del recorrido no es un capricho: separa la <b>inversión</b> en etapas. El cable troncal y el gabinete se construyen una vez para toda una zona; las cajas NAP, cuadra por cuadra; y la acometida, solo cuando alguien compra el servicio. Así el operador gasta lo grande antes de vender, pero lo último y más caro por casa, solo cuando ya hay un cliente.</p></div></section>
+<section><h2>Empalmes, conectores y su cuidado</h2><div class="prose"><p>Las fibras no vienen en una sola pieza de la central a la casa. Hay que unirlas, y hay dos maneras:</p><ul><li><b>Empalme por fusión.</b> Una máquina alinea las dos puntas con cámaras microscópicas y las suelda con un arco eléctrico. Queda una unión casi perfecta, que pierde entre 0,02 y 0,1 dB. Es permanente y se protege dentro de una caja de empalme o una bandeja.</li><li><b>Conector.</b> Dos puntas pulidas que se enfrentan dentro de un adaptador y se pueden enchufar y desenchufar. Pierde más, entre 0,2 y 0,5 dB, pero permite cambiar conexiones sin herramientas. En las redes PON el más común es el <b>SC/APC</b>, de color verde, cuya punta está pulida en ángulo para que la luz reflejada no vuelva al láser.</li></ul><p>Un conector es el punto más débil de la red, por una razón de escala: el núcleo de la fibra mide 9 micras y una mota de polvo puede medir lo mismo. Una huella digital, una partícula o un rayón en la punta tapan parte del núcleo y se comen varios decibeles. Peor aún, al conectarlo sucio, la suciedad puede quedar incrustada y rayar también el conector del otro lado.</p><p>Por eso la regla de oro de los técnicos es <b>inspeccionar y limpiar siempre antes de conectar</b>: un microscopio de fibra para mirar la punta, un limpiador de «clic» o paños especiales, y tapas guardapolvo en todo conector que quede libre. Cuesta segundos y evita visitas.</p></div></section>
+<section><h2>Presupuesto óptico: cuánta luz se pierde y cuánta hace falta</h2><div class="prose"><p>Ahora podemos hacer la cuenta que hace un diseñador de red. Se llama <b>presupuesto óptico</b>, y responde una pregunta: ¿la luz que sale de la OLT llega a la ONT con fuerza suficiente?</p><p>La potencia de la luz se mide en <b>dBm</b>: 0 dBm es un milivatio, y cada 10 dB menos es diez veces menos luz. Un láser de OLT emite unos +3 dBm. Una ONT funciona bien recibiendo entre unos −8 y −27 dBm; por debajo de −27 empieza a perder datos, y por encima de −8 la luz es tan fuerte que la deslumbra.</p><p>El fabricante garantiza una <b>clase óptica</b>, que es cuánta pérdida total soporta el enlace. En GPON las más usadas son la clase <b>B+</b>, de 28 dB, y la <b>C+</b>, de 32 dB. El diseñador suma todo lo que se pierde en el camino y lo compara con esa cifra. Por ejemplo, para una casa a 4 kilómetros del nodo:</p><div class="tbl"><table><thead><tr><th>Elemento</th><th>Cuenta</th><th>Pérdida</th></tr></thead><tbody><tr><td>Fibra</td><td>4 km × 0,35 dB/km</td><td>1,4 dB</td></tr><tr><td>Splitter del gabinete</td><td>1:4</td><td>7,2 dB</td></tr><tr><td>Splitter de la caja NAP</td><td>1:16</td><td>13,8 dB</td></tr><tr><td>Conectores</td><td>5 × 0,4 dB</td><td>2,0 dB</td></tr><tr><td>Empalmes</td><td>8 × 0,1 dB</td><td>0,8 dB</td></tr><tr><td><b>Total</b></td><td></td><td><b>25,2 dB</b></td></tr></tbody></table></div><p>Con clase B+ quedan 2,8 dB de <b>margen</b>. La práctica recomienda dejar al menos 3 dB para lo que viene: conectores que envejecen, una reparación con dos empalmes nuevos, una curva en una acometida. Este diseño está justo. Con óptica C+ el margen sería de 6,8 dB, y con una casa a 2 kilómetros más cerca casi no cambiaría nada: en PON, lo que más pesa no es la distancia, sino los splitters.</p></div><div class="lab" id="17-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Presupuesto óptico</h3></div><p class="hint">Mueve la distancia, elige los splitters, cuenta conectores y empalmes y elige la clase óptica. Mira cuánta luz llega a la ONT, cuánto margen queda y si el enlace funciona. Prueba a ensuciar un conector sumando 1,5 dB de pérdida.</p><div class="ctls">
+  <label class="ctl">Distancia del nodo a la casa <output id="c17p-km-o"></output>
+    <input type="range" id="c17p-km" min="0.5" max="20" step="0.5" value="4"></label>
+  <label class="ctl">Conectores en el camino <output id="c17p-con-o"></output>
+    <input type="range" id="c17p-con" min="2" max="10" step="1" value="5"></label>
+  <label class="ctl">Empalmes por fusión <output id="c17p-emp-o"></output>
+    <input type="range" id="c17p-emp" min="0" max="20" step="1" value="8"></label>
+</div>
+<div class="opciones">
+  <label>Splitter del gabinete
+    <select id="c17p-s1">
+      <option value="0">Ninguno</option><option value="1">1:2</option><option value="2" selected>1:4</option>
+      <option value="3">1:8</option><option value="4">1:16</option><option value="5">1:32</option><option value="6">1:64</option>
+    </select></label>
+  <label>Splitter de la caja NAP
+    <select id="c17p-s2">
+      <option value="0">Ninguno</option><option value="1">1:2</option><option value="2">1:4</option>
+      <option value="3">1:8</option><option value="4" selected>1:16</option><option value="5">1:32</option>
+    </select></label>
+  <label>Clase óptica de la OLT y la ONT
+    <select id="c17p-clase">
+      <option value="b" selected>B+ (28 dB, láser de +1 dBm)</option>
+      <option value="c">C+ (32 dB, láser de +5 dBm)</option>
+    </select></label>
+  <label>Un conector de la caja NAP
+    <select id="c17p-sucio">
+      <option value="0" selected>Limpio</option>
+      <option value="1.5">Sucio (+1,5 dB)</option>
+      <option value="4">Muy sucio o rayado (+4 dB)</option>
+    </select></label>
+</div>
+<div class="crono-total" id="c17p-total" aria-live="polite"></div>
+<div class="crono-bar" id="c17p-bar" role="img" aria-label="Pérdidas del enlace y margen frente a la clase óptica"></div>
+<div class="crono-ley" id="c17p-ley"></div>
+<p class="hint" id="c17p-nota"></p></div></section>
+<section><h2>Cómo se encuentra una falla en la fibra: medidor de potencia y OTDR</h2><div class="prose"><p>Cuando un cliente se queda sin servicio y la OLT dice que su ONT no responde, alguien tiene que averiguar dónde se perdió la luz. Hay dos instrumentos básicos.</p><p>El <b>medidor de potencia</b> (power meter) se conecta en un punto de la red y dice cuánta luz llega ahí, en dBm. Es como un termómetro: rápido y barato. El técnico mide en la roseta, luego en la caja NAP y luego en el gabinete, y donde la luz «aparece» sabe que el problema está entre ese punto y el anterior. Muchas OLT también informan la potencia que recibe cada ONT, así que desde la oficina se puede ver si un cliente está en −19 dBm (bien) o en −29 (mal) sin salir a la calle.</p><p>El <b>OTDR</b> (reflectómetro óptico en el dominio del tiempo) es un radar para la fibra. Manda pulsos cortos de luz y escucha el eco: el vidrio devuelve siempre un poquito de luz mientras la fibra sigue, y devuelve un destello fuerte en cada conector, en cada corte y al final. Como la luz viaja en el vidrio a unos 200.000 kilómetros por segundo, el OTDR convierte el tiempo que tarda cada eco en distancia.</p><p>El resultado es una <b>traza</b>: una línea que baja despacio con los kilómetros, porque la fibra pierde un poco a lo largo, y que tiene marcas en cada evento:</p><ul><li>un <b>escalón</b> sin pico es un empalme (si el escalón es grande, el empalme está mal);</li><li>un <b>pico con escalón</b> es un conector (si el escalón es grande, está sucio o dañado);</li><li>un <b>escalón muy grande</b> es un splitter;</li><li>un <b>pico y caída al ruido</b> es el final de la fibra o un corte.</li></ul><p>Con la traza en la mano, el técnico sabe que el problema está, por ejemplo, a 2,4 kilómetros del nodo, y con el mapa de la red sabe en qué poste buscarlo. El capítulo 45 cuenta cómo esa búsqueda se convierte en un proceso cuando se corta un cable troncal.</p></div><div class="lab" id="17-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Leer una traza de OTDR</h3></div><p class="hint">Elige un caso y mira la traza: distancia en el eje horizontal y luz que vuelve en el vertical. Toca o elige con las flechas el punto donde crees que está la falla y comprueba si acertaste.</p><div class="btns" role="group" aria-label="Caso a revisar">
+  <button type="button" data-c17o="sano" aria-pressed="true">Caso 1</button>
+  <button type="button" data-c17o="empalme" aria-pressed="false">Caso 2</button>
+  <button type="button" data-c17o="sucio" aria-pressed="false">Caso 3</button>
+  <button type="button" data-c17o="corte" aria-pressed="false">Caso 4</button>
+</div>
+<canvas id="c17o-cv" aria-label="Traza de OTDR: distancia en kilómetros contra nivel de luz que vuelve, en dB"></canvas>
+<div class="ctls">
+  <label class="ctl">Cursor: ¿dónde está la falla? <output id="c17o-x-o"></output>
+    <input type="range" id="c17o-x" min="0" max="6" step="0.1" value="0"></label>
+</div>
+<div class="btns">
+  <button type="button" class="primary" id="c17o-marcar">Marcar la falla en el cursor</button>
+  <button type="button" id="c17o-nada">No veo ninguna falla</button>
+</div>
+<div class="readout" id="c17o-out" aria-live="polite"></div>
+<p class="hint">Cómo leerla: la línea baja despacio porque la fibra pierde un poco por kilómetro. Un escalón sin pico es un empalme; un pico con escalón, un conector; un escalón muy grande, un splitter; un pico seguido de ruido, el final de la fibra o un corte. Puedes tocar la traza para mover el cursor.</p></div></section>
+<section><h2>Construir la red: postes, ductos y costo por casa pasada</h2><div class="prose"><p>El vidrio es barato. Lo caro es ponerlo en la calle. En una red FTTH, la mayor parte de la inversión se va en <b>obra civil y mano de obra</b>: alquilar o instalar postes, abrir zanjas, tender ductos, pedir permisos, tender cable, empalmar y probar.</p><p>Hay dos formas principales de construir:</p><ul><li><b>Aérea</b>, colgando el cable de postes existentes, propios o alquilados a la empresa eléctrica o a otro operador. Es más rápida y barata, pero queda expuesta a choques de vehículos, ramas, tormentas y robos.</li><li><b>Subterránea</b>, por ductos y cámaras bajo la acera. Puede costar varias veces más por metro y tarda más en permisos, pero el cable queda protegido y la ciudad lo prefiere en zonas céntricas.</li></ul><p>Para medir la inversión, la industria usa dos cifras:</p><ul><li><b>Costo por casa pasada</b>: cuánto cuesta dejar la fibra frente a una casa, con una caja NAP cerca, aunque esa casa todavía no compre. Es la inversión de construir la zona.</li><li><b>Costo por casa conectada</b>: lo que cuesta, además, la acometida, la ONT y la instalación cuando la casa se vuelve cliente.</li></ul><p>La relación entre las dos es la <b>penetración</b>: qué porcentaje de las casas pasadas termina siendo cliente. Una zona con muchas casas pasadas y pocos clientes tiene la red construida pero no la paga. Por eso la parte 5 dedica un capítulo entero a cómo se decide dónde construir y la parte 6 explica cómo esa cifra pesa en el negocio.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH típico de la región construye sus barrios con un diseño en cascada de <b>1:8 × 1:8</b>: un splitter 1:8 en el gabinete y otro 1:8 en cada caja NAP, para hasta 64 clientes por puerto de OLT. Es el más común por varias razones. Con 8 puertos por caja, cada NAP atiende una cuadra corta, y la acometida rara vez pasa de unos cientos de metros. El cable de distribución lleva pocas fibras, así que es barato y rápido de tender en postes. Los dos splitters juntos gastan unos 21 dB, lo que deja espacio en una óptica clase B+ o C+ para varios kilómetros de fibra y algunos conectores. Y se puede crecer por partes: al principio basta con llenar algunas cajas, y cuando una zona se llena se agrega otro splitter en el gabinete sin tocar las casas ya conectadas.</p></div><div class="ml"><b>En la práctica</b><p>Cuando un técnico dice que un cliente «tiene −29 de potencia», está hablando de cuánta luz recibe su ONT en dBm: está por debajo de lo que el equipo tolera, y el servicio se corta o va con errores. Las causas más comunes son pocas y conocidas: un conector sucio o mal insertado en la roseta o en la caja NAP, una acometida doblada o aplastada, un empalme defectuoso o un splitter dañado. Si se cae un cliente solo, el problema suele estar en su acometida o su conector; si se caen todos los de una caja, en la caja o antes; si se cae un puerto entero, en el cable troncal o en la central. Saber esto permite a atención al cliente, al NOC y a quien agenda visitas mandar a la persona correcta al lugar correcto.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué la luz no se escapa de la fibra aunque haga curvas?</summary><p>Porque el núcleo y el revestimiento tienen índices de refracción distintos y la luz que choca con el borde en ángulo rasante rebota hacia adentro (reflexión total interna). Solo se escapa si la curva es demasiado cerrada.</p></details><details><summary>¿Por qué los operadores usan fibra monomodo y no multimodo?</summary><p>Porque su núcleo de unas 9 micras deja un solo camino a la luz y el pulso llega limpio a decenas de kilómetros; la multimodo solo sirve para unos cientos de metros.</p></details><details><summary>¿Qué quiere decir que la red de distribución es «pasiva»?</summary><p>Que entre la OLT y la ONT no hay ningún equipo con electricidad: solo fibra, splitters, conectores y empalmes.</p></details><details><summary>Dos splitters 1:8 en cascada, ¿gastan más o menos luz que uno 1:64?</summary><p>Casi lo mismo: unos 21 dB los dos 1:8 contra unos 20,5 dB el 1:64. Lo que cambia es dónde se ubican y cuánta fibra hace falta.</p></details><details><summary>Un cliente tiene −29 dBm y el resto de su caja NAP está bien. ¿Dónde buscarías primero?</summary><p>En su tramo propio: el conector de la caja NAP, la acometida y la roseta. Si el resto de la caja está bien, la luz llega hasta ahí.</p></details><details><summary>¿Qué indica en una traza de OTDR un escalón grande sin pico?</summary><p>Un empalme por fusión defectuoso (o una curva cerrada) en ese punto de la fibra.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Fibra_%C3%B3ptica" target="_blank" rel="noopener">Fibra óptica (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Red_%C3%B3ptica_pasiva" target="_blank" rel="noopener">Red óptica pasiva (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/OTDR" target="_blank" rel="noopener">OTDR, el radar de la fibra (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.itu.int/rec/T-REC-G.652" target="_blank" rel="noopener">Recomendación UIT-T G.652: características de la fibra monomodo <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$, fmt, bindOut}=window.Lab;
+  const PERD={1:0,2:3.5,4:7.2,8:10.5,16:13.8,32:17.1,64:20.5};
+  let tec='gpon';
+  const CAP={gpon:2500,xgs:10000};
+  const n1=v=>fmt(v,1).replace('.',',');
+  const mb=v=>v>=1000?n1(v/1000)+' Gbps':Math.round(v)+' Mbps';
+  bindOut('#c17s-pico',v=>v+' %');
+  function dibujar(){
+    const a=+$('#c17s-s1').value, b=+$('#c17s-s2').value, n=a*b, plan=+$('#c17s-plan').value, pico=+$('#c17s-pico').value/100;
+    const perdida=PERD[a]+PERD[b], cap=CAP[tec];
+    const todos=cap/n, activos=Math.max(1,Math.round(n*pico)), enPico=cap/activos;
+    const MAX=128, vis=Math.min(n,MAX);
+    let h='';for(let i=0;i<vis;i++)h+='<i class="'+(i<activos?'on':'')+'"></i>';
+    if(n>MAX)h+='<small>+'+(n-MAX)+' casas más</small>';
+    $('#c17s-casas').innerHTML=h;
+    $('#c17s-casas').setAttribute('aria-label',n+' casas comparten el puerto; '+activos+' descargan a la vez');
+    const ok=enPico>=plan;
+    $('#c17s-out').innerHTML=
+      '<span class="big">'+n+' casas por puerto ('+(a>1?'1:'+a:'')+(a>1&&b>1?' × ':'')+(b>1?'1:'+b:'')+(n===1?'una fibra por casa':'')+')</span>'+
+      '<span>Pérdida en los splitters: '+n1(perdida)+' dB'+(perdida>28?' <span class="warn">(más que toda la clase B+)</span>':'')+'</span>'+
+      '<span>Si todos descargan a la vez: '+mb(todos)+' para cada uno</span>'+
+      '<span>En la hora pico ('+activos+' a la vez): <span class="'+(ok?'ok':'warn')+'">'+mb(enPico)+' para cada uno</span></span>';
+    let nota=ok?'En la hora pico cada cliente activo recibe al menos su plan de '+mb(plan)+'. ':
+      'En la hora pico la capacidad del puerto no alcanza para dar '+mb(plan)+' a cada cliente activo: se notaría lentitud. ';
+    if(n>128)nota+='Además, más de 128 casas por puerto supera lo que admiten las OLT habituales. ';
+    else if(perdida>28)nota+='Con tanta división casi no queda luz para la fibra y los conectores. ';
+    nota+='Más división abarata la red por casa, pero reparte la luz y la capacidad entre más clientes.';
+    $('#c17s-nota').textContent=nota;
+  }
+  function elegir(t){tec=t;$('#c17s-gpon').setAttribute('aria-pressed',t==='gpon');$('#c17s-xgs').setAttribute('aria-pressed',t==='xgs');dibujar();}
+  $('#c17s-gpon').addEventListener('click',()=>elegir('gpon'));
+  $('#c17s-xgs').addEventListener('click',()=>elegir('xgs'));
+  ['#c17s-s1','#c17s-s2','#c17s-plan'].forEach(s=>$(s).addEventListener('change',dibujar));
+  $('#c17s-pico').addEventListener('input',dibujar);
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const {$, fmt, bindOut}=window.Lab;
+  const SPL=[0,3.5,7.2,10.5,13.8,17.1,20.5], DIV=[1,2,4,8,16,32,64];
+  const CLASE={b:{pres:28,tx:1},c:{pres:32,tx:5}};
+  const SENS=-27, SATURA=-8, DBKM=0.35, CON=0.4, EMP=0.1;
+  const n1=v=>fmt(v,1).replace('.',',').replace('-','−');
+  bindOut('#c17p-km',v=>n1(v)+' km');
+  bindOut('#c17p-con',v=>v+' × 0,4 dB');
+  bindOut('#c17p-emp',v=>v+' × 0,1 dB');
+  function dibujar(){
+    const km=+$('#c17p-km').value, nc=+$('#c17p-con').value, ne=+$('#c17p-emp').value;
+    const s1=+$('#c17p-s1').value, s2=+$('#c17p-s2').value, cl=CLASE[$('#c17p-clase').value], sucio=+$('#c17p-sucio').value;
+    const partes=[
+      {n:'Fibra ('+n1(km)+' km × 0,35)',v:km*DBKM,c:'var(--c-fis)'},
+      {n:'Splitters ('+(s1?'1:'+DIV[s1]:'—')+(s2?' y 1:'+DIV[s2]:'')+')',v:SPL[s1]+SPL[s2],c:'var(--c-red)'},
+      {n:'Conectores',v:nc*CON,c:'var(--c-tra)'},
+      {n:'Empalmes',v:ne*EMP,c:'var(--c-enl)'},
+      {n:'Suciedad en un conector',v:sucio,c:'var(--warm)'}
+    ];
+    const perdida=partes.reduce((s,p)=>s+p.v,0), margen=cl.pres-perdida, rx=cl.tx-perdida;
+    const casas=DIV[s1]*DIV[s2];
+    let veredicto, color;
+    if(rx>SATURA){veredicto='demasiada luz: la ONT se deslumbra (haría falta un atenuador)';color='var(--warm)';}
+    else if(margen<0){veredicto='no llega: la ONT no distingue la luz y el cliente queda sin servicio';color='var(--warm)';}
+    else if(margen<3){veredicto='funciona, pero justo: cualquier reparación o conector sucio lo tumba';color='var(--warm)';}
+    else {veredicto='funciona con margen';color='var(--good)';}
+    $('#c17p-total').innerHTML='<span style="color:'+color+'">'+n1(rx)+' dBm</span><small>llegan a la ONT (pérdida total '+n1(perdida)+' dB, margen '+n1(margen)+' dB): '+veredicto+'.</small>';
+    const escala=Math.max(cl.pres,perdida);
+    const seg=partes.filter(p=>p.v>0).map(p=>'<i style="width:'+(p.v/escala*100)+'%;background:'+p.c+'" title="'+p.n+'"></i>');
+    if(margen>0)seg.push('<i style="width:'+(margen/escala*100)+'%;background:var(--good-soft)" title="Margen"></i>');
+    $('#c17p-bar').innerHTML=seg.join('');
+    $('#c17p-ley').innerHTML=partes.map(p=>'<span><i style="background:'+p.c+'"></i>'+p.n+'<b>'+n1(p.v)+' dB</b></span>').join('')+
+      '<span><i style="background:var(--good-soft);border:1px solid var(--good)"></i>Margen hasta la clase '+(cl.pres===28?'B+':'C+')+'<b>'+n1(Math.max(margen,0))+' dB</b></span>';
+    const pesoSpl=Math.round((SPL[s1]+SPL[s2])/perdida*100)||0;
+    $('#c17p-nota').textContent='Este puerto alcanza para '+casas+' casa'+(casas>1?'s':'')+'. Los splitters se llevan el '+pesoSpl+' % de la pérdida; '+
+      'cada kilómetro de fibra solo resta 0,35 dB. La ONT necesita recibir entre −8 y −27 dBm, y lo prudente es dejar al menos 3 dB de margen.';
+  }
+  ['#c17p-km','#c17p-con','#c17p-emp'].forEach(s=>$(s).addEventListener('input',dibujar));
+  ['#c17p-s1','#c17p-s2','#c17p-clase','#c17p-sucio'].forEach(s=>$(s).addEventListener('change',dibujar));
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const {$, tok, fmt, canvasWidget, frame}=window.Lab;
+  const n1=v=>fmt(v,1).replace('.',',');
+  // eventos: x en km, p pérdida dB, r altura del pico reflectivo, n nombre
+  const BASE=[
+    {x:0,p:0,r:3.2,n:'Conector del ODF'},
+    {x:1.3,p:0.05,r:0,n:'Empalme'},
+    {x:2.6,p:0.08,r:0,n:'Empalme'},
+    {x:3.0,p:10.5,r:0,n:'Splitter 1:8 del gabinete'},
+    {x:3.9,p:0.4,r:1.6,n:'Conector de la caja NAP'}
+  ];
+  const CASOS={
+    sano:{ev:BASE,fin:4.6,falla:null,
+      ok:'Correcto: este enlace está sano. Los dos empalmes casi no se ven, el escalón grande es el splitter (es normal que gaste 10,5 dB) y el pico final, a 4,6 km, es el conector de la roseta, donde termina la fibra.'},
+    empalme:{ev:BASE.map(e=>e.x===2.6?{x:2.6,p:2.1,r:0,n:'Empalme defectuoso'}:e),fin:4.6,falla:2.6,
+      ok:'Correcto: a 2,6 km hay un escalón de unos 2 dB sin pico. Un empalme bueno pierde menos de 0,1 dB; este hay que rehacerlo. Con el mapa de la red, el técnico sabe en qué caja de empalme buscar.'},
+    sucio:{ev:BASE.map(e=>e.x===3.9?{x:3.9,p:2.6,r:2.6,n:'Conector sucio en la caja NAP'}:e),fin:4.6,falla:3.9,
+      ok:'Correcto: a 3,9 km, en la caja NAP, hay un pico (es un conector) con un escalón de más de 2 dB. Un conector limpio pierde 0,3 o 0,4 dB: este está sucio o dañado. Se arregla limpiándolo.'},
+    corte:{ev:BASE.filter(e=>e.x<2),fin:2.1,falla:2.1,
+      ok:'Correcto: la fibra termina a 2,1 km, mucho antes de lo que dice el plano (4,6 km). El pico y la caída al ruido marcan el corte. La cuadrilla va directo a ese punto.'}
+  };
+  let caso='sano', marca=null, resuelto=false;
+  function nivel(x,c){
+    if(x>c.fin+0.02)return null;
+    let y=-x*0.35;for(const e of c.ev)if(x>e.x+0.015)y-=e.p;return y;
+  }
+  const ruido=x=>-21+Math.sin(x*91.7)*0.6+Math.sin(x*37.3)*0.5;
+  const r=canvasWidget($('#c17o-cv'),w=>w<520?0.75:0.45,(ctx,w,h)=>{
+    const c=CASOS[caso];
+    const F=frame(ctx,w,h,{x0:0,x1:6,y0:-24,y1:5,sx:1,sy:5});
+    F.clip();
+    ctx.strokeStyle=tok('--c-fis');ctx.lineWidth=2;ctx.beginPath();
+    for(let i=0;i<=600;i++){
+      const x=i/100;let y=nivel(x,c);
+      if(y===null)y=ruido(x);
+      for(const e of c.ev){const d=Math.abs(x-e.x);if(e.r&&d<0.05)y+=e.r*(1-d/0.05);}
+      const df=Math.abs(x-c.fin);if(df<0.05)y+=4*(1-df/0.05);
+      const px=F.X(x),py=F.Y(y);i?ctx.lineTo(px,py):ctx.moveTo(px,py);
+    }
+    ctx.stroke();
+    const xc=+$('#c17o-x').value;
+    ctx.strokeStyle=tok('--accent');ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+    ctx.beginPath();ctx.moveTo(F.X(xc),F.p.t);ctx.lineTo(F.X(xc),F.p.t+F.ph);ctx.stroke();ctx.setLineDash([]);
+    if(resuelto){
+      ctx.font='600 11px '+tok('--f-display');ctx.fillStyle=tok('--ink');ctx.textAlign='center';ctx.textBaseline='bottom';
+      const evs=c.ev.concat([{x:c.fin,n:c.falla===c.fin?'Corte':'Fin (roseta)'}]);
+      evs.forEach((e,i)=>{const y=nivel(Math.max(0,e.x-0.03),c);const ty=F.Y((y===null?-20:y)+ (i%2?5.5:3.5));
+        ctx.fillText(e.n.split(' ')[0],Math.min(Math.max(F.X(e.x),30),w-30),ty);});
+    }
+    ctx.restore();
+    ctx.font='11px '+tok('--f-mono');ctx.fillStyle=tok('--muted');ctx.textAlign='right';ctx.textBaseline='bottom';
+    ctx.fillText('km',w-12,h-24);ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('dB',38,12);
+  });
+  $('#c17o-cv').addEventListener('click',ev=>{
+    const rc=ev.target.getBoundingClientRect(), pl=34, pw=rc.width-34-10;
+    const x=Math.min(6,Math.max(0,(ev.clientX-rc.left-pl)/pw*6));
+    $('#c17o-x').value=(Math.round(x*10)/10);actualizar();
+  });
+  function actualizar(){$('#c17o-x-o').textContent=n1(+$('#c17o-x').value)+' km';r();}
+  function responder(x){
+    const c=CASOS[caso];let t;
+    if(x===null){
+      if(c.falla===null){resuelto=true;t='<span class="ok">'+c.ok+'</span>';}
+      else t='<span class="warn">Mira de nuevo: hay un evento que pierde mucha más luz de lo normal.</span>';
+    } else if(c.falla===null){
+      t='<span class="warn">En '+n1(x)+' km no hay una falla. '+(Math.abs(x-3)<0.3?'Ese escalón grande es el splitter: pierde 10,5 dB, pero es lo esperado.':'Revisa si los escalones son más grandes de lo normal.')+'</span>';
+    } else if(Math.abs(x-c.falla)<=0.25){resuelto=true;t='<span class="ok">'+c.ok+'</span>';}
+    else t='<span class="warn">No es ahí: la falla está más '+(x<c.falla?'lejos':'cerca')+' del nodo.'+(Math.abs(x-3)<0.3?' El escalón grande de 3 km es el splitter, y es normal.':'')+'</span>';
+    $('#c17o-out').innerHTML=t;r();
+  }
+  $('#c17o-marcar').addEventListener('click',()=>responder(+$('#c17o-x').value));
+  $('#c17o-nada').addEventListener('click',()=>responder(null));
+  $('#c17o-x').addEventListener('input',actualizar);
+  document.querySelectorAll('[data-c17o]').forEach(b=>b.addEventListener('click',()=>{
+    caso=b.dataset.c17o;resuelto=false;
+    document.querySelectorAll('[data-c17o]').forEach(o=>o.setAttribute('aria-pressed',o===b));
+    $('#c17o-out').innerHTML='<span>Caso nuevo: el plano dice que la fibra mide 4,6 km. Busca la falla, si la hay.</span>';
+    actualizar();
+  }));
+  $('#c17o-out').innerHTML='<span>El plano dice que la fibra mide 4,6 km, del ODF a la roseta. Busca la falla, si la hay.</span>';
+  actualizar();
+})();
+</script>
+</body>
+</html>

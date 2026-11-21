@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hacia dónde va · Cómo funciona un telco</title>
+<meta name="description" content="La red del futuro se programa como software, la misma fibra admite velocidades diez veces mayores cambiando solo los extremos, y los datos con IA permiten anticipar fallas y bajas antes de que ocurran.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="49-hacia-donde-va">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 49 DE 49</span><h1>Hacia dónde va: redes programables, nuevas fibras, datos e IA</h1><p class="lede">La red del futuro se programa como software, la misma fibra admite velocidades diez veces mayores cambiando solo los extremos, y los datos con IA permiten anticipar fallas y bajas antes de que ocurran.</p></header>
+<section><div class="prose"><p>Todo lo que vimos en el libro funciona hoy, y la mayor parte va a seguir funcionando muchos años. Pero cada pieza está cambiando: los equipos de la red se vuelven software, la fibra que ya está enterrada se prepara para velocidades que hoy parecen exageradas, el Wi-Fi de la casa da otro salto y los datos que el telco junta desde hace años empiezan a usarse para anticipar lo que va a pasar.</p><p>Este último capítulo recorre esos cambios sin futurología: solo tecnologías que ya están estandarizadas o en uso en algún operador del mundo. Al final, una mirada a lo que no cambia.</p></div><div class="analogia"><b>Imagínalo así</b><p>Pasar del teléfono fijo al smartphone: el mismo «aparato» hace cosas nuevas porque cambia el software.</p></div><figure class="fig fig-capas" id="49-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la red programable, la gestión en tiempo real y los datos">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class="apagado"><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class="apagado"><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class=""><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class="apagado"><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class=""><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class=""><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class=""><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class=""><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: la red programable, la gestión en tiempo real y los datos</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo mira hacia adelante en tres frentes: la red y su integración con los sistemas (redes programables y nuevas fibras), el OSS que la gestiona en tiempo real y los datos que permiten anticipar fallas y bajas. Por eso enciende la red, el OSS y la integración, y los eslabones de red, operación, soporte, retención y datos.</figcaption></figure><div class="prose"><p>Antes de entrar en cada tema, una vista de conjunto: qué llegó cuándo en las cuatro líneas que más están cambiando.</p></div><figure class="fig fig-mapa" id="49-diagrama-4"><div class="lienzo"><svg viewBox="0 0 900 370" style="min-width:720px" role="img" aria-label="Línea de tiempo 2000 a 2030 en cuatro carriles: fibra y PON, Wi-Fi, gestión y red programable, y datos e IA, con la marca de hoy en 2026">
+<rect x="10" y="20" width="880" height="68" rx="10" class="c-fis"/>
+<text x="22" y="60" class="t t-b">Fibra y PON</text>
+<line x1="170" y1="56" x2="860" y2="56" class="ln"/>
+<circle cx="262.0" cy="56" r="5" class="fl-muted"/>
+<text x="262.0" y="45" text-anchor="middle" class="t t-s t-b">GPON</text>
+<circle cx="538.0" cy="56" r="5" class="fl-muted"/>
+<text x="538.0" y="45" text-anchor="middle" class="t t-s t-b">XGS-PON</text>
+<circle cx="653.0" cy="56" r="5" class="fl-muted"/>
+<text x="653.0" y="45" text-anchor="middle" class="t t-s t-b">25GS-PON</text>
+<circle cx="662.2" cy="56" r="5" class="fl-muted"/>
+<text x="662.2" y="77" text-anchor="middle" class="t t-s t-b">50G-PON</text>
+<rect x="10" y="96" width="880" height="68" rx="10" class="d-casa"/>
+<text x="22" y="136" class="t t-b">Wi-Fi</text>
+<line x1="170" y1="132" x2="860" y2="132" class="ln"/>
+<circle cx="377.0" cy="132" r="5" class="fl-muted"/>
+<text x="377.0" y="121" text-anchor="middle" class="t t-s t-b">Wi-Fi 4</text>
+<circle cx="469.0" cy="132" r="5" class="fl-muted"/>
+<text x="469.0" y="121" text-anchor="middle" class="t t-s t-b">Wi-Fi 5</text>
+<circle cx="607.0" cy="132" r="5" class="fl-muted"/>
+<text x="607.0" y="121" text-anchor="middle" class="t t-s t-b">Wi-Fi 6</text>
+<circle cx="636.9" cy="132" r="5" class="fl-muted"/>
+<text x="636.9" y="153" text-anchor="middle" class="t t-s t-b">Wi-Fi 6E</text>
+<circle cx="722.0" cy="132" r="5" class="fl-muted"/>
+<text x="722.0" y="121" text-anchor="middle" class="t t-s t-b">Wi-Fi 7</text>
+<rect x="10" y="172" width="880" height="68" rx="10" class="d-oper"/>
+<text x="22" y="212" class="t t-b">Gestión y red</text>
+<line x1="170" y1="208" x2="860" y2="208" class="ln"/>
+<circle cx="262.0" cy="208" r="5" class="fl-muted"/>
+<text x="262.0" y="197" text-anchor="middle" class="t t-s t-b">TR-069</text>
+<circle cx="354.0" cy="208" r="5" class="fl-muted"/>
+<text x="354.0" y="229" text-anchor="middle" class="t t-s t-b">OpenFlow (SDN)</text>
+<circle cx="446.0" cy="208" r="5" class="fl-muted"/>
+<text x="446.0" y="197" text-anchor="middle" class="t t-s t-b">NFV (ETSI)</text>
+<circle cx="584.0" cy="208" r="5" class="fl-muted"/>
+<text x="584.0" y="197" text-anchor="middle" class="t t-s t-b">USP (TR-369)</text>
+<rect x="10" y="248" width="880" height="68" rx="10" class="d-sis"/>
+<text x="22" y="288" class="t t-b">Datos e IA</text>
+<line x1="170" y1="284" x2="860" y2="284" class="ln"/>
+<circle cx="400.0" cy="284" r="5" class="fl-muted"/>
+<text x="400.0" y="273" text-anchor="middle" class="t t-s t-b">big data</text>
+<circle cx="446.0" cy="284" r="5" class="fl-muted"/>
+<text x="446.0" y="305" text-anchor="middle" class="t t-s t-b">aprendizaje profundo</text>
+<circle cx="676.0" cy="284" r="5" class="fl-muted"/>
+<text x="676.0" y="273" text-anchor="middle" class="t t-s t-b">IA generativa</text>
+<circle cx="745.0" cy="284" r="5" class="fl-muted"/>
+<text x="745.0" y="273" text-anchor="middle" class="t t-s t-b">agentes</text>
+<line x1="170" y1="322" x2="170" y2="330" class="ln"/><text x="170" y="346" text-anchor="middle" class="t t-s t-m">2000</text>
+<line x1="285" y1="322" x2="285" y2="330" class="ln"/><text x="285" y="346" text-anchor="middle" class="t t-s t-m">2005</text>
+<line x1="400" y1="322" x2="400" y2="330" class="ln"/><text x="400" y="346" text-anchor="middle" class="t t-s t-m">2010</text>
+<line x1="515" y1="322" x2="515" y2="330" class="ln"/><text x="515" y="346" text-anchor="middle" class="t t-s t-m">2015</text>
+<line x1="630" y1="322" x2="630" y2="330" class="ln"/><text x="630" y="346" text-anchor="middle" class="t t-s t-m">2020</text>
+<line x1="745" y1="322" x2="745" y2="330" class="ln"/><text x="745" y="346" text-anchor="middle" class="t t-s t-m">2025</text>
+<line x1="860" y1="322" x2="860" y2="330" class="ln"/><text x="860" y="346" text-anchor="middle" class="t t-s t-m">2030</text>
+<line x1="170" y1="322" x2="860" y2="322" class="ln"/>
+<line x1="768" y1="14" x2="768" y2="330" class="ln s-apl" style="stroke-width:2;stroke-dasharray:5 4"/>
+<text x="768" y="362" text-anchor="middle" class="t t-xs t-b k-apl">HOY</text>
+</svg></div><figcaption><b>Veinticinco años de evolución en cuatro carriles.</b> Cada carril es una línea de tecnología: la fibra, el Wi-Fi, la gestión y la red programable, y los datos con IA. Cada punto es un hito, ubicado en el año aproximado en que se estandarizó o se volvió masivo. La línea vertical marca hoy. Fíjate en que los carriles no avanzan juntos: el Wi-Fi cambia de generación cada pocos años, la fibra cada diez y la IA se aceleró de golpe en el último tramo.</figcaption></figure></section>
+<section><h2>SDN y NFV: la red como software</h2><div class="prose"><p>Durante décadas, cada equipo de la red fue una caja cerrada: un router con su propio sistema, que se configuraba entrando a él, línea por línea, como vimos en el capítulo 27. Para cambiar algo en cien routers había que entrar a cien routers. Dos ideas están cambiando eso.</p><p>La primera es <b>SDN</b> (<i>software-defined networking</i>, red definida por software). Separa el <b>cerebro</b> de la red de sus <b>músculos</b>. Los equipos siguen moviendo paquetes, pero las decisiones de cómo moverlos las toma un <b>controlador</b> central que ve toda la red a la vez. Ese controlador habla hacia abajo con los equipos por interfaces estándar, como <b>NETCONF</b> con modelos de datos <b>YANG</b>, y hacia arriba ofrece una <b>API</b>: los sistemas del negocio piden «una VPN entre estas dos sedes del cliente» y el controlador calcula y configura cada equipo. Es la automatización del capítulo 30 llevada a toda la red.</p><p>La segunda es <b>NFV</b> (<i>network functions virtualization</i>, virtualización de funciones de red). Muchas funciones que antes eran un aparato dedicado, como el BNG, el firewall o el servidor de políticas, pueden correr como programas en servidores comunes, igual que las aplicaciones del capítulo 11. Un <b>BNG virtual</b> (vBNG) se instala, se duplica o se actualiza como cualquier software, sin esperar a que llegue una caja nueva. El organismo europeo de normas ETSI definió en 2012 el marco de referencia, con un orquestador (<b>MANO</b>) que decide dónde corre cada función y cuántas copias hacen falta.</p></div><figure class="fig fig-arquitectura" id="49-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 450" style="min-width:720px" role="img" aria-label="Arquitectura SDN y NFV: sistemas del negocio arriba; controlador SDN y orquestador NFV en el medio; abajo, equipos físicos de la red y un centro de datos con funciones virtuales; la casa del cliente a la izquierda">
+<rect x="160" y="10" width="730" height="96" rx="12" class="d-sis"/><text x="174" y="32" class="t t-xs t-b k-sis">SISTEMAS DEL NEGOCIO</text>
+<rect x="190" y="44" width="200" height="50" rx="8" class="caja"/><use href="#i-monitor" x="200" y="53" width="30" height="30" class="ico"/><text x="238" y="65" class="t t-b">BSS</text><text x="238" y="82" class="t t-s t-m">vende el servicio</text>
+<rect x="420" y="44" width="200" height="50" rx="8" class="caja"/><use href="#i-monitor" x="430" y="53" width="30" height="30" class="ico"/><text x="468" y="65" class="t t-b">OSS</text><text x="468" y="82" class="t t-s t-m">arma la orden</text>
+<rect x="650" y="44" width="200" height="50" rx="8" class="caja"/><use href="#i-monitor" x="660" y="53" width="30" height="30" class="ico"/><text x="698" y="65" class="t t-b">Orquestador</text><text x="698" y="82" class="t t-s t-m">de servicios</text>
+<rect x="160" y="124" width="730" height="96" rx="12" class="caja"/><text x="174" y="146" class="t t-xs t-b t-m">CONTROL: EL «CEREBRO» EN SOFTWARE</text>
+<rect x="190" y="156" width="290" height="52" rx="8" class="c-red"/><text x="204" y="178" class="t t-b k-red">Controlador SDN</text><text x="204" y="196" class="t t-s">ve toda la red y calcula la configuración</text>
+<rect x="560" y="156" width="300" height="52" rx="8" class="c-tra"/><text x="574" y="178" class="t t-b k-tra">Orquestador NFV (MANO)</text><text x="574" y="196" class="t t-s">decide dónde y cuántas funciones corren</text>
+<line x1="660" y1="96" x2="420" y2="154" class="ln" style="stroke-width:1.6" marker-end="url(#fl)"/><line x1="730" y1="96" x2="730" y2="154" class="ln" style="stroke-width:1.6" marker-end="url(#fl)"/>
+<text x="174" y="118" class="t t-xs t-b t-m">API NORTE: «QUIERO ESTE SERVICIO»</text>
+<rect x="160" y="238" width="730" height="202" rx="12" class="d-oper"/><text x="174" y="260" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+<rect x="10" y="238" width="140" height="202" rx="12" class="d-casa"/><text x="80" y="260" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+<use href="#i-ont" x="58" y="320" width="44" height="44" class="ico"/><text x="80" y="382" text-anchor="middle" class="t t-s">ONT</text>
+<rect x="190" y="318" width="90" height="74" rx="8" class="caja"/><use href="#i-olt" x="217" y="324" width="36" height="36" class="ico"/><text x="235" y="380" text-anchor="middle" class="t t-s t-b">OLT</text>
+<rect x="300" y="318" width="90" height="74" rx="8" class="caja"/><use href="#i-router-core" x="327" y="324" width="36" height="36" class="ico"/><text x="345" y="380" text-anchor="middle" class="t t-s t-b">Agregación</text>
+<rect x="410" y="318" width="90" height="74" rx="8" class="caja"/><use href="#i-router-core" x="437" y="324" width="36" height="36" class="ico"/><text x="455" y="380" text-anchor="middle" class="t t-s t-b">Core</text>
+<line x1="102" y1="345" x2="190" y2="345" class="ln s-fis" style="stroke-width:3"/>
+<line x1="280" y1="355" x2="300" y2="355" class="ln"/><line x1="390" y1="355" x2="410" y2="355" class="ln"/>
+<text x="190" y="410" class="t t-s t-m">equipos físicos: mueven los paquetes</text>
+<line x1="330" y1="210" x2="330" y2="316" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="338" y="280" class="t t-xs t-b k-red">API SUR:</text><text x="338" y="294" class="t t-xs t-b k-red">NETCONF / YANG</text>
+<rect x="540" y="276" width="330" height="150" rx="10" class="caja"/><use href="#i-servidor" x="552" y="284" width="30" height="30" class="ico"/><text x="590" y="304" class="t t-b">Centro de datos</text>
+<rect x="556" y="330" width="94" height="40" rx="8" class="c-tra"/><text x="603" y="355" text-anchor="middle" class="t t-s t-b">vBNG</text>
+<rect x="660" y="330" width="94" height="40" rx="8" class="c-tra"/><text x="707" y="355" text-anchor="middle" class="t t-s t-b">vFirewall</text>
+<rect x="764" y="330" width="94" height="40" rx="8" class="c-tra"/><text x="811" y="355" text-anchor="middle" class="t t-s t-b">AAA y DNS</text>
+<text x="556" y="396" class="t t-s t-m">funciones de red que corren como</text><text x="556" y="411" class="t t-s t-m">programas en servidores comunes</text>
+<line x1="710" y1="210" x2="710" y2="274" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="718" y="268" class="t t-xs t-b k-tra">ARRANCA Y ESCALA</text>
+<line x1="500" y1="355" x2="538" y2="355" class="ln ln-d"/>
+</svg></div><figcaption><b>SDN y NFV en un operador.</b> Arriba, los sistemas del negocio y el orquestador, que piden servicios por API. En el medio, el controlador SDN, que traduce esos pedidos en configuración para la red, y el orquestador NFV, que arranca funciones virtuales en los servidores. Abajo, la red del operador: los equipos físicos que mueven los paquetes y el centro de datos donde corren el BNG virtual, el firewall y otras funciones como software. A la izquierda, la casa del cliente, que no nota el cambio.</figcaption></figure><div class="prose"><p>Ninguna de las dos ideas elimina los equipos físicos: la fibra, la OLT y la ONT siguen siendo hardware. Lo que cambia es cómo se gobiernan. Y la adopción es gradual: los operadores suelen virtualizar primero lo que menos riesgo tiene y dejan el corazón de la red para cuando ya dominan la operación del software.</p></div></section>
+<section><h2>USP y la gestión en tiempo real</h2><div class="prose"><p>En el capítulo 28 vimos cómo el operador gestiona la ONT y el router de la casa con <b>TR-069</b>: el equipo llama al servidor de gestión (el ACS) cada cierto tiempo, pregunta si hay algo para él y se desconecta. Funciona, pero es lento: si el agente de soporte quiere ver el Wi-Fi del cliente ahora mismo, tiene que pedirle al equipo que llame y esperar.</p><p>El reemplazo se llama <b>USP</b> (<i>User Services Platform</i>), publicado por el Broadband Forum como <b>TR-369</b> en 2018. Sus diferencias clave:</p><ul><li><b>Conexión permanente.</b> El equipo queda conectado al controlador por protocolos de mensajería modernos, como <b>MQTT</b> o <b>WebSocket</b>, y cualquier pedido llega en segundos.</li><li><b>Eventos.</b> El equipo no espera a que le pregunten: avisa cuando algo pasa, como un dispositivo nuevo en el Wi-Fi, una caída de la señal o un reinicio.</li><li><b>Varios controladores.</b> El operador gestiona la red, pero una aplicación autorizada, por ejemplo la del propio cliente para administrar su Wi-Fi, puede hablar con el mismo equipo con permisos limitados.</li><li><b>Modelo de datos común.</b> Usa el mismo diccionario de parámetros que TR-069 (TR-181), lo que permite migrar sin rehacer todo.</li></ul><p>En la práctica, USP vuelve posible lo que el capítulo 41 mostraba como autogestión: el cliente ve en su app qué dispositivos tiene conectados y cómo llega la señal a cada habitación, y el agente de soporte diagnostica en vivo durante la llamada.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región decidió migrar su flota de ONT de TR-069 a USP. No lo hizo de golpe: primero exigió que todas las ONT nuevas soportaran USP y TR-069 a la vez; después actualizó el firmware de los modelos que lo permitían, por tandas y empezando por un barrio piloto, como vimos en el capítulo 41; y dejó los modelos más viejos en TR-069 hasta su reemplazo natural. El mayor trabajo no fue técnico sino de datos: unificar los nombres de los parámetros, decidir qué eventos guardar y armar tableros para que soporte viera el Wi-Fi del cliente en vivo. Al cabo de un año, una parte creciente de los diagnósticos de Wi-Fi se resolvía en la primera llamada, sin visita.</p></div></section>
+<section><h2>25G y 50G-PON sobre la misma fibra</h2><div class="prose"><p>En el capítulo 18 vimos que <b>GPON</b> reparte 2,5 Gbps de bajada y 1,25 Gbps de subida entre todos los clientes de un puerto, y que <b>XGS-PON</b> sube eso a 10 Gbps en ambos sentidos. La noticia importante para el negocio es cómo se pasó de una a otra: <b>sin tocar la fibra</b>.</p><p>Cada generación de PON usa su propio «color» de luz, su <b>longitud de onda</b>: GPON baja en 1490 nanómetros y sube en 1310; XGS-PON baja en 1577 y sube en 1270. Como los colores no se mezclan, las dos pueden viajar a la vez por la misma fibra y el mismo splitter. En la central se instala un <b>filtro de coexistencia</b> que junta las luces de las dos OLT en una sola fibra; en cada casa, la ONT solo escucha su color. Para mejorar a un cliente basta con cambiar su ONT y conectarlo al puerto nuevo.</p><p>Las siguientes generaciones siguen el mismo camino:</p><ul><li><b>25GS-PON</b>, de 25 Gbps, nació de un acuerdo entre fabricantes y operadores, no de la UIT, para tener un paso intermedio disponible pronto.</li><li><b>50G-PON</b>, estandarizada por la UIT (serie G.9804), llega a 50 Gbps de bajada con su propia longitud de onda.</li></ul></div><figure class="fig fig-esquema" id="49-diagrama-3"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:720px" role="img" aria-label="Cuatro generaciones de PON (GPON, XGS-PON, 25GS-PON y 50G-PON) comparten la misma fibra y el mismo splitter gracias a un filtro de coexistencia; cada ONT escucha su propia longitud de onda">
+<rect x="10" y="10" width="330" height="310" rx="12" class="d-oper"/><text x="24" y="32" class="t t-xs t-b k-oper">CENTRAL: SE AGREGA UNA OLT POR GENERACIÓN</text>
+<rect x="350" y="10" width="220" height="310" rx="12" class="d-inet"/><text x="460" y="32" text-anchor="middle" class="t t-xs t-b k-inet">PLANTA EXTERNA: NO SE TOCA</text>
+<rect x="580" y="10" width="310" height="310" rx="12" class="d-casa"/><text x="594" y="32" class="t t-xs t-b k-casa">CASAS: SE CAMBIA SOLO LA ONT</text>
+<rect x="22" y="48" width="200" height="56" rx="8" class="caja"/><use href="#i-olt" x="30" y="59" width="32" height="32" class="ico"/>
+<text x="70" y="68" class="t t-b k-fis">GPON</text><text x="70" y="83" class="t t-s">2,5 / 1,25 Gbps</text><text x="70" y="97" class="t t-s t-m">1490 / 1310 nm</text>
+<path d="M222 76 C 250 76 250 163.0 268 163.0" class="ln s-fis" style="stroke-width:2.5"/>
+<rect x="22" y="114" width="200" height="56" rx="8" class="caja"/><use href="#i-olt" x="30" y="125" width="32" height="32" class="ico"/>
+<text x="70" y="134" class="t t-b k-enl">XGS-PON</text><text x="70" y="149" class="t t-s">10 / 10 Gbps</text><text x="70" y="163" class="t t-s t-m">1577 / 1270 nm</text>
+<path d="M222 142 C 250 142 250 169.0 268 169.0" class="ln s-enl" style="stroke-width:2.5"/>
+<rect x="22" y="180" width="200" height="56" rx="8" class="caja"/><use href="#i-olt" x="30" y="191" width="32" height="32" class="ico"/>
+<text x="70" y="200" class="t t-b k-red">25GS-PON</text><text x="70" y="215" class="t t-s">25 Gbps</text><text x="70" y="229" class="t t-s t-m">otra longitud de onda</text>
+<path d="M222 208 C 250 208 250 175.0 268 175.0" class="ln s-red" style="stroke-width:2.5"/>
+<rect x="22" y="246" width="200" height="56" rx="8" class="caja"/><use href="#i-olt" x="30" y="257" width="32" height="32" class="ico"/>
+<text x="70" y="266" class="t t-b k-tra">50G-PON</text><text x="70" y="281" class="t t-s">50 Gbps de bajada</text><text x="70" y="295" class="t t-s t-m">otra longitud de onda</text>
+<path d="M222 274 C 250 274 250 181.0 268 181.0" class="ln s-tra" style="stroke-width:2.5"/>
+<rect x="268" y="132" width="62" height="80" rx="8" class="caja"/><text x="299" y="160" text-anchor="middle" class="t t-xs t-b">FILTRO</text><text x="299" y="174" text-anchor="middle" class="t t-xs t-b">DE COEXIS-</text><text x="299" y="188" text-anchor="middle" class="t t-xs t-b">TENCIA</text>
+<line x1="330" y1="166.0" x2="440" y2="166.0" class="ln s-fis" style="stroke-width:2"/>
+<line x1="330" y1="170.0" x2="440" y2="170.0" class="ln s-enl" style="stroke-width:2"/>
+<line x1="330" y1="174.0" x2="440" y2="174.0" class="ln s-red" style="stroke-width:2"/>
+<line x1="330" y1="178.0" x2="440" y2="178.0" class="ln s-tra" style="stroke-width:2"/>
+<use href="#i-splitter" x="440" y="155" width="34" height="34" class="ico"/>
+<text x="395" y="150" text-anchor="middle" class="t t-s">una sola fibra</text>
+<text x="460" y="220" text-anchor="middle" class="t t-s">el mismo splitter</text>
+<path d="M474 172 C 530 172 540 76 600 76" class="ln s-fis" style="stroke-width:2.5"/>
+<rect x="600" y="48" width="276" height="56" rx="8" class="caja"/><use href="#i-ont" x="608" y="59" width="32" height="32" class="ico"/>
+<text x="648" y="72" class="t t-b">ONT GPON</text><text x="648" y="90" class="t t-s t-m">escucha solo su color de luz</text>
+<path d="M474 172 C 530 172 540 142 600 142" class="ln s-enl" style="stroke-width:2.5"/>
+<rect x="600" y="114" width="276" height="56" rx="8" class="caja"/><use href="#i-ont" x="608" y="125" width="32" height="32" class="ico"/>
+<text x="648" y="138" class="t t-b">ONT XGS-PON</text><text x="648" y="156" class="t t-s t-m">escucha solo su color de luz</text>
+<path d="M474 172 C 530 172 540 208 600 208" class="ln s-red" style="stroke-width:2.5"/>
+<rect x="600" y="180" width="276" height="56" rx="8" class="caja"/><use href="#i-ont" x="608" y="191" width="32" height="32" class="ico"/>
+<text x="648" y="204" class="t t-b">ONT 25GS-PON</text><text x="648" y="222" class="t t-s t-m">escucha solo su color de luz</text>
+<path d="M474 172 C 530 172 540 274 600 274" class="ln s-tra" style="stroke-width:2.5"/>
+<rect x="600" y="246" width="276" height="56" rx="8" class="caja"/><use href="#i-ont" x="608" y="257" width="32" height="32" class="ico"/>
+<text x="648" y="270" class="t t-b">ONT 50G-PON</text><text x="648" y="288" class="t t-s t-m">escucha solo su color de luz</text>
+</svg></div><figcaption><b>Varias generaciones de PON sobre la misma red.</b> En la central, una OLT por generación. El filtro de coexistencia junta sus luces en una sola fibra, que pasa por el mismo splitter de siempre. En las casas, cada ONT escucha solo su longitud de onda (cada color de línea es una): un vecino puede seguir en GPON mientras otro estrena 50G-PON. Lo que cambia son los extremos; la planta, que es lo más caro, se queda.</figcaption></figure><div class="prose"><p>Para la economía del capítulo 46 esto es decisivo. La fibra y su obra civil son la mayor parte del CAPEX y duran décadas; la electrónica de los extremos dura unos años y se cambia por partes, donde hay demanda. Una red de fibra bien construida hoy es una inversión que se puede mejorar diez o veinte veces sin volver a abrir la calle.</p></div></section>
+<section><h2>Wi-Fi 7 y la casa conectada</h2><div class="prose"><p>De poco sirven 10 Gbps en la fibra si el último tramo, el Wi-Fi de la casa, se queda corto. El capítulo 25 recorrió la evolución hasta <b>Wi-Fi 7</b> (IEEE 802.11be), certificado en 2024. Sus novedades principales:</p><ul><li><b>Canales de 320 MHz</b> en la banda de 6 GHz, el doble de ancho que en Wi-Fi 6E: más carriles para los datos.</li><li><b>4096-QAM</b>, una forma de empaquetar más bits en cada señal cuando el equipo está cerca y la señal es limpia.</li><li><b>MLO</b> (<i>multi-link operation</i>, operación multienlace): un mismo dispositivo usa varias bandas a la vez, por ejemplo 5 y 6 GHz, y si una se congestiona sigue por la otra.</li></ul><p>El resultado es más velocidad, pero sobre todo menos espera en casas llenas de dispositivos: televisores, consolas, cámaras, parlantes, enchufes inteligentes. Para el operador, la casa conectada es a la vez un problema de soporte (más equipos, más cosas que pueden fallar) y una oportunidad de negocio: Wi-Fi en malla, seguridad del hogar o control parental, gestionados con USP. Una advertencia: la banda de 6 GHz solo se puede usar donde el regulador la habilitó, como vimos en el capítulo 47.</p></div></section>
+<section><h2>Datos e IA en el telco: predecir fallas, bajas y demanda</h2><div class="prose"><p>Un telco genera una cantidad enorme de datos: la potencia óptica de cada ONT cada pocos minutos, las alarmas de la red, cada llamada a atención, cada factura y cada pago. Durante años esos datos se usaron sobre todo para mirar hacia atrás: ¿cuántas fallas hubo el mes pasado? La novedad es usarlos para mirar hacia adelante.</p><p>Tres usos ya son comunes en la industria:</p><ul><li><b>Predecir fallas.</b> Una ONT cuya potencia óptica baja poco a poco suele anunciar un conector sucio o una fibra doblada. Un modelo que detecta esa tendencia permite mandar al técnico antes de que el cliente se quede sin servicio.</li><li><b>Predecir bajas.</b> Los clientes que se van suelen dar señales: reclamos repetidos, microcortes, velocidad medida por debajo del plan, atrasos en el pago, menos uso. Un modelo de riesgo ordena a los clientes según su probabilidad de irse para que retención llame primero a quien más lo necesita.</li><li><b>Predecir demanda.</b> Qué zonas van a crecer, qué puertos se van a llenar y cuándo, cuántos técnicos hará falta tener cada semana.</li></ul><p>Un modelo no acierta siempre. Si marca a muchos clientes como «en riesgo», se gasta en ofertas para gente que se iba a quedar igual; si marca a pocos, se escapan bajas. Ajustar ese equilibrio es una decisión de negocio, no solo técnica. Pruébalo.</p></div><div class="lab" id="49-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Predice la baja</h3></div><p class="hint">Doce clientes, cada uno con sus señales de los últimos tres meses. Ajusta cuánto pesa cada señal y desde qué puntaje se llama al cliente con una oferta de retención. Después mira quién se fue de verdad y cuánto ganaste o perdiste con tu modelo.</p><style>
+[id="49-lab-2"] .c49-bar{display:inline-block;width:64px;height:10px;border-radius:5px;background:var(--paper);border:1px solid var(--line);overflow:hidden;vertical-align:middle;margin-right:6px}
+[id="49-lab-2"] .c49-bar i{display:block;height:100%;background:var(--accent)}
+[id="49-lab-2"] tr.c49-of td:first-child{font-weight:700;color:var(--accent)}
+[id="49-lab-2"] td{font-size:.86rem}
+[id="49-lab-2"] td:nth-child(3){white-space:nowrap}
+[id="49-lab-2"] .c49-si{color:var(--warm);font-weight:600}
+[id="49-lab-2"] .c49-no{color:var(--good);font-weight:600}
+</style>
+<div class="ctls">
+  <label class="ctl">Peso de los reclamos <output id="c49-w0-o"></output><input type="range" id="c49-w0" min="0" max="3" step="1" value="2"></label>
+  <label class="ctl">Peso de los cortes <output id="c49-w1-o"></output><input type="range" id="c49-w1" min="0" max="3" step="1" value="1"></label>
+  <label class="ctl">Peso de la velocidad baja <output id="c49-w2-o"></output><input type="range" id="c49-w2" min="0" max="3" step="1" value="1"></label>
+  <label class="ctl">Peso del atraso en el pago <output id="c49-w3-o"></output><input type="range" id="c49-w3" min="0" max="3" step="1" value="1"></label>
+  <label class="ctl">Peso de «visitó la página de baja» <output id="c49-w4-o"></output><input type="range" id="c49-w4" min="0" max="3" step="1" value="2"></label>
+  <label class="ctl">Llamar con oferta desde un riesgo de <output id="c49-u-o"></output><input type="range" id="c49-u" min="5" max="95" step="5" value="50"></label>
+</div>
+<div class="tbl"><table>
+  <thead><tr><th>Cliente</th><th>Señales de los últimos 90 días</th><th>Riesgo</th><th>Oferta</th><th>¿Se fue?</th></tr></thead>
+  <tbody id="c49-tb"></tbody>
+</table></div>
+<div class="btns"><button type="button" id="c49-ver" aria-pressed="false">Ver qué pasó</button></div>
+<div class="readout" id="c49-out" aria-live="polite"></div>
+<p class="hint" id="c49-nota"></p></div></section>
+<section><h2>Agentes y automatización en la operación</h2><div class="prose"><p>La IA generativa, la que entiende y escribe texto, se volvió masiva desde 2022. En un telco ya se usa para tareas concretas: resumir un ticket largo para el siguiente agente, sugerir la respuesta mientras el cliente escribe, clasificar los reclamos que llegan por correo o explicar una alarma en palabras simples.</p><p>El paso siguiente son los <b>agentes</b>: programas de IA que no solo responden, sino que <b>actúan</b> usando herramientas. Un agente de soporte puede consultar el estado de la ONT del cliente, revisar la señal y el Wi-Fi, comparar con los vecinos de la misma caja y proponer o ejecutar el arreglo, todo en la misma conversación. En el NOC, un agente puede correlacionar cien alarmas y escribir el primer borrador del informe del incidente.</p><p>Para que eso funcione sin sustos, los operadores aplican tres reglas que vienen de la seguridad del capítulo 32:</p><ol class="steps"><li><span><b>Permisos mínimos.</b> El agente solo puede usar las herramientas que necesita: consultar no es lo mismo que cambiar la configuración.</span></li><li><span><b>Personas en el circuito.</b> Las acciones con impacto, como cortar un servicio, cambiar una red o devolver dinero, las aprueba una persona.</span></li><li><span><b>Registro de todo.</b> Cada consulta y cada acción del agente queda registrada para auditarla, igual que las de un empleado.</span></li></ol><p>La automatización no reemplaza al conocimiento: lo necesita. Un agente que diagnostica Wi-Fi es tan bueno como el procedimiento que alguien escribió para enseñarle, y alguien tiene que entender por qué se equivocó cuando se equivoca.</p></div></section>
+<section><h2>Lo que no cambia</h2><div class="prose"><p>Entre tantas novedades conviene recordar lo que se queda.</p><p><b>La física.</b> La luz en la fibra seguirá tardando lo mismo en cruzar un océano, y la señal del Wi-Fi seguirá debilitándose con cada pared. Ninguna generación nueva cambia el cronómetro del capítulo 1.</p><p><b>Las capas.</b> SDN, USP y Wi-Fi 7 son nuevas piezas dentro del mismo modelo del capítulo 3. Quien entiende las capas entiende dónde encaja cada novedad.</p><p><b>La cadena de valor.</b> Los dieciséis eslabones del capítulo 48 siguen ahí. Las tecnologías nuevas los hacen más rápidos o más baratos, pero sigue habiendo que elegir zonas, vender, instalar, activar, operar, cobrar y retener.</p><p><b>El cliente.</b> Quiere que funcione, que le resuelvan rápido cuando no funciona y que la factura sea clara. Todo lo demás es el medio.</p></div><div class="ml"><b>En la práctica</b><p>Las inversiones que vienen en un telco se pueden leer con este capítulo: OLT y ONT de nueva generación donde la demanda lo pide, plataformas de gestión en tiempo real, Wi-Fi más moderno en las casas, automatización de la red y proyectos de datos. Las habilidades que más van a valer son las que cruzan mundos: entender la red y saber programar, conocer el negocio y saber leer datos, atender clientes y saber trabajar con herramientas de IA. Y la que nunca pierde valor: entender cómo funciona todo junto, que es justamente lo que este libro intentó darte.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué separa SDN que antes estaba junto en cada equipo?</summary><p>El control de la red (las decisiones de cómo mover el tráfico), que pasa a un controlador central, de la parte que mueve los paquetes, que sigue en los equipos.</p></details><details><summary>¿Qué diferencia principal tiene USP frente a TR-069?</summary><p>El equipo queda conectado de forma permanente y avisa con eventos, así que los pedidos y diagnósticos ocurren en segundos; con TR-069 el equipo llama cada cierto tiempo y hay que esperar.</p></details><details><summary>¿Por qué se puede pasar de GPON a XGS-PON o a 50G-PON sin cambiar la fibra?</summary><p>Porque cada generación usa su propia longitud de onda; con un filtro de coexistencia en la central, todas viajan por la misma fibra y el mismo splitter, y solo se cambian la OLT y la ONT.</p></details><details><summary>¿Qué es MLO en Wi-Fi 7?</summary><p>La operación multienlace: un dispositivo usa varias bandas a la vez, por ejemplo 5 y 6 GHz, para ganar velocidad y no depender de una sola si se congestiona.</p></details><details><summary>Un modelo de bajas marca a casi todos los clientes como «en riesgo». ¿Cuál es el problema?</summary><p>Se gastan ofertas de retención en muchos clientes que se iban a quedar igual; el costo de las falsas alarmas puede superar lo que se salva.</p></details><details><summary>¿Qué tres reglas protegen a un telco que usa agentes de IA en la operación?</summary><p>Permisos mínimos para el agente, aprobación de una persona para las acciones con impacto y registro de todo lo que el agente consulta y hace.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://usp.technology/" target="_blank" rel="noopener">USP, User Services Platform (sitio del Broadband Forum) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Redes_definidas_por_software" target="_blank" rel="noopener">Red definida por software (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-7" target="_blank" rel="noopener">Wi-Fi 7 (Wi-Fi Alliance, en inglés) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Virtualizaci%C3%B3n_de_funciones_de_red" target="_blank" rel="noopener">Virtualización de funciones de red (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab, $=L.$;
+  // reclamos, cortes, velocidad medida (% del plan), días de atraso, visitó la página de baja, se fue
+  const C=[
+    ['A',3,6,55,0,1,1],['B',0,0,95,0,0,0],['C',1,2,90,25,0,0],['D',2,5,60,0,0,1],
+    ['E',0,1,92,0,1,1],['F',4,8,50,10,0,1],['G',1,0,85,0,0,0],['H',0,0,98,30,0,1],
+    ['I',2,3,70,0,0,0],['J',0,6,88,0,0,0],['K',3,1,80,5,1,1],['L',0,0,96,3,0,0]
+  ];
+  const OFERTA=30, VALOR=600, EXITO=0.5;
+  let ver=false;
+  const pesos=()=>[0,1,2,3,4].map(k=>+$('#c49-w'+k).value);
+  for(let k=0;k<5;k++)L.bindOut('#c49-w'+k,x=>String(x));
+  L.bindOut('#c49-u',x=>x+' %');
+  function senales(c){
+    return [Math.min(1,c[1]/3),Math.min(1,c[2]/8),Math.min(1,Math.max(0,(100-c[3])/50)),Math.min(1,c[4]/30),c[5]];
+  }
+  function texto(c){
+    const t=[];
+    if(c[1])t.push(c[1]+(c[1]===1?' reclamo':' reclamos'));
+    if(c[2])t.push(c[2]+(c[2]===1?' corte':' cortes'));
+    t.push('velocidad '+c[3]+' % del plan');
+    if(c[4])t.push(c[4]+' días de atraso');
+    if(c[5])t.push('visitó la página de baja');
+    return t.join(' · ');
+  }
+  function calcular(){
+    const w=pesos(), sw=w.reduce((a,b)=>a+b,0), u=+$('#c49-u').value;
+    return C.map(c=>{const s=senales(c);const r=sw?s.reduce((a,v,k)=>a+v*w[k],0)/sw*100:0;return {c,r,of:sw>0&&r>=u};});
+  }
+  function actualizar(){
+    const R=calcular();
+    $('#c49-tb').innerHTML=R.map(x=>'<tr'+(x.of?' class="c49-of"':'')+'><td>'+x.c[0]+'</td><td>'+texto(x.c)+'</td><td><span class="c49-bar"><i style="width:'+Math.round(x.r)+'%"></i></span>'+Math.round(x.r)+'</td><td>'+(x.of?'Sí':'—')+'</td><td>'+(ver?(x.c[6]?'<span class="c49-si">se fue</span>':'<span class="c49-no">se quedó</span>'):'?')+'</td></tr>').join('');
+    const of=R.filter(x=>x.of).length, ac=R.filter(x=>x.of&&x.c[6]).length, fa=of-ac, nd=R.filter(x=>!x.of&&x.c[6]).length;
+    const out=['<span>Ofertas de retención: <b>'+of+'</b> de 12 clientes · costo: US$ '+(of*OFERTA)+'</span>'];
+    if(ver){
+      const bal=ac*VALOR*EXITO-of*OFERTA;
+      out.push('<span class="ok">Aciertos: '+ac+' de 6 clientes que se iban recibieron la oferta</span>');
+      out.push('<span class="warn">Falsas alarmas: '+fa+' · Bajas no detectadas: '+nd+'</span>');
+      out.push('<span class="big">Balance: '+(bal>=0?'+':'−')+'US$ '+Math.abs(bal)+'</span>');
+      $('#c49-nota').textContent='Supuesto del ejemplo: cada oferta cuesta US$ '+OFERTA+' y retiene a la mitad de los clientes que de verdad se iban, cada uno con un valor de US$ '+VALOR+'. '+
+        (nd>0?'Fíjate en los que se fueron sin oferta: ¿qué señal habrías tenido que mirar más?':'Detectaste a todos. ¿Cuántas ofertas gastaste para lograrlo?');
+    }else{
+      out.push('<span>Ajusta los pesos y el umbral, y pulsa «Ver qué pasó» para comparar con la realidad.</span>');
+      $('#c49-nota').textContent='Un peso alto hace que esa señal cuente más; el umbral decide a partir de qué riesgo se llama al cliente.';
+    }
+    $('#c49-out').innerHTML=out.join('');
+  }
+  [0,1,2,3,4].forEach(k=>$('#c49-w'+k).addEventListener('input',actualizar));
+  $('#c49-u').addEventListener('input',actualizar);
+  $('#c49-ver').addEventListener('click',()=>{ver=!ver;$('#c49-ver').setAttribute('aria-pressed',String(ver));$('#c49-ver').textContent=ver?'Ocultar qué pasó':'Ver qué pasó';actualizar();});
+  actualizar();
+})();
+</script>
+</body>
+</html>

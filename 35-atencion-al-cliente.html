@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atención al cliente · Cómo funciona un telco</title>
+<meta name="description" content="Cada contacto de un cliente (una llamada, un WhatsApp, un mensaje en la app) se convierte en un ticket que viaja por niveles de soporte, se cruza con los sistemas de red y termina en una solución, una visita o un escalamiento, y medir ese viaje es medir la experiencia del cliente.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="35-atencion-al-cliente">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 35 DE 49</span><h1>Atención al cliente: canales, tickets y mesa de ayuda</h1><p class="lede">Cada contacto de un cliente (una llamada, un WhatsApp, un mensaje en la app) se convierte en un ticket que viaja por niveles de soporte, se cruza con los sistemas de red y termina en una solución, una visita o un escalamiento, y medir ese viaje es medir la experiencia del cliente.</p></header>
+<section><div class="prose"><p>Para la mayoría de los clientes, el operador tiene una sola cara: la persona o el bot que le contesta cuando algo no funciona. Ahí no se ve la fibra, ni la OLT, ni el sistema de facturación. Se ve si alguien entendió el problema, si lo resolvió rápido y si tuvo que repetir la historia tres veces.</p><p>Detrás de esa cara hay una maquinaria bastante ordenada: canales por donde entran los contactos, un registro único de cada caso (el <b>ticket</b>), niveles de soporte que se reparten el trabajo, reglas para escalar y un tablero de métricas que dice si todo eso funciona. Este capítulo la recorre de la puerta de entrada a la encuesta final.</p></div><div class="analogia"><b>Imagínalo así</b><p>La sala de emergencias de un hospital: los pacientes entran por varias puertas (la ambulancia, la recepción, un traslado), una enfermera hace el triaje y decide quién es urgente, los médicos de guardia resuelven lo común y llaman al especialista solo cuando hace falta. Y todo, sin excepción, queda anotado en la misma historia clínica, para que el que atiende después sepa lo que ya se hizo.</p></div><figure class="fig fig-capas" id="35-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: los canales y la mesa de ayuda, del contacto a la solución">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class=""><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class="apagado"><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class="apagado"><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class="apagado"><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class="apagado"><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class="apagado"><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class=""><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class=""><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: los canales y la mesa de ayuda, del contacto a la solución</text>
+</svg></div><figcaption><b>Dónde estamos.</b> En el mapa de sistemas, este capítulo vive en los canales, por donde entra el cliente, y en el BSS, donde están el CRM y la mesa de ayuda. En la cadena de valor ocupa los eslabones de soporte y retención: atender bien es la forma más barata de no perder clientes.</figcaption></figure></section>
+<section><h2>Los canales: teléfono, IVR, WhatsApp, chat, app, redes sociales y oficinas</h2><div class="prose"><p>Un <b>canal</b> es cualquier puerta por la que un cliente puede contactar al operador. Hace veinte años eran dos: el teléfono y la oficina. Hoy son muchos más, y cada uno tiene su carácter:</p><ul><li><b>Teléfono.</b> Sigue siendo el canal de los problemas urgentes y de los clientes enojados. Es el más caro por contacto, porque ocupa a un agente todo el tiempo que dura la llamada.</li><li><b>IVR</b> (respuesta de voz interactiva). Es el menú grabado: «marque 1 para facturación, 2 para soporte técnico». Bien diseñado, ordena las llamadas y resuelve lo simple (consultar el saldo, reportar una falla masiva ya conocida); mal diseñado, es la principal fuente de frustración.</li><li><b>WhatsApp y otros mensajeros.</b> En América Latina es el canal preferido. Es asincrónico: el cliente escribe, sigue con su vida y vuelve cuando le responden. Un agente puede llevar varias conversaciones a la vez.</li><li><b>Chat web y app.</b> Parecidos a WhatsApp, pero dentro de un entorno donde el cliente ya inició sesión, así que el operador sabe quién es sin preguntarle.</li><li><b>Redes sociales.</b> Públicas. Un reclamo en una red social lo leen miles de personas, y eso cambia la prioridad.</li><li><b>Oficinas y tiendas.</b> Para trámites que piden presencia: firmar un contrato, devolver un equipo, pagar en efectivo.</li></ul><p>Ninguno reemplaza a los otros. Cada cliente elige el que le queda cómodo, y el mismo cliente usa varios: escribe por WhatsApp, no le contestan rápido y llama.</p></div></section>
+<section><h2>Omnicanalidad: una sola historia del cliente en todos los canales</h2><div class="prose"><p>El problema aparece cuando cada canal tiene su propio sistema. El cliente escribe por WhatsApp, explica todo, le piden que llame; llama, y el agente del teléfono no ve nada de lo que escribió. Tiene que contar la historia otra vez. Eso es <b>multicanal</b>: muchas puertas, cada una con su cuaderno.</p><p>La <b>omnicanalidad</b> es lo contrario: muchas puertas, pero una sola historia clínica. Todos los contactos, entren por donde entren, caen en una <b>bandeja única</b> y se asocian a la misma ficha del cliente en el CRM. El agente que atiende ve la conversación de WhatsApp de ayer, la llamada de la mañana y el estado del servicio, en una sola pantalla.</p></div><figure class="fig fig-arquitectura" id="35-diagrama-4"><div class="lienzo"><svg viewBox="0 0 900 434" style="min-width:720px" role="img" aria-label="Arquitectura omnicanal: teléfono, WhatsApp, chat web, app, redes sociales y tienda entran a una bandeja única; el chatbot atiende primero; la bandeja reparte a los agentes y amarra cada conversación a un ticket, que vive junto a la ficha del CRM; el ticket consulta el gestor de la OLT, el ACS, el monitoreo del NOC y las órdenes de trabajo">
+  <rect x="10" y="10" width="880" height="82" rx="12" class="d-casa"/>
+  <rect x="10" y="102" width="880" height="198" rx="12" class="d-sis"/>
+  <rect x="10" y="310" width="880" height="114" rx="12" class="d-oper"/>
+  <text x="24" y="30" class="t t-xs t-b k-casa">CANALES</text>
+  <text x="24" y="122" class="t t-xs t-b k-sis">ATENCIÓN Y BSS</text>
+  <text x="24" y="414" class="t t-xs t-b k-oper">SISTEMAS DE RED Y OPERACIÓN</text>
+
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="40" y="40" width="120" height="40" rx="8" class="caja"/><text x="100" y="65">Teléfono e IVR</text>
+    <rect x="180" y="40" width="120" height="40" rx="8" class="caja"/><text x="240" y="65">WhatsApp</text>
+    <rect x="320" y="40" width="120" height="40" rx="8" class="caja"/><text x="380" y="65">Chat web</text>
+    <rect x="460" y="40" width="120" height="40" rx="8" class="caja"/><text x="520" y="65">App</text>
+    <rect x="600" y="40" width="120" height="40" rx="8" class="caja"/><text x="660" y="65">Redes sociales</text>
+    <rect x="740" y="40" width="120" height="40" rx="8" class="caja"/><text x="800" y="65">Tienda</text>
+  </g>
+  <g class="ln">
+    <path d="M100 80L360 138M240 80L390 138M380 80L420 138M520 80L480 138M660 80L510 138M800 80L540 138"/>
+  </g>
+
+  
+  <rect x="330" y="140" width="240" height="52" rx="10" class="caja" style="stroke-width:2"/>
+  <text x="450" y="162" text-anchor="middle" class="t t-b">Bandeja única</text>
+  <text x="450" y="180" text-anchor="middle" class="t t-s t-m">identifica y reparte</text>
+
+  
+  <rect x="650" y="140" width="210" height="52" rx="10" class="caja"/>
+  <text x="664" y="162" class="t t-b">Chatbot</text><text x="664" y="180" class="t t-s t-m">atiende primero lo simple</text>
+  <line x1="572" y1="166" x2="648" y2="166" class="ln" marker-end="url(#fl)"/>
+
+  
+  <rect x="40" y="140" width="210" height="52" rx="10" class="caja"/>
+  <use href="#i-persona" x="50" y="150" width="32" height="32" class="ico"/>
+  <text x="90" y="162" class="t t-b">Agentes N1 y N2</text><text x="90" y="180" class="t t-s t-m">ven todo en una pantalla</text>
+  <line x1="328" y1="166" x2="252" y2="166" class="ln" marker-end="url(#fl)"/>
+
+  
+  <rect x="330" y="220" width="240" height="56" rx="10" class="c-apl"/>
+  <text x="450" y="244" text-anchor="middle" class="t t-b">Ticket</text>
+  <text x="450" y="263" text-anchor="middle" class="t t-s">la historia del caso</text>
+  <line x1="450" y1="192" x2="450" y2="218" class="ln" marker-end="url(#fl)"/>
+  <rect x="650" y="220" width="210" height="56" rx="10" class="caja"/>
+  <use href="#i-monitor" x="660" y="232" width="32" height="32" class="ico"/>
+  <text x="700" y="244" class="t t-b">CRM</text><text x="700" y="263" class="t t-s t-m">ficha, plan y pagos</text>
+  <line x1="572" y1="248" x2="648" y2="248" class="ln" marker-start="url(#fl)" marker-end="url(#fl)"/>
+  <line x1="145" y1="192" x2="328" y2="240" class="ln ln-d"/>
+  <text x="150" y="252" class="t t-xs t-m">ESCRIBEN EN EL TICKET</text>
+
+  
+  <g class="t t-s">
+    <rect x="40" y="342" width="190" height="52" rx="10" class="caja"/><use href="#i-olt" x="50" y="352" width="30" height="30" class="ico"/><text x="88" y="364" class="t-b">Gestor de OLT</text><text x="88" y="382" class="t-m">¿ONT en línea? ¿luz?</text>
+    <rect x="250" y="342" width="190" height="52" rx="10" class="caja"/><use href="#i-router" x="260" y="352" width="30" height="30" class="ico"/><text x="298" y="364" class="t-b">ACS</text><text x="298" y="382" class="t-m">Wi-Fi y equipo</text>
+    <rect x="460" y="342" width="190" height="52" rx="10" class="caja"/><use href="#i-monitor" x="470" y="352" width="30" height="30" class="ico"/><text x="508" y="364" class="t-b">Monitoreo NOC</text><text x="508" y="382" class="t-m">fallas de la zona</text>
+    <rect x="670" y="342" width="190" height="52" rx="10" class="caja"/><use href="#i-persona" x="680" y="352" width="30" height="30" class="ico"/><text x="718" y="364" class="t-b">Órdenes de trabajo</text><text x="718" y="382" class="t-m">agenda del técnico</text>
+  </g>
+  <g class="ln ln-d"><path d="M135 342L400 278M345 342L430 278M555 342L470 278M765 342L500 278"/></g>
+</svg></div><figcaption><b>La arquitectura omnicanal.</b> Arriba, los canales por donde entra el cliente. En el centro, la bandeja única reparte cada conversación al agente disponible y la amarra a un ticket; el ticket vive junto a la ficha del cliente en el CRM. Abajo, los sistemas de red que el agente consulta sin salir de la pantalla: el gestor de la OLT, el ACS, el monitoreo del NOC y las órdenes de trabajo.</figcaption></figure><div class="prose"><p>Lograrlo es más un trabajo de integración que de tecnología: identificar al cliente igual en todos los canales (por número de teléfono, documento o código de cliente), guardar todas las conversaciones en un mismo lugar y conectar ese lugar con el CRM y con la red.</p></div></section>
+<section><h2>El ticket: qué es, qué datos lleva y sus estados</h2><div class="prose"><p>Un <b>ticket</b> (también llamado caso, reclamo o incidente, según la empresa) es el registro de un pedido o un problema de un cliente, desde que entra hasta que se cierra. Es la historia clínica de ese caso: cada persona que lo toca agrega lo que hizo.</p><p>Un buen ticket lleva, como mínimo:</p><ul><li><b>Quién</b>: el cliente y el servicio afectado (no solo el nombre: la dirección, el plan, el número de serie de la ONT).</li><li><b>Qué</b>: la categoría (sin servicio, lentitud, facturación, cambio de plan…) y la descripción en palabras del cliente.</li><li><b>Cuán urgente</b>: la prioridad, que combina el impacto (¿cuántos clientes?, ¿una empresa con contrato especial?) y la urgencia (¿no tiene servicio o le anda lento?).</li><li><b>Por dónde entró</b>: el canal, para medir y para responder por el mismo medio.</li><li><b>Qué se hizo</b>: cada diagnóstico, cada llamada, cada escalamiento, con fecha, hora y responsable.</li><li><b>Cómo terminó</b>: la causa y la solución, que después alimentan las estadísticas.</li></ul><p>A lo largo de su vida, el ticket pasa por <b>estados</b>. Los nombres cambian de una herramienta a otra, pero la idea es la misma: saber en todo momento si alguien está trabajando en él, si se espera algo del cliente o de otra área, y si ya terminó.</p></div><figure class="fig fig-flujo" id="35-diagrama-3"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:720px" role="img" aria-label="Estados de un ticket: abierto, en curso, resuelto y cerrado en el camino principal; desde en curso puede pasar a en espera o a escalado y volver; desde resuelto puede reabrirse; el reloj del acuerdo de servicio se detiene en espera y al resolver">
+  
+  <path d="M565 70V36H325V66" class="ln" marker-end="url(#fl)"/>
+  <text x="445" y="30" text-anchor="middle" class="t t-s">reabierto: «sigue sin funcionar»</text>
+
+  
+  <g class="t t-b" text-anchor="middle">
+    <rect x="20" y="70" width="130" height="50" rx="25" class="caja" style="stroke-width:2"/><text x="85" y="100">Abierto</text>
+    <rect x="250" y="70" width="130" height="50" rx="25" class="c-red"/><text x="315" y="100">En curso</text>
+    <rect x="500" y="70" width="130" height="50" rx="25" class="c-enl"/><text x="565" y="100">Resuelto</text>
+    <rect x="740" y="70" width="130" height="50" rx="25" class="c-enl" style="stroke-width:2.5"/><text x="805" y="100">Cerrado</text>
+  </g>
+  <line x1="150" y1="95" x2="248" y2="95" class="ln" marker-end="url(#fl)"/>
+  <line x1="380" y1="95" x2="498" y2="95" class="ln" marker-end="url(#fl)"/>
+  <line x1="630" y1="95" x2="738" y2="95" class="ln" marker-end="url(#fl)"/>
+  <g class="t t-s" text-anchor="middle">
+    <text x="199" y="138">lo toma</text><text x="199" y="152">un agente</text>
+    <text x="439" y="138">aplica la</text><text x="439" y="152">solución</text>
+    <text x="685" y="138">confirma o</text><text x="685" y="152">pasa el plazo</text>
+  </g>
+
+  
+  <rect x="60" y="214" width="220" height="64" rx="12" class="c-fis"/>
+  <text x="76" y="236" class="t t-b">En espera</text>
+  <text x="76" y="254" class="t t-s">falta algo del cliente o de un tercero</text>
+  <text x="76" y="270" class="t t-s t-b k-fis">❚❚ el reloj del SLA se detiene</text>
+  <rect x="420" y="214" width="230" height="64" rx="12" class="c-apl"/>
+  <text x="436" y="236" class="t t-b">Escalado</text>
+  <text x="436" y="254" class="t t-s">lo toma otro nivel o área:</text>
+  <text x="436" y="270" class="t t-s">segundo nivel, NOC, campo</text>
+  <line x1="290" y1="122" x2="190" y2="212" class="ln" marker-start="url(#fl)" marker-end="url(#fl)"/>
+  <line x1="342" y1="122" x2="500" y2="212" class="ln" marker-start="url(#fl)" marker-end="url(#fl)"/>
+  <text x="206" y="184" text-anchor="end" class="t t-xs t-m">VA Y VUELVE</text>
+  <text x="466" y="184" class="t t-xs t-m">VA Y VUELVE</text>
+
+  
+  <line x1="20" y1="300" x2="880" y2="300" class="ln ln-d"/>
+  <text x="20" y="320" class="t t-s"><tspan class="t-b">Reloj del SLA:</tspan> corre en abierto, en curso y escalado · se detiene en espera · se detiene al resolver</text>
+</svg></div><figcaption><b>Los estados de un ticket.</b> Cada caja es un estado y cada flecha, un evento que lo cambia. El camino feliz va por arriba: abierto, en curso, resuelto y cerrado. Desde «en curso» el ticket puede pasar a «en espera» (falta algo del cliente o de un tercero) o a «escalado» (lo toma otro nivel o área), y volver. Si el cliente dice que no quedó resuelto, el ticket se reabre. El reloj del acuerdo de servicio se detiene mientras el ticket está en espera.</figcaption></figure><div class="prose"><p>Fíjate en la diferencia entre <b>resuelto</b> y <b>cerrado</b>. Resuelto quiere decir que el operador cree que el problema terminó; cerrado quiere decir que el cliente lo confirmó o que pasó un plazo sin que reclamara. Ese margen evita cerrar casos que en realidad siguen abiertos para el cliente.</p></div></section>
+<section><h2>Niveles de soporte: primer nivel, segundo nivel y especialistas</h2><div class="prose"><p>Igual que en la sala de emergencias, no todos los casos los atiende la misma persona. La mesa de ayuda se organiza en <b>niveles</b>:</p><ul><li><b>Primer nivel (N1).</b> Recibe todos los contactos. Identifica al cliente, entiende el problema y resuelve lo frecuente con guiones y herramientas: reiniciar la ONT a distancia, cambiar la clave del Wi-Fi, explicar una factura, reconectar un servicio pagado. Un buen primer nivel resuelve la mayoría de los casos.</li><li><b>Segundo nivel (N2).</b> Soporte técnico con más conocimiento y más permisos. Recibe lo que el primer nivel no pudo resolver: una ONT que no sincroniza, una configuración rara, un cliente empresa con su propia red.</li><li><b>Tercer nivel o especialistas (N3).</b> Ingenieros de red, de sistemas o del fabricante. No atienden clientes; reciben problemas que requieren tocar la red, corregir un sistema o investigar una falla nueva.</li></ul><p>La regla de oro es <b>resolver en el nivel más bajo posible</b>: cada salto de nivel suma tiempo, costo y una persona más que tiene que entender el caso. Por eso las empresas invierten en darle al primer nivel mejores herramientas, como se verá al final del capítulo.</p></div><div class="lab" id="35-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Triaje</h3></div><p class="hint">Llegan ocho reclamos, uno tras otro. Para cada uno, decide su prioridad y a dónde lo mandas. El laboratorio te dice qué haría una mesa de ayuda bien organizada y por qué.</p><div id="c35-tri">
+<style>
+#c35-tri{display:grid;gap:12px}
+#c35-tri .c35-caso{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;background:var(--paper);display:grid;gap:4px}
+#c35-tri .c35-caso small{font:600 .75rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+#c35-tri .c35-caso q{font-size:1.02rem;quotes:"«" "»"}
+#c35-tri .c35-grupo{display:grid;gap:6px}
+#c35-tri .c35-grupo > span{font:600 .82rem var(--f-display);color:var(--muted)}
+#c35-tri .c35-fin{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+</style>
+<div class="c35-caso"><small id="c35-num"></small><q id="c35-texto"></q><span class="hint" id="c35-dato"></span></div>
+<div class="c35-grupo"><span id="c35-lp">Prioridad</span><div class="btns" role="group" aria-labelledby="c35-lp" id="c35-prio"></div></div>
+<div class="c35-grupo"><span id="c35-ld">¿A dónde va?</span><div class="btns" role="group" aria-labelledby="c35-ld" id="c35-dest"></div></div>
+<div class="c35-fin"><button class="primary" id="c35-ok">Comprobar</button><button id="c35-sig" hidden>Siguiente reclamo →</button></div>
+<div class="readout" id="c35-res" aria-live="polite"><span>Elige una prioridad y un destino, y pulsa «Comprobar».</span></div>
+</div></div></section>
+<section><h2>Escalar a NOC, a campo o a otras áreas</h2><div class="prose"><p><b>Escalar</b> es pasarle el ticket a quien puede resolverlo. En un operador de fibra hay cuatro destinos frecuentes:</p><ul><li><b>Al NOC</b> (centro de operaciones de red, capítulo 31), cuando el problema no es de un cliente sino de la red: muchos clientes de la misma zona sin servicio, una OLT caída, una fibra cortada.</li><li><b>A campo</b>, cuando hace falta un técnico en la casa o en la calle: la potencia óptica que llega a la ONT es muy baja, el cable está dañado, el equipo no enciende.</li><li><b>A otras áreas</b>, cuando el problema es administrativo: facturación (un cobro mal hecho), cobranza (un pago que no aparece), ventas (un cambio de plan que no se aplicó).</li><li><b>Al fabricante</b>, a través del tercer nivel, cuando el equipo hace algo que no debería.</li></ul><p>Escalar no es «pasarle la pelota» a otro. El ticket sigue siendo del cliente, y alguien tiene que seguir mirándolo hasta que vuelva resuelto. Escalar mal (sin diagnóstico, sin datos, al área equivocada) es la forma más segura de que el caso rebote durante días.</p></div><figure class="fig fig-flujo" id="35-diagrama-2"><div class="lienzo"><svg viewBox="0 0 960 600" style="min-width:740px" role="img" aria-label="Flujo de un ticket: el cliente escribe por WhatsApp; el chatbot lo identifica y pregunta por las luces del equipo; crea el ticket para el agente de primer nivel; el agente consulta el gestor de la OLT y ve que no llega luz; escala con una orden de visita al técnico y avisa al cliente; el técnico repara la acometida y cierra en campo; el agente marca el ticket como resuelto y el cliente responde la encuesta">
+  <g class="t t-b">
+    <rect x="24" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-persona" x="34" y="26" width="30" height="30" class="ico"/><text x="72" y="40">Cliente</text><text x="72" y="57" class="t-s t-m" style="font-weight:400">WhatsApp</text>
+    <rect x="184" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-celular" x="194" y="26" width="30" height="30" class="ico"/><text x="232" y="47">Chatbot</text>
+    <rect x="344" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-persona" x="354" y="26" width="30" height="30" class="ico"/><text x="392" y="40">Agente</text><text x="392" y="57" class="t-s t-m" style="font-weight:400">primer nivel</text>
+    <rect x="504" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-olt" x="514" y="26" width="30" height="30" class="ico"/><text x="552" y="40">Gestor</text><text x="552" y="57" class="t-s t-m" style="font-weight:400">de la OLT</text>
+    <rect x="664" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-persona" x="674" y="26" width="30" height="30" class="ico"/><text x="712" y="40">Técnico</text><text x="712" y="57" class="t-s t-m" style="font-weight:400">de campo</text>
+  </g>
+  <line x1="90" y1="70" x2="90" y2="586" class="vida"/>
+  <line x1="250" y1="70" x2="250" y2="586" class="vida"/>
+  <line x1="410" y1="70" x2="410" y2="586" class="vida"/>
+  <line x1="570" y1="70" x2="570" y2="586" class="vida"/>
+  <line x1="730" y1="70" x2="730" y2="586" class="vida"/>
+
+  
+  <line x1="90" y1="108" x2="248" y2="114" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="98" y="100" class="t t-s">① «No tengo Internet»</text>
+  <line x1="250" y1="146" x2="92" y2="152" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="98" y="140" class="t t-s">② ¿Documento? ¿Luces?</text>
+  <line x1="90" y1="182" x2="248" y2="188" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="98" y="176" class="t t-s">③ «La luz LOS en rojo»</text>
+  <line x1="250" y1="218" x2="408" y2="224" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="258" y="212" class="t t-s">④ Ticket con datos</text>
+  <text x="258" y="240" class="t t-s t-m">prioridad media</text>
+
+  
+  <line x1="410" y1="266" x2="568" y2="272" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="418" y="260" class="t t-s">⑤ ¿Estado de la ONT?</text>
+  <line x1="570" y1="300" x2="412" y2="306" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="418" y="324" class="t t-s">⑥ Sin luz desde las 8:10</text>
+
+  
+  <line x1="410" y1="352" x2="728" y2="358" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="418" y="346" class="t t-s">⑦ Orden de visita: revisar acometida</text>
+  <line x1="410" y1="386" x2="92" y2="392" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="98" y="380" class="t t-s">⑧ «Visita mañana de 9 a 12»</text>
+
+  
+  <rect x="664" y="410" width="132" height="44" rx="8" class="c-enl"/>
+  <text x="674" y="429" class="t t-s t-b">⑨ Repara la</text><text x="674" y="445" class="t t-s t-b">acometida</text>
+  <line x1="730" y1="476" x2="412" y2="482" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="418" y="470" class="t t-s">⑩ Cerrado en campo: luz normal</text>
+
+  
+  <line x1="410" y1="520" x2="92" y2="526" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="98" y="514" class="t t-s">⑪ Resuelto. ¿Cómo te atendimos?</text>
+  <line x1="90" y1="556" x2="408" y2="562" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="98" y="550" class="t t-s">⑫ 5 de 5</text>
+
+  <g class="t t-xs t-b">
+    <path d="M830 98v26" class="ln s-apl" style="stroke-width:3"/><text x="840" y="110" class="k-apl">ENTRADA</text><text x="840" y="122" class="t-m">el canal</text>
+    <path d="M830 134v100" class="ln s-apl" style="stroke-width:3"/><text x="840" y="180" class="k-apl">TRIAJE</text><text x="840" y="192" class="t-m">bot o agente</text>
+    <path d="M830 254v74" class="ln s-red" style="stroke-width:3"/><text x="840" y="288" class="k-red">DIAGNÓSTICO</text><text x="840" y="300" class="t-m">sin salir del ticket</text>
+    <path d="M830 340v56" class="ln s-fis" style="stroke-width:3"/><text x="840" y="366" class="k-fis">ESCALAMIENTO</text><text x="840" y="378" class="t-m">a campo</text>
+    <path d="M830 410v76" class="ln s-enl" style="stroke-width:3"/><text x="840" y="446" class="k-enl">SOLUCIÓN</text><text x="840" y="458" class="t-m">registrada</text>
+    <path d="M830 506v60" class="ln s-tra" style="stroke-width:3"/><text x="840" y="534" class="k-tra">ENCUESTA</text><text x="840" y="546" class="t-m">CSAT</text>
+  </g>
+  <text x="14" y="320" class="t t-xs t-m" transform="rotate(-90 14 320)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El viaje de un ticket.</b> El tiempo corre hacia abajo. El cliente escribe por WhatsApp; el bot lo identifica y hace preguntas de triaje; el agente de primer nivel consulta el estado de la ONT y, como la luz que llega es muy baja, escala a campo; el técnico repara la acometida y lo registra; el ticket se marca como resuelto y el cliente responde la encuesta. A la derecha, las fases: entrada, triaje, diagnóstico, escalamiento, solución y encuesta.</figcaption></figure></section>
+<section><h2>Incidente, problema y cambio (ITIL) explicados simple</h2><div class="prose"><p><b>ITIL</b> es un conjunto de buenas prácticas para gestionar servicios de tecnología, muy usado en mesas de ayuda y en operaciones de red. Tiene muchos libros, pero tres palabras alcanzan para empezar, y conviene usarlas bien porque en el día a día se confunden:</p><ul><li><b>Incidente</b>: algo dejó de funcionar y hay que <b>restablecerlo lo antes posible</b>. «La señora Pérez no tiene Internet». El objetivo es que vuelva a navegar, aunque sea con un arreglo provisional.</li><li><b>Problema</b>: la <b>causa</b> de uno o varios incidentes. «Las ONT de cierto modelo se cuelgan cada quince días». No se resuelve reiniciando: hay que investigar y encontrar la raíz.</li><li><b>Cambio</b>: una <b>modificación planificada</b> de algo que funciona, con su evaluación de riesgo y su ventana: «actualizar el firmware de ese modelo de ONT el martes de madrugada».</li></ul></div><figure class="fig fig-esquema" id="35-diagrama-7"><div class="lienzo"><svg viewBox="0 0 880 330" style="min-width:700px" role="img" aria-label="Incidente, problema y cambio: varios incidentes de clientes con la ONT colgada llevan a abrir un problema que investiga la causa común; la solución definitiva llega como un cambio planificado de firmware; debajo, la pregunta que responde cada uno y quién lo atiende">
+  <text x="140" y="24" text-anchor="middle" class="t t-xs t-b k-apl">INCIDENTES</text>
+  <text x="440" y="24" text-anchor="middle" class="t t-xs t-b k-tra">PROBLEMA</text>
+  <text x="740" y="24" text-anchor="middle" class="t t-xs t-b k-enl">CAMBIO</text>
+  <g class="t t-s">
+    <rect x="30" y="40" width="220" height="38" rx="8" class="c-apl"/><text x="42" y="64">Lunes: cliente A sin servicio</text>
+    <rect x="30" y="86" width="220" height="38" rx="8" class="c-apl"/><text x="42" y="110">Martes: cliente B sin servicio</text>
+    <rect x="30" y="132" width="220" height="38" rx="8" class="c-apl"/><text x="42" y="156">Jueves: cliente C sin servicio</text>
+    <rect x="30" y="178" width="220" height="38" rx="8" class="c-apl"/><text x="42" y="202">… todos con la ONT colgada</text>
+  </g>
+  <path d="M250 59L330 120M250 105L330 125M250 151L330 130M250 197L330 135" class="ln"/>
+  <line x1="330" y1="128" x2="338" y2="128" class="ln" marker-end="url(#fl)"/>
+  <rect x="340" y="84" width="200" height="88" rx="12" class="c-tra"/>
+  <text x="440" y="110" text-anchor="middle" class="t t-b">¿Por qué se cuelgan</text>
+  <text x="440" y="128" text-anchor="middle" class="t t-b">las ONT de ese modelo?</text>
+  <text x="440" y="152" text-anchor="middle" class="t t-s">causa: falla del firmware</text>
+  <line x1="540" y1="128" x2="628" y2="128" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="584" y="120" text-anchor="middle" class="t t-xs t-m">SOLUCIÓN</text>
+  <rect x="630" y="84" width="220" height="88" rx="12" class="c-enl"/>
+  <text x="740" y="110" text-anchor="middle" class="t t-b">Actualizar el firmware</text>
+  <text x="740" y="128" text-anchor="middle" class="t t-b">martes, 2:00 a 4:00</text>
+  <text x="740" y="152" text-anchor="middle" class="t t-s">con plan de vuelta atrás</text>
+  <path d="M740 172V250H140V222" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="440" y="244" text-anchor="middle" class="t t-xs t-m">LOS INCIDENTES DEJAN DE REPETIRSE</text>
+
+  <line x1="20" y1="268" x2="860" y2="268" class="ln ln-d"/>
+  <g class="t t-s" text-anchor="middle">
+    <text x="140" y="290" class="t-b">¿Cómo lo hago andar ya?</text><text x="140" y="308" class="t-m">mesa de ayuda, NOC</text>
+    <text x="440" y="290" class="t-b">¿Por qué pasa?</text><text x="440" y="308" class="t-m">especialistas, ingeniería</text>
+    <text x="740" y="290" class="t-b">¿Cómo lo modifico sin romper nada?</text><text x="740" y="308" class="t-m">comité de cambios, operaciones</text>
+  </g>
+</svg></div><figcaption><b>Incidente, problema y cambio.</b> Varios incidentes parecidos (izquierda) hacen sospechar un problema común (centro). Cuando se encuentra la causa, la solución definitiva llega como un cambio planificado (derecha), que evita que los incidentes se repitan. Debajo de cada caja, la pregunta que responde y quién suele ocuparse.</figcaption></figure><div class="prose"><p>La mesa de ayuda vive en los incidentes. Pero si solo apaga incendios y nadie mira por qué se repiten, los mismos incendios vuelven cada semana. Por eso alguien tiene que juntar los incidentes parecidos y abrir un problema.</p></div></section>
+<section><h2>Chatbots y autoservicio: qué resolver sin un agente</h2><div class="prose"><p>Muchos contactos no necesitan a una persona. Consultar el saldo, descargar la factura, saber si hay una falla en la zona, reiniciar el equipo o cambiar la clave del Wi-Fi son tareas que el cliente puede hacer solo, a cualquier hora, si el operador le da la herramienta. Eso es el <b>autoservicio</b>: la app, la web de clientes o un <b>chatbot</b> en WhatsApp.</p><p>Un buen chatbot no intenta conversar de todo. Hace tres cosas bien: identifica al cliente, resuelve lo que se puede resolver con datos (saldo, fallas masivas, reinicio remoto) y, cuando no puede, pasa la conversación a un agente <b>con todo lo que ya averiguó</b>, para que el cliente no repita nada. Los asistentes con inteligencia artificial generativa amplían lo que el bot entiende, pero la regla no cambia: saber cuándo hacerse a un lado.</p></div><figure class="fig fig-esquema" id="35-diagrama-8"><div class="lienzo"><svg viewBox="0 0 860 330" style="min-width:700px" role="img" aria-label="La escalera de la atención: autoservicio en la app, chatbot, agente de primer nivel, segundo nivel y visita técnica; cada escalón cuesta más tiempo y dinero que el anterior; en cada uno, ejemplos de lo que conviene resolver ahí">
+  <line x1="40" y1="24" x2="800" y2="24" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="40" y="16" class="t t-xs t-b t-m">CADA ESCALÓN CUESTA MÁS TIEMPO Y MÁS DINERO POR CONTACTO</text>
+  <g class="t t-s">
+    <rect x="20" y="210" width="156" height="110" rx="10" class="c-enl"/>
+    <text x="32" y="232" class="t-b">Autoservicio</text><text x="32" y="247" class="t-m">app y web</text>
+    <text x="32" y="272">· ver y pagar la factura</text><text x="32" y="288">· cambiar la clave Wi-Fi</text><text x="32" y="304">· reiniciar el equipo</text>
+
+    <rect x="186" y="170" width="156" height="150" rx="10" class="c-enl"/>
+    <text x="198" y="192" class="t-b">Chatbot</text><text x="198" y="207" class="t-m">WhatsApp, chat</text>
+    <text x="198" y="232">· ¿hay falla en mi zona?</text><text x="198" y="248">· saldo y fecha de pago</text><text x="198" y="264">· triaje antes del agente</text>
+
+    <rect x="352" y="130" width="156" height="190" rx="10" class="c-red"/>
+    <text x="364" y="152" class="t-b">Primer nivel</text><text x="364" y="167" class="t-m">agente con guion</text>
+    <text x="364" y="192">· explicar un cobro</text><text x="364" y="208">· diagnóstico remoto</text><text x="364" y="224">· reconectar un pago</text>
+
+    <rect x="518" y="90" width="156" height="230" rx="10" class="c-tra"/>
+    <text x="530" y="112" class="t-b">Segundo nivel</text><text x="530" y="127" class="t-m">soporte técnico</text>
+    <text x="530" y="152">· ONT que no sincroniza</text><text x="530" y="168">· clientes empresa</text><text x="530" y="184">· casos que rebotan</text>
+
+    <rect x="684" y="50" width="156" height="270" rx="10" class="c-fis"/>
+    <text x="696" y="72" class="t-b">Visita técnica</text><text x="696" y="87" class="t-m">cuadrilla de campo</text>
+    <text x="696" y="112">· acometida dañada</text><text x="696" y="128">· luz baja en la ONT</text><text x="696" y="144">· equipo que no enciende</text>
+  </g>
+</svg></div><figcaption><b>La escalera de la atención.</b> De izquierda a derecha, cada escalón cuesta más tiempo y más dinero que el anterior: autoservicio en la app, chatbot, agente de primer nivel, segundo nivel y visita técnica. Dentro de cada escalón, ejemplos de lo que conviene resolver ahí. La meta es que cada caso suba solo hasta donde hace falta.</figcaption></figure></section>
+<section><h2>Base de conocimiento y guiones de atención</h2><div class="prose"><p>Para que cien agentes respondan lo mismo a la misma pregunta hace falta una <b>base de conocimiento</b>: artículos cortos, buscables y actualizados con la solución a cada situación conocida. «La luz LOS de la ONT está en rojo: qué significa y qué hacer». «Cómo leer la factura después de un cambio de plan». La misma base alimenta al chatbot y a la sección de ayuda de la web.</p><p>Los <b>guiones</b> van un paso más allá: son el camino de preguntas que el agente sigue para diagnosticar. ¿Hay luces encendidas en el equipo? ¿Cuál está en rojo? ¿Le pasa solo por Wi-Fi o también por cable? Un guion bien hecho es un árbol de decisión que lleva al agente hacia la causa más probable, y que lo hace escalar con los datos correctos.</p><p>Un guion no debe convertir al agente en un robot. Sirve para no olvidar nada, no para leerle al cliente un texto de memoria. Y una base de conocimiento solo es buena si alguien la mantiene: cada vez que aparece un caso nuevo, se escribe el artículo.</p></div></section>
+<section><h2>Tiempos de respuesta y acuerdos de servicio (SLA)</h2><div class="prose"><p>Un <b>SLA</b> (acuerdo de nivel de servicio) es una promesa medible de tiempo. Puede ser un compromiso con un cliente empresa, que figura en su contrato con penalidades, o un objetivo interno de la mesa de ayuda. En los tickets se miden sobre todo dos relojes:</p><ul><li><b>Tiempo de primera respuesta</b>: cuánto tarda alguien en contestarle al cliente.</li><li><b>Tiempo de resolución</b>: cuánto tarda el caso en quedar resuelto.</li></ul><p>Los objetivos dependen de la prioridad. Un enlace de empresa caído no puede esperar lo mismo que una consulta sobre la factura.</p></div><figure class="fig fig-comparacion" id="35-diagrama-9"><div class="lienzo"><svg viewBox="0 0 890 330" style="min-width:700px" role="img" aria-label="Prioridades y relojes de ejemplo: crítica con respuesta en 15 minutos y resolución en 4 horas; alta, 30 minutos y 8 horas; media, 2 horas y 1 día; baja, 8 horas y 3 días">
+  <text x="20" y="24" class="t t-xs t-b t-m">PRIORIDAD Y CASO TÍPICO</text>
+  <rect x="330" y="12" width="14" height="12" rx="3" class="c-tra"/><text x="350" y="23" class="t t-s">primera respuesta</text>
+  <rect x="480" y="12" width="14" height="12" rx="3" class="c-apl"/><text x="500" y="23" class="t t-s">resolución</text>
+  <text x="860" y="23" text-anchor="end" class="t t-xs t-m">ESCALA LOGARÍTMICA</text>
+  <line x1="363" y1="40" x2="363" y2="276" class="vida"/><text x="363" y="294" text-anchor="middle" class="t t-xs t-m">15 min</text>
+  <line x1="477" y1="40" x2="477" y2="276" class="vida"/><text x="477" y="294" text-anchor="middle" class="t t-xs t-m">1 h</text>
+  <line x1="591" y1="40" x2="591" y2="276" class="vida"/><text x="591" y="294" text-anchor="middle" class="t t-xs t-m">4 h</text>
+  <line x1="738" y1="40" x2="738" y2="276" class="vida"/><text x="738" y="294" text-anchor="middle" class="t t-xs t-m">1 día</text>
+  <line x1="828" y1="40" x2="828" y2="276" class="vida"/><text x="828" y="294" text-anchor="middle" class="t t-xs t-m">3 días</text>
+  <line x1="330" y1="40" x2="330" y2="276" class="ln"/>
+  <text x="20" y="64" class="t t-b">P1 · Crítica</text><text x="20" y="82" class="t t-s t-m">empresa o zona sin servicio</text>
+  <rect x="330" y="52" width="33" height="16" rx="3" class="c-tra"/><text x="369" y="64" class="t t-s t-b k-tra">15 min</text>
+  <rect x="330" y="72" width="261" height="16" rx="3" class="c-apl"/><text x="597" y="84" class="t t-s t-b k-apl">4 h</text>
+  <text x="20" y="122" class="t t-b">P2 · Alta</text><text x="20" y="140" class="t t-s t-m">un cliente sin servicio</text>
+  <rect x="330" y="110" width="90" height="16" rx="3" class="c-tra"/><text x="426" y="122" class="t t-s t-b k-tra">30 min</text>
+  <rect x="330" y="130" width="318" height="16" rx="3" class="c-apl"/><text x="654" y="142" class="t t-s t-b k-apl">8 h</text>
+  <text x="20" y="180" class="t t-b">P3 · Media</text><text x="20" y="198" class="t t-s t-m">lentitud, Wi-Fi, cobro dudoso</text>
+  <rect x="330" y="168" width="204" height="16" rx="3" class="c-tra"/><text x="540" y="180" class="t t-s t-b k-tra">2 h</text>
+  <rect x="330" y="188" width="408" height="16" rx="3" class="c-apl"/><text x="744" y="200" class="t t-s t-b k-apl">1 día</text>
+  <text x="20" y="238" class="t t-b">P4 · Baja</text><text x="20" y="256" class="t t-s t-m">consulta o pedido</text>
+  <rect x="330" y="226" width="318" height="16" rx="3" class="c-tra"/><text x="654" y="238" class="t t-s t-b k-tra">8 h</text>
+  <rect x="330" y="246" width="498" height="16" rx="3" class="c-apl"/><text x="834" y="258" class="t t-s t-b k-apl">3 días</text>
+  <text x="20" y="320" class="t t-s t-m">Valores ilustrativos. Cada operador fija los suyos; los contratos de empresa suelen ser más exigentes.</text>
+</svg></div><figcaption><b>Prioridades y relojes, con valores de ejemplo.</b> Cada fila es una prioridad, de crítica a baja, con un caso típico. Las barras muestran el tiempo objetivo de primera respuesta y de resolución. Los números son ilustrativos: cada operador fija los suyos, y los contratos de empresa suelen ser más exigentes que los residenciales.</figcaption></figure><div class="prose"><p>El reloj del SLA se detiene cuando el ticket está «en espera» de algo que no depende del operador (el cliente no está en casa para recibir al técnico). Es justo, pero también es tentador: un ticket que pasa a «en espera» sin motivo mejora las métricas y empeora la experiencia. Por eso conviene auditar el uso de ese estado.</p></div></section>
+<section><h2>Métricas: resolución al primer contacto, tiempo de atención, satisfacción y NPS</h2><div class="prose"><p>Medir la atención es medir la experiencia del cliente. Estas son las métricas que más se usan:</p><div class="tbl"><table><thead><tr><th>Métrica</th><th>Qué mide</th><th>Cómo se calcula</th></tr></thead><tbody><tr><td><b>FCR</b> (resolución al primer contacto)</td><td>Si el cliente se fue con su problema resuelto sin tener que volver</td><td>Casos resueltos en el primer contacto ÷ total de casos</td></tr><tr><td><b>AHT</b> (tiempo medio de atención)</td><td>Cuánto ocupa a un agente cada contacto</td><td>(Tiempo hablando + en espera + trabajo posterior) ÷ contactos</td></tr><tr><td><b>CSAT</b> (satisfacción)</td><td>Qué tan conforme quedó el cliente con esta atención</td><td>Porcentaje de respuestas 4 o 5 en una escala de 1 a 5</td></tr><tr><td><b>NPS</b> (índice de promotores neto)</td><td>Si el cliente recomendaría al operador</td><td>Porcentaje que da 9 o 10 menos porcentaje que da 0 a 6, en una escala de 0 a 10</td></tr></tbody></table></div><p>Las métricas tiran en direcciones distintas, y eso es lo interesante. Si se premia solo un AHT bajo, los agentes cortan rápido y el FCR cae, porque el cliente vuelve a llamar. Si se premia solo el FCR, nadie escala a tiempo. Un tablero sano mira varias a la vez. Y el CSAT mide esta atención, mientras que el NPS mide la relación completa: puede bajar por un corte de fibra aunque la mesa de ayuda haya sido impecable.</p></div><div class="lab" id="35-lab-6"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Métricas de un día</h3></div><p class="hint">Esta es la lista de tickets de un día en una mesa de ayuda pequeña. Calcula la resolución al primer contacto y el tiempo medio de atención, compruébalos y después activa la mejora: ¿qué pasa cuando el primer nivel puede ver el estado de la ONT desde el ticket?</p><div id="c35-met">
+<style>
+#c35-met{display:grid;gap:12px}
+#c35-met .tbl td,#c35-met .tbl th{padding:6px 8px}
+#c35-met td.c35-n{text-align:right;font-family:var(--f-mono)}
+#c35-met tr.c35-camb td{background:var(--good-soft)}
+#c35-met .c35-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px;align-items:end}
+#c35-met .c35-in label{display:grid;gap:4px;font:600 .82rem var(--f-display);color:var(--muted)}
+#c35-met .c35-in input{font:600 1rem var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);width:100%;box-sizing:border-box}
+#c35-met .readout span{white-space:normal}
+</style>
+<div class="btns" role="group" aria-label="Escenario">
+  <button type="button" aria-pressed="true" data-e="0">Un día normal</button>
+  <button type="button" aria-pressed="false" data-e="1">Con el estado de la ONT y del Wi-Fi en el ticket</button>
+</div>
+<div class="tbl"><table><thead><tr><th>#</th><th>Canal</th><th>Motivo</th><th class="num">Contactos</th><th class="num">Minutos</th><th>Visita</th></tr></thead><tbody id="c35-filas"></tbody></table></div>
+<p class="hint">«Contactos» es cuántas veces tuvo que comunicarse el cliente por ese caso; «Minutos», el tiempo de agente sumando todos sus contactos. Un caso con 1 contacto se resolvió al primer contacto.</p>
+<div class="c35-in">
+  <label>Resolución al primer contacto (FCR, %)<input id="c35-fcr" inputmode="decimal" placeholder="por ejemplo 50"></label>
+  <label>Tiempo medio de atención (AHT, minutos por contacto)<input id="c35-aht" inputmode="decimal" placeholder="por ejemplo 6,5"></label>
+  <div class="btns"><button class="primary" id="c35-comp">Comprobar</button><button id="c35-ver">Ver el cálculo</button></div>
+</div>
+<div class="readout" id="c35-out" aria-live="polite"><span>Calcula las dos métricas con la tabla y compruébalas.</span></div>
+</div></div></section>
+<section><h2>Ejemplos de herramientas: Zendesk, Freshdesk, Jira Service Management, GLPI, osTicket y bandejas de WhatsApp como Chatwoot</h2><div class="prose"><p>El mercado ofrece muchas herramientas de mesa de ayuda, y casi todas manejan tickets, estados, niveles, SLA, base de conocimiento y métricas. Se diferencian en el modelo (servicio en la nube o instalación propia), en el precio y en qué tan fácil es integrarlas. Algunos ejemplos conocidos:</p><ul><li><b>Zendesk</b> y <b>Freshdesk</b>: plataformas comerciales en la nube, pensadas para atención al cliente, con muchos canales integrados (correo, chat, WhatsApp, redes sociales) y bots.</li><li><b>Jira Service Management</b>: nacida en el mundo de la tecnología, muy alineada con ITIL; se usa tanto para la mesa de ayuda interna como para la de clientes, y se cruza bien con los equipos de ingeniería.</li><li><b>GLPI</b> y <b>osTicket</b>: de código abierto, que se instalan en servidores propios. GLPI suma inventario de equipos; osTicket es más simple y liviano.</li><li><b>Chatwoot</b>: bandeja de entrada de código abierto que junta WhatsApp, chat web, redes sociales y correo para que varios agentes atiendan desde un mismo lugar.</li></ul><p>Además, muchos CRM y muchas plataformas de gestión para ISP (capítulo 34) traen su propio módulo de tickets. La pregunta importante no es cuál herramienta es mejor, sino dónde vive la historia del cliente y cómo se conecta con todo lo demás.</p></div></section>
+<section><h2>Integración con CRM, gestor de OLT, ACS y órdenes de trabajo</h2><div class="prose"><p>Un ticket aislado obliga al agente a abrir cinco sistemas: el CRM para ver el plan y los pagos, el gestor de la OLT para ver si la ONT está en línea y cuánta luz le llega, el ACS para ver el Wi-Fi, el monitoreo del NOC para saber si hay una falla masiva y el sistema de órdenes de trabajo para agendar al técnico. Cada cambio de pantalla suma segundos y errores.</p><p>Integrar es traer lo esencial de cada sistema a la pantalla del ticket, y permitir algunas acciones sin salir de ella: reiniciar la ONT, cambiar el canal del Wi-Fi, reconectar un servicio pagado o crear la orden de visita con los datos ya cargados.</p></div><figure class="fig fig-esquema" id="35-diagrama-10"><div class="lienzo"><svg viewBox="0 0 880 420" style="min-width:700px" role="img" aria-label="Pantalla de ticket integrada: encabezado del ticket; panel del CRM con plan y pagos; panel del gestor de la OLT con la ONT en línea y luz normal; panel del ACS con el Wi-Fi saturado; panel del NOC sin fallas en la zona; diagnóstico sugerido de problema de Wi-Fi; botones para reiniciar la ONT, cambiar el canal, reconectar y crear una orden de visita">
+  <rect x="10" y="10" width="860" height="400" rx="12" class="caja"/>
+  <rect x="10" y="10" width="860" height="44" rx="12" class="c-apl"/>
+  <text x="28" y="38" class="t t-b">Ticket 10482 · «Internet lento en el cuarto»</text>
+  <text x="852" y="38" text-anchor="end" class="t t-s">prioridad media · <tspan class="t-b">en curso</tspan> · WhatsApp</text>
+
+  
+  <rect x="30" y="70" width="400" height="104" rx="10" class="d-sis"/>
+  <text x="44" y="90" class="t t-xs t-b k-sis">CLIENTE · DESDE EL CRM</text>
+  <g class="t t-s"><text x="44" y="114">Plan Hogar 600 · cliente desde hace 3 años</text><text x="44" y="134">Pagos al día · próxima factura el día 10</text><text x="44" y="154">2 contactos este mes por el mismo motivo</text></g>
+  
+  <rect x="450" y="70" width="400" height="104" rx="10" class="d-oper"/>
+  <text x="464" y="90" class="t t-xs t-b k-oper">ONT · DESDE EL GESTOR DE LA OLT</text>
+  <g class="t t-s"><text x="464" y="114">✓ En línea desde hace 3 días</text><text x="464" y="134">✓ Luz recibida −21 dBm (normal)</text><text x="464" y="154">✓ Sin cortes en la última semana</text></g>
+  
+  <rect x="30" y="186" width="400" height="104" rx="10" class="d-casa"/>
+  <text x="44" y="206" class="t t-xs t-b k-casa">WI-FI · DESDE EL ACS</text>
+  <g class="t t-s"><text x="44" y="230" class="k-apl t-b">✗ Canal 6 de 2,4 GHz saturado por vecinos</text><text x="44" y="250">14 dispositivos conectados</text><text x="44" y="270" class="k-apl t-b">✗ Celular del cuarto con señal débil</text></g>
+  
+  <rect x="450" y="186" width="400" height="104" rx="10" class="d-inet"/>
+  <text x="464" y="206" class="t t-xs t-b k-inet">ZONA · DESDE EL MONITOREO DEL NOC</text>
+  <g class="t t-s"><text x="464" y="230">✓ Sin fallas masivas en la zona</text><text x="464" y="250">✓ Puerto PON con uso normal</text><text x="464" y="270">Sin trabajos programados</text></g>
+
+  <rect x="30" y="302" width="820" height="36" rx="8" class="c-enl"/>
+  <text x="44" y="325" class="t t-s"><tspan class="t-b">Diagnóstico sugerido:</tspan> la fibra está bien; el problema es el Wi-Fi de la casa. Se resuelve sin visita.</text>
+
+  <text x="30" y="368" class="t t-xs t-b t-m">ACCIONES</text>
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="110" y="352" width="170" height="40" rx="8" class="c-red"/><text x="195" y="377">Reiniciar la ONT</text>
+    <rect x="292" y="352" width="170" height="40" rx="8" class="c-red"/><text x="377" y="377">Cambiar canal Wi-Fi</text>
+    <rect x="474" y="352" width="170" height="40" rx="8" class="caja"/><text x="559" y="377">Reconectar servicio</text>
+    <rect x="656" y="352" width="194" height="40" rx="8" class="caja"/><text x="753" y="377">Crear orden de visita</text>
+  </g>
+</svg></div><figcaption><b>La pantalla del ticket integrada.</b> Un ticket de ejemplo con cuatro paneles alimentados por sistemas distintos: la ficha del cliente desde el CRM, el estado óptico de la ONT desde el gestor de la OLT, el Wi-Fi desde el ACS y las alertas de la zona desde el NOC. Abajo, las acciones que el agente puede disparar sin cambiar de sistema.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región notó que buena parte de las visitas técnicas terminaban sin que el técnico cambiara nada: la ONT funcionaba, la luz llegaba bien y el problema era el Wi-Fi de la casa o un equipo del cliente. El primer nivel mandaba la visita porque no tenía cómo saberlo. La solución fue llevar a la pantalla del ticket el estado de la ONT (en línea o no, potencia óptica recibida, último reinicio) y los datos del Wi-Fi (canal, cantidad de dispositivos, intensidad de señal de cada uno), más un par de botones para actuar a distancia. Con esa información, el agente distingue en un minuto un problema de fibra, que sí necesita técnico, de uno de Wi-Fi, que se resuelve por teléfono. Las visitas innecesarias bajaron, el tiempo de resolución también, y los técnicos quedaron libres para las instalaciones.</p></div><div class="ml"><b>En la práctica</b><p>Cuando un agente le pide al cliente el número de documento, que mire las luces del equipo o que pruebe por cable, no es burocracia: está llenando el ticket y siguiendo un guion para no escalar a ciegas. Cualquier área que toca un servicio (ventas, facturación, red, campo) mueve las métricas de atención: un cambio de plan mal cargado se convierte en un reclamo, y una zona sin aviso de corte se convierte en cien llamadas. Saber cómo viaja un ticket ayuda a entender por qué un reclamo tarda y a quién preguntarle.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué diferencia hay entre multicanal y omnicanal?</summary><p>Multicanal es tener muchos canales, cada uno con su propio registro; omnicanal es que todos los contactos, entren por donde entren, queden en una sola historia del cliente.</p></details><details><summary>¿Por qué existe el estado «resuelto» antes de «cerrado»?</summary><p>Porque resuelto es lo que cree el operador y cerrado es la confirmación del cliente (o el paso de un plazo sin reclamos). Ese margen evita cerrar casos que siguen abiertos para el cliente.</p></details><details><summary>Veinte clientes de la misma calle llaman sin servicio. ¿A dónde se escala?</summary><p>Al NOC: varios clientes de una misma zona apuntan a una falla de red (una fibra o una OLT), no a un problema de cada casa.</p></details><details><summary>¿Qué diferencia hay entre un incidente y un problema en ITIL?</summary><p>El incidente es la interrupción que hay que restablecer cuanto antes; el problema es la causa de fondo de uno o varios incidentes, que hay que investigar para que no se repitan.</p></details><details><summary>¿Por qué no conviene medir solo el tiempo medio de atención?</summary><p>Porque premia cortar rápido, y eso baja la resolución al primer contacto: el cliente vuelve a llamar y el costo total sube.</p></details><details><summary>¿Qué mide el NPS que no mide el CSAT?</summary><p>El NPS mide si el cliente recomendaría al operador, es decir, la relación completa; el CSAT mide la satisfacción con una atención puntual.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/ITIL" target="_blank" rel="noopener">ITIL (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.atlassian.com/es/itsm" target="_blank" rel="noopener">Qué es la gestión de servicios de TI, ITSM (Atlassian) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/First_call_resolution" target="_blank" rel="noopener">First call resolution, en inglés (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Net_Promoter_Score" target="_blank" rel="noopener">Net Promoter Score (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const PRIO=['Crítica','Alta','Media','Baja'];
+  const DEST=['Primer nivel','Segundo nivel','NOC','Campo','Facturación y cobranza'];
+  const CASOS=[
+    {t:'Somos una clínica con enlace dedicado: estamos sin Internet desde hace diez minutos.',d:'Cliente empresa con acuerdo de servicio.',p:[0],q:[2],x:'Un enlace de empresa caído es crítico: tiene un SLA con penalidades y afecta a muchas personas. Va directo al NOC, que ve el enlace de punta a punta.'},
+    {t:'En mi calle nadie tiene Internet desde las tres; mis vecinos también están llamando.',d:'El sistema muestra 40 ONT de la misma zona fuera de línea.',p:[0],q:[2],x:'Muchos clientes de una misma zona apuntan a una falla de red (una fibra o una OLT). Es un solo incidente masivo para el NOC, no cuarenta visitas.'},
+    {t:'No tengo Internet. La luz LOS de la ONT está en rojo.',d:'Los vecinos funcionan; la OLT no recibe luz de esta ONT.',p:[1],q:[3],x:'Un cliente sin servicio es prioridad alta. Con la luz LOS en rojo y los vecinos bien, el problema está en su acometida o su roseta: hace falta un técnico de campo.'},
+    {t:'Pagué ayer y sigo cortado.',d:'El pago aparece en el sistema; la orden de reconexión no se ejecutó.',p:[1],q:[0,4],x:'Está sin servicio por un error del operador: prioridad alta. El primer nivel puede ver el pago y disparar la reconexión; si el pago no apareciera, iría a cobranza para conciliarlo.'},
+    {t:'Me cobraron dos veces este mes.',d:'Tiene servicio y la factura vence en diez días.',p:[2],q:[4],x:'El servicio funciona y hay tiempo hasta el vencimiento: prioridad media. Lo resuelve facturación con una nota de crédito o un ajuste.'},
+    {t:'El Internet anda lento, pero solo en el cuarto del fondo.',d:'La ONT está en línea y con luz normal.',p:[2],q:[0],x:'Si solo falla en un cuarto, casi siempre es Wi-Fi. El primer nivel lo diagnostica a distancia con el ACS: canal, señal y dispositivos.'},
+    {t:'La ONT se reinicia sola cada hora. Ya vino un técnico y cambió el cable.',d:'Tercer contacto por el mismo motivo.',p:[2],q:[1],x:'Un caso que rebota y que el campo no resolvió necesita más conocimiento: segundo nivel revisa registros, firmware y configuración.'},
+    {t:'Quiero cambiar el nombre y la clave de mi Wi-Fi.',d:'Pedido, no falla.',p:[3],q:[0],x:'Es un pedido simple: prioridad baja. Lo resuelve el primer nivel en un minuto, o mejor aún, el propio cliente en la app.'}
+  ];
+  let i=0,aciertos=0,sel={p:null,q:null},hecho=false;
+  function botones(cont,lista,clave){
+    $(cont).innerHTML=lista.map((n,k)=>'<button type="button" aria-pressed="false" data-k="'+k+'">'+n+'</button>').join('');
+    $(cont).querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      if(hecho)return; sel[clave]=+b.dataset.k;
+      $(cont).querySelectorAll('button').forEach(o=>o.setAttribute('aria-pressed',o===b?'true':'false'));
+    }));
+  }
+  function mostrar(){
+    const c=CASOS[i]; hecho=false; sel={p:null,q:null};
+    $('#c35-num').textContent='Reclamo '+(i+1)+' de '+CASOS.length;
+    $('#c35-texto').textContent=c.t; $('#c35-dato').textContent='En el sistema: '+c.d;
+    botones('#c35-prio',PRIO,'p'); botones('#c35-dest',DEST,'q');
+    $('#c35-ok').hidden=false; $('#c35-sig').hidden=true;
+    $('#c35-res').innerHTML='<span>Elige una prioridad y un destino, y pulsa «Comprobar».</span>';
+  }
+  $('#c35-ok').addEventListener('click',()=>{
+    if(sel.p===null||sel.q===null){$('#c35-res').innerHTML='<span class="warn">Falta elegir la prioridad o el destino.</span>';return;}
+    const c=CASOS[i], okP=c.p.includes(sel.p), okQ=c.q.includes(sel.q); hecho=true;
+    if(okP)aciertos++; if(okQ)aciertos++;
+    $('#c35-res').innerHTML='<span class="'+(okP?'ok':'warn')+'">Prioridad: '+(okP?'bien':'no; lo esperado era '+c.p.map(k=>PRIO[k].toLowerCase()).join(' o '))+'</span>'+
+      '<span class="'+(okQ?'ok':'warn')+'">Destino: '+(okQ?'bien':'no; lo esperado era '+c.q.map(k=>DEST[k]).join(' o '))+'</span>'+
+      '<span style="font-family:var(--f-body);white-space:normal">'+c.x+'</span>';
+    $('#c35-ok').hidden=true;
+    if(i<CASOS.length-1){$('#c35-sig').hidden=false;$('#c35-sig').textContent='Siguiente reclamo →';}
+    else{$('#c35-sig').hidden=false;$('#c35-sig').textContent='Empezar de nuevo';
+      $('#c35-res').insertAdjacentHTML('beforeend','<span class="big">Terminaste: '+aciertos+' de '+(CASOS.length*2)+' decisiones correctas.</span>');}
+    $('#c35-sig').focus();
+  });
+  $('#c35-sig').addEventListener('click',()=>{ if(i<CASOS.length-1){i++;}else{i=0;aciertos=0;} mostrar(); });
+  mostrar();
+})();
+</script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const BASE=[
+    ['Teléfono','Sin servicio: fibra dañada',1,9,1],
+    ['WhatsApp','Lentitud: Wi-Fi',3,24,1],
+    ['Teléfono','Duda con la factura',1,6,0],
+    ['App','Cambio de clave Wi-Fi',1,4,0],
+    ['Teléfono','Sin servicio: ONT colgada',2,15,0],
+    ['WhatsApp','Lentitud: Wi-Fi',2,16,1],
+    ['Teléfono','Reconexión tras el pago',1,5,0],
+    ['WhatsApp','Falla masiva en la zona',1,4,0],
+    ['Teléfono','Lentitud: Wi-Fi',2,18,0],
+    ['WhatsApp','Duda con la factura',1,7,0],
+    ['Teléfono','Cortes intermitentes',3,27,1],
+    ['App','Sin servicio: fibra dañada',1,8,1]];
+  const MEJORA={0:[1,7,1],1:[1,9,0],4:[1,7,0],5:[1,8,0],8:[2,14,0],10:[2,16,1],11:[1,6,1]};
+  let esc=0;
+  const datos=()=>BASE.map((f,k)=>esc&&MEJORA[k]?[f[0],f[1]].concat(MEJORA[k],[1]):f.concat([0]));
+  const coma=(n,d)=>n.toFixed(d).replace('.',',');
+  function calc(){const d=datos();const t=d.length,uno=d.filter(f=>f[2]===1).length,c=d.reduce((s,f)=>s+f[2],0),m=d.reduce((s,f)=>s+f[3],0),v=d.filter(f=>f[4]).length;return {t,uno,c,m,v,fcr:uno/t*100,aht:m/c};}
+  function tabla(){
+    $('#c35-filas').innerHTML=datos().map((f,k)=>'<tr'+(f[5]?' class="c35-camb"':'')+'><td>'+(k+1)+'</td><td>'+f[0]+'</td><td>'+f[1]+'</td><td class="c35-n">'+f[2]+'</td><td class="c35-n">'+f[3]+'</td><td>'+(f[4]?'sí':'no')+'</td></tr>').join('');
+    $('#c35-fcr').value='';$('#c35-aht').value='';
+    $('#c35-out').innerHTML='<span>'+(esc?'Las filas en verde cambiaron gracias a la nueva pantalla. Calcula otra vez.':'Calcula las dos métricas con la tabla y compruébalas.')+'</span>';
+  }
+  const leer=id=>parseFloat($(id).value.replace(',','.'));
+  $('#c35-comp').addEventListener('click',()=>{
+    const r=calc(),f=leer('#c35-fcr'),a=leer('#c35-aht');
+    const okF=Math.abs(f-r.fcr)<=1, okA=Math.abs(a-r.aht)<=0.15;
+    $('#c35-out').innerHTML='<span class="'+(okF?'ok':'warn')+'">FCR: '+(isNaN(f)?'falta el valor':okF?'correcto':'revisa: cuenta los casos con 1 contacto y divide por el total de casos')+'</span>'+
+      '<span class="'+(okA?'ok':'warn')+'">AHT: '+(isNaN(a)?'falta el valor':okA?'correcto':'revisa: suma los minutos y divide por la suma de contactos, no de casos')+'</span>';
+  });
+  $('#c35-ver').addEventListener('click',()=>{
+    const r=calc();
+    let h='<span>FCR = '+r.uno+' casos con 1 contacto ÷ '+r.t+' casos = <b class="big">'+coma(r.fcr,1)+' %</b></span>'+
+      '<span>AHT = '+r.m+' minutos ÷ '+r.c+' contactos = <b class="big">'+coma(r.aht,1)+' min</b></span>'+
+      '<span>Visitas técnicas: '+r.v+' · contactos totales: '+r.c+'</span>';
+    if(esc){h+='<span class="ok">Frente al día normal: el FCR sube de 58,3 % a '+coma(r.fcr,1)+' %, el cliente se comunica '+(19-r.c)+' veces menos, el agente ocupa '+(143-r.m)+' minutos menos y salen '+(5-r.v)+' visitas menos. Los casos de Wi-Fi se resolvieron por teléfono.</span>';}
+    else{h+='<span>Mira los casos de «Lentitud: Wi-Fi»: piden varios contactos y hasta una visita, aunque la fibra está bien. Activa la mejora para ver qué cambia.</span>';}
+    $('#c35-out').innerHTML=h;
+  });
+  document.querySelectorAll('#c35-met [data-e]').forEach(b=>b.addEventListener('click',()=>{
+    esc=+b.dataset.e;document.querySelectorAll('#c35-met [data-e]').forEach(o=>o.setAttribute('aria-pressed',o===b?'true':'false'));tabla();
+  }));
+  tabla();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OSS · Cómo funciona un telco</title>
+<meta name="description" content="Los sistemas de operación convierten una venta en un servicio funcionando y lo mantienen vivo: saben qué hay en la red (inventario), lo configuran (aprovisionamiento), mandan a las cuadrillas (fuerza de trabajo) y vigilan fallas y rendimiento.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="36-oss">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 36 DE 49</span><h1>OSS: del pedido al servicio funcionando</h1><p class="lede">Los sistemas de operación convierten una venta en un servicio funcionando y lo mantienen vivo: saben qué hay en la red (inventario), lo configuran (aprovisionamiento), mandan a las cuadrillas (fuerza de trabajo) y vigilan fallas y rendimiento.</p></header>
+<section><div class="prose"><p>El capítulo 34 terminó con una orden de venta: «alta del Plan Hogar 600 en tal dirección». Para el BSS, ese es el final de un trabajo. Para la operación es el principio de otro: ¿hay fibra en esa calle?, ¿queda un puerto libre en la caja del poste?, ¿qué técnico puede ir y cuándo?, ¿qué hay que configurar en la OLT, en el BNG y en la ONT para que el cliente navegue a 600 megas? Y, una vez funcionando, ¿cómo nos enteramos si deja de funcionar?</p><p>Las respuestas las dan los <b>sistemas de soporte a la operación</b>, que la industria llama <b>OSS</b> (<i>Operations Support Systems</i>). Este capítulo recorre sus piezas en el orden en que actúan sobre un cliente nuevo: inventario, factibilidad, aprovisionamiento, órdenes de trabajo y la app del técnico; y después las que cuidan el servicio todos los días: fallas, rendimiento y AAA.</p></div><div class="analogia"><b>Imagínalo así</b><p>La logística de una mudanza: primero hay que saber qué camiones y cuántas cajas hay disponibles; después, si el camión entra en la calle del destino; luego asignar un equipo, programar el día y darle a cada persona su lista de tareas. Y si algo se rompe en el camino, alguien tiene que enterarse rápido y resolverlo.</p></div><figure class="fig fig-capas" id="36-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el OSS, del pedido al servicio funcionando">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class="apagado"><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class="apagado"><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class="apagado"><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class="apagado"><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class=""><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class="apagado"><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class=""><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class=""><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class=""><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class=""><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class=""><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class="apagado"><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: el OSS, del pedido al servicio funcionando</text>
+</svg></div><figcaption><b>Dónde estamos.</b> En el mapa de sistemas, este capítulo enciende la capa OSS, entre la integración que trae las órdenes del negocio y la red que las ejecuta. En la cadena de valor cubre los eslabones que van de la cobertura a la operación diaria: saber dónde se puede vender, ordenar, agendar, instalar, activar y mantener.</figcaption></figure></section>
+<section><h2>Inventario físico y lógico</h2><div class="prose"><p>El <b>inventario de red</b> es la memoria del operador: qué equipos y qué cables tiene, dónde están, cómo se conectan y qué cliente usa cada cosa. Sin inventario no se puede vender con certeza, ni configurar sin pisar a otro cliente, ni saber a quién afecta una falla.</p><p>Se divide en dos mitades que deben estar amarradas entre sí:</p><ul><li>El <b>inventario físico</b>: lo que se puede tocar. Las OLT y sus tarjetas y puertos, los cables de fibra, las cajas de empalme, los splitters, las cajas terminales en los postes (las <b>CTO</b>, cajas de terminación óptica, donde se conecta la acometida de cada casa) y las ONT instaladas.</li><li>El <b>inventario lógico</b>: lo que se configura. Los perfiles de velocidad, las VLAN, las direcciones IP, los identificadores de cada ONT en su puerto PON, las sesiones de cada cliente.</li></ul><p>Lo valioso es la conexión entre las dos mitades. El cliente de la calle Los Olivos 120 tiene una ONT con tal número de serie, conectada al puerto 5 de la caja CTO-14, que cuelga de un splitter alimentado por el puerto PON 3 de la tarjeta 2 de la OLT de la central norte; en ese puerto lógico tiene el identificador 17, el perfil de 600 megas y la VLAN residencial. Con esa cadena, cualquier pregunta tiene respuesta.</p></div><figure class="fig fig-esquema" id="36-diagrama-5"><div class="lienzo"><svg viewBox="0 0 920 340" style="min-width:740px" role="img" aria-label="Inventario físico y lógico conectados: arriba, la cadena física de un cliente desde la OLT, el puerto PON, la fibra troncal, el splitter, la caja CTO, la acometida y la ONT; abajo, lo configurado: identificador de la ONT en el puerto PON, perfil de velocidad, VLAN, sesión con su dirección IP y el cliente; líneas punteadas amarran ambas mitades">
+  <rect x="10" y="10" width="900" height="138" rx="12" class="d-oper"/>
+  <rect x="10" y="196" width="900" height="134" rx="12" class="d-inet"/>
+  <text x="24" y="30" class="t t-xs t-b k-oper">INVENTARIO FÍSICO · LO QUE SE PUEDE TOCAR</text>
+  <text x="24" y="320" class="t t-xs t-b k-inet">INVENTARIO LÓGICO · LO QUE SE CONFIGURA</text>
+  <rect x="24" y="44" width="112" height="84" rx="10" class="caja"/>
+  <use href="#i-olt" x="64" y="50" width="32" height="32" class="ico"/>
+  <text x="80" y="100" text-anchor="middle" class="t t-s t-b">OLT</text><text x="80" y="117" text-anchor="middle" class="t t-s t-m">central norte</text>
+  <line x1="136" y1="86" x2="150" y2="86" class="ln s-fis" style="stroke-width:3"/>
+  <rect x="150" y="44" width="112" height="84" rx="10" class="caja"/>
+  <text x="206" y="100" text-anchor="middle" class="t t-s t-b">Puerto PON</text><text x="206" y="117" text-anchor="middle" class="t t-s t-m">tarjeta 2, puerto 3</text>
+  <line x1="262" y1="86" x2="276" y2="86" class="ln s-fis" style="stroke-width:3"/>
+  <rect x="276" y="44" width="112" height="84" rx="10" class="caja"/>
+  <text x="332" y="100" text-anchor="middle" class="t t-s t-b">Fibra troncal</text><text x="332" y="117" text-anchor="middle" class="t t-s t-m">cable 1, hilo 12</text>
+  <line x1="388" y1="86" x2="402" y2="86" class="ln s-fis" style="stroke-width:3"/>
+  <rect x="402" y="44" width="112" height="84" rx="10" class="caja"/>
+  <use href="#i-splitter" x="442" y="50" width="32" height="32" class="ico"/>
+  <text x="458" y="100" text-anchor="middle" class="t t-s t-b">Splitter 1:8</text><text x="458" y="117" text-anchor="middle" class="t t-s t-m">salida 4</text>
+  <line x1="514" y1="86" x2="528" y2="86" class="ln s-fis" style="stroke-width:3"/>
+  <rect x="528" y="44" width="112" height="84" rx="10" class="caja"/>
+  <text x="584" y="100" text-anchor="middle" class="t t-s t-b">Caja CTO-14</text><text x="584" y="117" text-anchor="middle" class="t t-s t-m">puerto 5 de 8</text>
+  <line x1="640" y1="86" x2="654" y2="86" class="ln s-fis" style="stroke-width:3"/>
+  <rect x="654" y="44" width="112" height="84" rx="10" class="caja"/>
+  <text x="710" y="100" text-anchor="middle" class="t t-s t-b">Acometida</text><text x="710" y="117" text-anchor="middle" class="t t-s t-m">80 m</text>
+  <line x1="766" y1="86" x2="780" y2="86" class="ln s-fis" style="stroke-width:3"/>
+  <rect x="780" y="44" width="112" height="84" rx="10" class="caja"/>
+  <use href="#i-ont" x="820" y="50" width="32" height="32" class="ico"/>
+  <text x="836" y="100" text-anchor="middle" class="t t-s t-b">ONT</text><text x="836" y="117" text-anchor="middle" class="t t-s t-m">serie ABCD1234</text>
+  <rect x="150" y="212" width="112" height="56" rx="10" class="c-red"/><text x="206" y="236" text-anchor="middle" class="t t-s t-b">ID de ONT 17</text><text x="206" y="254" text-anchor="middle" class="t t-s">en el PON 2/3</text>
+  <line x1="262" y1="240" x2="274" y2="240" class="ln"/>
+  <rect x="276" y="212" width="112" height="56" rx="10" class="c-red"/><text x="332" y="236" text-anchor="middle" class="t t-s t-b">Perfil 600/300</text><text x="332" y="254" text-anchor="middle" class="t t-s">Mbps</text>
+  <line x1="388" y1="240" x2="400" y2="240" class="ln"/>
+  <rect x="402" y="212" width="112" height="56" rx="10" class="c-red"/><text x="458" y="236" text-anchor="middle" class="t t-s t-b">VLAN 10</text><text x="458" y="254" text-anchor="middle" class="t t-s">residencial</text>
+  <line x1="514" y1="240" x2="652" y2="240" class="ln"/>
+  <rect x="654" y="212" width="112" height="56" rx="10" class="c-red"/><text x="710" y="236" text-anchor="middle" class="t t-s t-b">Sesión</text><text x="710" y="254" text-anchor="middle" class="t t-s">IP 100.64.12.7</text>
+  <line x1="766" y1="240" x2="778" y2="240" class="ln"/>
+  <rect x="780" y="212" width="112" height="56" rx="10" class="c-apl"/><text x="836" y="236" text-anchor="middle" class="t t-s t-b">Cliente</text><text x="836" y="254" text-anchor="middle" class="t t-s">Los Olivos 120</text>
+  <g class="ln ln-d" style="stroke-width:1.6">
+    <path d="M206 128V212"/><path d="M836 128V212"/><path d="M584 128L810 212"/><path d="M710 268V284H206V268"/>
+  </g>
+  <g class="t t-xs t-m"><text x="212" y="174">DÓNDE ESTÁ LA ONT</text><text x="830" y="174" text-anchor="end">QUÉ ONT ES DE QUIÉN</text><text x="458" y="298" text-anchor="middle">LA SESIÓN SE ABRE POR ESE PUERTO PON</text></g>
+</svg></div><figcaption><b>Inventario lógico y físico, conectados.</b> Arriba, la cadena física de un cliente: OLT, tarjeta y puerto PON, fibra troncal, splitter, caja CTO y su puerto, acometida y ONT. Abajo, lo que la red tiene configurado para ese mismo cliente: identificador en el puerto PON, perfil de velocidad, VLAN y sesión con su dirección IP. Las líneas punteadas son los amarres que el inventario guarda entre una mitad y la otra; sin ellos, cada mitad responde solo la mitad de las preguntas.</figcaption></figure><div class="prose"><p>El capítulo 37 muestra cómo se dibuja la parte física sobre un mapa. Aquí basta con la idea: el inventario es una <b>fuente de verdad</b> que muchos sistemas consultan, y su valor depende de que esté al día.</p></div></section>
+<section><h2>Factibilidad y cobertura</h2><div class="prose"><p>Antes de vender, alguien tiene que contestar una pregunta simple: <b>¿se puede instalar en esta dirección?</b> Eso es la <b>factibilidad</b> (o viabilidad técnica). La <b>cobertura</b> es la versión general, el mapa de las zonas donde llega la red; la factibilidad es la respuesta para una casa concreta.</p><p>Para que una dirección sea factible en fibra hacen falta tres cosas:</p><ol class="steps"><li><span>Que haya una <b>caja terminal</b> cerca: la acometida, el cable que va del poste a la casa, tiene un largo máximo razonable (el valor depende de cada operador y del tipo de cable).</span></li><li><span>Que esa caja tenga un <b>puerto libre</b>. Una caja con todos sus puertos ocupados no sirve, aunque esté en la puerta de la casa.</span></li><li><span>Que la cadena hacia atrás tenga capacidad: un splitter con salidas disponibles y un puerto PON que no esté saturado.</span></li></ol><p>Ahí está la explicación de una queja frecuente: «la fibra pasa por mi puerta y me dicen que no hay cobertura». La fibra que pasa puede ser un cable troncal sin cajas en esa cuadra, o la caja más cercana puede estar llena. Hasta que alguien amplíe la red, no hay dónde conectar.</p></div><div class="lab" id="36-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Hay puerto libre?</h3></div><p class="hint">Elige una dirección en el mapa del barrio. El sistema busca la caja terminal más cercana dentro de la distancia máxima de acometida y te dice si hay puerto libre. Cambia la distancia máxima y reserva puertos para ver cómo se llena una zona.</p><div id="c36-fac">
+<style>
+#c36-fac{display:grid;gap:12px}
+#c36-fac svg{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--line);border-radius:10px;font-family:var(--f-display)}
+#c36-fac .c36-calle{stroke:var(--grid);stroke-width:16;stroke-linecap:round}
+#c36-fac .c36-tron{stroke:var(--c-fis);stroke-width:5;fill:none}
+#c36-fac .c36-dist{stroke:var(--c-fis);stroke-width:2.5;fill:none}
+#c36-fac .c36-cto rect{fill:var(--card);stroke:var(--d-oper);stroke-width:2.5}
+#c36-fac .c36-cto.llena rect{fill:var(--warm-soft);stroke:var(--warm)}
+#c36-fac .c36-cto text{fill:var(--ink);font-size:15px;font-weight:700}
+#c36-fac .c36-cto text.c36-oc{font-size:14px;font-weight:600;font-family:var(--f-mono)}
+#c36-fac .c36-casa{cursor:pointer}
+#c36-fac .c36-casa path{fill:var(--d-casa-s);stroke:var(--d-casa);stroke-width:2.5}
+#c36-fac .c36-casa text{fill:var(--d-casa);font-size:18px;font-weight:800}
+#c36-fac .c36-casa.sel path{stroke:var(--accent);stroke-width:4;fill:var(--accent-soft)}
+#c36-fac .c36-radio{fill:var(--accent-soft);fill-opacity:.45;stroke:var(--accent);stroke-dasharray:6 6;stroke-width:2}
+#c36-fac .c36-ok{stroke:var(--good);stroke-width:4;stroke-dasharray:8 5}
+#c36-fac .c36-no{stroke:var(--warm);stroke-width:3;stroke-dasharray:4 5}
+#c36-fac .c36-rot{fill:var(--muted);font-size:14px}
+#c36-fac .readout span{white-space:normal}
+</style>
+<div class="btns" role="group" aria-label="Dirección del cliente" id="c36-dirs"></div>
+<svg viewBox="0 0 600 360" role="img" aria-label="Mapa del barrio con cajas terminales y casas" id="c36-mapa"></svg>
+<div class="ctls">
+  <div class="ctl"><label for="c36-max">Distancia máxima de acometida</label><output id="c36-max-o"></output>
+    <input type="range" id="c36-max" min="50" max="250" step="10" value="100"></div>
+  <div class="btns" style="align-self:end"><button class="primary" id="c36-res">Reservar el puerto</button><button id="c36-vac">Vaciar reservas</button></div>
+</div>
+<div class="readout" id="c36-out" aria-live="polite"></div>
+<p class="hint">Mapa de ejemplo: un cuadro de la cuadrícula equivale a unos 100 metros. Las cajas en naranja están llenas. La línea gruesa naranja es el cable troncal: pasa cerca de varias casas, pero solo se puede conectar a un cliente en una caja terminal.</p>
+</div></div></section>
+<section><h2>Aprovisionamiento de servicios</h2><div class="prose"><p><b>Aprovisionar</b> es configurar la red para que el servicio vendido funcione. En la fibra, un alta típica toca varios sistemas, en orden:</p><ol class="steps"><li><span><b>Reservar los recursos</b> en el inventario: el puerto de la caja, el puerto PON, la dirección IP si es fija.</span></li><li><span><b>Dar de alta la ONT en la OLT</b>: registrar su número de serie en el puerto PON y darle un identificador.</span></li><li><span><b>Aplicar el perfil de servicio</b>: la velocidad contratada, las VLAN y, si corresponde, la voz y la televisión.</span></li><li><span><b>Habilitar al suscriptor en RADIUS</b>, el sistema que autoriza la sesión y le dice al BNG qué velocidad aplicar (capítulo 20).</span></li><li><span><b>Configurar el equipo de la casa</b> a través del ACS: la red Wi-Fi, la clave y el firmware (capítulo 28).</span></li><li><span><b>Confirmar</b>: comprobar que la ONT está en línea, que la sesión se abrió, y avisar al BSS que la orden está completa para que empiece la facturación.</span></li></ol></div><figure class="fig fig-flujo" id="36-diagrama-4"><div class="lienzo"><svg viewBox="0 0 1000 600" style="min-width:780px" role="img" aria-label="Flujo de aprovisionamiento: el BSS envía la orden de alta al OSS, que reserva recursos; el técnico conecta la ONT y el gestor de la OLT la detecta; el OSS ordena el alta con su perfil; la OLT configura la ONT; el OSS habilita al suscriptor en RADIUS; la ONT abre su sesión y RADIUS la acepta; el OSS pide al ACS configurar el Wi-Fi; el gestor confirma que la ONT está en línea y el OSS avisa al BSS que el servicio está activo">
+  <g class="t t-b">
+    <rect x="20" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-factura" x="28" y="26" width="28" height="28" class="ico"/><text x="62" y="40">BSS</text><text x="62" y="57" class="t-s t-m" style="font-weight:400">órdenes</text>
+    <rect x="160" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-monitor" x="168" y="26" width="28" height="28" class="ico"/><text x="202" y="40">OSS</text><text x="202" y="57" class="t-s t-m" style="font-weight:400">e inventario</text>
+    <rect x="300" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-olt" x="308" y="26" width="28" height="28" class="ico"/><text x="342" y="40">Gestor</text><text x="342" y="57" class="t-s t-m" style="font-weight:400">de la OLT</text>
+    <rect x="440" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-llave" x="448" y="26" width="28" height="28" class="ico"/><text x="482" y="47">RADIUS</text>
+    <rect x="580" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-servidor" x="588" y="26" width="28" height="28" class="ico"/><text x="622" y="47">ACS</text>
+    <rect x="720" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-ont" x="728" y="26" width="28" height="28" class="ico"/><text x="762" y="40">ONT</text><text x="762" y="57" class="t-s t-m" style="font-weight:400">en la casa</text>
+  </g>
+  <line x1="80" y1="70" x2="80" y2="586" class="vida"/>
+  <line x1="220" y1="70" x2="220" y2="586" class="vida"/>
+  <line x1="360" y1="70" x2="360" y2="586" class="vida"/>
+  <line x1="500" y1="70" x2="500" y2="586" class="vida"/>
+  <line x1="640" y1="70" x2="640" y2="586" class="vida"/>
+  <line x1="780" y1="70" x2="780" y2="586" class="vida"/>
+
+  
+  <line x1="80" y1="104" x2="218" y2="110" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="86" y="98" class="t t-s">① Alta Hogar 600</text>
+  <rect x="158" y="124" width="200" height="48" rx="8" class="c-tra"/>
+  <text x="168" y="143" class="t t-s t-b">② Reserva recursos</text>
+  <text x="168" y="161" class="t t-s">CTO-14/5 · PON 2/3 · perfil</text>
+
+  
+  <line x1="780" y1="204" x2="362" y2="210" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="560" y="198" class="t t-s">③ ONT nueva detectada: serie ABCD1234</text>
+  <line x1="220" y1="240" x2="358" y2="246" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="226" y="234" class="t t-s">④ Alta + perfil</text>
+  <line x1="360" y1="274" x2="778" y2="280" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="366" y="268" class="t t-s">⑤ Configuración por OMCI: VLAN y servicios</text>
+  <line x1="220" y1="312" x2="498" y2="318" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="226" y="306" class="t t-s">⑥ Habilitar suscriptor, 600/300</text>
+  <line x1="780" y1="350" x2="502" y2="356" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="560" y="344" class="t t-s">⑦ Sesión: ¿quién soy? (vía BNG)</text>
+  <line x1="500" y1="382" x2="778" y2="388" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="506" y="404" class="t t-s">⑧ Aceptado: 600/300 e IP</text>
+  <line x1="220" y1="428" x2="638" y2="434" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="226" y="422" class="t t-s">⑨ Wi-Fi: nombre y clave del cliente</text>
+  <line x1="640" y1="460" x2="778" y2="466" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="646" y="454" class="t t-s">⑩ TR-069</text>
+
+  
+  <line x1="360" y1="506" x2="222" y2="512" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="226" y="500" class="t t-s">⑪ En línea, luz normal</text>
+  <line x1="220" y1="546" x2="82" y2="552" class="ln s-enl" style="stroke-width:2.6" marker-end="url(#fl-enl)"/>
+  <text x="86" y="540" class="t t-s t-b">⑫ Servicio activo</text>
+  <text x="86" y="574" class="t t-s t-m">empieza a facturarse</text>
+
+  <g class="t t-xs t-b">
+    <path d="M870 96v80" class="ln s-tra" style="stroke-width:3"/><text x="880" y="132" class="k-tra">RESERVA</text><text x="880" y="145" class="t-m">al vender</text>
+    <path d="M870 194v280" class="ln s-red" style="stroke-width:3"/><text x="880" y="326" class="k-red">ACTIVACIÓN</text><text x="880" y="339" class="t-m">al conectar la ONT</text>
+    <path d="M870 494v70" class="ln s-enl" style="stroke-width:3"/><text x="880" y="526" class="k-enl">CONFIRMACIÓN</text><text x="880" y="539" class="t-m">cierra la orden</text>
+  </g>
+  <text x="10" y="320" class="t t-xs t-m" transform="rotate(-90 10 320)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Del pedido al servicio activo.</b> El tiempo corre hacia abajo. La orden llega del BSS; el OSS reserva recursos en el inventario; cuando el técnico conecta la ONT, el gestor de la OLT la da de alta y le aplica el perfil; RADIUS habilita al suscriptor; el ACS configura el Wi-Fi; la ONT abre su sesión y el OSS confirma al BSS que el servicio está activo. A la derecha, las fases: reserva, activación en la red y confirmación.</figcaption></figure><div class="prose"><p>Hacer todo esto a mano, comando por comando, es lento y propenso a errores: basta un perfil equivocado para que el cliente navegue a la velocidad de otro plan. Por eso los operadores automatizan el aprovisionamiento, y en los más grandes lo coordina un <b>orquestador</b>, el traductor entre el negocio y la red que explica el capítulo 38. Cuando todo está automatizado y la ONT se activa sola al conectarla, se habla de <b>aprovisionamiento sin intervención</b> (<i>zero-touch</i>), que el capítulo 40 recorre de punta a punta.</p></div></section>
+<section><h2>Gestión de órdenes de trabajo y cuadrillas</h2><div class="prose"><p>Muchas órdenes necesitan manos en la calle: instalar, reparar, trasladar, retirar un equipo. Cada una se convierte en una <b>orden de trabajo</b>, y el sistema de <b>gestión de la fuerza de trabajo</b> (<i>workforce management</i>) decide quién la hace y cuándo.</p><p>No es una decisión trivial. El sistema cruza la zona de la orden, la habilidad que requiere (no es lo mismo instalar una casa que empalmar un cable troncal), los materiales que hacen falta, la agenda del cliente y la ubicación de cada cuadrilla para armar rutas que no crucen la ciudad de punta a punta. De ese cálculo salen las fechas que ventas le promete al cliente.</p></div><figure class="fig fig-esquema" id="36-diagrama-3"><div class="lienzo"><svg viewBox="0 0 880 350" style="min-width:700px" role="img" aria-label="Vida de una orden de trabajo: creada, agendada, asignada, en camino, en sitio y cerrada con evidencia; debajo, el sistema que actúa y el dato que deja; desde en sitio salen las excepciones: cliente ausente, falta de material o puerto ocupado, que devuelven la orden a la agenda">
+  <rect x="20" y="30" width="128" height="56" rx="28" class="caja"/><text x="84" y="54" text-anchor="middle" class="t t-b">① Creada</text><text x="84" y="72" text-anchor="middle" class="t t-s">desde la orden</text>
+  <text x="84" y="112" text-anchor="middle" class="t t-xs t-b t-m">BSS → OSS</text><text x="84" y="130" text-anchor="middle" class="t t-s t-m">tipo y dirección</text>
+  <line x1="148" y1="58" x2="160" y2="58" class="ln" marker-end="url(#fl)"/>
+  <rect x="162" y="30" width="128" height="56" rx="28" class="caja"/><text x="226" y="54" text-anchor="middle" class="t t-b">② Agendada</text><text x="226" y="72" text-anchor="middle" class="t t-s">cita con el cliente</text>
+  <text x="226" y="112" text-anchor="middle" class="t t-xs t-b t-m">AGENDA</text><text x="226" y="130" text-anchor="middle" class="t t-s t-m">fecha y franja</text>
+  <line x1="290" y1="58" x2="302" y2="58" class="ln" marker-end="url(#fl)"/>
+  <rect x="304" y="30" width="128" height="56" rx="28" class="caja"/><text x="368" y="54" text-anchor="middle" class="t t-b">③ Asignada</text><text x="368" y="72" text-anchor="middle" class="t t-s">cuadrilla y ruta</text>
+  <text x="368" y="112" text-anchor="middle" class="t t-xs t-b t-m">WORKFORCE</text><text x="368" y="130" text-anchor="middle" class="t t-s t-m">técnico y material</text>
+  <line x1="432" y1="58" x2="444" y2="58" class="ln" marker-end="url(#fl)"/>
+  <rect x="446" y="30" width="128" height="56" rx="28" class="c-red"/><text x="510" y="54" text-anchor="middle" class="t t-b">④ En camino</text><text x="510" y="72" text-anchor="middle" class="t t-s">el técnico sale</text>
+  <text x="510" y="112" text-anchor="middle" class="t t-xs t-b t-m">APP + GPS</text><text x="510" y="130" text-anchor="middle" class="t t-s t-m">hora estimada</text>
+  <line x1="574" y1="58" x2="586" y2="58" class="ln" marker-end="url(#fl)"/>
+  <rect x="588" y="30" width="128" height="56" rx="28" class="c-red"/><text x="652" y="54" text-anchor="middle" class="t t-b">⑤ En sitio</text><text x="652" y="72" text-anchor="middle" class="t t-s">instala o repara</text>
+  <text x="652" y="112" text-anchor="middle" class="t t-xs t-b t-m">APP DEL TÉCNICO</text><text x="652" y="130" text-anchor="middle" class="t t-s t-m">serie, potencia</text>
+  <line x1="716" y1="58" x2="728" y2="58" class="ln" marker-end="url(#fl)"/>
+  <rect x="730" y="30" width="128" height="56" rx="28" class="c-enl"/><text x="794" y="54" text-anchor="middle" class="t t-b">⑥ Cerrada</text><text x="794" y="72" text-anchor="middle" class="t t-s">con evidencia</text>
+  <text x="794" y="112" text-anchor="middle" class="t t-xs t-b t-m">OSS E INVENTARIO</text><text x="794" y="130" text-anchor="middle" class="t t-s t-m">fotos y firma</text>
+  <line x1="10" y1="146" x2="870" y2="146" class="ln ln-d"/>
+  <text x="10" y="168" class="t t-xs t-b k-apl">CUANDO NO SALE A LA PRIMERA</text>
+  <rect x="330" y="186" width="160" height="52" rx="10" class="c-apl"/><text x="410" y="208" text-anchor="middle" class="t t-s t-b">Cliente ausente</text><text x="410" y="225" text-anchor="middle" class="t t-s">se reagenda</text>
+  <path d="M652 140L410 184" class="ln s-apl" marker-end="url(#fl-apl)"/>
+  <rect x="500" y="186" width="160" height="52" rx="10" class="c-apl"/><text x="580" y="208" text-anchor="middle" class="t t-s t-b">Falta material</text><text x="580" y="225" text-anchor="middle" class="t t-s">espera reposición</text>
+  <path d="M652 140L580 184" class="ln s-apl" marker-end="url(#fl-apl)"/>
+  <rect x="670" y="186" width="160" height="52" rx="10" class="c-apl"/><text x="750" y="208" text-anchor="middle" class="t t-s t-b">Puerto ocupado</text><text x="750" y="225" text-anchor="middle" class="t t-s">el inventario mentía</text>
+  <path d="M652 140L750 184" class="ln s-apl" marker-end="url(#fl-apl)"/>
+  <path d="M410 238V290H226V150" class="ln ln-d" marker-end="url(#fl)"/><path d="M580 238V290M750 238V290H410" class="ln ln-d"/>
+  <text x="236" y="306" class="t t-s t-m">vuelve a la agenda: otra visita, otra fecha</text>
+  <text x="440" y="330" text-anchor="middle" class="t t-s t-m">Cada vuelta atrás aleja la activación y cuesta una visita más.</text>
+</svg></div><figcaption><b>La vida de una orden de trabajo.</b> De izquierda a derecha: se crea a partir de la orden comercial, se agenda con el cliente, se asigna a una cuadrilla, el técnico va en camino, trabaja en sitio y cierra con evidencia. Debajo de cada etapa, qué sistema actúa y qué dato deja. Las flechas hacia abajo muestran las salidas que no son el camino feliz: el cliente no estaba, falta material o el puerto reservado está ocupado.</figcaption></figure><div class="prose"><p>Las órdenes que no se completan en la primera visita son caras: otra visita, otra cita con el cliente y una fecha de activación que se aleja. Sus causas más comunes son que el cliente no estaba, que faltaba material o que el inventario estaba desactualizado y el puerto «libre» en el sistema estaba ocupado en la calle.</p></div></section>
+<section><h2>La app del técnico en campo</h2><div class="prose"><p>El técnico es la punta del OSS. Su herramienta es una <b>app en el celular</b> que reemplazó a las órdenes en papel: le muestra la agenda del día con la ruta, los datos del cliente, el puerto reservado en la caja y cómo llegar a ella, y la lista de pasos de la instalación.</p><p>La app también recoge información de vuelta, y eso es tan importante como lo primero. Al terminar, el técnico registra:</p><ul><li>El <b>número de serie</b> de la ONT instalada, a menudo escaneando el código de barras.</li><li>La <b>potencia óptica</b> medida en la roseta o leída de la ONT, para dejar constancia de que la luz llega bien.</li><li>El <b>puerto realmente usado</b> en la caja, por si no fue el reservado.</li><li><b>Fotos</b> de la caja, de la acometida y del equipo instalado.</li><li>La <b>firma</b> o la conformidad del cliente.</li></ul><p>Con esos datos la orden se cierra sola, el inventario se actualiza y el aprovisionamiento puede terminar. Cuando la app permite activar el servicio en sitio, el técnico se va sabiendo que el cliente ya navega.</p></div></section>
+<section><h2>Gestión de fallas</h2><div class="prose"><p>Una vez funcionando, el servicio puede dejar de funcionar. La <b>gestión de fallas</b> (<i>fault management</i>) recibe las alarmas de todos los equipos de la red (una ONT que perdió la luz, un puerto PON caído, una OLT sin energía), las ordena y decide qué merece atención.</p><p>Su trabajo más valioso es la <b>correlación</b>. Si se corta una fibra troncal, se apagan a la vez decenas de ONT, y cada una manda su alarma. Mostrarlas como cuarenta problemas distintos sería un caos. El sistema de fallas reconoce que todas cuelgan del mismo puerto PON y del mismo tramo de fibra, y las agrupa en <b>un solo incidente</b>, con la causa probable y la lista de clientes afectados.</p></div><figure class="fig fig-esquema" id="36-diagrama-6"><div class="lienzo"><svg viewBox="0 0 880 300" style="min-width:700px" role="img" aria-label="Correlación de alarmas: decenas de alarmas de pérdida de señal de distintas ONT llegan en el mismo minuto; el sistema de fallas las cruza con el inventario, ve que comparten el splitter y el puerto PON, y genera un solo incidente con la causa probable, los clientes afectados y el aviso a atención al cliente">
+  <text x="20" y="24" class="t t-xs t-b k-apl">LLEGAN DEL GESTOR DE LA OLT</text>
+  <text x="350" y="24" class="t t-xs t-b t-m">SE CRUZAN CON EL INVENTARIO</text>
+  <text x="630" y="24" class="t t-xs t-b k-enl">SALE UN SOLO INCIDENTE</text>
+  <rect x="20" y="38" width="250" height="28" rx="6" class="c-apl"/><text x="30" y="57" class="t t-s t-mono">08:10:02  ONT A-31  sin señal (LOS)</text>
+  <rect x="20" y="72" width="250" height="28" rx="6" class="c-apl"/><text x="30" y="91" class="t t-s t-mono">08:10:02  ONT A-07  sin señal (LOS)</text>
+  <rect x="20" y="106" width="250" height="28" rx="6" class="c-apl"/><text x="30" y="125" class="t t-s t-mono">08:10:03  ONT B-12  sin señal (LOS)</text>
+  <rect x="20" y="140" width="250" height="28" rx="6" class="c-apl"/><text x="30" y="159" class="t t-s t-mono">08:10:03  ONT A-19  sin señal (LOS)</text>
+  <rect x="20" y="174" width="250" height="28" rx="6" class="c-apl"/><text x="30" y="193" class="t t-s t-mono">08:10:03  ONT C-04  sin señal (LOS)</text>
+  <rect x="20" y="208" width="250" height="28" rx="6" class="c-apl"/><text x="30" y="227" class="t t-s t-mono">08:10:04  ONT B-28  sin señal (LOS)</text>
+  <text x="145" y="262" text-anchor="middle" class="t t-s t-b k-apl">… y 34 alarmas más</text>
+  <path d="M270 52L340 130M270 86L340 136M270 120L340 142M270 154L340 148M270 188L340 154M270 222L340 160" class="ln"/>
+  <line x1="340" y1="145" x2="348" y2="145" class="ln" marker-end="url(#fl)"/>
+  <rect x="350" y="70" width="230" height="150" rx="12" class="caja" style="stroke-width:2"/>
+  <use href="#i-monitor" x="364" y="82" width="30" height="30" class="ico"/><text x="402" y="102" class="t t-b">Sistema de fallas</text>
+  <g class="t t-s"><text x="364" y="136">Las 40 ONT cuelgan de</text><text x="364" y="154" class="t-b">splitter S-7 → PON 2/3</text><text x="364" y="178">Sus vecinas de otros</text><text x="364" y="196">splitters funcionan bien</text></g>
+  <line x1="580" y1="145" x2="628" y2="145" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <rect x="630" y="50" width="236" height="190" rx="12" class="c-enl"/>
+  <text x="644" y="74" class="t t-b">Incidente 5521</text>
+  <g class="t t-s"><text x="644" y="100">Causa probable: corte de fibra</text><text x="644" y="117">entre la central y el splitter S-7</text>
+  <text x="644" y="143" class="t-b">40 clientes afectados</text>
+  <text x="644" y="169">→ NOC: despachar cuadrilla</text><text x="644" y="193">→ Atención: «hay una falla</text><text x="644" y="210">en tu zona»</text></g>
+  <text x="440" y="284" text-anchor="middle" class="t t-s t-m">Sin inventario, serían 40 tickets y 40 visitas; con inventario, un incidente y una cuadrilla.</text>
+</svg></div><figcaption><b>Correlación de alarmas.</b> A la izquierda, lo que llega del gestor de la OLT en un minuto: muchas alarmas de pérdida de señal de ONT distintas. En el centro, el sistema de fallas las cruza con el inventario y ve que todas comparten el mismo splitter y el mismo puerto PON. A la derecha, el resultado: un incidente con su causa probable, los clientes afectados y el aviso a atención al cliente antes de que empiecen las llamadas.</figcaption></figure><div class="prose"><p>Ese incidente viaja al NOC (capítulo 31) para que despache una cuadrilla, y a atención al cliente, para que el bot y los agentes respondan «hay una falla en tu zona, estimamos resolverla a tal hora» sin abrir cuarenta tickets. Otra vez, la correlación solo funciona si el inventario sabe qué ONT cuelga de qué splitter.</p></div></section>
+<section><h2>Gestión de rendimiento y capacidad</h2><div class="prose"><p>No todas las fallas son cortes. A veces el servicio funciona, pero mal: el puerto PON va lleno en la hora pico, el enlace de salida a Internet se satura de noche, la luz que llega a una ONT se va debilitando mes a mes. La <b>gestión de rendimiento</b> (<i>performance management</i>) recoge mediciones periódicas de toda la red (tráfico, ocupación, errores, potencia óptica, latencia) y las guarda para ver tendencias.</p><p>Con esas tendencias se hace la <b>gestión de capacidad</b>: decidir con tiempo dónde ampliar. Si un puerto PON pasa la mayor parte de la hora pico por encima de cierto umbral de ocupación, conviene dividirlo antes de que los clientes lo sientan; si una caja terminal se está llenando, hay que agregar otra antes de que ventas empiece a recibir «no hay puertos».</p></div><figure class="fig fig-comparacion" id="36-diagrama-7"><div class="lienzo"><svg viewBox="0 0 880 330" style="min-width:700px" role="img" aria-label="Capacidad de cuatro puertos PON con valores de ejemplo: ONT conectadas sobre 64 y uso en hora pico; un umbral de alerta en 80 %; cada puerto con su lectura y su acción">
+  <rect x="120" y="10" width="14" height="12" rx="3" class="c-red"/><text x="140" y="21" class="t t-s">ONT conectadas (de 64)</text>
+  <rect x="310" y="10" width="14" height="12" rx="3" class="c-fis"/><text x="330" y="21" class="t t-s">uso en hora pico</text>
+  <text x="490" y="21" class="t t-xs t-b t-m">LECTURA Y ACCIÓN</text>
+  <line x1="120" y1="34" x2="120" y2="290" class="vida"/><text x="120" y="306" text-anchor="middle" class="t t-xs t-m">0 %</text>
+  <line x1="205" y1="34" x2="205" y2="290" class="vida"/><text x="205" y="306" text-anchor="middle" class="t t-xs t-m">25 %</text>
+  <line x1="290" y1="34" x2="290" y2="290" class="vida"/><text x="290" y="306" text-anchor="middle" class="t t-xs t-m">50 %</text>
+  <line x1="375" y1="34" x2="375" y2="290" class="vida"/><text x="375" y="306" text-anchor="middle" class="t t-xs t-m">75 %</text>
+  <line x1="460" y1="34" x2="460" y2="290" class="vida"/><text x="460" y="306" text-anchor="middle" class="t t-xs t-m">100 %</text>
+  <line x1="392" y1="30" x2="392" y2="292" class="ln s-apl ln-d" style="stroke-width:2"/><text x="392" y="322" text-anchor="middle" class="t t-xs t-b k-apl">UMBRAL 80 %</text>
+  <text x="20" y="70" class="t t-b t-mono">PON 1/1</text>
+  <rect x="120" y="48" width="308" height="18" rx="3" class="c-red"/><text x="434" y="61" class="t t-s t-b k-red">58</text>
+  <rect x="120" y="70" width="153" height="18" rx="3" class="c-fis"/><text x="279" y="83" class="t t-s t-b k-fis">45 %</text>
+  <text x="510" y="62" class="t t-s">lleno de clientes, tráfico holgado</text><text x="510" y="80" class="t t-s t-b">→ vender poco aquí; sumar puertos</text>
+  <text x="20" y="132" class="t t-b t-mono">PON 1/2</text>
+  <rect x="120" y="110" width="159" height="18" rx="3" class="c-red"/><text x="285" y="123" class="t t-s t-b k-red">30</text>
+  <rect x="120" y="132" width="299" height="18" rx="3" class="c-fis"/><text x="425" y="145" class="t t-s t-b k-fis">88 %</text>
+  <text x="510" y="124" class="t t-s">pocos clientes, tráfico alto</text><text x="510" y="142" class="t t-s t-b">→ vigilar; dividir si sigue así</text>
+  <text x="20" y="194" class="t t-b t-mono">PON 2/3</text>
+  <rect x="120" y="172" width="329" height="18" rx="3" class="c-red"/><text x="455" y="185" class="t t-s t-b k-red">62</text>
+  <rect x="120" y="194" width="313" height="18" rx="3" class="c-fis"/><text x="439" y="207" class="t t-s t-b k-fis">92 %</text>
+  <text x="510" y="186" class="t t-s">lleno y saturado</text><text x="510" y="204" class="t t-s t-b">→ dividir el puerto ya</text>
+  <text x="20" y="256" class="t t-b t-mono">PON 2/4</text>
+  <rect x="120" y="234" width="106" height="18" rx="3" class="c-red"/><text x="232" y="247" class="t t-s t-b k-red">20</text>
+  <rect x="120" y="256" width="85" height="18" rx="3" class="c-fis"/><text x="211" y="269" class="t t-s t-b k-fis">25 %</text>
+  <text x="510" y="248" class="t t-s">holgado en todo</text><text x="510" y="266" class="t t-s t-b">→ buena zona para vender</text>
+</svg></div><figcaption><b>Capacidad de cuatro puertos PON, con valores de ejemplo.</b> Cada barra muestra dos cosas de un mismo puerto: arriba, cuántas ONT tiene conectadas de las que admite su diseño; abajo, cuánto de su capacidad usa en la hora pico. La línea punteada marca un umbral de alerta ilustrativo. Un puerto puede estar lleno de clientes y holgado de tráfico, o al revés: por eso se miran las dos cosas.</figcaption></figure></section>
+<section><h2>Suscriptores y AAA</h2><div class="prose"><p>La última pieza del OSS es la que decide, cada vez que una ONT se conecta, si ese cliente puede navegar y cómo. Es la <b>gestión de suscriptores</b>, apoyada en el modelo <b>AAA</b>: autenticación (¿quién eres?), autorización (¿qué puedes hacer?) y registro de uso (<i>accounting</i>: ¿cuánto usaste?). El servidor RADIUS es su pieza más conocida, y el capítulo 20 la explica a fondo.</p><p>Para el OSS, lo importante es que la base de suscriptores refleja el estado comercial del cliente. Cuando el BSS ordena una suspensión por mora, el cambio llega aquí y la próxima sesión del cliente se autoriza de otra forma: con una velocidad mínima o dirigida a una página de pago. Cuando paga, el cambio inverso lo devuelve a su plan. Y los registros de uso que genera RADIUS son los que la mediación del BSS recoge para facturar lo que se cobra por consumo.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región armó una vista de su red de acceso desde el punto de vista de cada puerto PON: qué cajas terminales cuelgan de él, cuántos puertos tiene cada caja, cuántos están ocupados y qué ONT están conectadas y en línea. Los datos físicos (cajas, splitters y capacidad) venían del sistema donde se diseña y documenta la planta; los datos vivos (ONT en línea, potencia, tráfico) venían del gestor de la OLT y del ACS. La sincronización diaria entre los dos mostró de inmediato dónde no coincidían: ONT en línea en cajas que el diseño daba por vacías, puertos «ocupados» sin ningún equipo detrás. Corregir esas diferencias mejoró las respuestas de factibilidad y la correlación de fallas a la vez.</p></div><div class="ml"><b>En la práctica</b><p>Cuando a un cliente le dicen que «no hay cobertura» aunque la fibra pase frente a su casa, casi siempre es que no hay una caja con puerto libre al alcance de una acometida. Y cuando ventas promete una fecha de instalación, esa fecha sale de la agenda de las cuadrillas, de la zona y de los materiales. Entender el OSS ayuda a explicar esas respuestas al cliente y a ver por qué un inventario desactualizado termina en visitas fallidas, ventas perdidas y fallas que tardan más en resolverse.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué diferencia hay entre el inventario físico y el lógico?</summary><p>El físico registra lo que se puede tocar (OLT, cables, cajas, splitters, ONT) y el lógico lo que se configura (perfiles, VLAN, IP, identificadores). Su valor está en que estén amarrados entre sí.</p></details><details><summary>La fibra pasa frente a una casa, pero la respuesta es «no factible». ¿Por qué puede pasar?</summary><p>Porque la caja terminal más cercana está llena o fuera del alcance de una acometida, o el cable que pasa es troncal y no tiene cajas en esa cuadra.</p></details><details><summary>Nombra tres sistemas que toca el aprovisionamiento de un alta de fibra.</summary><p>El gestor de la OLT (alta de la ONT y perfil), RADIUS (habilitar al suscriptor) y el ACS (configurar el Wi-Fi), además del inventario para reservar recursos.</p></details><details><summary>¿Para qué sirve la correlación de alarmas?</summary><p>Para agrupar muchas alarmas con una misma causa (por ejemplo, un corte de fibra) en un solo incidente con su causa probable y la lista de clientes afectados.</p></details><details><summary>¿Por qué la app del técnico recoge el número de serie, la potencia y el puerto usado?</summary><p>Para cerrar la orden, actualizar el inventario con lo que realmente se hizo y terminar el aprovisionamiento con los datos correctos.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://en.wikipedia.org/wiki/Operations_support_system" target="_blank" rel="noopener">Operations support system, en inglés (Wikipedia) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Fault_management" target="_blank" rel="noopener">Fault management, en inglés (Wikipedia) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Workforce_management" target="_blank" rel="noopener">Workforce management, en inglés (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Protocolo_AAA" target="_blank" rel="noopener">Protocolo AAA (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const CTO=[{n:'C1',x:90,y:80,t:8,u:5},{n:'C2',x:300,y:70,t:8,u:8},{n:'C3',x:480,y:110,t:8,u:6},{n:'C4',x:150,y:260,t:8,u:2},{n:'C5',x:380,y:250,t:8,u:7}];
+  const BASE=CTO.map(c=>c.u);
+  const CASAS=[{n:'A',x:110,y:125,d:'Calle 1 n.º 20'},{n:'B',x:320,y:108,d:'Calle 1 n.º 85'},{n:'C',x:430,y:300,d:'Calle 3 n.º 40'},{n:'D',x:560,y:198,d:'Avenida n.º 300'},{n:'E',x:200,y:300,d:'Calle 3 n.º 12'},{n:'F',x:40,y:308,d:'Pasaje 2'}];
+  let sel=0, elegido=null;
+  const NS='http://www.w3.org/2000/svg';
+  const dist=(a,b)=>Math.round(Math.hypot(a.x-b.x,a.y-b.y));
+  $('#c36-dirs').innerHTML=CASAS.map((c,i)=>'<button type="button" aria-pressed="'+(i===0)+'" data-i="'+i+'">Casa '+c.n+'</button>').join('');
+  $('#c36-dirs').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{sel=+b.dataset.i;dibujar();}));
+  function casaPath(x,y){return 'M'+(x-13)+' '+(y+12)+'V'+(y-2)+'L'+x+' '+(y-15)+'L'+(x+13)+' '+(y-2)+'V'+(y+12)+'Z';}
+  function dibujar(){
+    const max=+$('#c36-max').value; $('#c36-max-o').textContent=max+' m';
+    $('#c36-dirs').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===sel?'true':'false'));
+    const casa=CASAS[sel];
+    const orden=CTO.map(c=>({c,d:dist(c,casa)})).sort((a,b)=>a.d-b.d);
+    elegido=orden.find(o=>o.d<=max&&o.c.u<o.c.t)||null;
+    let s='';
+    for(let x=0;x<=600;x+=100)s+='<line x1="'+x+'" y1="0" x2="'+x+'" y2="360" style="stroke:var(--grid);stroke-width:1"/>';
+    for(let y=0;y<=360;y+=100)s+='<line x1="0" y1="'+y+'" x2="600" y2="'+y+'" style="stroke:var(--grid);stroke-width:1"/>';
+    s+='<path class="c36-calle" d="M0 40H600M0 180H600M0 340H600M230 0V360M520 0V360"/>';
+    s+='<path class="c36-tron" d="M0 180H600"/><text class="c36-rot" x="196" y="204">cable troncal</text>';
+    s+='<path class="c36-dist" d="M90 180V96M300 180V86M480 180V126M150 180V244M380 180V234"/>';
+    s+='<circle class="c36-radio" cx="'+casa.x+'" cy="'+casa.y+'" r="'+max+'"/>';
+    orden.forEach(o=>{ if(o.d<=max&&o!==elegido) s+='<line class="c36-no" x1="'+casa.x+'" y1="'+casa.y+'" x2="'+o.c.x+'" y2="'+o.c.y+'"/>'; });
+    if(elegido) s+='<line class="c36-ok" x1="'+casa.x+'" y1="'+casa.y+'" x2="'+elegido.c.x+'" y2="'+elegido.c.y+'"/>';
+    CTO.forEach(c=>{ s+='<g class="c36-cto'+(c.u>=c.t?' llena':'')+'"><rect x="'+(c.x-24)+'" y="'+(c.y-16)+'" width="48" height="32" rx="6"/><text x="'+c.x+'" y="'+(c.y+5)+'" text-anchor="middle">'+c.n+'</text><text class="c36-oc" x="'+c.x+'" y="'+(c.y<180?c.y-22:c.y+34)+'" text-anchor="middle">'+c.u+'/'+c.t+'</text></g>'; });
+    CASAS.forEach((c,i)=>{ s+='<g class="c36-casa'+(i===sel?' sel':'')+'" data-i="'+i+'"><path d="'+casaPath(c.x,c.y)+'"/><text x="'+c.x+'" y="'+(c.y+32)+'" text-anchor="middle">'+c.n+'</text></g>'; });
+    $('#c36-mapa').innerHTML=s;
+    $('#c36-mapa').querySelectorAll('.c36-casa').forEach(g=>g.addEventListener('click',()=>{sel=+g.dataset.i;dibujar();}));
+    const cerca=orden.slice(0,3).map(o=>o.c.n+' a '+o.d+' m: '+(o.c.t-o.c.u)+' de '+o.c.t+' puertos libres'+(o.d>max?' (fuera de alcance)':'')).join(' · ');
+    const tron=Math.abs(casa.y-180);
+    let h='<span>Casa '+casa.n+' · '+casa.d+'</span><span>Cajas más cercanas: '+cerca+'</span>';
+    if(elegido){h+='<span class="ok">Factible: se conecta en '+elegido.c.n+', puerto '+(elegido.c.u+1)+', con una acometida de '+elegido.d+' m.</span>';}
+    else{
+      const llenaCerca=orden.find(o=>o.d<=max);
+      let por=llenaCerca?'las cajas a su alcance están llenas':'no hay ninguna caja terminal a menos de '+max+' m';
+      if(tron<=40)por+=', aunque el cable troncal pasa a '+tron+' m de la puerta';
+      h+='<span class="warn">No factible: '+por+'. Hace falta ampliar la red (una caja nueva o más puertos).</span>';
+    }
+    $('#c36-out').innerHTML=h;
+    $('#c36-res').disabled=!elegido;
+  }
+  $('#c36-max').addEventListener('input',dibujar);
+  $('#c36-res').addEventListener('click',()=>{ if(!elegido)return; const n=elegido.c.n; elegido.c.u++; dibujar();
+    $('#c36-out').insertAdjacentHTML('afterbegin','<span class="big">Puerto reservado en '+n+'. Otro cliente ya no puede usarlo.</span>'); });
+  $('#c36-vac').addEventListener('click',()=>{CTO.forEach((c,i)=>c.u=BASE[i]);dibujar();});
+  dibujar();
+})();
+</script>
+</body>
+</html>

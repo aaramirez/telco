@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IP · Cómo funciona un telco</title>
+<meta name="description" content="Para salir de la red local, cada paquete lleva una dirección IP que dice a qué red y a qué equipo va, y un pequeño protocolo (ARP) traduce esa dirección a la dirección física del equipo vecino que lo recibe.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="05-ip">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 05 DE 49</span><h1>IP: direcciones, subredes, ARP, NAT e IPv6</h1><p class="lede">Para salir de la red local, cada paquete lleva una dirección IP que dice a qué red y a qué equipo va, y un pequeño protocolo (ARP) traduce esa dirección a la dirección física del equipo vecino que lo recibe.</p></header>
+<section><div class="prose"><p>En el capítulo anterior vimos cómo se encuentran los equipos dentro de una misma red local: por su dirección MAC, con un switch que aprende quién está en cada puerto. Pero tu pedido tiene que salir de la casa, cruzar la red del operador y llegar a un servidor en otro país. Para eso no alcanza con saber el nombre del vecino: hace falta una dirección que sirva en todo el mundo. Esa es la <b>dirección IP</b>, y este capítulo la explica número por número.</p></div><div class="analogia"><b>Imagínalo así</b><p>El sistema postal: país, ciudad, calle y número. Una parte de la dirección dice a qué barrio va la carta y la otra a qué casa. Y cuando el cartero ya está en la calle correcta, pregunta en voz alta «¿quién vive en el número 12?» para saber a qué puerta tocar. Esa pregunta es ARP.</p></div><figure class="fig fig-capas" id="05-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la capa de red (IP) en todo el viaje, y ARP en su frontera con la de enlace">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la capa de red (IP) en todo el viaje, y ARP en su frontera con la de enlace</text>
+</svg></div><figcaption><b>Dónde estamos.</b> IP es la capa de red, y viaja de punta a punta: la usan el celular, el router de la casa, los routers del operador y el servidor. ARP vive en la frontera entre la capa de red y la de enlace, porque traduce direcciones de una a la otra.</figcaption></figure></section>
+<section><h2>La dirección IP: cuatro números de 0 a 255</h2><div class="prose"><p>Una dirección IP versión 4 (<b>IPv4</b>, la más usada todavía) se escribe como cuatro números separados por puntos: <code>192.168.1.10</code>, <code>203.0.113.25</code>, <code>10.0.0.1</code>. Cada número va de 0 a 255. No hay <code>192.168.1.300</code>: si alguien te dicta una dirección con un número mayor que 255, está mal.</p><p>Cada máquina conectada a una red IP tiene al menos una de estas direcciones: tu celular, la impresora de la oficina, la ONT, el servidor de un banco. Y cada paquete que viaja por Internet lleva dos escritas en su cabecera, como un sobre: la <b>dirección de origen</b> (quién lo manda) y la <b>dirección de destino</b> (a quién va). Los routers solo miran el destino para decidir por dónde mandarlo; el origen sirve para que la respuesta sepa volver.</p></div><figure class="fig fig-esquema" id="05-diagrama-8"><div class="lienzo"><svg viewBox="0 0 820 360" style="min-width:640px" role="img" aria-label="Cabecera del paquete IPv4 en filas de 32 bits: versión, largo de cabecera, tipo de servicio, longitud total; identificación, flags y desplazamiento; TTL, protocolo y suma de verificación; dirección de origen; dirección de destino; opciones; y después los datos. Resaltados el TTL, el protocolo y las dos direcciones">
+  
+  <g class="t t-xs t-m" text-anchor="middle">
+    <text x="78" y="36">0</text><text x="206" y="36">8</text><text x="334" y="36">16</text><text x="462" y="36">24</text><text x="582" y="36">31</text>
+  </g>
+  <text x="330" y="18" text-anchor="middle" class="t t-xs t-b t-m">32 BITS POR FILA</text>
+  <line x1="70" y1="42" x2="582" y2="42" class="ln"/>
+  <text x="40" y="186" text-anchor="middle" class="t t-xs t-b t-m" transform="rotate(-90 40 186)">CABECERA · 20 BYTES (EL SOBRE)</text>
+
+  <g class="t t-s" text-anchor="middle">
+    
+    <rect x="70" y="52" width="64" height="38" class="caja"/><text x="102" y="75">Versión</text>
+    <rect x="134" y="52" width="64" height="38" class="caja"/><text x="166" y="75">Largo</text>
+    <rect x="198" y="52" width="128" height="38" class="caja"/><text x="262" y="75">Tipo de servicio</text>
+    <rect x="326" y="52" width="256" height="38" class="caja"/><text x="454" y="75">Longitud total</text>
+    
+    <rect x="70" y="90" width="256" height="38" class="caja"/><text x="198" y="113">Identificación</text>
+    <rect x="326" y="90" width="48" height="38" class="caja"/><text x="350" y="113">Flags</text>
+    <rect x="374" y="90" width="208" height="38" class="caja"/><text x="478" y="113">Desplazamiento de fragmento</text>
+    
+    <rect x="70" y="128" width="128" height="38" class="c-red"/><text x="134" y="151" class="t-b">TTL</text>
+    <rect x="198" y="128" width="128" height="38" class="c-red"/><text x="262" y="151" class="t-b">Protocolo</text>
+    <rect x="326" y="128" width="256" height="38" class="caja"/><text x="454" y="151">Suma de verificación</text>
+    
+    <rect x="70" y="166" width="512" height="38" class="c-red"/><text x="326" y="189" class="t-b">Dirección IP de origen · 192.168.1.10</text>
+    <rect x="70" y="204" width="512" height="38" class="c-red"/><text x="326" y="227" class="t-b">Dirección IP de destino · 203.0.113.10</text>
+    
+    <rect x="70" y="242" width="512" height="30" class="caja ln-d"/><text x="326" y="262" class="t-m">Opciones (casi nunca se usan)</text>
+  </g>
+  
+  <rect x="70" y="290" width="512" height="52" rx="6" class="c-tra"/>
+  <text x="326" y="313" text-anchor="middle" class="t t-b">Datos: el segmento TCP o UDP (la carta)</text>
+  <text x="326" y="331" text-anchor="middle" class="t t-s t-m">capítulo 7</text>
+
+  
+  <g class="t t-s">
+    <path d="M588 147h18" class="ln"/>
+    <text x="612" y="140" class="t-b k-red">TTL: saltos que le quedan;</text>
+    <text x="612" y="154">baja 1 en cada router (cap. 6)</text>
+    <text x="612" y="172" class="t-m">Protocolo: 6 = TCP, 17 = UDP, 1 = ICMP</text>
+    <path d="M588 185h18" class="ln"/>
+    <text x="612" y="196" class="t-b k-red">¿Quién lo manda?</text>
+    <path d="M588 223h18" class="ln"/>
+    <text x="612" y="222" class="t-b k-red">¿A quién va?</text>
+    <text x="612" y="236">Lo único que mira cada router</text>
+    <text x="612" y="73" class="t-m">Versión: 4 (o 6 en IPv6)</text>
+  </g>
+</svg></div><figcaption><b>El paquete IP, campo por campo.</b> La cabecera ocupa 20 bytes y va delante de los datos, como el sobre delante de la carta. Cada fila son 32 bits. Los campos más importantes para este libro están resaltados: el <b>TTL</b>, que impide que un paquete perdido dé vueltas para siempre (se usa en el capítulo 6); el <b>protocolo</b>, que dice si adentro viaja TCP, UDP o ICMP; y las <b>direcciones de origen y destino</b>.</figcaption></figure></section>
+<section><h2>Por dentro son 32 bits: el binario sin miedo</h2><div class="prose"><p>Los cuatro números son una comodidad para las personas. Para la máquina, la dirección es una fila de 32 interruptores encendidos o apagados, 32 <b>bits</b> que valen 1 o 0. Cada uno de los cuatro números agrupa 8 de esos bits, y por eso se llama <b>octeto</b>.</p><p>El binario asusta más de lo que es. Piensa en ocho casillas con un valor fijo cada una, de izquierda a derecha: 128, 64, 32, 16, 8, 4, 2 y 1. Para escribir un número, enciendes las casillas que suman ese número. Para leerlo, sumas las casillas encendidas. Eso es todo.</p><ul><li><code>192</code> = 128 + 64 → <code>11000000</code></li><li><code>168</code> = 128 + 32 + 8 → <code>10101000</code></li><li><code>10</code> = 8 + 2 → <code>00001010</code></li><li><code>255</code> = todas encendidas → <code>11111111</code>, y por eso ningún octeto pasa de 255.</li></ul><p>Con 32 bits se pueden escribir 2³² direcciones distintas: unas 4.300 millones. Parecían infinitas en 1981, cuando se diseñó IP. Hoy hay más celulares que personas en el planeta, y las direcciones IPv4 se agotaron. De ese problema salen casi todas las soluciones de este capítulo: las direcciones privadas, el NAT, el CGNAT e IPv6.</p></div><figure class="fig fig-esquema" id="05-diagrama-11"><div class="lienzo"><svg viewBox="0 0 760 270" style="min-width:620px" role="img" aria-label="La regla de las ocho casillas (128, 64, 32, 16, 8, 4, 2 y 1) con 192 = 11000000, y la dirección 192.168.1.10 escrita en 32 bits: los primeros 24 de red y los últimos 8 de equipo">
+  <text x="20" y="22" class="t t-xs t-b t-m">LA REGLA DE LAS OCHO CASILLAS</text>
+  <text x="170" y="53" text-anchor="end" class="t t-s t-m">Valor de la casilla</text>
+  <text x="170" y="85" text-anchor="end" class="t t-s t-m">192 en binario</text>
+  <rect x="180" y="34" width="50" height="28" rx="4" class="caja"/><text x="205.0" y="53" text-anchor="middle" class="t t-b t-mono">128</text>
+  <rect x="180" y="66" width="50" height="28" rx="4" class="c-red"/><text x="205.0" y="85" text-anchor="middle" class="t t-b t-mono">1</text>
+  <rect x="234" y="34" width="50" height="28" rx="4" class="caja"/><text x="259.0" y="53" text-anchor="middle" class="t t-b t-mono">64</text>
+  <rect x="234" y="66" width="50" height="28" rx="4" class="c-red"/><text x="259.0" y="85" text-anchor="middle" class="t t-b t-mono">1</text>
+  <rect x="288" y="34" width="50" height="28" rx="4" class="caja"/><text x="313.0" y="53" text-anchor="middle" class="t t-b t-mono">32</text>
+  <rect x="288" y="66" width="50" height="28" rx="4" class="caja"/><text x="313.0" y="85" text-anchor="middle" class="t t-b t-mono">0</text>
+  <rect x="342" y="34" width="50" height="28" rx="4" class="caja"/><text x="367.0" y="53" text-anchor="middle" class="t t-b t-mono">16</text>
+  <rect x="342" y="66" width="50" height="28" rx="4" class="caja"/><text x="367.0" y="85" text-anchor="middle" class="t t-b t-mono">0</text>
+  <rect x="396" y="34" width="50" height="28" rx="4" class="caja"/><text x="421.0" y="53" text-anchor="middle" class="t t-b t-mono">8</text>
+  <rect x="396" y="66" width="50" height="28" rx="4" class="caja"/><text x="421.0" y="85" text-anchor="middle" class="t t-b t-mono">0</text>
+  <rect x="450" y="34" width="50" height="28" rx="4" class="caja"/><text x="475.0" y="53" text-anchor="middle" class="t t-b t-mono">4</text>
+  <rect x="450" y="66" width="50" height="28" rx="4" class="caja"/><text x="475.0" y="85" text-anchor="middle" class="t t-b t-mono">0</text>
+  <rect x="504" y="34" width="50" height="28" rx="4" class="caja"/><text x="529.0" y="53" text-anchor="middle" class="t t-b t-mono">2</text>
+  <rect x="504" y="66" width="50" height="28" rx="4" class="caja"/><text x="529.0" y="85" text-anchor="middle" class="t t-b t-mono">0</text>
+  <rect x="558" y="34" width="50" height="28" rx="4" class="caja"/><text x="583.0" y="53" text-anchor="middle" class="t t-b t-mono">1</text>
+  <rect x="558" y="66" width="50" height="28" rx="4" class="caja"/><text x="583.0" y="85" text-anchor="middle" class="t t-b t-mono">0</text>
+  <text x="620" y="85" class="t t-s">= 128 + 64 = <tspan class="t-b">192</tspan></text>
+  <line x1="20" y1="114" x2="740" y2="114" class="ln ln-d"/>
+  <text x="20" y="136" class="t t-xs t-b t-m">192.168.1.10 /24 EN 32 BITS</text>
+  <text x="116" y="160" text-anchor="middle" class="t t-b t-mono" style="font-size:16px">192</text>
+  <text x="204.0" y="190" text-anchor="middle" class="t t-b">.</text>
+  <rect x="36" y="170" width="18" height="28" rx="3" class="c-red"/><text x="45.0" y="189" text-anchor="middle" class="t t-mono">1</text>
+  <rect x="56" y="170" width="18" height="28" rx="3" class="c-red"/><text x="65.0" y="189" text-anchor="middle" class="t t-mono">1</text>
+  <rect x="76" y="170" width="18" height="28" rx="3" class="c-red"/><text x="85.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="96" y="170" width="18" height="28" rx="3" class="c-red"/><text x="105.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="116" y="170" width="18" height="28" rx="3" class="c-red"/><text x="125.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="136" y="170" width="18" height="28" rx="3" class="c-red"/><text x="145.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="156" y="170" width="18" height="28" rx="3" class="c-red"/><text x="165.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="176" y="170" width="18" height="28" rx="3" class="c-red"/><text x="185.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <text x="116" y="216" text-anchor="middle" class="t t-s t-m">128 + 64</text>
+  <text x="292" y="160" text-anchor="middle" class="t t-b t-mono" style="font-size:16px">168</text>
+  <text x="380.0" y="190" text-anchor="middle" class="t t-b">.</text>
+  <rect x="212" y="170" width="18" height="28" rx="3" class="c-red"/><text x="221.0" y="189" text-anchor="middle" class="t t-mono">1</text>
+  <rect x="232" y="170" width="18" height="28" rx="3" class="c-red"/><text x="241.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="252" y="170" width="18" height="28" rx="3" class="c-red"/><text x="261.0" y="189" text-anchor="middle" class="t t-mono">1</text>
+  <rect x="272" y="170" width="18" height="28" rx="3" class="c-red"/><text x="281.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="292" y="170" width="18" height="28" rx="3" class="c-red"/><text x="301.0" y="189" text-anchor="middle" class="t t-mono">1</text>
+  <rect x="312" y="170" width="18" height="28" rx="3" class="c-red"/><text x="321.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="332" y="170" width="18" height="28" rx="3" class="c-red"/><text x="341.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="352" y="170" width="18" height="28" rx="3" class="c-red"/><text x="361.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <text x="292" y="216" text-anchor="middle" class="t t-s t-m">128 + 32 + 8</text>
+  <text x="468" y="160" text-anchor="middle" class="t t-b t-mono" style="font-size:16px">1</text>
+  <text x="556.0" y="190" text-anchor="middle" class="t t-b">.</text>
+  <rect x="388" y="170" width="18" height="28" rx="3" class="c-red"/><text x="397.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="408" y="170" width="18" height="28" rx="3" class="c-red"/><text x="417.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="428" y="170" width="18" height="28" rx="3" class="c-red"/><text x="437.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="448" y="170" width="18" height="28" rx="3" class="c-red"/><text x="457.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="468" y="170" width="18" height="28" rx="3" class="c-red"/><text x="477.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="488" y="170" width="18" height="28" rx="3" class="c-red"/><text x="497.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="508" y="170" width="18" height="28" rx="3" class="c-red"/><text x="517.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="528" y="170" width="18" height="28" rx="3" class="c-red"/><text x="537.0" y="189" text-anchor="middle" class="t t-mono">1</text>
+  <text x="468" y="216" text-anchor="middle" class="t t-s t-m">1</text>
+  <text x="644" y="160" text-anchor="middle" class="t t-b t-mono" style="font-size:16px">10</text>
+  <rect x="564" y="170" width="18" height="28" rx="3" class="c-enl"/><text x="573.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="584" y="170" width="18" height="28" rx="3" class="c-enl"/><text x="593.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="604" y="170" width="18" height="28" rx="3" class="c-enl"/><text x="613.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="624" y="170" width="18" height="28" rx="3" class="c-enl"/><text x="633.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="644" y="170" width="18" height="28" rx="3" class="c-enl"/><text x="653.0" y="189" text-anchor="middle" class="t t-mono">1</text>
+  <rect x="664" y="170" width="18" height="28" rx="3" class="c-enl"/><text x="673.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <rect x="684" y="170" width="18" height="28" rx="3" class="c-enl"/><text x="693.0" y="189" text-anchor="middle" class="t t-mono">1</text>
+  <rect x="704" y="170" width="18" height="28" rx="3" class="c-enl"/><text x="713.0" y="189" text-anchor="middle" class="t t-mono">0</text>
+  <text x="644" y="216" text-anchor="middle" class="t t-s t-m">8 + 2</text>
+  <path d="M36 228v8h512v-8" class="ln s-red" style="stroke-width:2"/>
+  <text x="292.0" y="256" text-anchor="middle" class="t t-b k-red">Red: 24 bits · el barrio 192.168.1</text>
+  <path d="M564 228v8h158v-8" class="ln s-enl" style="stroke-width:2"/>
+  <text x="644" y="256" text-anchor="middle" class="t t-b k-enl">Equipo: 8 bits · .10</text>
+</svg></div><figcaption><b>Una dirección en binario.</b> Arriba, la regla de las ocho casillas con su valor. Abajo, <code>192.168.1.10</code> convertida octeto por octeto. Los bits azules son la parte de <b>red</b> y los verdes la parte de <b>equipo</b>, para una red /24: los primeros 24 bits dicen el barrio y los últimos 8, la casa.</figcaption></figure></section>
+<section><h2>Red y equipo: qué parte de la dirección dice el barrio y qué parte la casa</h2><div class="prose"><p>Una dirección IP tiene dos partes, como una dirección postal. La primera dice <b>a qué red</b> pertenece el equipo: el barrio. La segunda dice <b>qué equipo</b> es dentro de esa red: la casa. En <code>192.168.1.10</code> de una red doméstica típica, <code>192.168.1</code> es el barrio y <code>10</code> es la casa. Todos los equipos de tu casa comparten el barrio <code>192.168.1</code> y se diferencian por el último número.</p><p>¿Para qué sirve partirla? Para que los routers no tengan que conocer cada casa del mundo. Un router de Internet sabe llegar a barrios, no a casas: «todo lo que empiece por <code>203.0.113</code> va por aquí». Recién el último router, el del barrio, sabe qué casa es cuál. Es lo que hace el correo: el avión lleva la carta a la ciudad, no a la puerta.</p><p>Lo importante es que la línea entre barrio y casa <b>no está siempre en el mismo lugar</b>. En una red puede caer después del tercer número; en otra, después del primero; en otra, a mitad de un número. Quien dice dónde cae es la máscara.</p></div></section>
+<section><h2>La máscara y la notación CIDR: /8, /16, /24 y /30</h2><div class="prose"><p>La <b>máscara de red</b> es otra fila de 32 bits que acompaña a la dirección y marca con unos la parte de red y con ceros la parte de equipo. Siempre son unos seguidos y después ceros seguidos. La máscara más común es <code>255.255.255.0</code>: en binario, 24 unos y 8 ceros. Quiere decir «los tres primeros números son la red, el último es el equipo».</p><p>Escribir <code>255.255.255.0</code> es largo, así que se usa un atajo: contar los unos y ponerlos después de una barra. <code>192.168.1.10/24</code> significa «esta dirección, con 24 bits de red». A eso se le llama <b>notación CIDR</b> (por sus siglas en inglés, enrutamiento entre dominios sin clases), y el número después de la barra se llama <b>prefijo</b>.</p><div class="tbl"><table><thead><tr><th>Prefijo</th><th>Máscara</th><th>Equipos</th><th>Uso típico</th></tr></thead><tbody><tr><td>/8</td><td>255.0.0.0</td><td>16.777.214</td><td>la red privada <code>10.0.0.0/8</code></td></tr><tr><td>/16</td><td>255.255.0.0</td><td>65.534</td><td>una empresa grande</td></tr><tr><td>/24</td><td>255.255.255.0</td><td>254</td><td>una casa u oficina</td></tr><tr><td>/28</td><td>255.255.255.240</td><td>14</td><td>IP públicas de una empresa</td></tr><tr><td>/30</td><td>255.255.255.252</td><td>2</td><td>un enlace entre routers</td></tr></tbody></table></div><p>La regla de oro: <b>cuanto más grande el número después de la barra, más chica la red</b>. Cada bit que se le quita al equipo y se le da a la red parte el bloque a la mitad.</p></div><figure class="fig fig-comparacion" id="05-diagrama-5"><div class="lienzo"><svg viewBox="0 0 820 340" style="min-width:660px" role="img" aria-label="Comparación de prefijos: /8 con máscara 255.0.0.0 y 16.777.216 direcciones; /16 con 255.255.0.0 y 65.536; /24 con 255.255.255.0 y 256; /28 con 255.255.255.240 y 16; /30 con 255.255.255.252 y 4. La parte de red crece y la de equipo se achica">
+  <g class="t t-xs t-b t-m"><text x="20" y="28">PREFIJO Y MÁSCARA</text><text x="196" y="28">LOS 32 BITS: RED Y EQUIPO</text><text x="618" y="28">TAMAÑO DEL BLOQUE</text></g>
+  <text x="20" y="68" class="t t-b" style="font-size:16px">/8</text>
+  <text x="64" y="68" class="t t-s t-mono">255.0.0.0</text>
+  <rect x="196" y="52" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="208" y="52" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="220" y="52" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="232" y="52" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="244" y="52" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="256" y="52" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="268" y="52" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="280" y="52" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="298" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="310" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="322" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="334" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="346" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="358" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="370" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="382" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="400" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="412" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="424" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="436" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="448" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="460" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="472" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="484" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="502" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="514" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="526" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="538" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="550" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="562" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="574" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="586" y="52" width="10" height="24" rx="2" class="c-enl"/>
+  <text x="618" y="62" class="t t-s"><tspan class="t-b">16.777.216</tspan> direcciones</text>
+  <text x="618" y="77" class="t t-s t-m">caben 16.777.214 equipos</text>
+  <line x1="20" y1="88" x2="800" y2="88" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <text x="20" y="116" class="t t-b" style="font-size:16px">/16</text>
+  <text x="64" y="116" class="t t-s t-mono">255.255.0.0</text>
+  <rect x="196" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="208" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="220" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="232" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="244" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="256" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="268" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="280" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="298" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="310" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="322" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="334" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="346" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="358" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="370" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="382" y="100" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="400" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="412" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="424" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="436" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="448" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="460" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="472" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="484" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="502" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="514" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="526" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="538" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="550" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="562" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="574" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="586" y="100" width="10" height="24" rx="2" class="c-enl"/>
+  <text x="618" y="110" class="t t-s"><tspan class="t-b">65.536</tspan> direcciones</text>
+  <text x="618" y="125" class="t t-s t-m">caben 65.534 equipos</text>
+  <line x1="20" y1="136" x2="800" y2="136" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <text x="20" y="164" class="t t-b" style="font-size:16px">/24</text>
+  <text x="64" y="164" class="t t-s t-mono">255.255.255.0</text>
+  <rect x="196" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="208" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="220" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="232" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="244" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="256" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="268" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="280" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="298" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="310" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="322" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="334" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="346" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="358" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="370" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="382" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="400" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="412" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="424" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="436" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="448" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="460" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="472" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="484" y="148" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="502" y="148" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="514" y="148" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="526" y="148" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="538" y="148" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="550" y="148" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="562" y="148" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="574" y="148" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="586" y="148" width="10" height="24" rx="2" class="c-enl"/>
+  <text x="618" y="158" class="t t-s"><tspan class="t-b">256</tspan> direcciones</text>
+  <text x="618" y="173" class="t t-s t-m">caben 254 equipos</text>
+  <line x1="20" y1="184" x2="800" y2="184" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <text x="20" y="212" class="t t-b" style="font-size:16px">/28</text>
+  <text x="64" y="212" class="t t-s t-mono">255.255.255.240</text>
+  <rect x="196" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="208" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="220" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="232" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="244" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="256" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="268" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="280" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="298" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="310" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="322" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="334" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="346" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="358" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="370" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="382" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="400" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="412" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="424" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="436" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="448" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="460" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="472" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="484" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="502" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="514" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="526" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="538" y="196" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="550" y="196" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="562" y="196" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="574" y="196" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="586" y="196" width="10" height="24" rx="2" class="c-enl"/>
+  <text x="618" y="206" class="t t-s"><tspan class="t-b">16</tspan> direcciones</text>
+  <text x="618" y="221" class="t t-s t-m">caben 14 equipos</text>
+  <line x1="20" y1="232" x2="800" y2="232" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <text x="20" y="260" class="t t-b" style="font-size:16px">/30</text>
+  <text x="64" y="260" class="t t-s t-mono">255.255.255.252</text>
+  <rect x="196" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="208" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="220" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="232" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="244" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="256" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="268" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="280" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="298" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="310" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="322" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="334" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="346" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="358" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="370" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="382" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="400" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="412" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="424" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="436" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="448" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="460" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="472" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="484" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="502" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="514" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="526" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="538" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="550" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="562" y="244" width="10" height="24" rx="2" class="c-red"/>
+  <rect x="574" y="244" width="10" height="24" rx="2" class="c-enl"/>
+  <rect x="586" y="244" width="10" height="24" rx="2" class="c-enl"/>
+  <text x="618" y="254" class="t t-s"><tspan class="t-b">4</tspan> direcciones</text>
+  <text x="618" y="269" class="t t-s t-m">caben 2 equipos</text>
+  <line x1="20" y1="280" x2="800" y2="280" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <rect x="196" y="288" width="14" height="14" rx="2" class="c-red"/><text x="216" y="300" class="t t-s">bits de red (el barrio)</text>
+  <rect x="376" y="288" width="14" height="14" rx="2" class="c-enl"/><text x="396" y="300" class="t t-s">bits de equipo (la casa)</text>
+</svg></div><figcaption><b>Los prefijos más comunes, lado a lado.</b> Cada barra son los 32 bits de la dirección: en azul la red y en verde el equipo. A la derecha, cuántas direcciones tiene el bloque. Al pasar de /24 a /28 a /30 la parte verde se achica y el bloque también: de 256 a 16 a 4 direcciones.</figcaption></figure><div class="prose"><p>Antes de CIDR existían las «clases»: la clase A era siempre /8, la B /16 y la C /24. Todavía hay quien dice «una clase C» para hablar de un /24, pero las clases ya no se usan desde los años noventa.</p></div><div class="lab" id="05-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Calculadora IP</h3></div><p class="hint">Escribe una dirección y mueve el prefijo. Mira cómo la línea entre red (azul) y equipo (verde) se corre bit por bit, y cómo cambian la dirección de red, el broadcast, el rango usable y cuántos equipos caben. Prueba los ejemplos de los botones.</p><style>
+.c05-calc{display:grid;gap:14px;min-width:0}
+.c05-calc input[type=text]{font:600 1.05rem var(--f-mono);padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);width:100%;max-width:240px}
+.c05-calc input[type=text][aria-invalid=true]{border-color:var(--warm)}
+.c05-bits{display:flex;flex-wrap:wrap;gap:10px 12px;font-family:var(--f-mono)}
+.c05-oct{display:grid;gap:3px;justify-items:center}
+.c05-oct b{font-size:.95rem}
+.c05-row{display:flex;gap:2px}
+.c05-row span{width:14px;height:24px;display:grid;place-items:center;font-size:.78rem;border-radius:3px;border:1px solid}
+.c05-row .r{background:var(--c-red-s);border-color:var(--c-red);color:var(--c-red)}
+.c05-row .e{background:var(--c-enl-s);border-color:var(--c-enl);color:var(--c-enl)}
+.c05-calc .legend i.r{background:var(--c-red)} .c05-calc .legend i.e{background:var(--c-enl)}
+@media (min-width:700px){.c05-row span{width:19px;height:28px;font-size:.88rem}}
+.c05-calc .readout b{font-weight:600;color:var(--ink)}
+</style>
+<div class="c05-calc">
+  <div class="opciones">
+    <label for="c05-ip">Dirección IP
+      <input id="c05-ip" type="text" value="192.168.1.10" inputmode="decimal" autocomplete="off" spellcheck="false" aria-describedby="c05-res"></label>
+    <div class="ctl"><label for="c05-pre">Prefijo (bits de red)</label><output id="c05-pre-o" for="c05-pre"></output>
+      <input type="range" id="c05-pre" min="0" max="32" value="24"></div>
+  </div>
+  <div class="btns" id="c05-ej" role="group" aria-label="Ejemplos">
+    <button type="button" data-ip="192.168.1.10" data-p="24">Casa /24</button>
+    <button type="button" data-ip="172.16.40.9" data-p="16">Empresa /16</button>
+    <button type="button" data-ip="10.1.2.3" data-p="8">Red 10 /8</button>
+    <button type="button" data-ip="203.0.113.77" data-p="26">Bloque /26</button>
+    <button type="button" data-ip="203.0.113.130" data-p="28">IP fijas /28</button>
+    <button type="button" data-ip="198.51.100.9" data-p="30">Enlace /30</button>
+    <button type="button" data-ip="100.64.12.7" data-p="10">CGNAT /10</button>
+  </div>
+  <div class="c05-bits" id="c05-bits" aria-hidden="true"></div>
+  <div class="legend"><span><i class="r"></i>bits de red (el barrio)</span><span><i class="e"></i>bits de equipo (la casa)</span></div>
+  <div class="readout" id="c05-res" aria-live="polite"></div>
+  <p class="hint" id="c05-nota"></p>
+</div></div></section>
+<section><h2>Dirección de red, broadcast y direcciones usables: cuántos equipos caben</h2><div class="prose"><p>En cada bloque hay dos direcciones que no se le dan a ningún equipo:</p><ul><li>La <b>dirección de red</b>: la primera del bloque, con todos los bits de equipo en cero. Es el nombre del barrio, no una casa. En <code>192.168.1.0/24</code> es la <code>.0</code>.</li><li>La <b>dirección de broadcast</b>: la última del bloque, con todos los bits de equipo en uno. Un paquete enviado ahí les llega a <b>todos</b> los equipos de la red a la vez, como un altavoz en la calle. En <code>192.168.1.0/24</code> es la <code>.255</code>.</li></ul><p>Todo lo del medio es el <b>rango usable</b>. Por eso la cuenta de equipos siempre es «direcciones del bloque menos dos»: un /24 tiene 256 direcciones y caben 254 equipos.</p><h3>Ejemplo resuelto 1: la red de la casa</h3><p><code>192.168.1.10/24</code>. El prefijo /24 dice que los tres primeros números son la red y el último, el equipo.</p><ol class="steps"><li><span>Dirección de red: se deja la parte de red y se pone el equipo en cero → <code>192.168.1.0</code>.</span></li><li><span>Broadcast: equipo todo en uno, que en un octeto completo es 255 → <code>192.168.1.255</code>.</span></li><li><span>Rango usable: de <code>192.168.1.1</code> a <code>192.168.1.254</code>.</span></li><li><span>Equipos que caben: 256 − 2 = <b>254</b>.</span></li></ol><h3>Ejemplo resuelto 2: cuando la línea cae a mitad de un número</h3><p><code>203.0.113.77/26</code>. Aquí la línea entre red y equipo cae dentro del último octeto: 2 bits son de red y 6 de equipo. El truco para no hacer binario es el <b>tamaño del bloque</b>: 2 elevado a los bits de equipo, 2⁶ = 64. Los bloques empiezan en múltiplos de 64: 0, 64, 128 y 192.</p><ol class="steps"><li><span>¿En qué bloque cae el 77? Entre 64 y 127. La red es <code>203.0.113.64</code>.</span></li><li><span>El broadcast es la última del bloque: <code>203.0.113.127</code>.</span></li><li><span>Rango usable: de <code>203.0.113.65</code> a <code>203.0.113.126</code>.</span></li><li><span>Equipos que caben: 64 − 2 = <b>62</b>.</span></li></ol><h3>Ejemplo resuelto 3: un enlace entre dos routers</h3><p><code>198.51.100.9/30</code>. Bits de equipo: 2. Tamaño del bloque: 4. Los bloques empiezan en 0, 4, 8, 12… El 9 cae en el que empieza en 8: red <code>198.51.100.8</code>, usables <code>.9</code> y <code>.10</code>, broadcast <code>.11</code>. Caben <b>dos</b> equipos: justo uno en cada punta del enlace. Por eso el /30 es el prefijo clásico de los enlaces entre routers de un operador. Hoy también se usa el /31: un bloque de solo dos direcciones, las dos usables, porque en un enlace de dos puntas no hace falta ni dirección de red ni broadcast.</p></div><figure class="fig fig-esquema" id="05-diagrama-4"><div class="lienzo"><svg viewBox="0 0 820 280" style="min-width:660px" role="img" aria-label="La red 192.168.1.0/24 de una casa: la .0 es el nombre de la red, la .1 es el router y puerta de enlace, de la .2 a la .254 se reparten a los equipos y la .255 es el broadcast">
+  <text x="20" y="24" class="t t-b">192.168.1.0/24</text>
+  <text x="140" y="24" class="t t-s t-m">256 direcciones, de 192.168.1.0 a 192.168.1.255</text>
+
+  
+  <rect x="20" y="40" width="78" height="96" rx="8" class="caja ln-d"/>
+  <text x="59" y="80" text-anchor="middle" class="t t-b t-mono" style="font-size:18px">.0</text>
+  <text x="59" y="104" text-anchor="middle" class="t t-s t-b">Red</text>
+  
+  <rect x="106" y="40" width="112" height="96" rx="8" class="c-red"/>
+  <use href="#i-router" x="146" y="46" width="32" height="32" class="ico"/>
+  <text x="162" y="98" text-anchor="middle" class="t t-b t-mono" style="font-size:18px">.1</text>
+  <text x="162" y="120" text-anchor="middle" class="t t-s t-b">Router</text>
+  
+  <rect x="226" y="40" width="470" height="96" rx="8" class="d-casa"/>
+  <text x="461" y="62" text-anchor="middle" class="t t-b t-mono">.2 a .254 · 253 direcciones para los equipos</text>
+  <g class="t t-s" text-anchor="middle">
+    <use href="#i-celular" x="262" y="70" width="30" height="30" class="ico"/><text x="277" y="118" class="t-mono">.10</text><text x="277" y="130" class="t-xs t-m">celular</text>
+    <use href="#i-monitor" x="352" y="70" width="30" height="30" class="ico"/><text x="367" y="118" class="t-mono">.11</text><text x="367" y="130" class="t-xs t-m">laptop</text>
+    <use href="#i-monitor" x="442" y="70" width="30" height="30" class="ico"/><text x="457" y="118" class="t-mono">.12</text><text x="457" y="130" class="t-xs t-m">televisor</text>
+    <use href="#i-celular" x="532" y="70" width="30" height="30" class="ico"/><text x="547" y="118" class="t-mono">.13</text><text x="547" y="130" class="t-xs t-m">tableta</text>
+    <text x="640" y="96" class="t-b t-m">…</text><text x="640" y="118" class="t-mono">.254</text>
+  </g>
+  
+  <rect x="704" y="40" width="96" height="96" rx="8" class="caja ln-d"/>
+  <text x="752" y="80" text-anchor="middle" class="t t-b t-mono" style="font-size:18px">.255</text>
+  <text x="752" y="104" text-anchor="middle" class="t t-s t-b">Broadcast</text>
+
+  
+  <g class="t t-s">
+    <path d="M59 142v14" class="ln"/><text x="20" y="172">El nombre</text><text x="20" y="186">del barrio.</text><text x="20" y="200" class="t-m">No es de nadie.</text>
+    <path d="M162 142v14" class="ln"/><text x="110" y="172">La puerta de</text><text x="110" y="186">enlace: la salida</text><text x="110" y="200" class="t-m">de la casa.</text>
+    <path d="M461 142v14" class="ln"/><text x="300" y="172">El router se las presta a los equipos que se conectan</text><text x="300" y="186">(con DHCP, capítulo 8). Todas tienen el mismo barrio,</text><text x="300" y="200" class="t-m">192.168.1, y cambian solo en el último número.</text>
+    <path d="M752 142v14" class="ln"/><text x="704" y="172">«A todos»:</text><text x="704" y="186">les llega a</text><text x="704" y="200" class="t-m">toda la red.</text>
+  </g>
+  <rect x="20" y="222" width="780" height="40" rx="8" class="caja"/>
+  <text x="410" y="247" text-anchor="middle" class="t">Equipos que caben: <tspan class="t-b">256 − 2 = 254</tspan>. El router usa uno, así que quedan 253 para todo lo demás.</text>
+</svg></div><figcaption><b>La red /24 de una casa.</b> Las 256 direcciones de <code>192.168.1.0/24</code> en fila. La <code>.0</code> es el nombre de la red y la <code>.255</code> el broadcast: ninguna se le da a un equipo. La <code>.1</code> es el router, la puerta de salida. Desde la <code>.2</code> hasta la <code>.254</code> el router reparte direcciones a celulares, computadoras, televisores y cámaras.</figcaption></figure></section>
+<section><h2>La .1 y la puerta de enlace: la salida de la casa</h2><div class="prose"><p>Cada equipo, antes de mandar un paquete, se hace una sola pregunta: <b>¿el destino está en mi misma red?</b> Para responderla compara la parte de red de su dirección con la del destino, usando su máscara.</p><ul><li><b>Si está en la misma red</b>, le habla directo: averigua la MAC del destino (con ARP, más abajo) y le manda la trama por el switch o el Wi-Fi.</li><li><b>Si está en otra red</b>, no intenta llegar solo: se lo entrega a la <b>puerta de enlace</b> (<i>default gateway</i>), el router que conoce la salida. Es como dejar la carta en el buzón de la esquina.</li></ul><p>En casi todas las casas la puerta de enlace es el router Wi-Fi, y casi siempre tiene la dirección <code>.1</code> de la red: <code>192.168.1.1</code>. No es una ley, es una costumbre muy extendida, y por eso escribir <code>192.168.1.1</code> en el navegador suele abrir la página de configuración del router. Si un equipo tiene mal configurada la puerta de enlace, ve a la impresora de la casa pero no sale a Internet: un síntoma que en atención al cliente se ve seguido.</p></div><div class="lab" id="05-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Están en la misma red?</h3></div><p class="hint">Escribe la dirección de tu equipo, la de destino y el prefijo. El laboratorio aplica la máscara a las dos, compara la parte de red y te dice qué haría el equipo: hablarle directo o mandárselo a la puerta de enlace.</p><style>
+.c05-mr{display:grid;gap:14px;min-width:0}
+.c05-mr input[type=text]{font:600 1.05rem var(--f-mono);padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);width:100%;max-width:240px}
+.c05-mr input[type=text][aria-invalid=true]{border-color:var(--warm)}
+.c05-mr .fila{display:grid;gap:4px;font-family:var(--f-mono);font-size:.82rem;min-width:0}
+.c05-mr .fila small{font:600 .78rem var(--f-display);color:var(--muted)}
+.c05-mr .bits{display:flex;flex-wrap:wrap;gap:3px 8px;max-width:100%}
+.c05-mr .bits .o{display:flex;gap:1px}
+.c05-mr .bits .o span{width:12px;text-align:center;border-radius:2px}
+.c05-mr .bits .r{background:var(--c-red-s);color:var(--c-red)}
+.c05-mr .bits .e{color:var(--muted)}
+.c05-mr .bits .x{background:var(--warm-soft);color:var(--warm);font-weight:700;outline:1.5px solid var(--warm)}
+.c05-mr .veredicto{font:700 1.15rem var(--f-display);padding:10px 14px;border-radius:8px;border-left:4px solid}
+.c05-mr .veredicto.si{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.c05-mr .veredicto.no{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.c05-mr .veredicto small{display:block;font:400 .92rem var(--f-body);color:var(--ink);margin-top:4px}
+</style>
+<div class="c05-mr">
+  <div class="opciones">
+    <label for="c05-a">Tu equipo
+      <input id="c05-a" type="text" value="192.168.1.10" inputmode="decimal" autocomplete="off" spellcheck="false"></label>
+    <label for="c05-b">Destino
+      <input id="c05-b" type="text" value="192.168.1.50" inputmode="decimal" autocomplete="off" spellcheck="false"></label>
+    <div class="ctl"><label for="c05-p">Prefijo de tu red</label><output id="c05-p-o" for="c05-p"></output>
+      <input type="range" id="c05-p" min="8" max="30" value="24"></div>
+  </div>
+  <div class="btns" id="c05-mr-ej" role="group" aria-label="Ejemplos">
+    <button type="button" data-a="192.168.1.10" data-b="192.168.1.50" data-p="24">La impresora de la casa</button>
+    <button type="button" data-a="192.168.1.10" data-b="203.0.113.10" data-p="24">Un sitio en Internet</button>
+    <button type="button" data-a="192.168.10.20" data-b="192.168.10.70" data-p="26">Otra área de la oficina</button>
+    <button type="button" data-a="10.20.1.5" data-b="10.20.200.9" data-p="16">Mismo /16, lejos</button>
+  </div>
+  <div class="fila"><small>Tu equipo en bits</small><div class="bits" id="c05-ba" aria-hidden="true"></div></div>
+  <div class="fila"><small>Destino en bits</small><div class="bits" id="c05-bb" aria-hidden="true"></div></div>
+  <div class="readout" id="c05-mr-res"></div>
+  <div class="veredicto" id="c05-ver" aria-live="polite"></div>
+</div></div></section>
+<section><h2>Dividir una red en subredes</h2><div class="prose"><p>Un bloque grande se puede partir en bloques más chicos, llamados <b>subredes</b>, alargando el prefijo. Cada bit que se suma al prefijo parte el bloque en dos: un /24 se convierte en dos /25, o en cuatro /26, o en sesenta y cuatro /30.</p><p>¿Para qué? Para ordenar y separar. Una empresa le da una subred a cada piso o a cada área, para que un problema en una no inunde a las demás. Un operador recibe un bloque grande y lo reparte en pedazos: uno para cada ciudad, uno para los enlaces entre routers, otro para los equipos de gestión.</p><h3>Ejemplo resuelto 4: cuatro áreas en un /24</h3><p>Una oficina tiene <code>192.168.10.0/24</code> y quiere cuatro subredes iguales: ventas, finanzas, sistemas e invitados. Cuatro partes son dos bits más de prefijo: /26. Tamaño del bloque: 64.</p><div class="tbl"><table><thead><tr><th>Subred</th><th>Red</th><th>Usables</th><th>Broadcast</th></tr></thead><tbody><tr><td>Ventas</td><td>192.168.10.0/26</td><td>.1 a .62</td><td>.63</td></tr><tr><td>Finanzas</td><td>192.168.10.64/26</td><td>.65 a .126</td><td>.127</td></tr><tr><td>Sistemas</td><td>192.168.10.128/26</td><td>.129 a .190</td><td>.191</td></tr><tr><td>Invitados</td><td>192.168.10.192/26</td><td>.193 a .254</td><td>.255</td></tr></tbody></table></div><p>Cada subred pierde dos direcciones (red y broadcast), así que en total caben 4 × 62 = 248 equipos en lugar de 254. Es el precio de ordenar.</p></div><figure class="fig fig-esquema" id="05-diagrama-12"><div class="lienzo"><svg viewBox="0 0 800 285" style="min-width:640px" role="img" aria-label="Un bloque 192.168.10.0/24 partido en dos /25, cuatro /26 y ocho /27. Resaltada la fila /26: ventas .0, finanzas .64, sistemas .128 e invitados .192">
+  <text x="20" y="40" class="t t-b" style="font-size:16px">/24</text>
+  <text x="20" y="58" class="t t-s t-m">1 red · 254 equipos</text>
+  <rect x="151.0" y="20" width="628.0" height="44" rx="5" class="caja"/>
+  <text x="465.0" y="39" text-anchor="middle" class="t t-b t-mono">192.168.10.0</text>
+  <text x="465.0" y="56" text-anchor="middle" class="t t-s t-m">.1 a .254</text>
+  <text x="20" y="100" class="t t-b" style="font-size:16px">/25</text>
+  <text x="20" y="118" class="t t-s t-m">2 redes · 126 c/u</text>
+  <rect x="151.0" y="80" width="313.0" height="44" rx="5" class="caja"/>
+  <text x="307.5" y="99" text-anchor="middle" class="t t-b t-mono">.0</text>
+  <text x="307.5" y="116" text-anchor="middle" class="t t-s t-m">.1 a .126</text>
+  <rect x="466.0" y="80" width="313.0" height="44" rx="5" class="caja"/>
+  <text x="622.5" y="99" text-anchor="middle" class="t t-b t-mono">.128</text>
+  <text x="622.5" y="116" text-anchor="middle" class="t t-s t-m">.129 a .254</text>
+  <text x="20" y="160" class="t t-b" style="font-size:16px">/26</text>
+  <text x="20" y="178" class="t t-s t-m">4 redes · 62 c/u</text>
+  <rect x="151.0" y="140" width="155.5" height="44" rx="5" class="c-red"/>
+  <text x="228.8" y="159" text-anchor="middle" class="t t-b t-mono">.0</text>
+  <text x="228.8" y="176" text-anchor="middle" class="t t-s">Ventas · .1 a .62</text>
+  <rect x="308.5" y="140" width="155.5" height="44" rx="5" class="c-red"/>
+  <text x="386.2" y="159" text-anchor="middle" class="t t-b t-mono">.64</text>
+  <text x="386.2" y="176" text-anchor="middle" class="t t-s">Finanzas · .65 a .126</text>
+  <rect x="466.0" y="140" width="155.5" height="44" rx="5" class="c-red"/>
+  <text x="543.8" y="159" text-anchor="middle" class="t t-b t-mono">.128</text>
+  <text x="543.8" y="176" text-anchor="middle" class="t t-s">Sistemas · .129 a .190</text>
+  <rect x="623.5" y="140" width="155.5" height="44" rx="5" class="c-red"/>
+  <text x="701.2" y="159" text-anchor="middle" class="t t-b t-mono">.192</text>
+  <text x="701.2" y="176" text-anchor="middle" class="t t-s">Invitados · .193 a .254</text>
+  <text x="20" y="220" class="t t-b" style="font-size:16px">/27</text>
+  <text x="20" y="238" class="t t-s t-m">8 redes · 30 c/u</text>
+  <rect x="151.0" y="200" width="76.8" height="44" rx="5" class="caja"/>
+  <text x="189.4" y="219" text-anchor="middle" class="t t-b t-mono">.0</text>
+  <text x="189.4" y="236" text-anchor="middle" class="t t-xs t-m">32 dir.</text>
+  <rect x="229.8" y="200" width="76.8" height="44" rx="5" class="caja"/>
+  <text x="268.1" y="219" text-anchor="middle" class="t t-b t-mono">.32</text>
+  <text x="268.1" y="236" text-anchor="middle" class="t t-xs t-m">32 dir.</text>
+  <rect x="308.5" y="200" width="76.8" height="44" rx="5" class="caja"/>
+  <text x="346.9" y="219" text-anchor="middle" class="t t-b t-mono">.64</text>
+  <text x="346.9" y="236" text-anchor="middle" class="t t-xs t-m">32 dir.</text>
+  <rect x="387.2" y="200" width="76.8" height="44" rx="5" class="caja"/>
+  <text x="425.6" y="219" text-anchor="middle" class="t t-b t-mono">.96</text>
+  <text x="425.6" y="236" text-anchor="middle" class="t t-xs t-m">32 dir.</text>
+  <rect x="466.0" y="200" width="76.8" height="44" rx="5" class="caja"/>
+  <text x="504.4" y="219" text-anchor="middle" class="t t-b t-mono">.128</text>
+  <text x="504.4" y="236" text-anchor="middle" class="t t-xs t-m">32 dir.</text>
+  <rect x="544.8" y="200" width="76.8" height="44" rx="5" class="caja"/>
+  <text x="583.1" y="219" text-anchor="middle" class="t t-b t-mono">.160</text>
+  <text x="583.1" y="236" text-anchor="middle" class="t t-xs t-m">32 dir.</text>
+  <rect x="623.5" y="200" width="76.8" height="44" rx="5" class="caja"/>
+  <text x="661.9" y="219" text-anchor="middle" class="t t-b t-mono">.192</text>
+  <text x="661.9" y="236" text-anchor="middle" class="t t-xs t-m">32 dir.</text>
+  <rect x="702.2" y="200" width="76.8" height="44" rx="5" class="caja"/>
+  <text x="740.6" y="219" text-anchor="middle" class="t t-b t-mono">.224</text>
+  <text x="740.6" y="236" text-anchor="middle" class="t t-xs t-m">32 dir.</text>
+  <text x="20" y="276" class="t t-s t-m">Cada fila suma un bit al prefijo y parte cada bloque en dos mitades iguales.</text>
+</svg></div><figcaption><b>Un /24 partido en subredes.</b> Arriba, el bloque <code>192.168.10.0/24</code> entero. Cada fila hacia abajo suma un bit al prefijo y parte los bloques en dos: dos /25, cuatro /26, ocho /27. La fila resaltada es el ejemplo de las cuatro áreas de la oficina.</figcaption></figure></section>
+<section><h2>Direcciones especiales: 127.0.0.1, 169.254, 0.0.0.0 y 255.255.255.255</h2><div class="prose"><p>Algunas direcciones no se le dan a nadie porque tienen un significado propio. Conviene reconocerlas, porque aparecen en los diagnósticos.</p><div class="tbl"><table><thead><tr><th>Dirección</th><th>Qué significa</th><th>Cuándo la ves</th></tr></thead><tbody><tr><td><code>127.0.0.1</code></td><td>«Yo mismo» (<i>loopback</i>). Todo <code>127.0.0.0/8</code> sirve, pero se usa esta.</td><td>Un programa que se habla a sí mismo dentro del mismo equipo. Nunca sale a la red.</td></tr><tr><td><code>169.254.x.x</code></td><td>Dirección que el equipo se inventa cuando nadie le dio una (<i>link-local</i>).</td><td>Si una computadora muestra <code>169.254…</code>, no recibió dirección del router: casi seguro falló el DHCP (capítulo 8).</td></tr><tr><td><code>0.0.0.0</code></td><td>«Ninguna» o «cualquiera», según el contexto.</td><td>Un equipo que todavía no tiene dirección; y la ruta <code>0.0.0.0/0</code>, que quiere decir «todo lo demás» (capítulo 6).</td></tr><tr><td><code>255.255.255.255</code></td><td>Broadcast a toda la red local, sea cual sea.</td><td>El primer pedido de un equipo que acaba de conectarse y aún no conoce su red.</td></tr><tr><td><code>224.0.0.0</code> a <code>239.255.255.255</code></td><td>Multicast: un envío para un grupo de equipos.</td><td>La televisión por IP (capítulo 23) y los protocolos de routing (capítulo 6).</td></tr></tbody></table></div></div><div class="ml"><b>En la práctica</b><p>Una dirección <code>169.254</code> en la computadora de un cliente es una pista de oro para atención al cliente: el equipo está conectado al router, pero el router no le dio dirección. El problema está entre ese equipo y el router, no en la fibra ni en Internet.</p></div></section>
+<section><h2>Cómo reparte direcciones un operador: bloques, pools y la IP fija</h2><div class="prose"><p>Las direcciones IP públicas no se compran en una tienda. Las reparte en cada región del mundo un <b>registro regional de Internet</b> (en América Latina y el Caribe, LACNIC), que entrega bloques a los operadores. Como IPv4 se agotó, hoy un operador consigue pocas direcciones nuevas y las cuida como un recurso escaso; incluso existe un mercado donde se compran y venden bloques.</p><p>El operador parte su bloque en <b>pools</b> (bolsas de direcciones) y se los carga a los equipos que reciben a los clientes, como el BNG. Cuando la ONT o el router del cliente se conecta, el BNG toma una dirección libre del pool y se la presta. Esa es la <b>IP dinámica</b>: puede cambiar cada vez que el equipo se reconecta, y para navegar no importa.</p><p>La <b>IP fija</b> es una dirección que se reserva para un cliente y se le da siempre la misma, normalmente porque el servidor RADIUS se la indica al BNG al momento de conectarse (capítulo 20). La piden quienes necesitan ser encontrados desde afuera: empresas con servidores propios, cámaras, accesos remotos. Como es escasa y exige gestión, se vende como un producto aparte.</p></div><figure class="fig fig-arquitectura" id="05-diagrama-13"><div class="lienzo"><svg viewBox="0 0 920 330" style="min-width:720px" role="img" aria-label="Del registro a la casa: el registro regional entrega un bloque público al operador; el operador lo reparte en un pool dinámico, un grupo de IP fijas y un pool para CGNAT en el BNG, con ayuda de RADIUS; cada cliente recibe una dirección dinámica, una fija o una compartida, y adentro de la casa el router reparte direcciones privadas">
+  <rect x="10" y="14" width="190" height="300" rx="12" class="d-inet"/>
+  <rect x="212" y="14" width="398" height="300" rx="12" class="d-oper"/>
+  <rect x="622" y="14" width="288" height="300" rx="12" class="d-casa"/>
+  <text x="105" y="38" text-anchor="middle" class="t t-xs t-b k-inet">REGISTRO REGIONAL</text>
+  <text x="411" y="38" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  <text x="766" y="38" text-anchor="middle" class="t t-xs t-b k-casa">CASAS DE LOS CLIENTES</text>
+
+  
+  <rect x="26" y="110" width="158" height="96" rx="10" class="caja"/>
+  <use href="#i-nube" x="88" y="118" width="34" height="34" class="ico"/>
+  <text x="105" y="170" text-anchor="middle" class="t t-s t-b">LACNIC u otro</text>
+  <text x="105" y="186" text-anchor="middle" class="t t-xs t-m">reparte los bloques</text>
+  <text x="105" y="198" text-anchor="middle" class="t t-xs t-m">de cada región</text>
+  <line x1="184" y1="158" x2="232" y2="158" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="105" y="236" text-anchor="middle" class="t t-s t-b k-red">203.0.113.0/24</text>
+  <text x="105" y="252" text-anchor="middle" class="t t-xs t-m">bloque de ejemplo</text>
+
+  
+  <rect x="234" y="104" width="110" height="108" rx="10" class="caja"/>
+  <use href="#i-router-core" x="272" y="114" width="34" height="34" class="ico"/>
+  <text x="289" y="168" text-anchor="middle" class="t t-s t-b">BNG</text>
+  <text x="289" y="184" text-anchor="middle" class="t t-xs t-m">presta las</text>
+  <text x="289" y="196" text-anchor="middle" class="t t-xs t-m">direcciones</text>
+  <rect x="234" y="234" width="110" height="60" rx="10" class="caja"/>
+  <use href="#i-llave" x="244" y="242" width="20" height="20" class="ico"/>
+  <text x="270" y="257" class="t t-s t-b">RADIUS</text>
+  <text x="289" y="282" text-anchor="middle" class="t t-xs t-m">elige la IP fija</text>
+  <line x1="289" y1="232" x2="289" y2="214" class="ln" marker-end="url(#fl)"/>
+
+  <g class="t t-s">
+    <rect x="370" y="62" width="222" height="54" rx="8" class="c-red"/>
+    <text x="382" y="84" class="t-b">Pool dinámico</text><text x="382" y="102" class="t-mono">203.0.113.0/25</text>
+    <rect x="370" y="132" width="222" height="54" rx="8" class="c-red"/>
+    <text x="382" y="154" class="t-b">IP fijas reservadas</text><text x="382" y="172" class="t-mono">203.0.113.128/28</text>
+    <rect x="370" y="202" width="222" height="72" rx="8" class="c-red"/>
+    <text x="382" y="224" class="t-b">Pool para CGNAT</text><text x="382" y="242" class="t-mono">100.64.0.0/10</text>
+    <text x="382" y="260" class="t-xs t-m">sale por pocas IP públicas</text>
+  </g>
+  <line x1="344" y1="130" x2="368" y2="96" class="ln"/>
+  <line x1="344" y1="158" x2="368" y2="158" class="ln"/>
+  <line x1="344" y1="186" x2="368" y2="226" class="ln"/>
+
+  
+  <g class="t t-s">
+    <line x1="592" y1="89" x2="636" y2="89" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    <rect x="638" y="58" width="258" height="62" rx="10" class="caja"/>
+    <use href="#i-router" x="646" y="70" width="30" height="30" class="ico"/>
+    <text x="684" y="80" class="t-b">Cliente A · dinámica</text><text x="684" y="96" class="t-mono">203.0.113.37</text><text x="684" y="111" class="t-xs t-m">puede cambiar al reconectar</text>
+    <line x1="592" y1="159" x2="636" y2="159" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    <rect x="638" y="128" width="258" height="62" rx="10" class="caja"/>
+    <use href="#i-router" x="646" y="140" width="30" height="30" class="ico"/>
+    <text x="684" y="150" class="t-b">Cliente B · IP fija</text><text x="684" y="166" class="t-mono">203.0.113.130</text><text x="684" y="181" class="t-xs t-m">siempre la misma</text>
+    <line x1="592" y1="229" x2="636" y2="229" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    <rect x="638" y="198" width="258" height="62" rx="10" class="caja"/>
+    <use href="#i-router" x="646" y="210" width="30" height="30" class="ico"/>
+    <text x="684" y="220" class="t-b">Cliente C · compartida</text><text x="684" y="236" class="t-mono">100.64.12.7</text><text x="684" y="251" class="t-xs t-m">detrás de CGNAT</text>
+    <text x="766" y="286" text-anchor="middle" class="t-b k-casa">Adentro de cada casa:</text>
+    <text x="766" y="302" text-anchor="middle" class="t-mono">192.168.1.0/24 privada</text>
+  </g>
+</svg></div><figcaption><b>Del registro a la casa.</b> El registro regional entrega un bloque público al operador. El operador lo parte en pools para sus BNG y aparta algunas direcciones como IP fijas. Cada cliente recibe una dirección del pool (dinámica) o la suya reservada (fija); adentro de la casa, el router reparte direcciones privadas.</figcaption></figure></section>
+<section><h2>ARP: de la dirección IP a la dirección MAC</h2><div class="prose"><p>Saber la dirección IP del destino no basta para entregar un paquete en la red local. El switch y el Wi-Fi no entienden de IP: entregan tramas a <b>direcciones MAC</b> (capítulo 4). Entonces, cuando tu celular quiere mandarle algo al router <code>192.168.1.1</code>, primero necesita saber cuál es la MAC del router. Para eso existe <b>ARP</b> (protocolo de resolución de direcciones).</p><p>El flujo tiene tres pasos:</p><ol class="steps"><li><span><b>La pregunta a todos.</b> El celular manda una trama de broadcast que llega a todos los equipos de la red: «¿Quién tiene la <code>192.168.1.1</code>? Avísale a <code>192.168.1.10</code>».</span></li><li><span><b>La respuesta a uno.</b> Solo el router se reconoce en la pregunta y contesta directo al celular: «La <code>192.168.1.1</code> soy yo, mi MAC es <code>02:00:00:aa:00:01</code>». Los demás la ignoran.</span></li><li><span><b>La tabla ARP.</b> El celular anota el par IP-MAC en una pequeña tabla y la usa durante unos minutos sin volver a preguntar. Recién entonces manda el paquete IP dentro de una trama dirigida a esa MAC.</span></li></ol><p>Fíjate en un detalle: aunque el paquete vaya a un servidor en otro país, el celular le pregunta por ARP a la <b>puerta de enlace</b>, no al servidor. En cada tramo, la IP de destino sigue siendo la del servidor, pero la MAC de destino es la del siguiente equipo del camino. Cada router repite el truco con su vecino.</p></div><figure class="fig fig-flujo" id="05-diagrama-6"><div class="lienzo"><svg viewBox="0 0 880 470" style="min-width:680px" role="img" aria-label="Flujo de ARP: el celular pregunta por broadcast quién tiene la dirección 192.168.1.1; la laptop la descarta; el router responde directo con su MAC; el celular la guarda en su tabla ARP y manda el paquete IP a esa MAC">
+  
+  <rect x="50" y="14" width="170" height="60" rx="10" class="caja"/><use href="#i-celular" x="60" y="27" width="32" height="32" class="ico"/><text x="100" y="40" class="t t-b">Celular</text><text x="100" y="58" class="t t-xs t-mono">192.168.1.10</text>
+  <rect x="320" y="14" width="160" height="60" rx="10" class="caja"/><use href="#i-monitor" x="330" y="27" width="32" height="32" class="ico"/><text x="370" y="40" class="t t-b">Laptop</text><text x="370" y="58" class="t t-xs t-mono">192.168.1.11</text>
+  <rect x="580" y="14" width="170" height="60" rx="10" class="caja"/><use href="#i-router" x="590" y="27" width="32" height="32" class="ico"/><text x="630" y="40" class="t t-b">Router</text><text x="630" y="58" class="t t-xs t-mono">192.168.1.1</text>
+  <line x1="135" y1="74" x2="135" y2="455" class="vida"/>
+  <line x1="400" y1="74" x2="400" y2="455" class="vida"/>
+  <line x1="665" y1="74" x2="665" y2="455" class="vida"/>
+
+  
+  <text x="145" y="104" class="t t-s"><tspan class="t-mono t-b">ARP</tspan> ① ¿Quién tiene la 192.168.1.1? Avísale a 192.168.1.10</text>
+  <line x1="135" y1="114" x2="398" y2="126" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <line x1="135" y1="114" x2="663" y2="138" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="145" y="150" class="t t-xs t-m">a la MAC ff:ff:ff:ff:ff:ff: a todos</text>
+  <text x="410" y="150" class="t t-xs t-b t-m">✕ no soy yo: la descarta</text>
+
+  
+  <text x="300" y="186" class="t t-s"><tspan class="t-mono t-b">ARP</tspan> ② Soy yo: mi MAC es 02:00:00:aa:00:01</text>
+  <line x1="665" y1="196" x2="137" y2="212" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="420" y="226" class="t t-xs t-m">directo al celular, solo a él</text>
+
+  
+  <rect x="40" y="246" width="300" height="74" rx="8" class="c-enl"/>
+  <text x="52" y="266" class="t t-s t-b">③ Tabla ARP del celular</text>
+  <text x="52" y="286" class="t t-s t-mono">192.168.1.1 → 02:00:00:aa:00:01</text>
+  <text x="52" y="306" class="t t-xs t-m">la recuerda unos minutos</text>
+
+  
+  <text x="145" y="352" class="t t-s"><tspan class="t-b">④ Trama a 02:00:00:aa:00:01</tspan> con el paquete IP adentro</text>
+  <line x1="135" y1="362" x2="663" y2="378" class="ln s-red" style="stroke-width:2.6" marker-end="url(#fl-red)"/>
+  <text x="145" y="398" class="t t-xs t-m">IP de destino: 203.0.113.10 (el servidor, lejos)</text>
+  <text x="145" y="412" class="t t-xs t-m">MAC de destino: la del router (el vecino)</text>
+  <text x="674" y="404" class="t t-xs t-b">Y el router</text>
+  <text x="674" y="418" class="t t-xs t-b">repite el truco</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M776 98v126" class="ln s-enl" style="stroke-width:3"/><text x="786" y="150" class="k-enl">ARP</text><text x="786" y="164" class="t-m">1 ida y vuelta</text>
+    <path d="M776 244v76" class="ln" style="stroke-width:3"/><text x="786" y="280" class="t-m">sin red:</text><text x="786" y="294" class="t-m">solo memoria</text>
+    <path d="M776 340v80" class="ln s-red" style="stroke-width:3"/><text x="786" y="376" class="k-red">DATOS</text><text x="786" y="390" class="t-m">ya puede enviar</text>
+  </g>
+  <text x="20" y="300" class="t t-xs t-m" transform="rotate(-90 20 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El flujo de ARP.</b> El celular pregunta en broadcast quién tiene la dirección del router (①); la pregunta llega también a la laptop, que la descarta. Solo el router contesta, directo al celular (②). El celular guarda la respuesta en su tabla ARP (③) y ahora sí manda el paquete a la MAC del router (④).</figcaption></figure></section>
+<section><h2>Direcciones privadas y NAT</h2><div class="prose"><p>Si cada celular, televisor y bombillo inteligente del mundo necesitara una dirección pública, IPv4 se habría acabado hace mucho. La salida fue reservar tres rangos de <b>direcciones privadas</b>, que cualquiera puede usar adentro de su red porque nunca salen a Internet:</p><ul><li><code>10.0.0.0/8</code> (de <code>10.0.0.0</code> a <code>10.255.255.255</code>)</li><li><code>172.16.0.0/12</code> (de <code>172.16.0.0</code> a <code>172.31.255.255</code>)</li><li><code>192.168.0.0/16</code> (de <code>192.168.0.0</code> a <code>192.168.255.255</code>)</li></ul><p>Millones de casas usan <code>192.168.1.0/24</code> al mismo tiempo sin problema, igual que millones de edificios tienen un «apartamento 101». Pero un paquete con origen <code>192.168.1.10</code> no puede salir a Internet así: el servidor no sabría a quién responderle. Ahí entra el <b>NAT</b> (traducción de direcciones de red).</p><p>El router de la casa tiene una sola dirección pública hacia afuera, digamos <code>203.0.113.25</code>. Cada vez que un equipo de adentro abre una conexión, el router <b>cambia el origen</b> del paquete por su propia dirección pública y un número de puerto libre, y anota el cambio en su <b>tabla NAT</b>. Cuando vuelve la respuesta a ese puerto, el router busca en la tabla, <b>deshace el cambio</b> y se la entrega al equipo correcto. Así, toda la casa navega con una sola dirección pública. El puerto es el número que distingue cada conversación dentro de una misma dirección (capítulo 7).</p></div><figure class="fig fig-flujo" id="05-diagrama-9"><div class="lienzo"><svg viewBox="0 0 900 440" style="min-width:700px" role="img" aria-label="Flujo de NAT: el celular manda un pedido con origen 192.168.1.10 puerto 51000; el router cambia el origen por 203.0.113.25 puerto 40001 y lo anota en la tabla NAT; el servidor responde a 203.0.113.25 puerto 40001; el router busca en la tabla y entrega la respuesta a 192.168.1.10 puerto 51000">
+  
+  <rect x="40" y="14" width="160" height="60" rx="10" class="caja"/><use href="#i-celular" x="50" y="27" width="32" height="32" class="ico"/><text x="90" y="40" class="t t-b">Celular</text><text x="90" y="58" class="t t-xs t-mono">192.168.1.10</text>
+  <rect x="300" y="14" width="200" height="60" rx="10" class="caja"/><use href="#i-router" x="310" y="27" width="32" height="32" class="ico"/><text x="350" y="40" class="t t-b">Router de la casa</text><text x="350" y="58" class="t t-xs t-mono">afuera: 203.0.113.25</text>
+  <rect x="590" y="14" width="170" height="60" rx="10" class="caja"/><use href="#i-servidor" x="600" y="27" width="32" height="32" class="ico"/><text x="640" y="40" class="t t-b">Servidor</text><text x="640" y="58" class="t t-xs t-mono">198.51.100.7</text>
+  <line x1="120" y1="74" x2="120" y2="425" class="vida"/>
+  <line x1="400" y1="74" x2="400" y2="425" class="vida"/>
+  <line x1="675" y1="74" x2="675" y2="425" class="vida"/>
+
+  <g class="t t-s">
+    
+    <text x="130" y="104">① de <tspan class="t-mono t-b">192.168.1.10:51000</tspan></text>
+    <text x="150" y="119" class="t-m">a <tspan class="t-mono">198.51.100.7:443</tspan></text>
+    <line x1="120" y1="128" x2="398" y2="140" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    
+    <text x="410" y="160">② de <tspan class="t-mono t-b k-red">203.0.113.25:40001</tspan></text>
+    <text x="430" y="175" class="t-m">a <tspan class="t-mono">198.51.100.7:443</tspan></text>
+    <line x1="400" y1="184" x2="673" y2="196" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    
+    <rect x="236" y="212" width="328" height="62" rx="8" class="c-red"/>
+    <text x="248" y="232" class="t-b">Tabla NAT del router</text>
+    <text x="248" y="252" class="t-mono">192.168.1.10:51000 ↔ 203.0.113.25:40001</text>
+    <text x="248" y="267" class="t-xs t-m">una línea por conversación abierta</text>
+    
+    <text x="420" y="300">③ de <tspan class="t-mono">198.51.100.7:443</tspan></text>
+    <text x="440" y="315" class="t-m">a <tspan class="t-mono t-b">203.0.113.25:40001</tspan></text>
+    <line x1="675" y1="324" x2="402" y2="336" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    
+    <text x="130" y="360">④ de <tspan class="t-mono">198.51.100.7:443</tspan></text>
+    <text x="150" y="375" class="t-m">a <tspan class="t-mono t-b k-red">192.168.1.10:51000</tspan></text>
+    <line x1="400" y1="384" x2="122" y2="396" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    <text x="130" y="418" class="t-b">La respuesta llega al equipo correcto</text>
+  </g>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M790 96v104" class="ln s-red" style="stroke-width:3"/><text x="800" y="140" class="k-red">IDA</text><text x="800" y="154" class="t-m">cambia</text><text x="800" y="166" class="t-m">el origen</text>
+    <path d="M790 292v110" class="ln s-red" style="stroke-width:3"/><text x="800" y="336" class="k-red">VUELTA</text><text x="800" y="350" class="t-m">cambia</text><text x="800" y="362" class="t-m">el destino</text>
+  </g>
+  <text x="20" y="250" class="t t-xs t-m" transform="rotate(-90 20 250)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El flujo del NAT, de ida y de vuelta.</b> El celular manda su pedido con origen privado (①). El router cambia el origen por su dirección pública y un puerto, y lo anota en la tabla (②). El servidor responde a esa dirección pública (③). El router busca el puerto en la tabla y le devuelve la respuesta al celular con su dirección privada (④).</figcaption></figure><div class="prose"><p>El NAT tiene una consecuencia importante: <b>las conexiones solo pueden empezar desde adentro</b>. Si alguien en Internet le manda algo a <code>203.0.113.25</code> sin que nadie de la casa lo haya pedido, el router no encuentra ninguna línea en su tabla y lo descarta. Eso protege, pero también impide ver desde afuera una cámara de la casa, salvo que se abra un puerto a mano (<i>port forwarding</i>): una regla fija que dice «lo que llegue al puerto 8080, mándaselo a la cámara».</p></div><div class="lab" id="05-lab-7"><div class="lab-title"><span class="tag">Laboratorio</span><h3>El router de la casa traduciendo conexiones</h3></div><p class="hint">Abre conexiones desde distintos equipos de la casa y mira cómo se llena la tabla NAT. Después intenta entrar a la cámara desde Internet, con y sin puerto abierto, y con el router detrás de CGNAT.</p><style>
+.c05-nat{display:grid;gap:14px;min-width:0}
+.c05-nat .chain .box.on{border-color:var(--accent);background:var(--accent-soft)}
+.c05-nat .chain .box.off{opacity:.35}
+.c05-nat .opciones label.chk{display:flex;gap:8px;align-items:center;align-self:end;color:var(--ink);font:600 .86rem var(--f-display)}
+.c05-nat .chk input{width:18px;height:18px;accent-color:var(--accent)}
+.c05-nat h4{margin:0;font:700 .8rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.c05-nat td,.c05-nat th{font-family:var(--f-mono);font-size:.8rem;padding:5px 8px;white-space:nowrap}
+.c05-nat th{font-family:var(--f-display)}
+.c05-nat tr.nuevo td{background:var(--mark)}
+.c05-nat .vacio{color:var(--muted);font-style:italic;font-size:.88rem}
+.c05-nat ol{margin:0;padding-left:1.3em;display:grid;gap:4px;font-size:.94rem}
+</style>
+<div class="c05-nat">
+  <div class="opciones">
+    <label for="c05-modo">El router de la casa sale a Internet con
+      <select id="c05-modo">
+        <option value="pub" selected>Su propia IP pública</option>
+        <option value="cg">Una IP 100.64, detrás de CGNAT</option>
+      </select></label>
+    <label class="chk" for="c05-pf"><input type="checkbox" id="c05-pf"> Puerto 8080 abierto hacia la cámara (port forwarding)</label>
+  </div>
+  <div class="chain" id="c05-cad" aria-hidden="true"></div>
+  <div class="btns" role="group" aria-label="Conexiones desde la casa">
+    <button type="button" data-d="0">El celular abre una página</button>
+    <button type="button" data-d="1">La laptop revisa el correo</button>
+    <button type="button" data-d="2">El televisor abre una serie</button>
+  </div>
+  <div class="btns" role="group" aria-label="Conexión desde Internet">
+    <button type="button" class="primary" id="c05-cam">Desde Internet: ver la cámara</button>
+    <button type="button" id="c05-borrar">Vaciar las tablas</button>
+  </div>
+  <div aria-live="polite" id="c05-log" class="readout"></div>
+  <div><h4>Tabla NAT del router de la casa</h4><div class="tbl" id="c05-t1"></div></div>
+  <div id="c05-t2w"><h4>Tabla del CGNAT del operador</h4><div class="tbl" id="c05-t2"></div></div>
+</div></div></section>
+<section><h2>CGNAT: cuando el operador también comparte direcciones</h2><div class="prose"><p>El NAT de la casa resolvió el problema de las casas, pero no el de los operadores: cada router todavía necesita <b>una</b> dirección pública, y un operador con cientos de miles de clientes no tiene tantas. La solución fue repetir el truco un piso más arriba. Con <b>CGNAT</b> (NAT de grado operador), el router de la casa recibe una dirección que tampoco es pública, del rango <code>100.64.0.0/10</code>, reservado justamente para esto. Un equipo grande en la red del operador hace una segunda traducción y saca a decenas de clientes por una misma dirección pública, cada uno con su rango de puertos.</p><p>Para navegar, ver video o usar redes sociales, el cliente no nota diferencia. Pero hay servicios que sí: todo lo que necesita que <b>alguien de afuera inicie la conexión</b> hacia la casa. El <i>port forwarding</i> del router de la casa ya no alcanza, porque el paquete muere antes, en el CGNAT del operador, que no sabe a qué cliente mandarlo.</p></div><figure class="fig fig-arquitectura" id="05-diagrama-14"><div class="lienzo"><svg viewBox="0 0 940 340" style="min-width:740px" role="img" aria-label="NAT doble con CGNAT: el celular con dirección privada 192.168.1.10 sale por el router de la casa, que traduce a 100.64.12.7; el CGNAT del operador traduce otra vez a la dirección pública 203.0.113.25, compartida con casas vecinas. Una conexión que llega desde Internet para ver la cámara se descarta en el CGNAT">
+  <defs>
+    <symbol id="i05-camara" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="9" width="18" height="13" rx="2"/><path d="M22 13l6-3v12l-6-3z"/><circle cx="12" cy="15.5" r="3.2"/><path d="M13 22v5M8 27h10"/></g></symbol>
+  </defs>
+  <rect x="10" y="14" width="320" height="312" rx="12" class="d-casa"/>
+  <rect x="340" y="14" width="300" height="312" rx="12" class="d-oper"/>
+  <rect x="650" y="14" width="280" height="312" rx="12" class="d-inet"/>
+  <text x="170" y="38" text-anchor="middle" class="t t-xs t-b k-casa">CASA · DIRECCIONES PRIVADAS</text>
+  <text x="490" y="38" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR · 100.64.0.0/10</text>
+  <text x="790" y="38" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET · DIRECCIONES PÚBLICAS</text>
+
+  
+  <rect x="24" y="64" width="112" height="70" rx="10" class="caja"/>
+  <use href="#i-celular" x="36" y="74" width="30" height="30" class="ico"/>
+  <text x="72" y="88" class="t t-s t-b">Celular</text>
+  <text x="80" y="124" text-anchor="middle" class="t t-xs t-mono">192.168.1.10</text>
+  <rect x="24" y="198" width="112" height="70" rx="10" class="caja"/>
+  <use href="#i05-camara" x="36" y="208" width="30" height="30" class="ico"/>
+  <text x="72" y="222" class="t t-s t-b">Cámara</text>
+  <text x="80" y="258" text-anchor="middle" class="t t-xs t-mono">192.168.1.20</text>
+  <rect x="184" y="116" width="134" height="100" rx="10" class="caja"/>
+  <use href="#i-router" x="234" y="122" width="34" height="34" class="ico"/>
+  <text x="251" y="172" text-anchor="middle" class="t t-s t-b">Router · NAT 1</text>
+  <text x="251" y="188" text-anchor="middle" class="t t-xs t-m">sale como</text>
+  <text x="251" y="202" text-anchor="middle" class="t t-xs t-mono">100.64.12.7</text>
+  <line x1="136" y1="99" x2="186" y2="146" class="ln"/>
+  <line x1="136" y1="233" x2="186" y2="190" class="ln"/>
+
+  
+  <rect x="420" y="112" width="150" height="116" rx="10" class="c-red"/>
+  <use href="#i-router-core" x="478" y="118" width="34" height="34" class="ico"/>
+  <text x="495" y="170" text-anchor="middle" class="t t-s t-b">CGNAT · NAT 2</text>
+  <text x="495" y="186" text-anchor="middle" class="t t-xs t-m">sale como</text>
+  <text x="495" y="200" text-anchor="middle" class="t t-xs t-mono">203.0.113.25</text>
+  <text x="495" y="214" text-anchor="middle" class="t t-xs t-m">(compartida)</text>
+  <g class="t t-xs">
+    <rect x="356" y="264" width="128" height="30" rx="8" class="caja"/><text x="420" y="283" text-anchor="middle" class="t-mono">vecino 100.64.12.8</text>
+    <rect x="496" y="264" width="128" height="30" rx="8" class="caja"/><text x="560" y="283" text-anchor="middle" class="t-mono">vecino 100.64.12.9</text>
+  </g>
+  <line x1="440" y1="264" x2="470" y2="228" class="ln"/>
+  <line x1="545" y1="264" x2="525" y2="228" class="ln"/>
+  <text x="490" y="314" text-anchor="middle" class="t t-xs t-m">decenas de clientes por cada IP pública</text>
+
+  
+  <line x1="318" y1="160" x2="418" y2="160" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="368" y="152" text-anchor="middle" class="t t-xs t-mono">:40001</text>
+  <line x1="570" y1="160" x2="752" y2="160" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="660" y="138" class="t t-xs t-mono">203.0.113.25</text><text x="660" y="152" class="t t-xs t-mono">:61233</text>
+
+  
+  <rect x="754" y="118" width="164" height="70" rx="10" class="caja"/>
+  <use href="#i-servidor" x="764" y="132" width="32" height="32" class="ico"/>
+  <text x="804" y="146" class="t t-s t-b">Servidor</text>
+  <text x="804" y="162" class="t t-xs t-m">responde a la</text>
+  <text x="804" y="174" class="t t-xs t-m">IP compartida</text>
+  <rect x="754" y="230" width="164" height="76" rx="10" class="caja"/>
+  <use href="#i-persona" x="764" y="244" width="32" height="32" class="ico"/>
+  <text x="804" y="256" class="t t-s t-b">Tú, desde afuera,</text>
+  <text x="804" y="272" class="t t-s">quieres ver</text>
+  <text x="804" y="288" class="t t-s">la cámara</text>
+  <path d="M754 262 C 690 262, 640 228, 576 222" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <g class="s-apl" style="stroke-width:3"><line x1="594" y1="234" x2="606" y2="246" class="ln s-apl" style="stroke-width:3"/><line x1="606" y1="234" x2="594" y2="246" class="ln s-apl" style="stroke-width:3"/></g>
+  <text x="600" y="260" text-anchor="middle" class="t t-xs t-b k-apl">se descarta</text>
+</svg></div><figcaption><b>NAT doble con CGNAT.</b> Adentro de la casa, direcciones privadas <code>192.168.1.x</code>. El router de la casa traduce a una dirección <code>100.64.x.x</code>, que solo existe dentro de la red del operador. El CGNAT del operador traduce otra vez a una dirección pública compartida con otros clientes. La flecha punteada es una conexión que llega desde Internet: el CGNAT no sabe a qué casa mandarla y la descarta.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región que crece rápido no consigue direcciones IPv4 públicas al ritmo de sus ventas, así que pone a la mayoría de sus clientes residenciales detrás de CGNAT, mientras despliega IPv6. Navegar, ver series y usar redes sociales funciona igual. Los reclamos aparecen en tres grupos: quien quiere ver sus cámaras o su DVR desde el celular, los jugadores en línea que ven un «NAT estricto» en la consola, y quien necesita entrar de forma remota a una computadora de la casa. A ellos el operador les ofrece una IP pública (dinámica o fija) como servicio adicional. Además, como muchos clientes comparten una dirección, el operador guarda registros de qué cliente usó qué puerto y a qué hora, para poder responder a pedidos legales.</p></div></section>
+<section><h2>IPv6: direcciones para todo (y cómo reemplaza a ARP)</h2><div class="prose"><p>La solución de fondo al agotamiento es <b>IPv6</b>: direcciones de 128 bits en lugar de 32. Son tantas (un 3 seguido de 38 ceros) que alcanzan para darle millones a cada persona del planeta sin necesidad de NAT. Se escriben en hexadecimal (cifras del 0 al 9 y letras de la a a la f) en ocho grupos de cuatro, separados por dos puntos, como <code>2001:0db8:0000:0000:​0000:0000:0000:0010</code>.</p><p>Para no escribir tanto hay dos reglas: los ceros a la izquierda de cada grupo se pueden omitir, y <b>una sola vez</b> una tira de grupos en cero se reemplaza por <code>::</code>. La dirección de arriba queda <code>2001:db8::10</code>. Al igual que en IPv4, una parte es red y otra es equipo, y la red de una casa suele ser un /64: 64 bits de red y 64 de equipo. El operador le delega a cada cliente un bloque entero, por ejemplo un /56, que alcanza para 256 redes /64 dentro de la casa.</p></div><figure class="fig fig-comparacion" id="05-diagrama-10"><div class="lienzo"><svg viewBox="0 0 840 420" style="min-width:680px" role="img" aria-label="Comparación de IPv4 e IPv6: IPv4 tiene 32 bits escritos como cuatro números decimales, unos 4.300 millones de direcciones, usa NAT y ARP; IPv6 tiene 128 bits escritos como ocho grupos hexadecimales, una cantidad prácticamente ilimitada, no necesita NAT y usa descubrimiento de vecinos">
+  
+  <text x="20" y="34" class="t t-b" style="font-size:16px">IPv4</text>
+  <text x="80" y="34" class="t t-s t-m">32 bits</text>
+  <rect x="160" y="18" width="120" height="26" rx="4" class="c-red"/><rect x="280" y="18" width="40" height="26" rx="4" class="c-enl"/>
+  <text x="336" y="36" class="t t-mono t-b">203.0.113.25</text>
+
+  <text x="20" y="92" class="t t-b" style="font-size:16px">IPv6</text>
+  <text x="80" y="92" class="t t-s t-m">128 bits</text>
+  <rect x="160" y="76" width="320" height="26" rx="4" class="c-red"/><rect x="480" y="76" width="320" height="26" rx="4" class="c-enl"/>
+  <text x="320" y="94" text-anchor="middle" class="t t-s t-b">red: 64 bits</text>
+  <text x="640" y="94" text-anchor="middle" class="t t-s t-b">equipo: 64 bits</text>
+  <text x="160" y="124" class="t t-s t-mono">2001:0db8:0000:0001:0000:0000:0000:0010</text>
+  <text x="160" y="142" class="t t-s">se abrevia <tspan class="t-mono t-b">2001:db8:0:1::10</tspan></text>
+  <text x="480" y="142" class="t t-xs t-m">misma escala: cada barra mide sus bits</text>
+
+  
+  <g class="t t-xs t-b t-m"><text x="20" y="182">CARACTERÍSTICA</text><text x="220" y="182">IPV4</text><text x="530" y="182">IPV6</text></g>
+  <line x1="20" y1="190" x2="820" y2="190" class="ln"/>
+  <g class="t t-s">
+    <text x="20" y="214" class="t-b">Cuántas direcciones</text><text x="220" y="214">unos 4.300 millones (agotadas)</text><text x="530" y="214">un 3 seguido de 38 ceros</text>
+    <line x1="20" y1="226" x2="820" y2="226" class="ln" style="stroke-width:.6;opacity:.5"/>
+    <text x="20" y="250" class="t-b">Cómo se escribe</text><text x="220" y="250">4 números de 0 a 255, con puntos</text><text x="530" y="250">8 grupos hexadecimales, con «:»</text>
+    <line x1="20" y1="262" x2="820" y2="262" class="ln" style="stroke-width:.6;opacity:.5"/>
+    <text x="20" y="286" class="t-b">Red de una casa</text><text x="220" y="286">/24 privada, detrás de NAT</text><text x="530" y="286">/64 pública (de un /56 delegado)</text>
+    <line x1="20" y1="298" x2="820" y2="298" class="ln" style="stroke-width:.6;opacity:.5"/>
+    <text x="20" y="322" class="t-b">¿Hace falta NAT?</text><text x="220" y="322">sí, y muchas veces CGNAT</text><text x="530" y="322">no: alcanza para todos</text>
+    <line x1="20" y1="334" x2="820" y2="334" class="ln" style="stroke-width:.6;opacity:.5"/>
+    <text x="20" y="358" class="t-b">Encontrar al vecino</text><text x="220" y="358">ARP, con broadcast</text><text x="530" y="358">descubrimiento de vecinos (ICMPv6)</text>
+    <line x1="20" y1="370" x2="820" y2="370" class="ln" style="stroke-width:.6;opacity:.5"/>
+    <text x="20" y="394" class="t-b">Recibir dirección</text><text x="220" y="394">la da el router (DHCP)</text><text x="530" y="394">la arma el propio equipo (o DHCPv6)</text>
+  </g>
+</svg></div><figcaption><b>IPv4 frente a IPv6.</b> Arriba, una dirección IPv4: 32 bits en cuatro números decimales. Abajo, una IPv6: 128 bits en ocho grupos hexadecimales, cuatro veces más larga. Las barras muestran la proporción de bits y, debajo, cómo cambian el tamaño, la escritura, el NAT y la forma de encontrar al vecino.</figcaption></figure><div class="prose"><p>IPv6 también cambia la forma de encontrar al vecino. No usa ARP ni broadcast: usa un protocolo llamado <b>descubrimiento de vecinos</b> (<i>Neighbor Discovery</i>, que viaja dentro de ICMPv6). Al conectarse, el equipo pide «¿hay algún router aquí?» y el router le responde con el prefijo de la red; con eso el equipo <b>arma su propia dirección</b>, sin que nadie se la asigne. Para encontrar la MAC de un vecino, en lugar de gritarle a todos, pregunta a un grupo multicast muy pequeño que en la práctica solo escucha el destino. La idea es la de ARP; la ejecución es más fina.</p></div><figure class="fig fig-flujo" id="05-diagrama-15"><div class="lienzo"><svg viewBox="0 0 820 440" style="min-width:640px" role="img" aria-label="Flujo de descubrimiento de vecinos en IPv6: el celular pregunta si hay un router; el router anuncia el prefijo 2001:db8:0:1::/64; el celular arma su dirección; luego pregunta la MAC del router a un grupo multicast pequeño y el router responde con su MAC">
+  <rect x="60" y="14" width="190" height="60" rx="10" class="caja"/><use href="#i-celular" x="70" y="27" width="32" height="32" class="ico"/><text x="110" y="40" class="t t-b">Celular</text><text x="110" y="58" class="t t-xs t-m">recién conectado</text>
+  <rect x="460" y="14" width="190" height="60" rx="10" class="caja"/><use href="#i-router" x="470" y="27" width="32" height="32" class="ico"/><text x="510" y="40" class="t t-b">Router</text><text x="510" y="58" class="t t-xs t-mono">fe80::1</text>
+  <line x1="155" y1="74" x2="155" y2="425" class="vida"/>
+  <line x1="555" y1="74" x2="555" y2="425" class="vida"/>
+
+  <g class="t t-s">
+    <text x="165" y="104"><tspan class="t-mono t-b">RS</tspan> ① ¿Hay algún router aquí?</text>
+    <line x1="155" y1="114" x2="553" y2="126" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    <text x="165" y="140" class="t-xs t-m">a ff02::2: el grupo «todos los routers»</text>
+
+    <text x="235" y="168"><tspan class="t-mono t-b">RA</tspan> ② Yo. El prefijo es <tspan class="t-mono t-b">2001:db8:0:1::/64</tspan></text>
+    <line x1="555" y1="178" x2="157" y2="190" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+
+    <rect x="60" y="208" width="330" height="66" rx="8" class="c-red"/>
+    <text x="72" y="230" class="t-b">③ Arma su propia dirección</text>
+    <text x="72" y="250" class="t-mono">2001:db8:0:1:a1b2:c3ff:fed4:e5f6</text>
+    <text x="72" y="266" class="t-xs t-m">prefijo del router + una parte que elige él</text>
+
+    <text x="165" y="300"><tspan class="t-mono t-b">NS</tspan> ④ ¿Cuál es la MAC de fe80::1?</text>
+    <line x1="155" y1="310" x2="553" y2="322" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    <text x="165" y="336" class="t-xs t-m">a un grupo multicast que en la práctica solo escucha el router</text>
+
+    <text x="245" y="364"><tspan class="t-mono t-b">NA</tspan> ⑤ Mi MAC es 02:00:00:aa:00:01</text>
+    <line x1="555" y1="374" x2="157" y2="386" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+    <text x="165" y="412" class="t-b">Como ARP, pero sin gritarle a todos</text>
+  </g>
+  <g class="t t-xs t-b">
+    <path d="M676 96v176" class="ln s-red" style="stroke-width:3"/><text x="686" y="170" class="k-red">DIRECCIÓN</text><text x="686" y="184" class="t-m">el equipo se</text><text x="686" y="196" class="t-m">configura solo</text>
+    <path d="M676 290v104" class="ln s-red" style="stroke-width:3"/><text x="686" y="334" class="k-red">VECINO</text><text x="686" y="348" class="t-m">reemplaza</text><text x="686" y="360" class="t-m">a ARP</text>
+  </g>
+  <text x="20" y="250" class="t t-xs t-m" transform="rotate(-90 20 250)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El flujo de descubrimiento de vecinos en IPv6.</b> El celular pregunta si hay un router (①, <i>Router Solicitation</i>). El router responde con el prefijo de la red (②, <i>Router Advertisement</i>) y el celular arma su dirección con él (③). Para hablar con el router, pregunta su MAC (④, <i>Neighbor Solicitation</i>) y recibe la respuesta (⑤, <i>Neighbor Advertisement</i>): los mismos pasos de ARP, pero sin broadcast.</figcaption></figure><div class="prose"><p>Hoy conviven las dos versiones: casi todos los operadores dan IPv4 (muchas veces con CGNAT) y además IPv6, y los grandes sitios responden por los dos. Lo que va por IPv6 no pasa por el CGNAT, y eso alivia al operador.</p></div><div class="ml"><b>En la práctica</b><p>Cuando un cliente dice «no puedo ver mis cámaras desde afuera», la primera pregunta es qué dirección tiene su router hacia Internet. Si es una <code>100.64.x.x</code> u otra privada, está detrás de CGNAT y ningún ajuste en su casa lo va a resolver: necesita una IP pública, que es un producto que el operador vende, o usar la aplicación del fabricante, que conecta las cámaras a un servidor en la nube desde adentro. Por eso la IP pública, y más aún la fija, se cobra: es un recurso escaso, se gestiona una por una y le da al cliente algo que la mayoría no tiene.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué no existe la dirección <code>192.168.1.256</code>?</summary><p>Porque cada número es un octeto de 8 bits, y con 8 bits el máximo es 255 (todos en uno).</p></details><details><summary>¿Cuántos equipos caben en un /24 y por qué no son 256?</summary><p>254. De las 256 direcciones, la primera es la dirección de red y la última el broadcast; ninguna se le da a un equipo.</p></details><details><summary>En <code>203.0.113.77/26</code>, ¿cuál es la dirección de red y cuál el broadcast?</summary><p>El bloque es de 64 (2⁶). El 77 cae entre 64 y 127: la red es <code>203.0.113.64</code> y el broadcast <code>203.0.113.127</code>.</p></details><details><summary>Tu computadora (<code>192.168.1.20/24</code>) quiere hablar con <code>192.168.2.5</code>. ¿Le habla directo?</summary><p>No. La parte de red es distinta (<code>192.168.1</code> frente a <code>192.168.2</code>), así que se lo entrega a la puerta de enlace.</p></details><details><summary>Una computadora muestra la dirección <code>169.254.33.7</code>. ¿Qué pasó?</summary><p>Nadie le dio una dirección (no respondió el DHCP del router), así que se inventó una de enlace local. No sale a Internet.</p></details><details><summary>¿Por qué un cliente detrás de CGNAT no puede ver su cámara desde afuera aunque abra un puerto en su router?</summary><p>Porque la conexión que viene de Internet muere en el CGNAT del operador, que comparte la dirección pública entre muchos clientes y no sabe a cuál mandársela.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Direcci%C3%B3n_IP" target="_blank" rel="noopener">Dirección IP (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Subred" target="_blank" rel="noopener">Subred y máscara de red (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Traducci%C3%B3n_de_direcciones_de_red" target="_blank" rel="noopener">Traducción de direcciones de red, NAT (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.lacnic.net/1001/1/lacnic/ipv6" target="_blank" rel="noopener">IPv6 para todos (LACNIC) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const ip=q('#c05-ip'), pre=q('#c05-pre');
+  const mil=n=>n.toLocaleString('es');
+  const aTexto=n=>[24,16,8,0].map(s=>(n>>>s)&255).join('.');
+  function leer(t){
+    const p=t.trim().split('.');
+    if(p.length!==4||p.some(x=>!/^\d{1,3}$/.test(x)||+x>255))return null;
+    return p.reduce((a,x)=>((a*256)+(+x))>>>0,0);
+  }
+  function tipo(n){
+    const en=(base,len)=>len===0||((n>>>(32-len))===(leer(base)>>>(32-len)));
+    if(en('127.0.0.0',8))return 'Especial: «yo mismo» (loopback), nunca sale a la red';
+    if(en('169.254.0.0',16))return 'Especial: enlace local; el equipo no recibió dirección';
+    if(en('10.0.0.0',8)||en('172.16.0.0',12)||en('192.168.0.0',16))return 'Privada: solo vale adentro de una red, sale a Internet con NAT';
+    if(en('100.64.0.0',10))return 'Compartida: la red interna del operador para CGNAT';
+    if(en('192.0.2.0',24)||en('198.51.100.0',24)||en('203.0.113.0',24))return 'Pública de documentación: reservada para ejemplos como este';
+    if(en('224.0.0.0',4))return 'Multicast: un envío para un grupo de equipos';
+    if(n===0)return 'Especial: «ninguna» o «cualquiera»';
+    if(n===0xFFFFFFFF)return 'Especial: broadcast a toda la red local';
+    return 'Pública: se puede alcanzar desde Internet';
+  }
+  function dibujar(){
+    const p=+pre.value; q('#c05-pre-o').textContent='/'+p;
+    const n=leer(ip.value);
+    ip.setAttribute('aria-invalid',n===null?'true':'false');
+    if(n===null){
+      q('#c05-bits').innerHTML='';
+      q('#c05-res').innerHTML='<span class="warn">Escribe cuatro números de 0 a 255 separados por puntos, por ejemplo 192.168.1.10.</span>';
+      q('#c05-nota').textContent='';return;
+    }
+    const mask=p===0?0:(0xFFFFFFFF<<(32-p))>>>0;
+    const red=(n&mask)>>>0, bc=(red|(~mask>>>0))>>>0, total=Math.pow(2,32-p);
+    const bits=n.toString(2).padStart(32,'0');
+    let h='';
+    for(let o=0;o<4;o++){
+      h+='<div class="c05-oct"><b>'+((n>>>(24-8*o))&255)+'</b><div class="c05-row">';
+      for(let j=0;j<8;j++){const i=o*8+j;h+='<span class="'+(i<p?'r':'e')+'">'+bits[i]+'</span>';}
+      h+='</div></div>';
+    }
+    q('#c05-bits').innerHTML=h;
+    let usable,cuantos;
+    if(p===32){usable=aTexto(n)+' (una sola dirección)';cuantos='1, una dirección sola';}
+    else if(p===31){usable=aTexto(red)+' y '+aTexto(bc);cuantos='2, las dos puntas de un enlace';}
+    else{usable=aTexto(red+1)+' a '+aTexto(bc-1);cuantos=mil(total-2);}
+    q('#c05-res').innerHTML=
+      '<div>Máscara: <b>'+aTexto(mask)+'</b> (/'+p+')</div>'+
+      '<div>Dirección de red: <b>'+aTexto(red)+'</b></div>'+
+      '<div>Broadcast: <b>'+(p>=31?'no tiene':aTexto(bc))+'</b></div>'+
+      '<div>Rango usable: <b>'+usable+'</b></div>'+
+      '<div class="big">Equipos que caben: '+cuantos+'</div>'+(p<31?'<div>Son '+mil(total)+' direcciones menos 2: la de red y el broadcast.</div>':'')+
+      '<div>Tipo: '+tipo(n)+'</div>';
+    let nota;
+    if(p%8===0&&p>0&&p<32){nota='Con /'+p+' la línea cae justo entre dos números: los '+(p/8)+' primeros son la red y '+(p/8===3?'el último':'los otros '+(4-p/8))+', el equipo.';}
+    else if(p>=31||p===0){nota=p===0?'Con /0 no hay red: es «todas las direcciones del mundo». Así se escribe la ruta por defecto (capítulo 6).':'Con /'+p+' casi no quedan bits de equipo.';}
+    else{
+      const oct=Math.floor(p/8), tam=Math.pow(2,8-(p%8));
+      nota='Con /'+p+' la línea cae dentro del '+['primer','segundo','tercer','cuarto'][oct]+' número: el bloque mide '+tam+' y empieza en múltiplos de '+tam+'. Como ese número es '+((n>>>(24-8*oct))&255)+', el bloque empieza en '+(((n>>>(24-8*oct))&255)&(256-tam))+'.';
+    }
+    q('#c05-nota').textContent=nota;
+  }
+  ip.addEventListener('input',dibujar); pre.addEventListener('input',dibujar);
+  q('#c05-ej').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ip.value=b.dataset.ip;pre.value=b.dataset.p;dibujar();});
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const A=q('#c05-a'),B=q('#c05-b'),P=q('#c05-p');
+  const aTexto=n=>[24,16,8,0].map(s=>(n>>>s)&255).join('.');
+  function leer(t){const p=t.trim().split('.');if(p.length!==4||p.some(x=>!/^\d{1,3}$/.test(x)||+x>255))return null;return p.reduce((a,x)=>((a*256)+(+x))>>>0,0);}
+  function fila(n,otro,p){
+    const s=n.toString(2).padStart(32,'0'), o=otro.toString(2).padStart(32,'0');let h='';
+    for(let i=0;i<32;i++){if(i%8===0)h+='<span class="o">';const c=i<p?(s[i]!==o[i]?'x':'r'):'e';h+='<span class="'+c+'">'+s[i]+'</span>';if(i%8===7)h+='</span>';}
+    return h;
+  }
+  function dibujar(){
+    const p=+P.value;q('#c05-p-o').textContent='/'+p;
+    const a=leer(A.value),b=leer(B.value);
+    A.setAttribute('aria-invalid',a===null);B.setAttribute('aria-invalid',b===null);
+    const ver=q('#c05-ver');
+    if(a===null||b===null){q('#c05-ba').innerHTML=q('#c05-bb').innerHTML='';q('#c05-mr-res').innerHTML='';ver.className='veredicto no';ver.innerHTML='Revisa las direcciones<small>Cada una son cuatro números de 0 a 255 separados por puntos.</small>';return;}
+    const mask=(0xFFFFFFFF<<(32-p))>>>0, ra=(a&mask)>>>0, rb=(b&mask)>>>0, gw=(ra+1)>>>0;
+    q('#c05-ba').innerHTML=fila(a,b,p);q('#c05-bb').innerHTML=fila(b,a,p);
+    q('#c05-mr-res').innerHTML='<div>Máscara /'+p+': '+aTexto(mask)+'</div><div>Red de tu equipo: <span class="big">'+aTexto(ra)+'</span></div><div>Red del destino (con tu máscara): <span class="big">'+aTexto(rb)+'</span></div>';
+    if(ra===rb){
+      ver.className='veredicto si';
+      ver.innerHTML='Misma red: le habla directo<small>Los '+p+' bits de red son iguales. Tu equipo pregunta por ARP «¿quién tiene la '+aTexto(b)+'?» y le manda la trama a su MAC, sin pasar por el router.</small>';
+    }else{
+      let i=0;const x=(a^b)>>>0;while(i<32&&!((x>>>(31-i))&1))i++;
+      ver.className='veredicto no';
+      ver.innerHTML='Otra red: se lo da a la puerta de enlace<small>El bit '+(i+1)+' ya es distinto (marcado en naranja), así que el destino está en otro barrio. Tu equipo pregunta por ARP la MAC del router (normalmente la '+aTexto(gw)+') y se lo entrega a él.</small>';
+    }
+  }
+  [A,B,P].forEach(el=>el.addEventListener('input',dibujar));
+  q('#c05-mr-ej').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;A.value=t.dataset.a;B.value=t.dataset.b;P.value=t.dataset.p;dibujar();});
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const EQ=[{n:'celular',a:'El',b:'al',ip:'192.168.1.10',dst:'198.51.100.7:443',que:'la página'},
+            {n:'laptop',a:'La',b:'a la',ip:'192.168.1.11',dst:'198.51.100.25:993',que:'el correo'},
+            {n:'televisor',a:'El',b:'al',ip:'192.168.1.12',dst:'198.51.100.80:443',que:'la serie'}];
+  const PUB='203.0.113.25', CG='100.64.12.7';
+  let t1=[],t2=[],p1=40001,p2=61233,ult=-1;
+  const modo=()=>q('#c05-modo').value;
+  function cadena(){
+    const cg=modo()==='cg';
+    q('#c05-cad').innerHTML='<div class="box">Casa<small>192.168.1.x</small></div><div class="arr">→<b>NAT 1</b></div>'+
+      '<div class="box">Router<small>sale como '+(cg?CG:PUB)+'</small></div><div class="arr">→</div>'+
+      '<div class="box '+(cg?'on':'off')+'">CGNAT<small>'+(cg?'NAT 2 · '+PUB:'no interviene')+'</small></div><div class="arr">→</div>'+
+      '<div class="box">Internet<small>ve '+PUB+'</small></div>';
+    q('#c05-t2w').style.display=cg?'':'none';
+  }
+  function tabla(filas,cab){
+    if(!filas.length)return '<p class="vacio">Vacía: nadie de adentro abrió una conexión.</p>';
+    return '<table><thead><tr>'+cab.map(c=>'<th>'+c+'</th>').join('')+'</tr></thead><tbody>'+
+      filas.map((f,i)=>'<tr'+(i===filas.length-1&&ult>=0?' class="nuevo"':'')+'>'+f.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+  }
+  function tablas(){
+    q('#c05-t1').innerHTML=tabla(t1,['Adentro','Afuera','Destino']);
+    q('#c05-t2').innerHTML=tabla(t2,['Del router','Hacia Internet','Destino']);
+  }
+  function abrir(d){
+    const e=EQ[d], cg=modo()==='cg', priv=e.ip+':'+(51000+Math.floor(Math.random()*9000));
+    const fuera1=(cg?CG:PUB)+':'+(p1++);
+    t1.push([priv,fuera1,e.dst]); ult=d;
+    let pasos=['<li>'+e.a+' '+e.n+' manda su pedido de <b>'+priv+'</b> a '+e.dst+'.</li>',
+      '<li>El router cambia el origen por <b>'+fuera1+'</b> y lo anota en su tabla.</li>'];
+    let visto=fuera1;
+    if(cg){const fuera2=PUB+':'+(p2++);t2.push([fuera1,fuera2,e.dst]);visto=fuera2;
+      pasos.push('<li>El CGNAT del operador lo cambia otra vez, a <b>'+fuera2+'</b>, y lo anota en la suya.</li>');}
+    pasos.push('<li>El servidor responde a '+visto+'. '+(cg?'El CGNAT y después el router deshacen':'El router deshace')+' el cambio y '+e.que+' llega '+e.b+' '+e.n+'.</li>');
+    q('#c05-log').innerHTML='<ol>'+pasos.join('')+'</ol>';
+    tablas();
+  }
+  function camara(){
+    const cg=modo()==='cg', pf=q('#c05-pf').checked; ult=-1; tablas();
+    let m;
+    if(cg) m='<span class="warn">No llega.</span> Pides '+PUB+':8080, pero esa dirección es del CGNAT del operador y la comparten decenas de casas. El CGNAT no tiene ninguna línea para ese puerto y descarta la conexión antes de que llegue a tu casa.'+(pf?' La regla de tu router nunca llega a usarse.':'')+' Solución: una IP pública (un producto del operador), IPv6 o la aplicación en la nube del fabricante.';
+    else if(pf) m='<span class="ok">¡La ves!</span> Pides '+PUB+':8080. El router tiene una regla fija: lo que llegue al puerto 8080 va a la cámara, 192.168.1.20:80.';
+    else m='<span class="warn">No llega.</span> Pides '+PUB+':8080. El router busca ese puerto en su tabla y no lo encuentra: nadie de adentro empezó esa conversación. La descarta. Prueba abrir el puerto 8080.';
+    q('#c05-log').innerHTML='<div>'+m+'</div>';
+  }
+  document.querySelectorAll('.c05-nat [data-d]').forEach(b=>b.addEventListener('click',()=>abrir(+b.dataset.d)));
+  q('#c05-cam').addEventListener('click',camara);
+  q('#c05-borrar').addEventListener('click',()=>{t1=[];t2=[];p1=40001;p2=61233;ult=-1;tablas();q('#c05-log').innerHTML='<div>Tablas vacías. Abre una conexión desde la casa.</div>';});
+  q('#c05-modo').addEventListener('change',()=>{t1=[];t2=[];ult=-1;cadena();tablas();q('#c05-log').innerHTML='<div>Cambió la conexión del router: las tablas empiezan vacías.</div>';});
+  q('#c05-pf').addEventListener('change',()=>{q('#c05-log').innerHTML='<div>'+(q('#c05-pf').checked?'Regla creada en el router: puerto 8080 → 192.168.1.20:80 (la cámara).':'Regla borrada.')+'</div>';});
+  cadena();tablas();
+  q('#c05-log').innerHTML='<div>Abre una conexión desde un equipo de la casa para ver cómo la traduce el router.</div>';
+})();
+</script>
+</body>
+</html>

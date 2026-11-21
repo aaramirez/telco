@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Señales, bits y medios · Cómo funciona un telco</title>
+<meta name="description" content="Toda comunicación es convertir información en ceros y unos y esos ceros y unos en algo físico que viaja (electricidad, ondas de radio o luz), y cada medio tiene límites distintos de distancia, velocidad y ruido.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="02-senales-bits-y-medios">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 02 DE 49</span><h1>Señales, bits y medios: cobre, radio y fibra</h1><p class="lede">Toda comunicación es convertir información en ceros y unos y esos ceros y unos en algo físico que viaja (electricidad, ondas de radio o luz), y cada medio tiene límites distintos de distancia, velocidad y ruido.</p></header>
+<section><div class="prose"><p>En el capítulo anterior seguimos un clic desde el celular hasta un servidor lejano. Ahora bajamos al piso de ese viaje: ¿qué es, físicamente, lo que viaja? No viajan letras ni fotos. Viajan <b>bits</b>, y los bits tienen que convertirse en algo que se pueda mover: una corriente eléctrica, una onda de radio o un destello de luz.</p><p>Ese «algo» y el camino por donde se mueve se llaman <b>medio</b>. Hay tres grandes medios: el cobre, el aire y el vidrio de la fibra. Cada uno tiene su carácter: hasta dónde llega, cuánto aguanta y qué lo molesta. Entenderlos explica por qué los operadores pasaron del cable de teléfono a la fibra, y por qué el Wi-Fi de la casa sigue siendo el tramo más delicado.</p></div><div class="analogia"><b>Imagínalo así</b><p>Hacer señas con una linterna: encendida es 1, apagada es 0. Cuanto más rápido parpadeas, más dices por segundo, hasta que el otro ya no distingue un destello del siguiente. Si hay niebla o el otro está muy lejos, tienes que parpadear más despacio. Todas las redes del mundo luchan con ese mismo dilema.</p></div><figure class="fig fig-capas" id="02-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la capa física, radio, cobre y fibra">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class=""><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class="apagado"><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la capa física, radio, cobre y fibra</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo trata solo la capa de abajo, la <b>física</b>: cómo se convierten los bits en electricidad, radio o luz. En el viaje del clic, eso es el aire entre el celular y el Wi-Fi, el cable hasta la ONT y la fibra que va hasta la OLT del operador.</figcaption></figure></section>
+<section><h2>Qué es un bit y por qué todo se reduce a bits</h2><div class="prose"><p>Un <b>bit</b> es la unidad más pequeña de información: una respuesta de sí o no, un 1 o un 0. Parece poco, pero juntando bits se puede escribir cualquier cosa. Con 8 bits, lo que se llama un <b>byte</b>, hay 256 combinaciones posibles, suficientes para todas las letras, números y signos de un teclado. La letra «A», por ejemplo, se escribe <code>01000001</code>.</p><p>Una foto es una cuadrícula de puntos, y cada punto es un color guardado en unos cuantos bytes. Una canción es una lista de miles de mediciones del sonido por segundo, cada una guardada como un número. Una foto de celular pesa unos 3 megabytes, es decir, unos 24 millones de bits. Todo lo que circula por una red, sea un correo, una llamada o una película, es una larga fila de unos y ceros.</p><p>¿Por qué no mandar el sonido o la imagen tal cual, como hacía el teléfono antiguo? Porque una señal así, llamada <b>analógica</b>, se va deformando con la distancia y cada defecto se acumula: al final del camino llega con ruido y no hay forma de saber cómo era el original. Con bits basta que el receptor distinga entre «encendido» y «apagado». Mientras pueda hacerlo, el mensaje llega perfecto, y en el camino se puede <b>regenerar</b>: leer los bits y volver a mandarlos limpios, como nuevos.</p><p>La pregunta de este capítulo es entonces: ¿cómo se convierte un 1 o un 0 en algo que viaje? Lo veremos medio por medio. Antes, pruébalo con la linterna: escribe un mensaje, súbele el ruido y la velocidad, y mira qué llega al otro lado.</p></div><div class="lab" id="02-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>La linterna</h3></div><p class="hint">Escribe un mensaje corto y mira cómo se convierte en bits. Sube el ruido o la velocidad de la linterna y verás bits que llegan cambiados y letras dañadas. Activa el bit de control para que el receptor detecte algunos errores.</p><style>
+[id="02-lab-2"] .c02-msg{display:grid;gap:4px;font:600 .82rem var(--f-display);color:var(--muted);max-width:320px}
+[id="02-lab-2"] .c02-msg input{font:600 1rem var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);letter-spacing:.08em}
+[id="02-lab-2"] .c02-chk{display:flex;gap:8px;align-items:center;font:500 .86rem var(--f-display)}
+[id="02-lab-2"] .c02-bits{display:flex;flex-wrap:wrap;gap:10px 16px}
+[id="02-lab-2"] .c02-g{display:grid;grid-template-columns:auto auto;gap:3px 8px;align-items:center}
+[id="02-lab-2"] .c02-g b{font:700 .95rem var(--f-mono);width:1.4em;text-align:center}
+[id="02-lab-2"] .c02-g b.mal{color:var(--warm)}
+[id="02-lab-2"] .c02-g b.det{color:var(--warm);text-decoration:underline wavy}
+[id="02-lab-2"] .c02-row{display:flex;gap:2px}
+[id="02-lab-2"] .c02-row i{width:13px;height:16px;border-radius:3px;background:var(--paper);border:1px solid var(--line);box-sizing:border-box}
+[id="02-lab-2"] .c02-row i.on{background:var(--c-fis);border-color:var(--c-fis)}
+[id="02-lab-2"] .c02-row i.par{border-style:dashed}
+[id="02-lab-2"] .c02-row i.err{outline:2px solid var(--warm);outline-offset:1px}
+[id="02-lab-2"] .c02-ley i{border-radius:3px}
+</style>
+<label class="c02-msg">Tu mensaje (letras sin tilde, hasta 12)
+  <input id="c02-msg" type="text" maxlength="12" value="HOLA" autocomplete="off" spellcheck="false"></label>
+<div class="ctls">
+  <label class="ctl">Ruido en el camino <output id="c02-ruido-o"></output>
+    <input id="c02-ruido" type="range" min="0" max="20" step="1" value="3"></label>
+  <label class="ctl">Velocidad de la linterna <output id="c02-vel-o"></output>
+    <input id="c02-vel" type="range" min="1" max="10" step="1" value="3"></label>
+</div>
+<div class="btns">
+  <label class="c02-chk"><input id="c02-par" type="checkbox"> Agregar un bit de control por letra (paridad)</label>
+  <button id="c02-otra" type="button">Otra transmisión</button>
+</div>
+<div class="legend c02-ley"><span><i style="background:var(--c-fis)"></i>luz encendida (1)</span><span><i style="background:var(--paper);border:1px solid var(--line)"></i>apagada (0)</span><span><i style="outline:2px solid var(--warm)"></i>bit que llegó cambiado</span></div>
+<div class="c02-bits" id="c02-bits" role="img" aria-label="Bits enviados y recibidos por cada letra"></div>
+<div class="readout" id="c02-out" aria-live="polite"></div></div><div class="prose"><p>El laboratorio muestra dos ideas que vuelven en todo el libro. La primera: parpadear más rápido manda el mensaje en menos tiempo, pero cada parpadeo es más corto y más fácil de confundir. La segunda: los errores se pueden <b>detectar</b> agregando bits de control. Las redes reales usan versiones mucho más potentes de ese bit de paridad: detectan casi cualquier error y algunas incluso lo corrigen sin pedir que se repita.</p></div></section>
+<section><h2>Ancho de banda y velocidad: megas, gigas y lo que no son</h2><div class="prose"><p>Cuando alguien dice que tiene «300 megas», habla de <b>300 megabits por segundo</b> (Mbps): la red puede entregarle hasta 300 millones de bits cada segundo. Un <b>giga</b> (Gbps) son mil megas.</p><p>Ojo con dos confusiones frecuentes:</p><ul><li><b>Megabits no son megabytes.</b> Los planes se venden en megabits (Mb, con «b» minúscula); los archivos se miden en megabytes (MB, con «B» mayúscula). Un byte son 8 bits, así que un plan de 300 Mbps descarga como máximo unos 37 megabytes por segundo. Una película de 3 gigabytes tarda un poco más de un minuto en el mejor caso.</li><li><b>Velocidad no es lo mismo que rapidez de respuesta.</b> La velocidad dice cuántos bits caben por segundo, como el número de carriles de una autopista. La <b>latencia</b> dice cuánto tarda un bit en ir y volver, como la distancia entre dos ciudades. Agregar carriles no acorta el viaje. Por eso, como vimos en el capítulo 1, un servidor en otro continente responde lento aunque el plan sea enorme.</li></ul><p>También importa la dirección. La <b>bajada</b> es lo que llega al cliente (ver videos, descargar) y la <b>subida</b> es lo que sale (videollamadas, subir fotos a la nube). La fibra suele ofrecer velocidades <b>simétricas</b>, iguales en ambos sentidos; las tecnologías de cobre y muchas de radio dan mucha menos subida que bajada.</p><p>¿De dónde sale el límite de velocidad de un medio? En el sentido técnico estricto, <b>ancho de banda</b> no son los megas: es el rango de <b>frecuencias</b> que el medio deja pasar, medido en hercios (Hz). La frecuencia es cuántas veces por segundo oscila una señal. Mientras más ancho es ese rango, más cambios por segundo admite la señal y más bits caben. Un matemático, Claude Shannon, demostró en 1948 que la velocidad máxima de un canal depende de solo dos cosas: ese ancho de frecuencias y cuánto más fuerte es la señal que el ruido. Por eso en el lenguaje diario «ancho de banda» terminó significando «velocidad».</p></div><figure class="fig fig-esquema" id="02-diagrama-4"><div class="lienzo"><svg viewBox="0 0 960 384" style="min-width:760px" role="img" aria-label="Espectro de frecuencias en escala logarítmica: el cobre usa frecuencias bajas, de la voz a cientos de megahercios; la radio va de la AM a los satélites, entre kilohercios y decenas de gigahercios; la fibra usa luz infrarroja, cerca de 200 terahercios, con una ventana de unos 50 terahercios de ancho">
+  <text x="14" y="66" class="t t-xs t-b t-m">COBRE</text>
+  <text x="14" y="194" class="t t-xs t-b t-m">RADIO</text>
+  <text x="14" y="296" class="t t-xs t-b t-m">LUZ</text>
+  <rect x="157.7" y="52" width="61.2" height="18" rx="4" class="d-inet"/><text x="225" y="66" class="t">Voz del teléfono (0,3 a 3,4 kHz)</text><rect x="269.1" y="80" width="95.3" height="18" rx="4" class="d-inet"/><text x="263" y="94" text-anchor="end" class="t">ADSL</text><rect x="312.1" y="108" width="139.4" height="18" rx="4" class="d-inet"/><text x="458" y="122" class="t">VDSL2 (hasta 35 MHz)</text><rect x="304.0" y="136" width="197.1" height="18" rx="4" class="d-inet"/><text x="507" y="150" class="t">Cable de red (hasta 250 MHz)</text><rect x="346.0" y="180" width="29.4" height="18" rx="4" class="d-casa"/><text x="340" y="194" text-anchor="end" class="t">Radio AM</text><rect x="474.4" y="180" width="6.0" height="18" rx="4" class="d-casa"/><text x="486" y="194" class="t">Radio FM</text><rect x="527.0" y="208" width="42.6" height="18" rx="4" class="d-casa"/><text x="521" y="222" text-anchor="end" class="t">Celular 4G y 5G</text><rect x="616.1" y="208" width="12.9" height="18" rx="4" class="d-casa"/><text x="635" y="222" class="t">5G milimétrico</text><rect x="558.1" y="236" width="27.4" height="18" rx="4" class="d-casa"/><text x="552" y="250" text-anchor="end" class="t">Wi-Fi 2,4 · 5 · 6 GHz</text><rect x="595.7" y="236" width="26.0" height="18" rx="4" class="d-casa"/><text x="628" y="250" class="t">Satélite</text><rect x="841.1" y="282" width="6.8" height="18" rx="4" class="c-fis"/><text x="835" y="296" text-anchor="end" class="t">Fibra óptica (infrarrojo)</text><rect x="860.9" y="282" width="17.1" height="18" rx="4" class="caja"/><text x="884" y="296" class="t">Luz visible</text>
+  <line x1="130" y1="312" x2="900" y2="312" class="ln" marker-end="url(#fl)"/>
+  <path d="M130 312v6" class="ln"/><text x="130" y="334" text-anchor="middle" class="t t-s t-m">100 Hz</text><path d="M188 312v6" class="ln"/><text x="188" y="334" text-anchor="middle" class="t t-s t-m">1 kHz</text><path d="M362 312v6" class="ln"/><text x="362" y="334" text-anchor="middle" class="t t-s t-m">1 MHz</text><path d="M536 312v6" class="ln"/><text x="536" y="334" text-anchor="middle" class="t t-s t-m">1 GHz</text><path d="M710 312v6" class="ln"/><text x="710" y="334" text-anchor="middle" class="t t-s t-m">1 THz</text><path d="M884 312v6" class="ln"/><text x="884" y="334" text-anchor="middle" class="t t-s t-m">1.000 THz</text>
+  <rect x="706" y="86" width="244" height="62" rx="8" class="caja"/>
+  <text x="718" y="108" class="t t-s t-b k-fis">Solo la ventana de la fibra mide</text>
+  <text x="718" y="124" class="t t-s">unos 50 THz: más de 500 veces todo</text>
+  <text x="718" y="140" class="t t-s">el espectro de radio que usamos.</text>
+  <line x1="844" y1="148" x2="844" y2="278" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="130" y="360" class="t t-s t-m">Escala logarítmica: cada marca vale mil veces la anterior; la frecuencia crece hacia la derecha. Más frecuencia permite</text>
+  <text x="130" y="376" class="t t-s t-m">más bits por segundo, pero en cobre y radio también significa menos alcance y menos capacidad de atravesar paredes.</text>
+</svg></div><figcaption><b>El espectro: dónde vive cada medio.</b> El eje va de las frecuencias bajas a las altas en escala logarítmica, donde cada marca vale mil veces la anterior. El cobre trabaja en las frecuencias bajas, desde la voz hasta cientos de megahercios; la radio, entre los kilohercios de la AM y las decenas de gigahercios de los satélites; la fibra, con luz infrarroja, cerca de 200 terahercios. La ventana de la fibra es tan ancha que caben en ella cientos de veces todas las radios juntas.</figcaption></figure></section>
+<section><h2>Cobre: teléfono, DSL y cable de red</h2><div class="prose"><p>El cobre fue el primer medio de las telecomunicaciones. Por un alambre de cobre los bits viajan como <b>pulsos eléctricos</b>: cambios de voltaje que recorren el cable casi a la velocidad de la luz. La radio y la fibra hacen lo mismo con otra materia prima: la figura muestra los mismos ocho bits en los tres medios.</p></div><figure class="fig fig-esquema" id="02-diagrama-7"><div class="lienzo"><svg viewBox="0 0 760 290" style="min-width:620px" role="img" aria-label="Los mismos ocho bits, 1 0 1 1 0 0 1 0, en tres medios: en el cobre como pulsos de voltaje alto y bajo, en la radio como una onda que cambia de tamaño y en la fibra como destellos de luz encendida o apagada">
+  <text x="14" y="36" class="t t-xs t-b t-m">LOS BITS</text>
+  <text x="205" y="36" text-anchor="middle" class="t t-b t-mono">1</text><text x="275" y="36" text-anchor="middle" class="t t-b t-mono">0</text><text x="345" y="36" text-anchor="middle" class="t t-b t-mono">1</text><text x="415" y="36" text-anchor="middle" class="t t-b t-mono">1</text><text x="485" y="36" text-anchor="middle" class="t t-b t-mono">0</text><text x="555" y="36" text-anchor="middle" class="t t-b t-mono">0</text><text x="625" y="36" text-anchor="middle" class="t t-b t-mono">1</text><text x="695" y="36" text-anchor="middle" class="t t-b t-mono">0</text>
+  <line x1="170" y1="46" x2="170" y2="276" class="vida"/><line x1="240" y1="46" x2="240" y2="276" class="vida"/><line x1="310" y1="46" x2="310" y2="276" class="vida"/><line x1="380" y1="46" x2="380" y2="276" class="vida"/><line x1="450" y1="46" x2="450" y2="276" class="vida"/><line x1="520" y1="46" x2="520" y2="276" class="vida"/><line x1="590" y1="46" x2="590" y2="276" class="vida"/><line x1="660" y1="46" x2="660" y2="276" class="vida"/><line x1="730" y1="46" x2="730" y2="276" class="vida"/>
+  
+  <text x="14" y="88" class="t t-b">Cobre</text><text x="14" y="104" class="t t-s t-m">voltaje alto o bajo</text>
+  <line x1="170" y1="94" x2="730" y2="94" class="ln ln-d"/>
+  <path d="M170 72 L240 72 L240 116 L310 116 L310 72 L380 72 L380 72 L450 72 L450 116 L520 116 L520 116 L590 116 L590 72 L660 72 L660 116 L730 116" class="ln s-fis" style="stroke-width:2.6"/>
+  
+  <text x="14" y="168" class="t t-b">Radio</text><text x="14" y="184" class="t t-s t-m">una onda grande</text><text x="14" y="198" class="t t-s t-m">o pequeña</text>
+  <path d="M170.0 172.0 L171.2 165.2 L172.3 159.1 L173.5 154.2 L174.7 151.1 L175.8 150.0 L177.0 151.1 L178.2 154.2 L179.3 159.1 L180.5 165.2 L181.7 172.0 L182.8 178.8 L184.0 184.9 L185.2 189.8 L186.3 192.9 L187.5 194.0 L188.7 192.9 L189.8 189.8 L191.0 184.9 L192.2 178.8 L193.3 172.0 L194.5 165.2 L195.7 159.1 L196.8 154.2 L198.0 151.1 L199.2 150.0 L200.3 151.1 L201.5 154.2 L202.7 159.1 L203.8 165.2 L205.0 172.0 L206.2 178.8 L207.3 184.9 L208.5 189.8 L209.7 192.9 L210.8 194.0 L212.0 192.9 L213.2 189.8 L214.3 184.9 L215.5 178.8 L216.7 172.0 L217.8 165.2 L219.0 159.1 L220.2 154.2 L221.3 151.1 L222.5 150.0 L223.7 151.1 L224.8 154.2 L226.0 159.1 L227.2 165.2 L228.3 172.0 L229.5 178.8 L230.7 184.9 L231.8 189.8 L233.0 192.9 L234.2 194.0 L235.3 192.9 L236.5 189.8 L237.7 184.9 L238.8 178.8 L240.0 172.0 L240.0 172.0 L241.2 170.1 L242.3 168.5 L243.5 167.1 L244.7 166.3 L245.8 166.0 L247.0 166.3 L248.2 167.1 L249.3 168.5 L250.5 170.1 L251.7 172.0 L252.8 173.9 L254.0 175.5 L255.2 176.9 L256.3 177.7 L257.5 178.0 L258.7 177.7 L259.8 176.9 L261.0 175.5 L262.2 173.9 L263.3 172.0 L264.5 170.1 L265.7 168.5 L266.8 167.1 L268.0 166.3 L269.2 166.0 L270.3 166.3 L271.5 167.1 L272.7 168.5 L273.8 170.1 L275.0 172.0 L276.2 173.9 L277.3 175.5 L278.5 176.9 L279.7 177.7 L280.8 178.0 L282.0 177.7 L283.2 176.9 L284.3 175.5 L285.5 173.9 L286.7 172.0 L287.8 170.1 L289.0 168.5 L290.2 167.1 L291.3 166.3 L292.5 166.0 L293.7 166.3 L294.8 167.1 L296.0 168.5 L297.2 170.1 L298.3 172.0 L299.5 173.9 L300.7 175.5 L301.8 176.9 L303.0 177.7 L304.2 178.0 L305.3 177.7 L306.5 176.9 L307.7 175.5 L308.8 173.9 L310.0 172.0 L310.0 172.0 L311.2 165.2 L312.3 159.1 L313.5 154.2 L314.7 151.1 L315.8 150.0 L317.0 151.1 L318.2 154.2 L319.3 159.1 L320.5 165.2 L321.7 172.0 L322.8 178.8 L324.0 184.9 L325.2 189.8 L326.3 192.9 L327.5 194.0 L328.7 192.9 L329.8 189.8 L331.0 184.9 L332.2 178.8 L333.3 172.0 L334.5 165.2 L335.7 159.1 L336.8 154.2 L338.0 151.1 L339.2 150.0 L340.3 151.1 L341.5 154.2 L342.7 159.1 L343.8 165.2 L345.0 172.0 L346.2 178.8 L347.3 184.9 L348.5 189.8 L349.7 192.9 L350.8 194.0 L352.0 192.9 L353.2 189.8 L354.3 184.9 L355.5 178.8 L356.7 172.0 L357.8 165.2 L359.0 159.1 L360.2 154.2 L361.3 151.1 L362.5 150.0 L363.7 151.1 L364.8 154.2 L366.0 159.1 L367.2 165.2 L368.3 172.0 L369.5 178.8 L370.7 184.9 L371.8 189.8 L373.0 192.9 L374.2 194.0 L375.3 192.9 L376.5 189.8 L377.7 184.9 L378.8 178.8 L380.0 172.0 L380.0 172.0 L381.2 165.2 L382.3 159.1 L383.5 154.2 L384.7 151.1 L385.8 150.0 L387.0 151.1 L388.2 154.2 L389.3 159.1 L390.5 165.2 L391.7 172.0 L392.8 178.8 L394.0 184.9 L395.2 189.8 L396.3 192.9 L397.5 194.0 L398.7 192.9 L399.8 189.8 L401.0 184.9 L402.2 178.8 L403.3 172.0 L404.5 165.2 L405.7 159.1 L406.8 154.2 L408.0 151.1 L409.2 150.0 L410.3 151.1 L411.5 154.2 L412.7 159.1 L413.8 165.2 L415.0 172.0 L416.2 178.8 L417.3 184.9 L418.5 189.8 L419.7 192.9 L420.8 194.0 L422.0 192.9 L423.2 189.8 L424.3 184.9 L425.5 178.8 L426.7 172.0 L427.8 165.2 L429.0 159.1 L430.2 154.2 L431.3 151.1 L432.5 150.0 L433.7 151.1 L434.8 154.2 L436.0 159.1 L437.2 165.2 L438.3 172.0 L439.5 178.8 L440.7 184.9 L441.8 189.8 L443.0 192.9 L444.2 194.0 L445.3 192.9 L446.5 189.8 L447.7 184.9 L448.8 178.8 L450.0 172.0 L450.0 172.0 L451.2 170.1 L452.3 168.5 L453.5 167.1 L454.7 166.3 L455.8 166.0 L457.0 166.3 L458.2 167.1 L459.3 168.5 L460.5 170.1 L461.7 172.0 L462.8 173.9 L464.0 175.5 L465.2 176.9 L466.3 177.7 L467.5 178.0 L468.7 177.7 L469.8 176.9 L471.0 175.5 L472.2 173.9 L473.3 172.0 L474.5 170.1 L475.7 168.5 L476.8 167.1 L478.0 166.3 L479.2 166.0 L480.3 166.3 L481.5 167.1 L482.7 168.5 L483.8 170.1 L485.0 172.0 L486.2 173.9 L487.3 175.5 L488.5 176.9 L489.7 177.7 L490.8 178.0 L492.0 177.7 L493.2 176.9 L494.3 175.5 L495.5 173.9 L496.7 172.0 L497.8 170.1 L499.0 168.5 L500.2 167.1 L501.3 166.3 L502.5 166.0 L503.7 166.3 L504.8 167.1 L506.0 168.5 L507.2 170.1 L508.3 172.0 L509.5 173.9 L510.7 175.5 L511.8 176.9 L513.0 177.7 L514.2 178.0 L515.3 177.7 L516.5 176.9 L517.7 175.5 L518.8 173.9 L520.0 172.0 L520.0 172.0 L521.2 170.1 L522.3 168.5 L523.5 167.1 L524.7 166.3 L525.8 166.0 L527.0 166.3 L528.2 167.1 L529.3 168.5 L530.5 170.1 L531.7 172.0 L532.8 173.9 L534.0 175.5 L535.2 176.9 L536.3 177.7 L537.5 178.0 L538.7 177.7 L539.8 176.9 L541.0 175.5 L542.2 173.9 L543.3 172.0 L544.5 170.1 L545.7 168.5 L546.8 167.1 L548.0 166.3 L549.2 166.0 L550.3 166.3 L551.5 167.1 L552.7 168.5 L553.8 170.1 L555.0 172.0 L556.2 173.9 L557.3 175.5 L558.5 176.9 L559.7 177.7 L560.8 178.0 L562.0 177.7 L563.2 176.9 L564.3 175.5 L565.5 173.9 L566.7 172.0 L567.8 170.1 L569.0 168.5 L570.2 167.1 L571.3 166.3 L572.5 166.0 L573.7 166.3 L574.8 167.1 L576.0 168.5 L577.2 170.1 L578.3 172.0 L579.5 173.9 L580.7 175.5 L581.8 176.9 L583.0 177.7 L584.2 178.0 L585.3 177.7 L586.5 176.9 L587.7 175.5 L588.8 173.9 L590.0 172.0 L590.0 172.0 L591.2 165.2 L592.3 159.1 L593.5 154.2 L594.7 151.1 L595.8 150.0 L597.0 151.1 L598.2 154.2 L599.3 159.1 L600.5 165.2 L601.7 172.0 L602.8 178.8 L604.0 184.9 L605.2 189.8 L606.3 192.9 L607.5 194.0 L608.7 192.9 L609.8 189.8 L611.0 184.9 L612.2 178.8 L613.3 172.0 L614.5 165.2 L615.7 159.1 L616.8 154.2 L618.0 151.1 L619.2 150.0 L620.3 151.1 L621.5 154.2 L622.7 159.1 L623.8 165.2 L625.0 172.0 L626.2 178.8 L627.3 184.9 L628.5 189.8 L629.7 192.9 L630.8 194.0 L632.0 192.9 L633.2 189.8 L634.3 184.9 L635.5 178.8 L636.7 172.0 L637.8 165.2 L639.0 159.1 L640.2 154.2 L641.3 151.1 L642.5 150.0 L643.7 151.1 L644.8 154.2 L646.0 159.1 L647.2 165.2 L648.3 172.0 L649.5 178.8 L650.7 184.9 L651.8 189.8 L653.0 192.9 L654.2 194.0 L655.3 192.9 L656.5 189.8 L657.7 184.9 L658.8 178.8 L660.0 172.0 L660.0 172.0 L661.2 170.1 L662.3 168.5 L663.5 167.1 L664.7 166.3 L665.8 166.0 L667.0 166.3 L668.2 167.1 L669.3 168.5 L670.5 170.1 L671.7 172.0 L672.8 173.9 L674.0 175.5 L675.2 176.9 L676.3 177.7 L677.5 178.0 L678.7 177.7 L679.8 176.9 L681.0 175.5 L682.2 173.9 L683.3 172.0 L684.5 170.1 L685.7 168.5 L686.8 167.1 L688.0 166.3 L689.2 166.0 L690.3 166.3 L691.5 167.1 L692.7 168.5 L693.8 170.1 L695.0 172.0 L696.2 173.9 L697.3 175.5 L698.5 176.9 L699.7 177.7 L700.8 178.0 L702.0 177.7 L703.2 176.9 L704.3 175.5 L705.5 173.9 L706.7 172.0 L707.8 170.1 L709.0 168.5 L710.2 167.1 L711.3 166.3 L712.5 166.0 L713.7 166.3 L714.8 167.1 L716.0 168.5 L717.2 170.1 L718.3 172.0 L719.5 173.9 L720.7 175.5 L721.8 176.9 L723.0 177.7 L724.2 178.0 L725.3 177.7 L726.5 176.9 L727.7 175.5 L728.8 173.9 L730.0 172.0" class="ln s-fis" style="stroke-width:2"/>
+  
+  <text x="14" y="246" class="t t-b">Fibra</text><text x="14" y="262" class="t t-s t-m">luz encendida</text><text x="14" y="276" class="t t-s t-m">o apagada</text>
+  <line x1="170" y1="266" x2="730" y2="266" class="ln"/>
+  <rect x="176" y="232" width="58" height="34" rx="5" class="c-fis"/><rect x="316" y="232" width="58" height="34" rx="5" class="c-fis"/><rect x="386" y="232" width="58" height="34" rx="5" class="c-fis"/><rect x="596" y="232" width="58" height="34" rx="5" class="c-fis"/>
+  <text x="275" y="254" text-anchor="middle" class="t t-xs t-m">apagado</text><text x="485" y="254" text-anchor="middle" class="t t-xs t-m">apagado</text><text x="555" y="254" text-anchor="middle" class="t t-xs t-m">apagado</text><text x="695" y="254" text-anchor="middle" class="t t-xs t-m">apagado</text>
+</svg></div><figcaption><b>Un mismo mensaje en tres medios.</b> Arriba, ocho bits. En el cobre, cada bit es un voltaje alto o bajo; en la radio, una onda que se agranda o se achica; en la fibra, un destello de luz encendido o apagado. En la práctica se usan trucos más elaborados, que meten varios bits en cada cambio de la señal, pero la idea es esta.</figcaption></figure><div class="prose"><p><b>El par telefónico.</b> La línea de teléfono de toda la vida es un par de alambres trenzados que va de cada casa a la central. Fue diseñado para la voz, que ocupa apenas las frecuencias de 300 a 3.400 Hz. A fines de los años noventa se descubrió que el mismo par podía llevar frecuencias mucho más altas, por encima de la voz, y así nació el <b>DSL</b> (línea digital de abonado). El ADSL usa frecuencias de hasta 1,1 MHz y el VDSL2, hasta 17 o 35 MHz. El problema es que el cobre se «come» las frecuencias altas con la distancia: un cliente a 300 metros de la central podía tener 100 Mbps con VDSL2 y uno a 3 kilómetros, apenas unos pocos con ADSL. La velocidad dependía de dónde vivías.</p><p><b>El coaxial.</b> Las empresas de televisión por cable usan un cable con un alambre central rodeado por una malla, el coaxial, que aguanta frecuencias más altas que el par telefónico. Con la tecnología DOCSIS también lleva Internet. Lo veremos con las demás tecnologías de acceso en el capítulo 16.</p><p><b>El cable de red.</b> Dentro de la casa y de las oficinas, el cobre sigue vivo en el cable de red (el que termina en un conector RJ45, «el de Internet»). Tiene cuatro pares trenzados y, según su categoría, lleva 1 Gbps (categoría 5e o 6) o 10 Gbps (categoría 6A). Su límite es claro: <b>100 metros</b> por tramo. Más allá, la señal llega demasiado débil.</p><p>¿Por qué los alambres van trenzados? Porque cada alambre funciona como una pequeña antena que capta ruido eléctrico de motores, lámparas o los cables vecinos. Al trenzar el par, los dos alambres reciben el mismo ruido y el receptor, que mira la diferencia entre ellos, lo cancela. Es un truco simple y muy efectivo, pero no infalible.</p></div></section>
+<section><h2>Radio: Wi-Fi, celular y satélite</h2><div class="prose"><p>La radio manda los bits por el aire como <b>ondas electromagnéticas</b>, la misma familia de la luz pero con frecuencias mucho más bajas. No necesita cable: por eso es el medio de todo lo que se mueve, desde el celular hasta un avión.</p><p>Cada servicio usa su porción del espectro:</p><ul><li><b>Wi-Fi</b> usa las bandas de 2,4, 5 y 6 GHz. Son bandas libres: cualquiera puede usarlas sin licencia, siempre que respete límites de potencia. Por eso tu Wi-Fi compite con el de los vecinos.</li><li><b>La red celular</b> (4G y 5G) usa bandas entre 700 MHz y unos 3,8 GHz, y el 5G también frecuencias milimétricas de 26 GHz o más. Esas bandas son de uso exclusivo: el operador paga una licencia al Estado por cada una.</li><li><b>El satélite</b> usa frecuencias de 10 a 30 GHz. Los satélites geoestacionarios están a 36.000 km de altura y la señal tarda más de medio segundo en ir y volver; los nuevos de órbita baja vuelan a unos 550 km y responden mucho más rápido.</li></ul><p>La radio tiene una regla de oro: <b>las frecuencias bajas llegan más lejos y atraviesan mejor las paredes; las altas llevan más bits pero llegan menos lejos.</b> Por eso el 2,4 GHz del Wi-Fi cubre más casa que el 5 GHz, aunque sea más lento, y por eso las bandas bajas de 700 MHz son las más cotizadas para cubrir zonas rurales con pocas antenas.</p><p>La radio tiene además dos debilidades que el cable no tiene. La primera es que el aire es <b>compartido</b>: todos los equipos de una misma red Wi-Fi hablan por turnos en el mismo canal, y los de los vecinos interfieren. La segunda es que la señal se <b>dispersa</b> en todas direcciones y pierde fuerza muy rápido: a doble distancia llega, como mínimo, cuatro veces más débil, y dentro de una casa bastante menos, porque cada pared, espejo o pecera le quita otro poco.</p></div></section>
+<section><h2>Fibra: luz dentro de un vidrio</h2><div class="prose"><p>La fibra óptica es un hilo de vidrio muy puro, más delgado que un cabello, por el que viajan <b>destellos de luz</b>. La luz no es visible: es infrarroja, con longitudes de onda de 1.310, 1.490 o 1.550 nanómetros, colores que el ojo humano no ve y que el vidrio deja pasar con muy poca pérdida.</p><p>Por dentro, la fibra tiene dos vidrios. En el centro va el <b>núcleo</b>, de apenas 9 micras (milésimas de milímetro) en las fibras que usan los operadores. Alrededor va el <b>revestimiento</b>, otro vidrio con una composición apenas distinta. Esa diferencia hace que la luz, al tocar el borde del núcleo, rebote hacia adentro en vez de escaparse, como en un tobogán de espejos. El fenómeno se llama <b>reflexión total interna</b> y es el secreto de la fibra: la luz sigue el vidrio aunque este se curve.</p></div><figure class="fig fig-esquema" id="02-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 360" style="min-width:720px" role="img" aria-label="Una fibra óptica por dentro. A la izquierda, el corte: un núcleo de 9 micras rodeado por el revestimiento de 125 micras, el recubrimiento y la cubierta. A la derecha, la luz avanza por el núcleo rebotando en su borde, y en una curva muy cerrada parte de la luz se escapa">
+  <text x="20" y="28" class="t t-xs t-b t-m">EL CORTE (NO ESTÁ A ESCALA)</text>
+  <circle cx="150" cy="178" r="110" class="caja"/>
+  <circle cx="150" cy="178" r="84" class="d-inet"/>
+  <circle cx="150" cy="178" r="60" class="caja"/>
+  <circle cx="150" cy="178" r="14" class="c-fis"/>
+  <path d="M158 175 L262 66" class="ln"/><circle cx="158" cy="175" r="2.5" class="k-fis"/><text x="268" y="70" class="t t-s t-b">Núcleo · 9 µm</text><text x="268" y="84" class="t t-xs t-m">aquí viaja la luz</text>
+  <path d="M200 171 L262 118" class="ln"/><circle cx="200" cy="171" r="2.5" class="k-fis"/><text x="268" y="122" class="t t-s t-b">Revestimiento · 125 µm</text><text x="268" y="136" class="t t-xs t-m">vidrio que la refleja</text>
+  <path d="M224 194 L262 170" class="ln"/><circle cx="224" cy="194" r="2.5" class="k-fis"/><text x="268" y="174" class="t t-s t-b">Recubrimiento · 250 µm</text><text x="268" y="188" class="t t-xs t-m">plástico que la protege</text>
+  <path d="M242 231 L262 222" class="ln"/><circle cx="242" cy="231" r="2.5" class="k-fis"/><text x="268" y="226" class="t t-s t-b">Cubierta</text><text x="268" y="240" class="t t-xs t-m">con fibras de refuerzo</text>
+  <text x="20" y="318" class="t t-s t-m">Un cabello mide unas 70 µm:</text>
+  <text x="20" y="334" class="t t-s t-m">el núcleo es ocho veces más fino.</text>
+
+  <text x="420" y="28" class="t t-xs t-b t-m">A LO LARGO</text>
+  <rect x="420" y="96" width="460" height="92" class="caja"/>
+  <rect x="420" y="120" width="460" height="44" class="c-fis"/>
+  <text x="430" y="112" class="t t-xs t-m">REVESTIMIENTO</text>
+  <text x="430" y="182" class="t t-xs t-m">REVESTIMIENTO</text>
+  <path d="M420 142 L440 160 L500 124 L560 160 L620 124 L680 160 L740 124 L800 160 L860 124" class="ln s-fis" style="stroke-width:2.4" marker-end="url(#fl-fis)"/>
+  <text x="420" y="64" class="t t-s">La luz rebota en el borde del núcleo y no se escapa</text>
+  <text x="420" y="80" class="t t-s t-m">(reflexión total interna): por eso sigue el vidrio aunque se curve.</text>
+
+  <path d="M420 250 H640 A40 40 0 0 1 680 290 V352" class="ln" style="stroke-width:14;stroke-linecap:butt;opacity:.35"/>
+  <path d="M420 250 H640 A40 40 0 0 1 680 290 V352" class="ln s-fis" style="stroke-width:2.4"/>
+  <line x1="652" y1="252" x2="716" y2="226" class="ln s-fis ln-d" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="724" y="222" class="t t-s t-b">Curva muy cerrada:</text>
+  <text x="724" y="238" class="t t-s">parte de la luz se escapa</text>
+  <text x="724" y="254" class="t t-s">y la señal llega débil.</text>
+  <text x="724" y="290" class="t t-s t-m">Las fibras para casas y</text>
+  <text x="724" y="306" class="t t-s t-m">edificios (G.657) aguantan</text>
+  <text x="724" y="322" class="t t-s t-m">curvas más cerradas.</text>
+</svg></div><figcaption><b>Una fibra por dentro.</b> A la izquierda, el corte: el núcleo por donde viaja la luz, el revestimiento que la refleja, el recubrimiento plástico y la cubierta exterior. A la derecha, la luz avanza rebotando en el borde del núcleo. Abajo, lo que pasa en una curva demasiado cerrada: parte de la luz sale del núcleo y se pierde.</figcaption></figure><div class="prose"><p>Que la luz siga el vidrio en las curvas no significa que aguante cualquier curva. Si la fibra se dobla demasiado, el ángulo cambia y parte de la luz se escapa. Por eso los técnicos respetan un <b>radio mínimo de curvatura</b> y existen fibras especiales que toleran curvas más cerradas. La recomendación G.652 de la UIT (Unión Internacional de Telecomunicaciones, el organismo de la ONU que fija estándares para las redes) define la fibra común de la planta exterior; la G.657 define las fibras «resistentes a la curvatura» que se usan para entrar a edificios y casas.</p><p>Hay dos grandes tipos de fibra. La <b>monomodo</b>, de núcleo muy fino, deja pasar un solo camino de luz y llega a decenas de kilómetros: es la de los operadores. La <b>multimodo</b>, de núcleo más grueso, es más barata de conectar pero solo sirve para unos cientos de metros, y se usa dentro de los centros de datos.</p><p>Además, por una misma fibra pueden viajar varias luces de distinto color al mismo tiempo sin mezclarse, cada una con su propia conversación. En la red de fibra hasta la casa, la bajada viaja en un color y la subida en otro. En las rutas de larga distancia se juntan decenas de colores en una sola fibra, y así una fibra lleva varios terabits por segundo.</p></div></section>
+<section><h2>Ruido, atenuación y distancia</h2><div class="prose"><p>Todo medio tiene tres enemigos:</p><ul><li><b>La atenuación</b>: la señal se debilita a medida que avanza. En el cobre, la electricidad se gasta en calentar el alambre; en la radio, la onda se reparte en todas direcciones; en la fibra, el vidrio absorbe y dispersa un poco de luz.</li><li><b>El ruido</b>: señales que no son la nuestra y se mezclan con ella. Motores, lámparas, el microondas, otras redes Wi-Fi o el par telefónico de al lado, que se cuela en el nuestro (a eso se le llama <b>diafonía</b>).</li><li><b>La distancia</b>, que agrava los dos anteriores: cuanto más lejos, más débil llega la señal y más pesa el ruido.</li></ul><p>Lo que importa no es la fuerza de la señal por sí sola sino <b>cuánto más fuerte es que el ruido</b>. Es la <b>relación señal a ruido</b>: si la señal es bien clara frente al ruido, el receptor puede usar trucos que meten muchos bits en cada cambio; si apenas se distingue, tiene que ir más despacio, como la linterna en la niebla. Así funciona Shannon en la práctica: los equipos modernos miden esa relación todo el tiempo y ajustan su velocidad solos.</p><p>Los ingenieros miden las pérdidas en <b>decibeles</b> (dB). No hace falta hacer cuentas con ellos; basta una regla: <b>perder 3 dB es quedarse con la mitad de la señal, y perder 10 dB es quedarse con la décima parte.</b> Con esa regla se entienden los números de cada medio:</p><ul><li>Una fibra monomodo pierde entre 0,2 y 0,35 dB por kilómetro. Después de 10 km todavía llega casi la mitad de la luz.</li><li>Un cable de red, en sus frecuencias más altas, pierde unos 20 dB en sus 100 metros: llega menos del 1 % de la señal, y por eso no puede ser más largo.</li><li>La radio pierde muchísimo en los primeros metros y después cae más despacio, pero cada pared le resta varios decibeles más.</li></ul><p>Cuando la señal se acerca al ruido, el medio no se apaga de golpe: primero se pone lento, después empieza a perder datos y al final se corta. Compruébalo en el laboratorio.</p></div><div class="lab" id="02-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Hasta dónde llega cada medio</h3></div><p class="hint">Mueve la distancia y mira cuánta velocidad le queda a cada medio. Elige el plan contratado y la cantidad de paredes entre el Wi-Fi y el equipo para ver cuándo la conexión deja de entregar lo que se vende.</p><div class="ctls">
+  <label class="ctl">Distancia del tramo <output id="c02-dist-o"></output>
+    <input id="c02-dist" type="range" min="0" max="1000" step="1" value="250"></label>
+  <label class="ctl" style="grid-template-columns:1fr">Plan contratado
+    <select id="c02-plan">
+      <option value="100">100 Mbps</option>
+      <option value="300" selected>300 Mbps</option>
+      <option value="600">600 Mbps</option>
+      <option value="1000">1.000 Mbps</option>
+    </select></label>
+</div>
+<div class="btns" role="group" aria-label="Paredes entre el Wi-Fi y el equipo">
+  <span class="hint" style="align-self:center">Paredes para el Wi-Fi:</span>
+  <button type="button" data-p="0" aria-pressed="false">Ninguna</button>
+  <button type="button" data-p="1" aria-pressed="true">1</button>
+  <button type="button" data-p="2" aria-pressed="false">2</button>
+  <button type="button" data-p="3" aria-pressed="false">3</button>
+</div>
+<canvas id="c02-cv" role="img" aria-label="Velocidad que permite cada medio según la distancia, en escalas logarítmicas"></canvas>
+<div class="legend" id="c02-ley"></div>
+<div class="readout" id="c02-res" aria-live="polite"></div>
+<p class="hint" id="c02-nota"></p></div><div class="prose"><p>Las curvas del laboratorio son típicas, no exactas, pero el patrón es real. El cable de red entrega su velocidad completa hasta los 100 metros y ahí se acaba. El par telefónico cae poco a poco con cada metro. El Wi-Fi cae a pasos, porque el equipo baja de velocidad cuando la señal ya no le alcanza para la siguiente. Y la fibra ni se inmuta: a 500 metros o a 15 kilómetros entrega lo mismo.</p></div></section>
+<section><h2>Por qué la fibra ganó</h2><div class="prose"><p>Durante un siglo, la red de los operadores fue de cobre. Hoy, casi todas las redes nuevas que llegan hasta la casa son de fibra. Las razones se ven en la comparación:</p><ul><li><b>Capacidad.</b> La ventana de frecuencias de la fibra es miles de veces más ancha que la del cobre. La misma fibra que hoy lleva 2,5 Gbps puede llevar 10, 25 o 50 Gbps cambiando solo los equipos de las puntas: la planta en la calle no se toca.</li><li><b>Distancia.</b> Pierde tan poca luz que una red de fibra hasta la casa llega a unos 20 km sin ningún equipo con electricidad en el camino. En DSL, la central tenía que estar a pocos kilómetros del cliente.</li><li><b>Inmunidad.</b> La luz no se ve afectada por motores, tormentas eléctricas ni cables vecinos, y el vidrio no se oxida con la humedad, que era la gran fuente de fallas del cobre.</li><li><b>Costo de operación.</b> Al no llevar electricidad, la red en la calle consume nada y falla menos. Hay menos visitas técnicas.</li></ul></div><figure class="fig fig-comparacion" id="02-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 380" style="min-width:740px" role="img" aria-label="Comparación de medios: alcance de un tramo y velocidad típica. Par telefónico, 5 kilómetros y de 2 a 100 megabits; cable de red, 100 metros y de 1 a 10 gigabits; Wi-Fi, 30 metros y hasta 2 gigabits; celular, 10 kilómetros y hasta 1 gigabit; satélite de órbita baja, 550 kilómetros y hasta 250 megabits; fibra hasta la casa, 20 kilómetros y de 2,5 a 10 gigabits compartidos; fibra de larga distancia, 80 kilómetros por tramo y hasta 20 terabits">
+  <text x="200" y="36" class="t t-xs t-b t-m">ALCANCE DE UN TRAMO</text>
+  <text x="560" y="36" class="t t-xs t-b t-m">VELOCIDAD TÍPICA</text>
+  <line x1="200" y1="50" x2="200" y2="300" class="vida"/><text x="200" y="318" text-anchor="middle" class="t t-xs t-m">10 m</text><line x1="258" y1="50" x2="258" y2="300" class="vida"/><text x="258" y="318" text-anchor="middle" class="t t-xs t-m">100 m</text><line x1="316" y1="50" x2="316" y2="300" class="vida"/><text x="316" y="318" text-anchor="middle" class="t t-xs t-m">1 km</text><line x1="374" y1="50" x2="374" y2="300" class="vida"/><text x="374" y="318" text-anchor="middle" class="t t-xs t-m">10 km</text><line x1="432" y1="50" x2="432" y2="300" class="vida"/><text x="432" y="318" text-anchor="middle" class="t t-xs t-m">100 km</text><line x1="490" y1="50" x2="490" y2="300" class="vida"/><text x="490" y="318" text-anchor="middle" class="t t-xs t-m">1.000 km</text><line x1="560" y1="50" x2="560" y2="300" class="vida"/><text x="560" y="318" text-anchor="middle" class="t t-xs t-m">1 Mbps</text><line x1="640" y1="50" x2="640" y2="300" class="vida"/><text x="640" y="318" text-anchor="middle" class="t t-xs t-m">100 Mbps</text><line x1="720" y1="50" x2="720" y2="300" class="vida"/><text x="720" y="318" text-anchor="middle" class="t t-xs t-m">10 Gbps</text><line x1="800" y1="50" x2="800" y2="300" class="vida"/><text x="800" y="318" text-anchor="middle" class="t t-xs t-m">1 Tbps</text><line x1="880" y1="50" x2="880" y2="300" class="vida"/><text x="890" y="318" text-anchor="end" class="t t-xs t-m">100 Tbps</text>
+  <text x="14" y="72" class="t t-s t-b">Par telefónico (DSL)</text><rect x="200" y="58" width="156.5" height="20" rx="4" class="d-inet"/><text x="363" y="72" class="t t-s">5 km</text><rect x="572.0" y="58" width="68.0" height="20" rx="4" class="d-inet"/><text x="646" y="72" class="t t-s">2–100 Mbps</text><text x="14" y="106" class="t t-s t-b">Cable de red</text><rect x="200" y="92" width="58.0" height="20" rx="4" class="d-inet"/><text x="264" y="106" class="t t-s">100 m</text><rect x="680.0" y="92" width="40.0" height="20" rx="4" class="d-inet"/><text x="726" y="106" class="t t-s">1–10 Gbps</text><text x="14" y="140" class="t t-s t-b">Wi-Fi</text><rect x="200" y="126" width="27.7" height="20" rx="4" class="d-casa"/><text x="234" y="140" class="t t-s">30 m</text><rect x="628.0" y="126" width="64.1" height="20" rx="4" class="d-casa"/><text x="698" y="140" class="t t-s">50 Mbps–2 Gbps</text><text x="14" y="174" class="t t-s t-b">Celular 4G y 5G</text><rect x="200" y="160" width="174.0" height="20" rx="4" class="d-casa"/><text x="380" y="174" class="t t-s">10 km</text><rect x="612.0" y="160" width="68.0" height="20" rx="4" class="d-casa"/><text x="686" y="174" class="t t-s">20 Mbps–1 Gbps</text><text x="14" y="208" class="t t-s t-b">Satélite (órbita baja)</text><rect x="200" y="194" width="274.9" height="20" rx="4" class="d-casa"/><text x="481" y="208" class="t t-s">550 km</text><rect x="628.0" y="194" width="28.0" height="20" rx="4" class="d-casa"/><text x="662" y="208" class="t t-s">50–250 Mbps</text><text x="14" y="242" class="t t-s t-b">Fibra hasta la casa (PON)</text><rect x="200" y="228" width="191.5" height="20" rx="4" class="c-fis"/><text x="397" y="242" class="t t-s">20 km</text><rect x="695.9" y="228" width="24.1" height="20" rx="4" class="c-fis"/><text x="726" y="242" class="t t-s">2,5–10 Gbps compartidos</text><text x="14" y="276" class="t t-s t-b">Fibra de larga distancia</text><rect x="200" y="262" width="226.4" height="20" rx="4" class="c-fis"/><text x="432" y="276" class="t t-s">80 km por tramo</text><rect x="760.0" y="262" width="92.0" height="20" rx="4" class="c-fis"/><text x="754" y="276" text-anchor="end" class="t t-s">100 Gbps–20 Tbps</text>
+  <line x1="200" y1="300" x2="500" y2="300" class="ln"/><line x1="560" y1="300" x2="880" y2="300" class="ln"/>
+  <g class="t t-s">
+    <rect x="14" y="340" width="14" height="14" rx="3" class="d-inet"/><text x="34" y="352">cobre</text>
+    <rect x="94" y="340" width="14" height="14" rx="3" class="d-casa"/><text x="114" y="352">radio</text>
+    <rect x="174" y="340" width="14" height="14" rx="3" class="c-fis"/><text x="194" y="352">fibra</text>
+  </g>
+  <text x="270" y="352" class="t t-s t-m">Escalas logarítmicas. Valores típicos de referencia: cada tecnología</text>
+  <text x="270" y="368" class="t t-s t-m">tiene versiones más lentas y más rápidas.</text>
+</svg></div><figcaption><b>Distancia y velocidad de cada medio.</b> A la izquierda, hasta dónde llega un tramo sin equipos intermedios; a la derecha, la velocidad típica. Las dos escalas son logarítmicas: cada marca vale diez veces (o cien veces) la anterior. La fibra domina en las dos; la radio gana en otra cosa que la figura no muestra: llegar a donde no hay cable y moverse con el usuario.</figcaption></figure><div class="prose"><p>Eso no significa que el cobre y la radio desaparezcan. El cable de red sigue siendo la mejor forma de conectar una computadora o un televisor a pocos metros, y la radio es insustituible para todo lo que se mueve y para llegar a zonas donde tender fibra no se justifica. La red de un telco moderno es una combinación: fibra hasta la casa o hasta la antena celular, y cobre o radio en los últimos metros.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Cuando un operador de la región reemplaza su red de cobre por fibra, el cambio para el cliente es visible desde el primer día. La velocidad deja de depender de la distancia a la central: el vecino del fondo del barrio recibe lo mismo que el de la esquina. La subida, que en ADSL era una fracción mínima de la bajada, pasa a ser igual. Las fallas por lluvia y humedad, que llenaban la agenda de los técnicos en temporada de lluvias, casi desaparecen. Aparecen también desafíos nuevos: el Wi-Fi de la casa pasa a ser el cuello de botella y el origen de la mayoría de los reclamos, los cortes de fibra por obras o accidentes exigen cuadrillas preparadas para empalmar, y el teléfono deja de funcionar durante un apagón si la ONT no tiene batería de respaldo, porque la línea de cobre recibía su electricidad desde la central y la fibra no lleva electricidad.</p></div><div class="ml"><b>En la práctica</b><p>Un plan «de 300 megas» es la velocidad que el operador entrega hasta la ONT. Medida con un cable de red conectado a un puerto de 1 Gbps, debe acercarse a ese número. Por Wi-Fi, en cambio, depende de la distancia al router, las paredes, la banda (5 GHz es más rápida pero llega menos lejos que 2,4 GHz) y del propio dispositivo: un celular de hace algunos años puede no pasar de 100 o 150 Mbps aunque esté al lado del router. Lo honesto es prometer la velocidad del plan en la ONT y por cable, explicar que por Wi-Fi rinde menos lejos del equipo, y ante un reclamo pedir primero una prueba por cable: si por cable llegan los 300, el problema no está en la red del operador sino en los últimos metros de radio.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Cuántos megabytes por segundo descarga, como máximo, un plan de 200 Mbps?</summary><p>Unos 25 MB por segundo, porque un byte son 8 bits: 200 ÷ 8 = 25.</p></details><details><summary>¿Por qué un cliente de DSL a 3 km de la central navegaba más lento que uno a 300 metros?</summary><p>Porque el cobre atenúa mucho las frecuencias altas con la distancia; con menos señal frente al ruido, el módem tiene que bajar la velocidad.</p></details><details><summary>¿Qué mantiene a la luz dentro de la fibra aunque el cable se curve?</summary><p>La reflexión total interna: el revestimiento es un vidrio un poco distinto del núcleo y la luz rebota en el borde hacia adentro. Solo en curvas muy cerradas se escapa.</p></details><details><summary>¿Por qué el Wi-Fi de 2,4 GHz llega más lejos que el de 5 GHz?</summary><p>Porque las frecuencias más bajas pierden menos fuerza con la distancia y atraviesan mejor las paredes; a cambio, llevan menos bits por segundo.</p></details><details><summary>Si perder 3 dB es quedarse con la mitad de la señal, ¿cuánta luz queda después de 10 km de fibra que pierde 0,3 dB por kilómetro?</summary><p>Se pierden 3 dB en total, así que queda la mitad de la luz, de sobra para que el receptor la entienda.</p></details><details><summary>¿Por qué con la fibra el teléfono fijo puede dejar de funcionar en un apagón?</summary><p>Porque la fibra no lleva electricidad: la ONT de la casa necesita corriente o una batería de respaldo, mientras que la línea de cobre se alimentaba desde la central.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Fibra_%C3%B3ptica" target="_blank" rel="noopener">Fibra óptica (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Ancho_de_banda_%28inform%C3%A1tica%29" target="_blank" rel="noopener">Ancho de banda en informática (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/L%C3%ADnea_de_abonado_digital" target="_blank" rel="noopener">Línea de abonado digital, DSL (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.itu.int/rec/T-REC-G.657" target="_blank" rel="noopener">Recomendación UIT-T G.657 (UIT) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const MAX=12;
+  let azar=[];
+  const nuevoAzar=()=>{azar=Array.from({length:MAX*9},()=>Math.random());};
+  const limpiar=t=>t.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\x20-\x7e]/g,'?').slice(0,MAX);
+  const pct=n=>String(Math.round(n*10)/10).replace('.',',');
+  function dibujar(){
+    const msg=limpiar($('#c02-msg').value)||' ';
+    const ruido=+$('#c02-ruido').value, vel=+$('#c02-vel').value, par=$('#c02-par').checked;
+    const p=Math.min(0.5,ruido/100*vel/3);
+    $('#c02-ruido-o').textContent=ruido+' %';
+    $('#c02-vel-o').textContent=vel+(vel===1?' parpadeo':' parpadeos')+' por segundo';
+    const n=par?9:8;
+    let html='',recibido='',errores=0,dañadas=0,detectadas=0,k=0;
+    for(const ch of msg){
+      const code=ch.charCodeAt(0);
+      const bits=[...code.toString(2).padStart(8,'0')].map(Number);
+      if(par)bits.push(bits.reduce((a,b)=>a+b,0)%2);
+      const rx=bits.map((b,i)=>azar[k*9+i]<p?1-b:b);
+      const malos=rx.filter((b,i)=>b!==bits[i]).length;
+      errores+=malos;
+      const letra=String.fromCharCode(parseInt(rx.slice(0,8).join(''),2));
+      const visible=/[\x21-\x7e]/.test(letra)?letra:(letra===' '?'␣':'¿');
+      const det=par&&rx.reduce((a,b)=>a+b,0)%2===1;
+      if(malos)dañadas++;
+      if(det)detectadas++;
+      recibido+=det?'⚠':visible;
+      const celdas=(arr,marca)=>arr.map((b,i)=>'<i class="'+(b?'on':'')+(par&&i===8?' par':'')+(marca&&b!==bits[i]?' err':'')+'"></i>').join('');
+      html+='<div class="c02-g"><b>'+(ch===' '?'␣':ch.replace('<','&lt;'))+'</b><div class="c02-row">'+celdas(bits,false)+'</div>'+
+        '<b class="'+(det?'det':(malos?'mal':''))+'">'+(det?'⚠':visible.replace('<','&lt;'))+'</b><div class="c02-row">'+celdas(rx,true)+'</div></div>';
+      k++;
+    }
+    $('#c02-bits').innerHTML=html;
+    const total=msg.length*n, seg=total/vel;
+    let t='<span>Enviaste <b>'+total+' bits</b> en '+pct(seg)+' s · probabilidad de confundir un parpadeo: '+pct(p*100)+' %</span>'+
+      '<span class="big">Llegó: «'+recibido.replace(/</g,'&lt;')+'»</span>';
+    if(!errores)t+='<span class="ok">Ningún bit cambió: el mensaje llegó intacto.</span>';
+    else t+='<span class="warn">'+errores+(errores===1?' bit llegó cambiado':' bits llegaron cambiados')+' y '+dañadas+(dañadas===1?' letra quedó dañada.':' letras quedaron dañadas.')+'</span>';
+    if(par&&dañadas)t+='<span>La paridad detectó '+detectadas+' de '+dañadas+'. '+(detectadas<dañadas?'Una letra con dos bits cambiados pasa sin ser detectada.':'El receptor puede pedir que se repitan las letras marcadas con ⚠.')+'</span>';
+    else if(!par&&errores)t+='<span>Sin bit de control, el receptor no tiene cómo saber qué letras están mal.</span>';
+    $('#c02-out').innerHTML=t;
+    $('#c02-bits').setAttribute('aria-label','Se enviaron '+total+' bits y '+errores+' llegaron cambiados');
+  }
+  nuevoAzar();
+  ['#c02-ruido','#c02-vel','#c02-msg'].forEach(s=>$(s).addEventListener('input',dibujar));
+  $('#c02-par').addEventListener('change',dibujar);
+  $('#c02-otra').addEventListener('click',()=>{nuevoAzar();dibujar();});
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const {$,tok,canvasWidget}=window.Lab;
+  const DMAX=Math.log10(50000);
+  let paredes=1;
+  const dist=()=>Math.pow(10,+$('#c02-dist').value/1000*DMAX);
+  const miles=n=>Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  const fmtD=m=>m<1000?miles(m)+' m':(m<10000?(Math.round(m/100)/10).toString().replace('.',','):miles(m/1000))+' km';
+  // DSL: velocidad típica según la distancia a la central (interpolación log)
+  const DSL=[[1,100],[300,90],[500,70],[1000,40],[1500,20],[2000,14],[3000,8],[4000,4],[5000,1.5]];
+  function dsl(d){
+    if(d>5000)return 0; if(d<=1)return 100;
+    for(let i=1;i<DSL.length;i++){const [d0,v0]=DSL[i-1],[d1,v1]=DSL[i];
+      if(d<=d1){const t=(Math.log(d)-Math.log(d0))/(Math.log(d1)-Math.log(d0));return Math.exp(Math.log(v0)+t*(Math.log(v1)-Math.log(v0)));}}
+    return 0;
+  }
+  // Wi-Fi 6, dos antenas, canal de 80 MHz: relación señal/ruido -> velocidad real (65 % de la nominal)
+  const MCS=[[37,1201],[34,1081],[31,961],[29,865],[26,721],[24,649],[22,576],[18,432],[14,288],[11,216],[8,144],[5,72]];
+  function wifi(d,w){
+    const snr=63-35*Math.log10(Math.max(d,1))-7*w;
+    for(const [s,v] of MCS)if(snr>=s)return v*0.65;
+    return 0;
+  }
+  const MEDIOS=[
+    {n:'Fibra (PON)',c:'--c-fis',f:d=>d<=20000?2500:0,max:'20 km',nota:' compartidos'},
+    {n:'Cable de red',c:'--c-red',f:d=>d<=100?1000:0,max:'100 m',nota:''},
+    {n:'Par telefónico (DSL)',c:'--d-inet',f:dsl,max:'5 km',nota:''},
+    {n:'Wi-Fi',c:'--d-casa',f:d=>wifi(d,paredes),max:null,nota:'',escalon:true}
+  ];
+  const X0=0,X1=DMAX,Y0=0,Y1=4;
+  const cv=$('#c02-cv');
+  const draw=(ctx,w,h)=>{
+    const p={l:46,r:12,t:12,b:28},pw=w-p.l-p.r,ph=h-p.t-p.b;
+    const X=d=>p.l+(Math.log10(d)-X0)/(X1-X0)*pw, Y=v=>p.t+(Y1-Math.log10(Math.max(v,1)))/(Y1-Y0)*ph;
+    ctx.clearRect(0,0,w,h);
+    ctx.font='11px '+tok('--f-mono');ctx.lineWidth=1;
+    ctx.strokeStyle=tok('--grid');ctx.fillStyle=tok('--muted');
+    ctx.textAlign='center';ctx.textBaseline='top';
+    [[1,'1 m'],[10,'10 m'],[100,'100 m'],[1000,'1 km'],[10000,'10 km']].forEach(([d,t])=>{ctx.beginPath();ctx.moveTo(X(d),p.t);ctx.lineTo(X(d),p.t+ph);ctx.stroke();ctx.fillText(t,Math.max(X(d),p.l+10),p.t+ph+6);});
+    ctx.textAlign='right';ctx.textBaseline='middle';
+    [[1,'1'],[10,'10'],[100,'100'],[1000,'1.000'],[10000,'10.000']].forEach(([v,t])=>{ctx.beginPath();ctx.moveTo(p.l,Y(v));ctx.lineTo(p.l+pw,Y(v));ctx.stroke();ctx.fillText(t,p.l-5,Y(v));});
+    ctx.save();ctx.translate(11,p.t+ph/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.fillText('Mbps',0,0);ctx.restore();
+    const plan=+$('#c02-plan').value;
+    ctx.strokeStyle=tok('--warm');ctx.setLineDash([6,5]);ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(p.l,Y(plan));ctx.lineTo(p.l+pw,Y(plan));ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=tok('--warm');ctx.textAlign='right';ctx.textBaseline='bottom';ctx.font='600 11px '+tok('--f-display');
+    ctx.fillText('tu plan: '+miles(plan)+' Mbps',p.l+pw-4,Y(plan)-3);
+    MEDIOS.forEach(m=>{
+      ctx.strokeStyle=tok(m.c);ctx.lineWidth=2.6;ctx.beginPath();let pen=false,ult=null;
+      for(let i=0;i<=600;i++){const d=Math.pow(10,X0+(X1-X0)*i/600),v=m.f(d);
+        if(v<=0){pen=false;continue;}const px=X(d),py=Y(v);
+        if(m.escalon&&pen&&ult&&Math.abs(py-ult[1])>0.5)ctx.lineTo(px,ult[1]);
+        pen?ctx.lineTo(px,py):ctx.moveTo(px,py);pen=true;ult=[px,py];}
+      ctx.stroke();
+      if(ult&&ult[0]<p.l+pw-2){ctx.fillStyle=tok(m.c);ctx.font='700 13px '+tok('--f-display');ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('×',ult[0]+5,ult[1]);}
+    });
+    const d=dist();
+    ctx.strokeStyle=tok('--ink');ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(X(d),p.t);ctx.lineTo(X(d),p.t+ph);ctx.stroke();
+    MEDIOS.forEach(m=>{const v=m.f(d);if(v>0){ctx.beginPath();ctx.arc(X(d),Y(v),5,0,Math.PI*2);ctx.fillStyle=tok('--card');ctx.fill();ctx.lineWidth=2.5;ctx.strokeStyle=tok(m.c);ctx.stroke();}});
+  };
+  const render=canvasWidget(cv,w=>w<520?0.8:0.48,draw);
+  $('#c02-ley').innerHTML=MEDIOS.map(m=>'<span><i style="background:var('+m.c+')"></i>'+m.n+'</span>').join('')+'<span><i style="background:var(--warm);border-radius:0;height:3px;vertical-align:3px"></i>tu plan</span>';
+  function texto(){
+    const d=dist(),plan=+$('#c02-plan').value;
+    $('#c02-dist-o').textContent=fmtD(d);
+    const filas=MEDIOS.map(m=>{
+      const v=m.f(d),nombre=m.n+(m.max===null?' ('+(paredes?paredes+(paredes===1?' pared':' paredes'):'sin paredes')+')':'');
+      if(v<=0)return '<span class="warn">'+nombre+': no llega'+(m.max?' (máximo '+m.max+')':' (sin señal)')+'</span>';
+      const vv=v>=10?miles(v):String(Math.round(v*10)/10).replace('.',',');
+      return '<span class="'+(v>=plan?'ok':'warn')+'">'+nombre+': '+vv+' Mbps'+m.nota+(v>=plan?' · alcanza para el plan':' · no alcanza para el plan')+'</span>';
+    });
+    $('#c02-res').innerHTML='<span class="big">A '+fmtD(d)+':</span>'+filas.join('');
+    const w=wifi(d,paredes);
+    let nota;
+    const cobre=plan>100?' El par telefónico, en cambio, nunca llega a ese plan.':'';
+    if(d<=100&&w>=plan)nota='Cerca del router, el Wi-Fi todavía entrega el plan completo. Aléjate o agrega paredes y mira cómo cae primero el Wi-Fi.'+cobre;
+    else if(d<=100&&w>0)nota='Por cable el plan llega completo, pero por Wi-Fi no: la radio pierde fuerza muy rápido con la distancia y cada pared le quita más. Este es el caso de la mayoría de los reclamos de «Internet lento».';
+    else if(d<=100)nota='El Wi-Fi ya no llega: a esta distancia y con estas paredes hace falta otro punto de acceso o un cable. El cable de red entrega todo hasta los 100 metros.';
+    else if(d<=5000)nota='Ni el cable de red ni el Wi-Fi llegan tan lejos. El par telefónico sí, pero su velocidad cae con cada metro: por eso con DSL la velocidad dependía de qué tan cerca de la central vivía el cliente. La fibra no cambia.';
+    else if(d<=20000)nota='Solo la fibra sigue: pierde tan poca luz por kilómetro que una casa a 15 km de la central recibe la misma velocidad que una a 500 m.';
+    else nota='Más allá de 20 km una PON típica ya no alcanza; para distancias mayores el operador usa otros equipos de fibra que llegan a 80 km o más.';
+    $('#c02-nota').textContent=nota;
+  }
+  function todo(){texto();render();}
+  $('#c02-dist').addEventListener('input',todo);
+  $('#c02-plan').addEventListener('change',todo);
+  const botones=document.querySelectorAll('[id="02-lab-3"] [data-p]');
+  botones.forEach(b=>{
+    b.addEventListener('click',()=>{paredes=+b.dataset.p;botones.forEach(o=>o.setAttribute('aria-pressed',o===b?'true':'false'));todo();});
+  });
+  texto();
+})();
+</script>
+</body>
+</html>

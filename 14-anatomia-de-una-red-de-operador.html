@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anatomía de una red de operador · Cómo funciona un telco</title>
+<meta name="description" content="La red de un telco se organiza en tramos: acceso (llega a cada casa), agregación (junta a muchos clientes), core (el corazón que enruta) e interconexión (la salida al resto de Internet), y cada tramo tiene su propia economía.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="14-anatomia-de-una-red-de-operador">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 14 DE 49</span><h1>Anatomía de una red de operador</h1><p class="lede">La red de un telco se organiza en tramos: acceso (llega a cada casa), agregación (junta a muchos clientes), core (el corazón que enruta) e interconexión (la salida al resto de Internet), y cada tramo tiene su propia economía.</p></header>
+<section><div class="prose"><p>En la primera parte del libro aprendiste cómo se hablan dos máquinas: con qué señales, en qué capas y con qué protocolos. Esta segunda parte cambia la pregunta. Ya no es «cómo se habla un celular con un servidor», sino «qué tiene que construir un operador para que millones de esas conversaciones ocurran al mismo tiempo, todos los días, sin que nadie lo note».</p><p>La respuesta es una red enorme, pero no desordenada. Toda red de operador, sea de fibra, de cable o móvil, se arma con los mismos cuatro tramos. Conocerlos es tener el mapa para el resto de esta parte.</p></div><div class="analogia"><b>Imagínalo así</b><p>La red vial de un país: calles de barrio que llegan a cada puerta, avenidas que juntan el tránsito de muchos barrios, autopistas que unen ciudades, y puertos y aeropuertos que lo conectan con el exterior. Nadie construye una autopista hasta cada casa, ni deja que todo un país salga por una calle de tierra. Cada tramo tiene el tamaño, el costo y el cuidado que le corresponden.</p></div><figure class="fig fig-capas" id="14-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la red del operador completa, del acceso a la salida a Internet">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class="apagado"><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class=""><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la red del operador completa, del acceso a la salida a Internet</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo se aleja para mirar la red del operador completa, desde el splitter de la calle hasta la salida a Internet. Trabaja sobre todo en las tres capas de abajo: la física (fibras y equipos), la de enlace (cómo se conectan los equipos vecinos) y la de red (por dónde se manda cada paquete).</figcaption></figure></section>
+<section><h2>Acceso, agregación, core e interconexión</h2><div class="prose"><p>Sigamos otra vez el pedido de la página que tocaste en el capítulo 1, pero ahora fijándonos en el tamaño de lo que va encontrando.</p><p><b>El acceso</b> es la «última milla»: el tramo que llega a cada cliente. En una red de fibra son la ONT de la casa, la acometida, las cajas en los postes, los splitters y la OLT de la central. Es el tramo más grande en cantidad de piezas, porque hay una por casa, y el más caro de construir: la mayor parte de la inversión de un operador se va en llevar fibra calle por calle.</p><p><b>La agregación</b> junta. Una OLT atiende a unos miles de clientes; una ciudad tiene decenas de OLT repartidas en varios nodos. Los switches y routers de agregación recogen el tráfico de todas esas OLT y lo concentran en pocos enlaces más gruesos, como las avenidas que reciben el tránsito de muchas calles. En este tramo suele estar también el <b>BNG</b>, el portero que reconoce a cada cliente (capítulos 19 y 20).</p><p><b>El core</b> es el corazón: unos pocos routers muy potentes, en pocos lugares, unidos por enlaces de gran capacidad. Deciden el camino de cada paquete entre ciudades y hacia la salida. Junto al core viven los servicios que todos usan, como el DNS, el servidor RADIUS, la plataforma de voz y los sistemas de gestión.</p><p><b>La interconexión</b> es la frontera con el resto de Internet. Por ahí salen los pedidos hacia servidores que no están en la red del operador y entran las respuestas. Son los «puertos y aeropuertos» del país: pocos, carísimos de mantener y vigilados con especial cuidado.</p><p>El diagrama de abajo muestra el recorrido de un paquete por los cuatro tramos. Fíjate en cómo cambia el grosor de las líneas: cuanto más arriba, menos enlaces, pero más gruesos.</p></div><figure class="fig fig-capas" id="14-diagrama-2"><div class="lienzo"><svg viewBox="0 0 900 470" style="min-width:700px" role="img" aria-label="La red de un operador en cuatro tramos: muchas ONT en las casas conectadas a OLT en el acceso; la agregación junta varias OLT; el core con pocos routers y los servicios centrales; la interconexión con dos routers de borde hacia Internet. Un paquete sube desde una casa hasta Internet y vuelve.">
+<rect x="150" y="12" width="540" height="56" rx="10" class="d-inet"/>
+<rect x="150" y="76" width="540" height="304" rx="10" class="d-oper"/>
+<rect x="150" y="388" width="540" height="62" rx="10" class="d-casa"/>
+<line x1="160" y1="150" x2="680" y2="150" class="ln ln-d"/>
+<line x1="160" y1="228" x2="680" y2="228" class="ln ln-d"/>
+<line x1="160" y1="306" x2="680" y2="306" class="ln ln-d"/>
+<text x="20" y="44" class="t t-b k-inet">Internet</text><text x="20" y="60" class="t t-xs t-m">el resto del mundo</text>
+<text x="20" y="110" class="t t-b k-oper">Interconexión</text><text x="20" y="126" class="t t-xs t-m">routers de borde</text>
+<text x="20" y="188" class="t t-b k-oper">Core</text><text x="20" y="204" class="t t-xs t-m">routers y servicios</text>
+<text x="20" y="266" class="t t-b k-oper">Agregación</text><text x="20" y="282" class="t t-xs t-m">switches, routers, BNG</text>
+<text x="20" y="344" class="t t-b k-oper">Acceso</text><text x="20" y="360" class="t t-xs t-m">OLT y splitters</text>
+<text x="20" y="418" class="t t-b k-casa">Casas</text><text x="20" y="434" class="t t-xs t-m">una ONT por cliente</text>
+<text x="704" y="26" class="t t-xs t-b t-m">EQUIPOS · DEPENDEN DE CADA UNO</text>
+<text x="704" y="52" class="t t-s t-b">miles de redes</text><text x="704" y="67" class="t t-xs t-m">todo lo que no está adentro</text>
+<text x="704" y="110" class="t t-s t-b">2 a 4 routers</text><text x="704" y="125" class="t t-xs t-m">todos los clientes</text>
+<text x="704" y="188" class="t t-s t-b">pocos routers</text><text x="704" y="203" class="t t-xs t-m">una ciudad o el país</text>
+<text x="704" y="266" class="t t-s t-b">decenas de equipos</text><text x="704" y="281" class="t t-xs t-m">varios barrios</text>
+<text x="704" y="344" class="t t-s t-b">decenas de OLT</text><text x="704" y="359" class="t t-xs t-m">miles de clientes por OLT</text>
+<text x="704" y="418" class="t t-s t-b">una por casa</text><text x="704" y="433" class="t t-xs t-m">un cliente</text>
+<line x1="172" y1="404" x2="200" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="200" y1="404" x2="200" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="228" y1="404" x2="200" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="256" y1="404" x2="290" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="284" y1="404" x2="290" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="312" y1="404" x2="290" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="340" y1="404" x2="380" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="368" y1="404" x2="380" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="396" y1="404" x2="380" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="424" y1="404" x2="470" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="452" y1="404" x2="470" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="480" y1="404" x2="470" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="508" y1="404" x2="560" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="536" y1="404" x2="560" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="564" y1="404" x2="560" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="592" y1="404" x2="645" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="620" y1="404" x2="645" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="648" y1="404" x2="645" y2="352" class="ln s-fis" style="stroke-width:1.2"/>
+<line x1="200" y1="324" x2="215" y2="274" class="ln s-fis" style="stroke-width:2.2"/>
+<line x1="290" y1="324" x2="215" y2="274" class="ln s-fis" style="stroke-width:2.2"/>
+<line x1="380" y1="324" x2="330" y2="274" class="ln s-fis" style="stroke-width:2.2"/>
+<line x1="470" y1="324" x2="445" y2="274" class="ln s-fis" style="stroke-width:2.2"/>
+<line x1="560" y1="324" x2="555" y2="274" class="ln s-fis" style="stroke-width:2.2"/>
+<line x1="645" y1="324" x2="555" y2="274" class="ln s-fis" style="stroke-width:2.2"/>
+<line x1="215" y1="246" x2="290" y2="196" class="ln s-fis" style="stroke-width:3.4"/>
+<line x1="330" y1="246" x2="400" y2="196" class="ln s-fis" style="stroke-width:3.4"/>
+<line x1="445" y1="246" x2="400" y2="196" class="ln s-fis" style="stroke-width:3.4"/>
+<line x1="555" y1="246" x2="510" y2="196" class="ln s-fis" style="stroke-width:3.4"/>
+<line x1="645" y1="246" x2="520" y2="196" class="ln s-fis" style="stroke-width:3.4"/>
+<line x1="571" y1="260" x2="629" y2="260" class="ln s-fis" style="stroke-width:3.4"/>
+<line x1="290" y1="182" x2="400" y2="182" class="ln s-fis" style="stroke-width:5"/>
+<line x1="400" y1="182" x2="510" y2="182" class="ln s-fis" style="stroke-width:5"/>
+<line x1="598" y1="182" x2="527" y2="182" class="ln" style="stroke-width:2.2"/>
+<line x1="290" y1="168" x2="340" y2="118" class="ln s-fis" style="stroke-width:5"/>
+<line x1="510" y1="168" x2="500" y2="118" class="ln s-fis" style="stroke-width:5"/>
+<line x1="400" y1="168" x2="346" y2="118" class="ln s-fis" style="stroke-width:5"/>
+<line x1="400" y1="168" x2="494" y2="118" class="ln s-fis" style="stroke-width:5"/>
+<line x1="340" y1="90" x2="406" y2="52" class="ln s-fis" style="stroke-width:6.5"/>
+<line x1="500" y1="90" x2="434" y2="52" class="ln s-fis" style="stroke-width:6.5"/>
+<rect x="390.0" y="21.0" width="60" height="38" rx="6" class="caja"/>
+<use href="#i-nube" x="403.0" y="23.0" width="34" height="34" class="ico"/>
+<rect x="320.0" y="89.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="327.0" y="91.0" width="26" height="26" class="ico"/>
+<rect x="480.0" y="89.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="487.0" y="91.0" width="26" height="26" class="ico"/>
+<rect x="270.0" y="167.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="277.0" y="169.0" width="26" height="26" class="ico"/>
+<rect x="380.0" y="167.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="387.0" y="169.0" width="26" height="26" class="ico"/>
+<rect x="490.0" y="167.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="497.0" y="169.0" width="26" height="26" class="ico"/>
+<rect x="595.0" y="167.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-servidor" x="603.0" y="170.0" width="24" height="24" class="ico"/>
+<rect x="195.0" y="245.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="203.0" y="248.0" width="24" height="24" class="ico"/>
+<rect x="310.0" y="245.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="318.0" y="248.0" width="24" height="24" class="ico"/>
+<rect x="425.0" y="245.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="433.0" y="248.0" width="24" height="24" class="ico"/>
+<rect x="535.0" y="245.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="543.0" y="248.0" width="24" height="24" class="ico"/>
+<rect x="625.0" y="245.0" width="40" height="30" rx="6" class="caja"/>
+<use href="#i-router-core" x="633.0" y="248.0" width="24" height="24" class="ico"/>
+<rect x="182.0" y="324.0" width="36" height="28" rx="6" class="caja"/>
+<use href="#i-olt" x="189.0" y="327.0" width="22" height="22" class="ico"/>
+<rect x="272.0" y="324.0" width="36" height="28" rx="6" class="caja"/>
+<use href="#i-olt" x="279.0" y="327.0" width="22" height="22" class="ico"/>
+<rect x="362.0" y="324.0" width="36" height="28" rx="6" class="caja"/>
+<use href="#i-olt" x="369.0" y="327.0" width="22" height="22" class="ico"/>
+<rect x="452.0" y="324.0" width="36" height="28" rx="6" class="caja"/>
+<use href="#i-olt" x="459.0" y="327.0" width="22" height="22" class="ico"/>
+<rect x="542.0" y="324.0" width="36" height="28" rx="6" class="caja"/>
+<use href="#i-olt" x="549.0" y="327.0" width="22" height="22" class="ico"/>
+<rect x="627.0" y="324.0" width="36" height="28" rx="6" class="caja"/>
+<use href="#i-olt" x="634.0" y="327.0" width="22" height="22" class="ico"/>
+<use href="#i-ont" x="162.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="190.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="218.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="246.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="274.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="302.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="330.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="358.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="386.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="414.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="442.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="470.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="498.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="526.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="554.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="582.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="610.0" y="402.0" width="20" height="20" class="ico"/>
+<use href="#i-ont" x="638.0" y="402.0" width="20" height="20" class="ico"/>
+<text x="458" y="45" class="t t-s t-b k-inet">tránsito · peering · IXP</text>
+<text x="615" y="215" text-anchor="middle" class="t t-xs t-m">DNS · RADIUS</text>
+<text x="645" y="294" text-anchor="middle" class="t t-xs t-b">BNG</text>
+<circle r="6" class="pkt" cx="0" cy="0"><animateMotion dur="6s" repeatCount="indefinite" path="M368 412 L380 338 L330 260 L400 182 L340 104 L420 40 L340 104 L400 182 L330 260 L380 338 L368 412"/></circle>
+<text x="20" y="466" class="t t-xs t-m">Grosor de la línea = capacidad del enlace</text>
+</svg></div><figcaption><b>La red en cuatro tramos.</b> De abajo hacia arriba: el acceso llega a cada casa, la agregación junta el tráfico de muchas OLT, el core lo enruta entre ciudades y la interconexión lo entrega al resto de Internet. El punto naranja es un paquete que sube desde una casa y vuelve. A la derecha, cuántos equipos hay en cada tramo y cuántos clientes depende de cada uno: abajo, muchos equipos que atienden a pocos clientes cada uno; arriba, pocos equipos de los que depende toda la red.</figcaption></figure><div class="prose"><h3>Cada tramo tiene su economía</h3><p>Los cuatro tramos no solo se ven distintos: se pagan distinto, y eso explica muchas decisiones que en otras áreas parecen raras.</p><ul><li><b>Acceso: mucha inversión al principio, poco gasto después.</b> Construir la red de fibra de un barrio es caro (postes, cables, mano de obra), pero una vez tendida dura décadas. Su costo se mide en «costo por casa pasada» y «costo por casa conectada» (capítulo 17).</li><li><b>Agregación y core: equipos compartidos.</b> Su costo se reparte entre miles de clientes, así que pesa poco por cliente. Pero tienen que crecer cuando crece el tráfico, y hay que renovarlos cada pocos años.</li><li><b>Interconexión: un gasto que se paga todos los meses.</b> La capacidad para salir a Internet, sobre todo la que cruza el mar hacia otros países, se alquila y se paga cada mes según cuánta se use. Es uno de los costos recurrentes más grandes de un operador y crece con cada video que ven sus clientes.</li></ul><h3>Mucho más que cables: la red en cinco capas</h3><p>Lo que viaja por esos cuatro tramos es tráfico de clientes, pero alguien tiene que decirle a cada equipo qué hacer. Por encima de la red física hay varias capas de sistemas que no mueven ni un paquete del cliente y, sin embargo, sin ellos nada funciona. Una forma útil de verlo es la de cinco capas, del negocio hasta la casa.</p></div><figure class="fig fig-capas" id="14-diagrama-4"><div class="lienzo"><svg viewBox="0 0 900 450" style="min-width:720px" role="img" aria-label="Arquitectura de un operador en cinco capas: negocio, orquestación, gestión, transporte y acceso hasta la casa. Las órdenes bajan del negocio a la red y las alarmas y datos suben; solo las dos capas de abajo llevan el tráfico del cliente.">
+<rect x="56" y="16" width="790" height="72" rx="10" class="d-sis"/>
+<text x="70" y="48" class="t t-b k-sis">1. Negocio</text><text x="70" y="64" class="t t-xs t-m">BSS: vende y cobra</text>
+<rect x="214" y="28" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-factura" x="222" y="40" width="22" height="22" class="ico"/>
+<text x="252" y="49" class="t t-s t-b">Planes y ventas</text><text x="252" y="65" class="t t-xs t-m">catálogo y CRM</text>
+<rect x="371" y="28" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-factura" x="379" y="40" width="22" height="22" class="ico"/>
+<text x="409" y="49" class="t t-s t-b">Facturación</text><text x="409" y="65" class="t t-xs t-m">y cobro</text>
+<rect x="528" y="28" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-persona" x="536" y="40" width="22" height="22" class="ico"/>
+<text x="566" y="49" class="t t-s t-b">Atención</text><text x="566" y="65" class="t t-xs t-m">tickets y llamadas</text>
+<rect x="685" y="28" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-celular" x="693" y="40" width="22" height="22" class="ico"/>
+<text x="723" y="49" class="t t-s t-b">App y web</text><text x="723" y="65" class="t t-xs t-m">del cliente</text>
+<rect x="56" y="98" width="790" height="72" rx="10" class="d-sis"/>
+<text x="70" y="130" class="t t-b k-sis">2. Orquestación</text><text x="70" y="146" class="t t-xs t-m">traduce y coordina</text>
+<rect x="214" y="110" width="620" height="48" rx="8" class="caja"/>
+<use href="#i-monitor" x="226" y="122" width="24" height="24" class="ico"/>
+<text x="260" y="131" class="t t-s t-b">Orquestador</text><text x="260" y="147" class="t t-xs t-m">una venta se vuelve órdenes técnicas para la red</text>
+<rect x="56" y="180" width="790" height="72" rx="10" class="d-sis"/>
+<text x="70" y="212" class="t t-b k-sis">3. Gestión</text><text x="70" y="228" class="t t-xs t-m">OSS: configura y vigila</text>
+<rect x="214" y="192" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-olt" x="222" y="204" width="22" height="22" class="ico"/>
+<text x="252" y="213" class="t t-s t-b">Gestor de OLT</text><text x="252" y="229" class="t t-xs t-m">da de alta la ONT</text>
+<rect x="371" y="192" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-router" x="379" y="204" width="22" height="22" class="ico"/>
+<text x="409" y="213" class="t t-s t-b">ACS</text><text x="409" y="229" class="t t-xs t-m">configura el Wi-Fi</text>
+<rect x="528" y="192" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-llave" x="536" y="204" width="22" height="22" class="ico"/>
+<text x="566" y="213" class="t t-s t-b">RADIUS</text><text x="566" y="229" class="t t-xs t-m">permisos y velocidad</text>
+<rect x="685" y="192" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-monitor" x="693" y="204" width="22" height="22" class="ico"/>
+<text x="723" y="213" class="t t-s t-b">Monitoreo</text><text x="723" y="229" class="t t-xs t-m">alarmas y métricas</text>
+<rect x="56" y="262" width="790" height="72" rx="10" class="d-oper"/>
+<text x="70" y="294" class="t t-b k-oper">4. Transporte</text><text x="70" y="310" class="t t-xs t-m">lleva el tráfico</text>
+<rect x="214" y="274" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-router-core" x="222" y="286" width="22" height="22" class="ico"/>
+<text x="252" y="295" class="t t-s t-b">Agregación</text><text x="252" y="311" class="t t-xs t-m">junta las OLT</text>
+<rect x="371" y="274" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-router-core" x="379" y="286" width="22" height="22" class="ico"/>
+<text x="409" y="295" class="t t-s t-b">BNG</text><text x="409" y="311" class="t t-xs t-m">sesión del cliente</text>
+<rect x="528" y="274" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-router-core" x="536" y="286" width="22" height="22" class="ico"/>
+<text x="566" y="295" class="t t-s t-b">Core</text><text x="566" y="311" class="t t-xs t-m">enruta el tráfico</text>
+<rect x="685" y="274" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-nube" x="693" y="286" width="22" height="22" class="ico"/>
+<text x="723" y="295" class="t t-s t-b">Interconexión</text><text x="723" y="311" class="t t-xs t-m">salida a Internet</text>
+<rect x="56" y="344" width="790" height="72" rx="10" class="d-oper"/>
+<text x="70" y="376" class="t t-b k-oper">5. Acceso y casa</text><text x="70" y="392" class="t t-xs t-m">llega al cliente</text>
+<rect x="214" y="356" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-olt" x="222" y="368" width="22" height="22" class="ico"/>
+<text x="252" y="377" class="t t-s t-b">OLT</text><text x="252" y="393" class="t t-xs t-m">en el nodo</text>
+<rect x="371" y="356" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-splitter" x="379" y="368" width="22" height="22" class="ico"/>
+<text x="409" y="377" class="t t-s t-b">Red óptica</text><text x="409" y="393" class="t t-xs t-m">fibra y splitters</text>
+<rect x="528" y="356" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-ont" x="536" y="368" width="22" height="22" class="ico"/>
+<text x="566" y="377" class="t t-s t-b">ONT</text><text x="566" y="393" class="t t-xs t-m">en la casa</text>
+<rect x="685" y="356" width="148" height="48" rx="8" class="caja"/>
+<use href="#i-router" x="693" y="368" width="22" height="22" class="ico"/>
+<text x="723" y="377" class="t t-s t-b">Wi-Fi</text><text x="723" y="393" class="t t-xs t-m">router de la casa</text>
+<line x1="32" y1="24" x2="32" y2="408" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+<text x="24" y="216.0" text-anchor="middle" class="t t-xs t-m" transform="rotate(-90 24 216.0)">ÓRDENES BAJAN</text>
+<line x1="868" y1="408" x2="868" y2="24" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+<text x="882" y="216.0" text-anchor="middle" class="t t-xs t-m" transform="rotate(90 882 216.0)">ALARMAS Y DATOS SUBEN</text>
+<text x="450" y="438" text-anchor="middle" class="t t-xs t-b k-fis">LAS CAPAS 4 Y 5 LLEVAN EL TRÁFICO DEL CLIENTE · LAS CAPAS 1 A 3 SOLO DAN ÓRDENES Y MIRAN</text>
+</svg></div><figcaption><b>La red en cinco capas, del negocio a la casa.</b> Arriba, los sistemas del negocio que venden y cobran; debajo, el orquestador que convierte cada venta en órdenes técnicas; luego los sistemas de gestión que configuran y vigilan los equipos; después la red de transporte (agregación, BNG y core); y abajo, el acceso hasta la casa. Las flechas de la izquierda son órdenes que bajan; las de la derecha, información que sube. Solo la capa de abajo y la de transporte tocan el tráfico del cliente.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región suele ordenar su arquitectura justamente en cinco capas. Arriba, el sistema comercial y de facturación, que solo habla con un orquestador. El orquestador traduce cada venta, suspensión o cambio de plan en órdenes para tres sistemas de gestión: el que administra las OLT y las ONT, el que configura el equipo de la casa por Internet y el servidor RADIUS que le dice al BNG qué puede hacer cada cliente. Debajo, el BNG y el core llevan el tráfico, y en la base están la OLT, la red óptica pasiva y la ONT. La regla que más trabajo ahorra es esa: el negocio nunca habla directamente con un equipo de red. La parte 4 del libro recorre cada una de estas capas.</p></div></section>
+<section><h2>Nodos, centrales y cuartos de equipos</h2><div class="prose"><p>Los equipos de la red no están sueltos por la ciudad: viven en edificios o salas preparados para ellos. Cada operador los llama a su manera (nodo, central, POP, cabecera), pero hay tres tamaños que se repiten.</p><ul><li><b>Nodos de acceso.</b> Salas pequeñas o contenedores en un barrio, donde están las OLT. De ahí salen los cables de fibra hacia la calle. Pueden ser un cuarto alquilado, un gabinete grande en la acera o un contenedor en un terreno.</li><li><b>Nodos de agregación o centrales.</b> Edificios que concentran el tráfico de varios nodos de acceso. Tienen switches y routers de agregación, a menudo los BNG, y enlaces hacia el core.</li><li><b>Centros de datos del core.</b> Uno o dos (a veces más) sitios grandes, muy protegidos, con los routers del core, los servidores de los servicios centrales y los enlaces de salida a Internet. Muchas veces el operador alquila espacio en un centro de datos neutral, compartido con otras empresas, en vez de construir uno propio.</li></ul><p>Por dentro, todos se parecen. Hay <b>racks</b>, los armarios metálicos estándar donde se atornillan los equipos. Hay un <b>ODF</b> (distribuidor de fibra óptica), un panel donde terminan las fibras que vienen de la calle y desde donde se conectan a los equipos con cables cortos, llamados <i>patch cords</i>. Y hay todo lo que el cliente nunca piensa: energía con respaldo de baterías y generador, aire acondicionado, control de acceso, cámaras y sensores que avisan si se abre una puerta o sube la temperatura. El capítulo 15 está dedicado a esa parte «invisible», porque un nodo sin luz es un nodo caído aunque la fibra esté perfecta.</p><p>Ubicar un nodo es una decisión de negocio. Más cerca de los clientes significa cables de acceso más cortos y menos pérdida de luz; menos nodos significa menos alquileres, menos energía y menos lugares que vigilar. El diseño de la red busca el equilibrio entre las dos cosas.</p></div></section>
+<section><h2>Tránsito y peering: cómo se conecta un operador con el mundo</h2><div class="prose"><p>Ningún operador tiene, dentro de su red, todos los sitios que visitan sus clientes. Para llegar al resto de Internet necesita conectarse con otras redes. Cada una de esas redes independientes se llama <b>sistema autónomo</b> y se identifica con un número (el ASN). Internet no es otra cosa que decenas de miles de sistemas autónomos conectados entre sí, que se cuentan unos a otros qué direcciones pueden alcanzar usando el protocolo <b>BGP</b> (capítulo 6).</p><p>Hay dos formas de conectarse con otra red, y la diferencia es de dinero.</p><p><b>Tránsito</b> es comprar acceso a todo Internet. El operador le paga a un proveedor más grande, un <i>carrier</i>, para que lleve sus paquetes a cualquier destino del mundo y le traiga las respuestas. Es como pagarle a una empresa de mensajería internacional: tú le entregas el paquete y ella se ocupa del resto del camino. Se paga por capacidad, normalmente cada mes y según el tráfico en la hora de más uso.</p><p><b>Peering</b> es un intercambio entre iguales. Dos redes acuerdan pasarse directamente el tráfico que va de una a la otra, y solo ese. Casi siempre es sin pago de por medio, porque a las dos les conviene: ahorran tránsito y sus clientes llegan más rápido. Es como dos vecinos que abren una puerta en la cerca para no dar la vuelta a la manzana. Pero esa puerta solo sirve para ir a la casa del vecino, no para cruzar a la calle de atrás.</p></div><figure class="fig fig-esquema" id="14-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 470" style="min-width:720px" role="img" aria-label="Tránsito y peering: el operador paga a dos proveedores de tránsito para llegar a todo Internet; hace peering sin pago con otras redes en un IXP y directamente con un proveedor de contenido; y tiene una caché de contenido dentro de su red, cerca de sus clientes.">
+<line x1="450" y1="58" x2="330" y2="112" class="ln s-red" style="stroke-width:3"/>
+<line x1="450" y1="58" x2="570" y2="112" class="ln s-red" style="stroke-width:3"/>
+<line x1="330" y1="168" x2="410" y2="226" class="ln s-red" style="stroke-width:3"/>
+<line x1="570" y1="168" x2="490" y2="226" class="ln s-red" style="stroke-width:3"/>
+<line x1="222" y1="280" x2="330" y2="280" class="ln s-red" style="stroke-width:3"/>
+<line x1="570" y1="280" x2="676" y2="280" class="ln s-red" style="stroke-width:3"/>
+<line x1="450" y1="346" x2="450" y2="384" class="ln" style="stroke-width:3"/>
+<rect x="372" y="10" width="156" height="48" rx="10" class="d-inet"/><use href="#i-nube" x="384" y="16" width="34" height="34" class="ico"/><text x="426" y="31" class="t t-s t-b k-inet">Resto de</text><text x="426" y="46" class="t t-s t-b k-inet">Internet</text>
+<rect x="240" y="112" width="180" height="56" rx="10" class="d-inet"/>
+<use href="#i-router-core" x="250" y="126.0" width="28" height="28" class="ico"/>
+<text x="286" y="137.0" class="t t-s t-b k-inet">Tránsito A</text><text x="286" y="152.0" class="t t-xs t-m">carrier internacional</text>
+<rect x="480" y="112" width="180" height="56" rx="10" class="d-inet"/>
+<use href="#i-router-core" x="490" y="126.0" width="28" height="28" class="ico"/>
+<text x="526" y="137.0" class="t t-s t-b k-inet">Tránsito B</text><text x="526" y="152.0" class="t t-xs t-m">otro carrier, otra ruta</text>
+<rect x="263.0" y="185" width="110" height="20" rx="10" class="d-sis"/><text x="318" y="199" text-anchor="middle" class="t t-xs t-b k-sis">PAGAS POR MBPS</text>
+<rect x="527.0" y="185" width="110" height="20" rx="10" class="d-sis"/><text x="582" y="199" text-anchor="middle" class="t t-xs t-b k-sis">PAGAS POR MBPS</text>
+<rect x="330" y="226" width="240" height="120" rx="12" class="d-oper"/>
+<text x="450" y="246" text-anchor="middle" class="t t-xs t-b k-oper">TU OPERADOR · AS 64500</text>
+<rect x="344" y="256" width="100" height="74" rx="10" class="caja"/>
+<text x="356" y="290.0" class="t t-s t-b ">Borde</text><text x="356" y="305.0" class="t t-xs t-m">BGP</text>
+<use href="#i-router-core" x="378" y="300" width="26" height="26" class="ico"/>
+<rect x="456" y="256" width="100" height="74" rx="10" class="caja"/>
+<text x="468" y="290.0" class="t t-s t-b ">Caché</text><text x="468" y="305.0" class="t t-xs t-m">CDN</text>
+<use href="#i-servidor" x="490" y="300" width="26" height="26" class="ico"/>
+<line x1="444" y1="293" x2="456" y2="293" class="ln" style="stroke-width:2"/>
+<rect x="20" y="226" width="202" height="120" rx="12" class="caja"/>
+<use href="#i-router-core" x="32" y="238" width="28" height="28" class="ico"/><text x="68" y="250" class="t t-s t-b">IXP</text><text x="68" y="264" class="t t-xs t-m">punto de intercambio</text>
+<rect x="32" y="282" width="86" height="22" rx="6" class="d-inet"/><text x="75" y="297" text-anchor="middle" class="t t-xs">Operador vecino</text>
+<rect x="124" y="282" width="86" height="22" rx="6" class="d-inet"/><text x="167" y="297" text-anchor="middle" class="t t-xs">Universidad</text>
+<rect x="32" y="310" width="86" height="22" rx="6" class="d-inet"/><text x="75" y="325" text-anchor="middle" class="t t-xs">Gobierno</text>
+<rect x="124" y="310" width="86" height="22" rx="6" class="d-inet"/><text x="167" y="325" text-anchor="middle" class="t t-xs">Otra empresa</text>
+<rect x="240.0" y="251" width="72" height="20" rx="10" class="c-enl"/><text x="276" y="265" text-anchor="middle" class="t t-xs t-b k-enl">SIN PAGO</text>
+<rect x="676" y="236" width="204" height="96" rx="10" class="d-inet"/><use href="#i-servidor" x="686" y="252" width="28" height="28" class="ico"/>
+<text x="722" y="262" class="t t-s t-b k-inet">Proveedor de</text><text x="722" y="277" class="t t-s t-b k-inet">contenido</text><text x="722" y="298" class="t t-xs t-m">video, redes sociales,</text><text x="722" y="312" class="t t-xs t-m">descargas</text>
+<rect x="587.0" y="251" width="72" height="20" rx="10" class="c-enl"/><text x="623" y="265" text-anchor="middle" class="t t-xs t-b k-enl">SIN PAGO</text>
+<path d="M778 332 C778 400 600 400 530 334" class="ln ln-d" marker-end="url(#fl)"/>
+<text x="690" y="392" class="t t-xs t-m">instala copias dentro de tu red</text>
+<rect x="330" y="384" width="240" height="56" rx="12" class="d-casa"/>
+<use href="#i-persona" x="346" y="396" width="22" height="22" class="ico"/>
+<use href="#i-persona" x="372" y="396" width="22" height="22" class="ico"/>
+<use href="#i-persona" x="398" y="396" width="22" height="22" class="ico"/>
+<use href="#i-persona" x="424" y="396" width="22" height="22" class="ico"/>
+<use href="#i-persona" x="450" y="396" width="22" height="22" class="ico"/>
+<text x="482" y="410" class="t t-s t-b k-casa">Tus clientes</text><text x="482" y="425" class="t t-xs t-m">piden contenido</text>
+<text x="20" y="462" class="t t-xs t-m">Tránsito: llega a todo Internet, se paga. Peering: solo el tráfico entre las dos redes, sin pago. Caché: el contenido más visto, sin salir de la red.</text>
+</svg></div><figcaption><b>Tránsito y peering.</b> El operador (al centro) tiene dos tipos de vecinos. Con los proveedores de tránsito (arriba) paga, y a cambio le dan acceso a todo Internet. Con otras redes y con los proveedores de contenido (a los lados) hace peering: se intercambian solo el tráfico de sus propios clientes, sin pagarse. Las etiquetas dicen qué se paga y qué no, y la línea punteada muestra la caché que el proveedor de contenido instala dentro de la red: lo que se resuelve por peering o por la caché no paga tránsito.</figcaption></figure><div class="prose"><p>En la práctica, un operador mediano compra tránsito a dos proveedores distintos, para no depender de uno solo, y hace peering con todos los que puede. Cada gigabit que se resuelve por peering es un gigabit menos de tránsito en la factura del mes. Por eso el equipo que negocia estas conexiones cuida un número con atención: qué parte del tráfico sale por peering y qué parte por tránsito.</p><p>En muchos países de la región hay un problema adicional: buena parte del contenido vive en otros países, y llegar hasta allá exige cruzar el mar por <b>cables submarinos</b>. Esa capacidad internacional es de las más caras que compra un operador. Lo que se pueda resolver sin salir del país es ahorro directo.</p></div></section>
+<section><h2>Puntos de intercambio (IXP) y CDN dentro de la red</h2><div class="prose"><p>Hacer peering uno por uno con cada red sería un trabajo enorme: un cable y un acuerdo por cada vecino. La solución es un <b>punto de intercambio de Internet</b>, o <b>IXP</b>: un lugar neutral, normalmente un centro de datos, donde muchas redes conectan un cable a un switch compartido. Con una sola conexión, el operador puede intercambiar tráfico con todas las redes que estén ahí.</p><p>Un IXP hace que el tráfico local se quede local. Sin él, un mensaje entre dos clientes de dos operadores de la misma ciudad podría viajar a otro país y volver, solo porque los dos operadores compran tránsito al mismo proveedor extranjero. Con él, el mensaje cruza la ciudad. Muchos países de América Latina tienen uno o varios IXP, a menudo impulsados por asociaciones de operadores o por organismos académicos.</p><p>La otra gran herramienta son las <b>CDN</b> (redes de distribución de contenido), que el capítulo 9 presentó. Los grandes proveedores de video, redes sociales y descargas de software ofrecen a los operadores <b>cachés</b>: servidores que se instalan dentro de la red del operador y guardan copias del contenido más visto en esa zona. Algunos ejemplos del mercado son los programas de caché de Google, Netflix y Meta, o los servidores de empresas de CDN como Akamai o Cloudflare.</p><p>Para el operador, una caché es un gran negocio: la serie que ven mil clientes esta noche cruza el mar una sola vez, y las otras novecientas noventa y nueve veces se sirve desde su propio nodo. Para el cliente, el video arranca más rápido y se ve con mejor calidad. Por eso, en el viaje de un clic del capítulo 1, muchas veces el «servidor» ni siquiera está en Internet: está a unos kilómetros, en el centro de datos del propio operador.</p><div class="tbl"><table><thead><tr><th>Opción</th><th>Con quién se conecta</th><th>Cuánto cuesta</th><th>Qué tráfico resuelve</th></tr></thead><tbody><tr><td>Tránsito</td><td>Un proveedor más grande</td><td>Pago mensual por capacidad</td><td>Todo Internet</td></tr><tr><td>Peering directo</td><td>Otra red, de tú a tú</td><td>Un cable y un acuerdo, sin pago por tráfico</td><td>Solo el de esa red y sus clientes</td></tr><tr><td>IXP</td><td>Muchas redes en un switch compartido</td><td>Una conexión y una cuota</td><td>El de todas las redes presentes</td></tr><tr><td>Caché de CDN</td><td>Un proveedor de contenido, dentro de la red</td><td>Espacio, energía y un enlace interno</td><td>El contenido más visto de ese proveedor</td></tr></tbody></table></div></div></section>
+<section><h2>Redundancia: por qué hay dos de todo</h2><div class="prose"><p>Una calle cerrada afecta a una cuadra; una autopista cerrada, a una ciudad entera. En una red pasa lo mismo: cuanto más arriba está un equipo, más clientes dependen de él. Por eso la regla es sencilla: <b>lo que es compartido por muchos se duplica</b>.</p><ul><li><b>En la agregación, anillos.</b> Los nodos se unen formando un anillo de fibra, de modo que cada uno tiene dos caminos hacia el core: uno por la izquierda y otro por la derecha. Si una máquina de obra corta la fibra en una calle, el tráfico da la vuelta por el otro lado. Los protocolos de protección pueden hacer ese cambio en una fracción de segundo; muchos clientes ni lo notan.</li><li><b>En el core, pares.</b> Dos routers donde podría haber uno, dos BNG, dos servidores RADIUS, dos DNS, y cada uno con fuentes de energía dobles.</li><li><b>En la interconexión, varios proveedores y varios caminos.</b> Dos o más proveedores de tránsito, a ser posible por cables submarinos distintos, más los enlaces de peering y las cachés.</li><li><b>Caminos realmente distintos.</b> De nada sirve tener dos fibras si van por el mismo ducto: la misma retroexcavadora las corta a las dos. Los ingenieros hablan de <b>diversidad de rutas</b>: que los dos caminos vayan por calles, postes o ductos diferentes.</li></ul></div><figure class="fig fig-esquema" id="14-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 470" style="min-width:720px" role="img" aria-label="Redundancia: a la izquierda, cuatro nodos de agregación y el core unidos en anillo; un corte de fibra obliga al tráfico a dar la vuelta por el otro lado. A la derecha, el core duplicado con dos BNG, dos routers de core, dos routers de borde y dos proveedores de tránsito. Abajo, el acceso con una sola fibra por casa, sin respaldo.">
+<rect x="12" y="12" width="430" height="350" rx="12" class="d-oper"/>
+<rect x="456" y="12" width="432" height="350" rx="12" class="d-oper"/>
+<text x="28" y="36" class="t t-xs t-b k-oper">AGREGACIÓN EN ANILLO</text>
+<text x="472" y="36" class="t t-xs t-b k-oper">CORE Y SALIDA DUPLICADOS</text>
+<line x1="227" y1="87" x2="339" y2="169" class="ln s-fis" style="stroke-width:3"/>
+<line x1="339" y1="169" x2="296" y2="300" class="ln s-fis" style="stroke-width:3"/>
+<line x1="296" y1="300" x2="158" y2="300" class="ln s-fis" style="stroke-width:3"/>
+<line x1="158" y1="300" x2="115" y2="169" class="ln s-fis" style="stroke-width:3"/>
+<line x1="115" y1="169" x2="227" y2="87" class="ln s-fis" style="stroke-width:3"/>
+<path d="M309 226l18 18M327 226l-18 18" class="ln s-apl" style="stroke-width:4"/>
+<text x="334" y="238" class="t t-s t-b k-apl">corte</text>
+<path d="M278 276 L176 276 L144 178 L227 126" class="ln ln-d s-red" style="stroke-width:2.4" marker-end="url(#fl-red)"/>
+<text x="227" y="209" text-anchor="middle" class="t t-xs t-b k-red">el tráfico del</text><text x="227" y="223" text-anchor="middle" class="t t-xs t-b k-red">nodo 2 da la vuelta</text>
+<rect x="193" y="67" width="68" height="40" rx="8" class="caja"/>
+<use href="#i-router-core" x="198" y="76" width="22" height="22" class="ico"/>
+<text x="223" y="91" class="t t-xs t-b">Core</text>
+<rect x="305" y="149" width="68" height="40" rx="8" class="caja"/>
+<use href="#i-router-core" x="310" y="158" width="22" height="22" class="ico"/>
+<text x="335" y="173" class="t t-xs t-b">Nodo 1</text>
+<rect x="262" y="280" width="68" height="40" rx="8" class="caja"/>
+<use href="#i-router-core" x="267" y="289" width="22" height="22" class="ico"/>
+<text x="292" y="304" class="t t-xs t-b">Nodo 2</text>
+<rect x="124" y="280" width="68" height="40" rx="8" class="caja"/>
+<use href="#i-router-core" x="129" y="289" width="22" height="22" class="ico"/>
+<text x="154" y="304" class="t t-xs t-b">Nodo 3</text>
+<rect x="81" y="149" width="68" height="40" rx="8" class="caja"/>
+<use href="#i-router-core" x="86" y="158" width="22" height="22" class="ico"/>
+<text x="111" y="173" class="t t-xs t-b">Nodo 4</text>
+<text x="28" y="350" class="t t-xs t-m">Cada nodo tiene dos caminos hacia el core.</text>
+<line x1="560" y1="78" x2="560" y2="122" class="ln s-fis" style="stroke-width:3"/>
+<line x1="780" y1="78" x2="780" y2="122" class="ln s-fis" style="stroke-width:3"/>
+<line x1="560" y1="158" x2="560" y2="202" class="ln s-fis" style="stroke-width:3"/>
+<line x1="560" y1="158" x2="780" y2="202" class="ln s-fis" style="stroke-width:1.6"/>
+<line x1="780" y1="158" x2="560" y2="202" class="ln s-fis" style="stroke-width:1.6"/>
+<line x1="780" y1="158" x2="780" y2="202" class="ln s-fis" style="stroke-width:3"/>
+<line x1="560" y1="238" x2="560" y2="282" class="ln s-fis" style="stroke-width:3"/>
+<line x1="560" y1="238" x2="780" y2="282" class="ln s-fis" style="stroke-width:1.6"/>
+<line x1="780" y1="238" x2="560" y2="282" class="ln s-fis" style="stroke-width:1.6"/>
+<line x1="780" y1="238" x2="780" y2="282" class="ln s-fis" style="stroke-width:3"/>
+<line x1="610" y1="220" x2="730" y2="220" class="ln s-fis" style="stroke-width:3"/>
+<rect x="510" y="42" width="100" height="36" rx="8" class="d-inet"/>
+<use href="#i-nube" x="516" y="49" width="22" height="22" class="ico"/>
+<text x="544" y="64" class="t t-xs t-b">Tránsito A</text>
+<rect x="730" y="42" width="100" height="36" rx="8" class="d-inet"/>
+<use href="#i-nube" x="736" y="49" width="22" height="22" class="ico"/>
+<text x="764" y="64" class="t t-xs t-b">Tránsito B</text>
+<rect x="510" y="122" width="100" height="36" rx="8" class="caja"/>
+<use href="#i-router-core" x="516" y="129" width="22" height="22" class="ico"/>
+<text x="544" y="144" class="t t-xs t-b">Borde 1</text>
+<rect x="730" y="122" width="100" height="36" rx="8" class="caja"/>
+<use href="#i-router-core" x="736" y="129" width="22" height="22" class="ico"/>
+<text x="764" y="144" class="t t-xs t-b">Borde 2</text>
+<rect x="510" y="202" width="100" height="36" rx="8" class="caja"/>
+<use href="#i-router-core" x="516" y="209" width="22" height="22" class="ico"/>
+<text x="544" y="224" class="t t-xs t-b">Core 1</text>
+<rect x="730" y="202" width="100" height="36" rx="8" class="caja"/>
+<use href="#i-router-core" x="736" y="209" width="22" height="22" class="ico"/>
+<text x="764" y="224" class="t t-xs t-b">Core 2</text>
+<rect x="510" y="282" width="100" height="36" rx="8" class="caja"/>
+<use href="#i-router-core" x="516" y="289" width="22" height="22" class="ico"/>
+<text x="544" y="304" class="t t-xs t-b">BNG 1</text>
+<rect x="730" y="282" width="100" height="36" rx="8" class="caja"/>
+<use href="#i-router-core" x="736" y="289" width="22" height="22" class="ico"/>
+<text x="764" y="304" class="t t-xs t-b">BNG 2</text>
+<text x="472" y="350" class="t t-xs t-m">Cruzados: si un equipo falla, su pareja sigue.</text>
+<rect x="12" y="376" width="876" height="84" rx="12" class="d-casa"/>
+<text x="28" y="400" class="t t-xs t-b k-casa">ACCESO</text>
+<line x1="118" y1="430" x2="262" y2="430" class="ln s-fis" style="stroke-width:3"/><line x1="318" y1="430" x2="442" y2="430" class="ln s-fis" style="stroke-width:3"/>
+<rect x="62" y="412" width="56" height="36" rx="8" class="caja"/><use href="#i-olt" x="66" y="419" width="22" height="22" class="ico"/><text x="92" y="434" class="t t-xs t-b">OLT</text>
+<rect x="262" y="412" width="56" height="36" rx="8" class="caja"/><use href="#i-splitter" x="266" y="419" width="22" height="22" class="ico"/><text x="292" y="434" class="t t-xs t-b">Splitter</text>
+<rect x="442" y="412" width="56" height="36" rx="8" class="caja"/><use href="#i-ont" x="446" y="419" width="22" height="22" class="ico"/><text x="472" y="434" class="t t-xs t-b">ONT</text>
+<text x="530" y="424" class="t t-s t-b">Una sola fibra por casa, sin respaldo.</text><text x="530" y="442" class="t t-xs t-m">Una falla aquí afecta a pocos clientes.</text>
+</svg></div><figcaption><b>Redundancia: anillos y caminos dobles.</b> A la izquierda, cuatro nodos de agregación unidos en anillo con el core; la cruz es un corte de fibra y la flecha punteada muestra cómo el tráfico del nodo afectado da la vuelta por el otro lado. A la derecha, el core duplicado: dos routers, dos BNG y dos salidas a Internet con proveedores distintos. Abajo, el acceso: una sola fibra por casa, sin camino de respaldo.</figcaption></figure><div class="prose"><p>¿Y el acceso? Ahí casi nunca hay redundancia: cada casa tiene una sola acometida y una sola ONT, y cada caja en el poste depende de un solo cable. Duplicarlo costaría casi el doble de la red, y una falla en ese tramo afecta a pocos clientes. Es una decisión económica, no un descuido. Los clientes empresariales que necesitan más disponibilidad sí pueden contratar una segunda fibra por otra ruta, y la pagan.</p><p>Esto explica por qué las fallas tienen tamaños tan distintos. Un conector sucio deja sin servicio a una casa. Un cable cortado en la calle, a una cuadra o a un barrio. Un nodo de agregación sin energía, a varios barrios. Y una falla grave en el core, si la redundancia no funciona, a toda una ciudad o un país.</p></div></section>
+<section><h2>Capacidad y sobresuscripción</h2><div class="prose"><p>Imagina un puerto PON que atiende a 64 casas, cada una con un plan de 300 Mbps. Si las sumas, son 19.200 Mbps, casi 20 Gbps. Pero ese puerto, si es GPON, tiene 2,5 Gbps de bajada para repartir; si es XGS-PON, 10 Gbps. ¿Es una estafa? No: es <b>sobresuscripción</b>, y así funcionan todas las redes del mundo, también las autopistas.</p><p>Nadie usa todo su plan todo el tiempo. Mientras ves una serie en alta definición usas unos 5 a 15 Mbps, aunque tengas 300 contratados. Tu plan dice qué tan rápido puede ir tu conexión cuando la necesitas, no cuánto ocupas siempre. Y no todos los vecinos descargan algo enorme en el mismo segundo. La red se dimensiona para lo que de verdad se usa al mismo tiempo en la <b>hora pico</b>, que en una red residencial suele ser entre las ocho y las once de la noche.</p><p>La medida que importa es la <b>utilización</b> de cada enlace en la hora pico. Mientras el enlace va holgado, cada cliente recibe toda la velocidad que pide. Cuando se acerca al cien por ciento, los paquetes empiezan a hacer fila, la latencia sube y la velocidad cae para todos. Por eso los operadores definen un umbral (por ejemplo, ampliar cuando un enlace pasa del 70 u 80 % en la hora pico) y planifican la ampliación antes de llegar a ese punto.</p><p>La sobresuscripción se acumula de tramo en tramo: el puerto PON comparte entre decenas de casas; el enlace de la OLT hacia la agregación, entre varios puertos; el enlace del nodo hacia el core, entre varias OLT; y la salida a Internet, entre todos. En cada tramo, la pregunta es la misma: cuántos clientes caben antes de que se note.</p></div><div class="lab" id="14-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Cuántos clientes caben antes de que se note</h3></div><p class="hint">Elige un enlace, cuántos clientes lo comparten, su plan y cuánto usa en promedio cada uno en la hora pico. La curva es el tráfico de un día y la línea horizontal, la capacidad del enlace. Busca el número de clientes con el que la curva toca el umbral de ampliación.</p><div class="opciones">
+  <label>El enlace compartido
+    <select id="c14-enlace">
+      <option value="gpon">Un puerto GPON (2,5 Gbps)</option>
+      <option value="xgs">Un puerto XGS-PON (10 Gbps)</option>
+      <option value="nodo" selected>La salida de un nodo (40 Gbps)</option>
+      <option value="ciudad">Salida de una ciudad (400 Gbps)</option>
+    </select></label>
+  <label>Plan de cada cliente
+    <select id="c14-plan">
+      <option value="100">100 Mbps</option>
+      <option value="300" selected>300 Mbps</option>
+      <option value="600">600 Mbps</option>
+      <option value="1000">1 Gbps</option>
+    </select></label>
+</div>
+<div class="ctls">
+  <label class="ctl">Clientes que comparten el enlace <output id="c14-cli-o"></output>
+    <input type="range" id="c14-cli" min="8" max="256" step="8" value="64"></label>
+  <label class="ctl">Uso promedio por cliente en la hora pico <output id="c14-uso-o"></output>
+    <input type="range" id="c14-uso" min="0.5" max="30" step="0.5" value="5"></label>
+  <label class="ctl">Umbral para ampliar <output id="c14-umb-o"></output>
+    <input type="range" id="c14-umb" min="50" max="95" step="5" value="80"></label>
+</div>
+<canvas id="c14-cv" role="img" aria-label="Tráfico del enlace a lo largo del día comparado con su capacidad"></canvas>
+<div class="legend" id="c14-ley"></div>
+<div class="readout" id="c14-out" aria-live="polite"></div>
+<p class="hint">El uso promedio incluye a los que no están conectados: si la mitad de los clientes ve video a 10 Mbps y la otra mitad no usa nada, el promedio es 5 Mbps. La forma de la curva es la de una red residencial típica, con la hora pico de noche.</p>
+<style>
+[id="14-lab-3"] .opciones label{min-width:0}
+[id="14-lab-3"] select{width:100%}
+[id="14-lab-3"] .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font:500 .82rem var(--f-display);color:var(--muted)}
+[id="14-lab-3"] .legend span{display:flex;align-items:center;gap:6px}
+[id="14-lab-3"] .legend i{width:18px;height:0;border-top:3px solid;display:inline-block}
+[id="14-lab-3"] .legend i.d{border-top-style:dashed}
+</style></div><div class="prose"><p>Ese umbral convierte la capacidad en una decisión de negocio. Si la red se amplía demasiado pronto, se paga por capacidad que nadie usa. Si se amplía tarde, los clientes de un barrio entero sienten que «Internet está lento por las noches» y llaman, reclaman o se van a la competencia. El equipo de planificación mira la curva de cada enlace semana a semana para llegar justo a tiempo.</p></div><div class="ml"><b>En la práctica</b><p>Cuando el NOC informa una falla, la primera pregunta es en qué tramo está, porque eso dice cuántos clientes afecta. Una falla en el acceso deja sin servicio a una casa o a una cuadra; una en un nodo de agregación, a varios barrios; una en el core, a una ciudad, y por eso el core se duplica y el acceso no. Y cuando finanzas pregunta por qué crece cada año la factura de capacidad internacional, la respuesta está en este capítulo: los clientes ven más video, y cada gigabit que no se resuelve con peering, IXP o cachés se paga cada mes.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Cuáles son los cuatro tramos de una red de operador?</summary><p>Acceso (llega a cada casa), agregación (junta el tráfico de muchas OLT), core (enruta entre ciudades y aloja los servicios centrales) e interconexión (la salida al resto de Internet).</p></details><details><summary>¿Cuál es la diferencia entre tránsito y peering?</summary><p>El tránsito se paga y da acceso a todo Internet a través de un proveedor más grande; el peering es un intercambio, casi siempre sin pago, del tráfico entre dos redes y sus clientes, y solo de ese tráfico.</p></details><details><summary>¿Por qué una caché de video dentro de la red ahorra dinero al operador?</summary><p>Porque el contenido popular cruza la conexión internacional una sola vez y después se sirve muchas veces desde el propio nodo, sin pagar tránsito cada vez.</p></details><details><summary>¿Por qué el core tiene dos de todo y la acometida de cada casa no?</summary><p>Porque del core depende toda la red y de una acometida, una sola casa. Duplicar el acceso costaría casi otra red completa para proteger a pocos clientes en cada falla.</p></details><details><summary>64 clientes con planes de 300 Mbps comparten un puerto de 10 Gbps. ¿Se van a quedar sin velocidad?</summary><p>No necesariamente. En la hora pico cada cliente usa en promedio mucho menos que su plan, y no todos a la vez. Lo que hay que vigilar es la utilización real del puerto en la hora pico.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.internetsociety.org/es/policybriefs/ixps/" target="_blank" rel="noopener">Puntos de intercambio de Internet (Internet Society) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Peering" target="_blank" rel="noopener">Peering (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Red_de_entrega_de_contenidos" target="_blank" rel="noopener">Red de entrega de contenidos (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.submarinecablemap.com/" target="_blank" rel="noopener">Mapa de cables submarinos (TeleGeography) <small>mapa interactivo</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab, $=L.$;
+  const ENLACES={
+    gpon:{cap:2.5,min:8,max:128,step:8,val:64},
+    xgs:{cap:10,min:8,max:256,step:8,val:64},
+    nodo:{cap:40,min:500,max:20000,step:500,val:6000},
+    ciudad:{cap:400,min:5000,max:200000,step:5000,val:50000}
+  };
+  // forma típica del tráfico residencial, hora 0 a 24 (1 = hora pico)
+  const PERFIL=[.36,.26,.19,.15,.13,.14,.2,.31,.41,.47,.51,.55,.59,.6,.58,.6,.64,.7,.79,.88,.96,1,.92,.64,.36];
+  const perfil=h=>{const i=Math.max(0,Math.min(23,Math.floor(h))),t=h-i;return PERFIL[i]+(PERFIL[i+1]-PERFIL[i])*t;};
+  const coma=(n,d)=>L.fmt(n,d).replace('.',',');
+  const miles=n=>Math.round(n).toLocaleString('es');
+  const gbps=n=>n>=100?miles(n)+' Gbps':coma(n,n>=10?1:2)+' Gbps';
+  let st={};
+  function leer(){
+    const e=ENLACES[$('#c14-enlace').value];
+    const cli=+$('#c14-cli').value, plan=+$('#c14-plan').value, uso=Math.min(+$('#c14-uso').value,plan), umb=+$('#c14-umb').value/100;
+    const pico=cli*uso/1000;                 // Gbps en la hora pico
+    st={e,cli,plan,uso,umb,pico,cap:e.cap,todos:cli*plan/1000};
+    return st;
+  }
+  function ajustarRango(){
+    const e=ENLACES[$('#c14-enlace').value], r=$('#c14-cli');
+    r.min=e.min;r.max=e.max;r.step=e.step;r.value=e.val;
+  }
+  function horas(){
+    // horas del día en que el tráfico pasa el umbral
+    const lim=st.cap*st.umb, hs=[];
+    for(let h=0;h<24;h++) if(st.pico*perfil(h+.5)>lim) hs.push(h);
+    return hs;
+  }
+  const dibujo=L.canvasWidget($('#c14-cv'),w=>w<520?0.75:0.42,(ctx,w,h)=>{
+    if(!st.e) return;
+    const y1=Math.max(st.cap*1.15,st.pico*1.08);
+    const F=L.frame(ctx,w,h,{x0:0,x1:24,y0:0,y1:y1,sx:3});
+    // relleno bajo la curva
+    F.clip();ctx.beginPath();ctx.moveTo(F.X(0),F.Y(0));
+    for(let i=0;i<=240;i++){const x=i/10;ctx.lineTo(F.X(x),F.Y(st.pico*perfil(x)));}
+    ctx.lineTo(F.X(24),F.Y(0));ctx.closePath();ctx.globalAlpha=.16;ctx.fillStyle=L.tok('--c-red');ctx.fill();ctx.globalAlpha=1;ctx.restore();
+    L.curve(ctx,F,x=>st.cap*st.umb,L.tok('--muted'),1.6,[6,5]);
+    L.curve(ctx,F,x=>st.cap,L.tok('--warm'),2.4);
+    L.curve(ctx,F,x=>st.pico*perfil(x),L.tok('--c-red'),2.6);
+    ctx.font='11px '+L.tok('--f-display');ctx.textAlign='right';ctx.textBaseline='bottom';
+    ctx.fillStyle=L.tok('--warm');ctx.fillText('capacidad '+gbps(st.cap),F.X(24)-4,F.Y(st.cap)-3);
+    ctx.fillStyle=L.tok('--muted');ctx.textAlign='left';ctx.fillText('umbral '+Math.round(st.umb*100)+' %',F.X(0)+4,F.Y(st.cap*st.umb)-3);
+    ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('Gbps',F.X(0)+4,F.p.t+2);
+  });
+  function actualizar(){
+    leer();
+    $('#c14-cli-o').textContent=miles(st.cli);
+    $('#c14-uso-o').textContent=coma(+$('#c14-uso').value,1)+' Mbps';
+    $('#c14-umb-o').textContent=$('#c14-umb').value+' %';
+    const util=st.pico/st.cap, ratio=st.todos/st.cap, caben=Math.floor(st.cap*st.umb*1000/st.uso), hs=horas();
+    let veredicto;
+    if(util>=1) veredicto='<span class="warn">Saturado: en la hora pico se pide más de lo que el enlace puede llevar. Todos los clientes ven la velocidad caer y la latencia subir.</span>';
+    else if(util>st.umb) veredicto='<span class="warn">Se nota: entre las '+hs[0]+' y las '+(hs[hs.length-1]+1)+' h el enlace pasa del umbral. Los paquetes hacen fila y la velocidad baja justo cuando más se usa.</span>';
+    else veredicto='<span class="ok">Holgado: aun en la hora pico el enlace va por debajo del umbral y cada cliente recibe la velocidad que pide.</span>';
+    $('#c14-out').innerHTML=
+      '<span>Si todos usaran su plan completo a la vez: '+gbps(st.todos)+' (sobresuscripción '+coma(ratio,1)+':1)</span>'+
+      '<span class="big">Hora pico real: '+gbps(st.pico)+' · '+Math.round(util*100)+' % del enlace</span>'+
+      veredicto+
+      '<span>Con este uso caben hasta '+miles(caben)+' clientes antes de pasar el umbral del '+Math.round(st.umb*100)+' %.</span>';
+    $('#c14-cv').setAttribute('aria-label','Tráfico del día: pico de '+gbps(st.pico)+' frente a una capacidad de '+gbps(st.cap));
+    dibujo();
+  }
+  $('#c14-ley').innerHTML='<span><i style="border-color:var(--c-red)"></i>tráfico del enlace</span><span><i style="border-color:var(--warm)"></i>capacidad</span><span><i class="d" style="border-color:var(--muted)"></i>umbral para ampliar</span><span>eje horizontal: hora del día</span>';
+  $('#c14-enlace').addEventListener('change',()=>{ajustarRango();actualizar();});
+  ['#c14-cli','#c14-uso','#c14-umb'].forEach(s=>$(s).addEventListener('input',actualizar));
+  $('#c14-plan').addEventListener('change',actualizar);
+  ajustarRango();actualizar();
+})();
+</script>
+</body>
+</html>

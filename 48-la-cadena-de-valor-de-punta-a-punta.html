@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La cadena de valor de punta a punta · Cómo funciona un telco</title>
+<meta name="description" content="Todo lo que hace un telco forma una sola cadena, de la demanda al gobierno, y cada eslabón depende de la tecnología vista en el libro; donde la cadena se corta, se pierde dinero o clientes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="48-la-cadena-de-valor-de-punta-a-punta">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 48 DE 49</span><h1>La cadena de valor de punta a punta</h1><p class="lede">Todo lo que hace un telco forma una sola cadena, de la demanda al gobierno, y cada eslabón depende de la tecnología vista en el libro; donde la cadena se corta, se pierde dinero o clientes.</p></header>
+<section><div class="prose"><p>El libro empezó con un clic y fue abriendo, capítulo a capítulo, cada máquina y cada sistema que hace falta para que ese clic funcione. Este capítulo da un paso atrás y mira todo junto. Desde que alguien en el telco decide que un barrio merece fibra hasta que ese cliente, años después, renueva su plan, el trabajo pasa por dieciséis estaciones. A esa secuencia se le llama <b>cadena de valor</b>, una idea que el economista Michael Porter popularizó en los años ochenta para cualquier empresa y que aquí adaptamos a un telco.</p><p>Cada estación agrega algo que el cliente valora y por lo que paga. Y cada una depende de la anterior: una venta sin cobertura no se puede instalar; una instalación sin activación no navega; un servicio sin factura no cobra.</p></div><div class="analogia"><b>Imagínalo así</b><p>Una cadena de montaje: si una estación se atrasa, toda la línea se detiene, y el producto final es un cliente satisfecho que paga cada mes.</p></div><figure class="fig fig-capas" id="48-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la cadena completa, de la demanda al gobierno">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class=""><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class=""><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class=""><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class=""><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class=""><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class=""><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class=""><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class=""><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class=""><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class=""><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class=""><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class=""><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class=""><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class=""><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class=""><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class=""><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class=""><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: la cadena completa, de la demanda al gobierno</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo enciende todo el mapa: los cinco niveles de sistemas y los dieciséis eslabones de la cadena de valor. Es la vista completa que une los cuarenta y nueve capítulos del libro.</figcaption></figure><div class="prose"><p>Antes de recorrerlos uno por uno, mira la cadena completa. Los eslabones se agrupan en cinco tramos: <b>planear</b> dónde y con qué red, <b>vender y conectar</b> al cliente, <b>operar</b> el servicio, <b>cobrar</b> lo que se presta y <b>hacer crecer</b> la relación. Debajo de todos corren dos eslabones que no son una etapa sino un piso: los <b>datos e IA</b>, que alimentan las decisiones, y el <b>gobierno</b>, que fija responsables, reglas y controles.</p></div><figure class="fig fig-mapa" id="48-diagrama-4"><div class="lienzo"><svg viewBox="0 0 900 400" style="min-width:720px" role="img" aria-label="La cadena de valor completa: planear (demanda, cobertura, red), vender y conectar (ventas, órdenes, agenda, instalación, activación), operar (operación, soporte), cobrar (facturación, cobranza) y crecer (retención, monetización), sobre un piso de datos e IA y gobierno">
+<rect x="20" y="30" width="330" height="92" rx="12" class="d-inet"/>
+<text x="32" y="50" class="t t-xs t-b k-inet">PLANEAR</text>
+<rect x="360" y="30" width="520" height="92" rx="12" class="d-casa"/>
+<text x="372" y="50" class="t t-xs t-b k-casa">VENDER Y CONECTAR</text>
+<rect x="30" y="66" width="92" height="40" rx="20" class="caja"/><text x="76" y="91" text-anchor="middle" class="t t-s t-b">Demanda</text>
+<line x1="123" y1="86" x2="136" y2="86" class="ln" marker-end="url(#fl)"/>
+<rect x="138" y="66" width="92" height="40" rx="20" class="caja"/><text x="184" y="91" text-anchor="middle" class="t t-s t-b">Cobertura</text>
+<line x1="231" y1="86" x2="244" y2="86" class="ln" marker-end="url(#fl)"/>
+<rect x="246" y="66" width="92" height="40" rx="20" class="caja"/><text x="292" y="91" text-anchor="middle" class="t t-s t-b">Red</text>
+<line x1="339" y1="86" x2="368" y2="86" class="ln" marker-end="url(#fl)"/>
+<rect x="370" y="66" width="92" height="40" rx="20" class="caja"/><text x="416" y="91" text-anchor="middle" class="t t-s t-b">Ventas</text>
+<line x1="463" y1="86" x2="470" y2="86" class="ln" marker-end="url(#fl)"/>
+<rect x="472" y="66" width="92" height="40" rx="20" class="caja"/><text x="518" y="91" text-anchor="middle" class="t t-s t-b">Órdenes</text>
+<line x1="565" y1="86" x2="572" y2="86" class="ln" marker-end="url(#fl)"/>
+<rect x="574" y="66" width="92" height="40" rx="20" class="caja"/><text x="620" y="91" text-anchor="middle" class="t t-s t-b">Agenda</text>
+<line x1="667" y1="86" x2="674" y2="86" class="ln" marker-end="url(#fl)"/>
+<rect x="676" y="66" width="92" height="40" rx="20" class="caja"/><text x="722" y="91" text-anchor="middle" class="t t-s t-b">Instalación</text>
+<line x1="769" y1="86" x2="776" y2="86" class="ln" marker-end="url(#fl)"/>
+<rect x="778" y="66" width="92" height="40" rx="20" class="caja"/><text x="824" y="91" text-anchor="middle" class="t t-s t-b">Activación</text>
+<rect x="660" y="170" width="220" height="92" rx="12" class="d-oper"/>
+<text x="672" y="190" class="t t-xs t-b k-oper">OPERAR</text>
+<rect x="420" y="170" width="230" height="92" rx="12" class="d-sis"/>
+<text x="432" y="190" class="t t-xs t-b k-sis">COBRAR</text>
+<rect x="180" y="170" width="230" height="92" rx="12" class="c-enl"/>
+<text x="192" y="190" class="t t-xs t-b k-enl">CRECER</text>
+<rect x="778" y="206" width="92" height="40" rx="20" class="caja"/><text x="824" y="231" text-anchor="middle" class="t t-s t-b">Operación</text>
+<line x1="777" y1="226" x2="764" y2="226" class="ln" marker-end="url(#fl)"/>
+<rect x="670" y="206" width="92" height="40" rx="20" class="caja"/><text x="716" y="231" text-anchor="middle" class="t t-s t-b">Soporte</text>
+<line x1="669" y1="226" x2="632" y2="226" class="ln" marker-end="url(#fl)"/>
+<rect x="538" y="206" width="92" height="40" rx="20" class="caja"/><text x="584" y="231" text-anchor="middle" class="t t-s t-b">Facturación</text>
+<line x1="537" y1="226" x2="526" y2="226" class="ln" marker-end="url(#fl)"/>
+<rect x="432" y="206" width="92" height="40" rx="20" class="caja"/><text x="478" y="231" text-anchor="middle" class="t t-s t-b">Cobranza</text>
+<line x1="431" y1="226" x2="392" y2="226" class="ln" marker-end="url(#fl)"/>
+<rect x="298" y="206" width="92" height="40" rx="20" class="caja"/><text x="344" y="231" text-anchor="middle" class="t t-s t-b">Retención</text>
+<line x1="297" y1="226" x2="284" y2="226" class="ln" marker-end="url(#fl)"/>
+<rect x="190" y="206" width="92" height="40" rx="20" class="caja"/><text x="236" y="231" text-anchor="middle" class="t t-s t-b">Monetización</text>
+<line x1="824" y1="107" x2="824" y2="204" class="ln" marker-end="url(#fl)"/>
+<path d="M190 236 H60 V108" class="ln ln-d" marker-end="url(#fl)"/>
+<text x="68" y="150" class="t t-xs t-m">LO APRENDIDO</text><text x="68" y="163" class="t t-xs t-m">VUELVE A LA</text><text x="68" y="176" class="t t-xs t-m">DEMANDA</text>
+<rect x="20" y="300" width="425" height="76" rx="12" class="caja"/><text x="36" y="326" class="t t-b">Datos e IA</text><text x="36" y="346" class="t t-s t-m">medir, predecir y automatizar en todos los eslabones</text><text x="36" y="362" class="t t-xs t-m">PISO TRANSVERSAL</text>
+<rect x="455" y="300" width="425" height="76" rx="12" class="caja"/><text x="471" y="326" class="t t-b">Gobierno</text><text x="471" y="346" class="t t-s t-m">dueños, reglas, indicadores y controles para cada eslabón</text><text x="471" y="362" class="t t-xs t-m">PISO TRANSVERSAL</text>
+<line x1="120" y1="298" x2="120" y2="266" class="ln ln-d" marker-end="url(#fl)"/>
+<line x1="330" y1="298" x2="330" y2="266" class="ln ln-d" marker-end="url(#fl)"/>
+<line x1="540" y1="298" x2="540" y2="266" class="ln ln-d" marker-end="url(#fl)"/>
+<line x1="750" y1="298" x2="750" y2="266" class="ln ln-d" marker-end="url(#fl)"/>
+</svg></div><figcaption><b>La cadena de valor completa.</b> Se lee de izquierda a derecha y de arriba abajo, como una línea de montaje que da vuelta. Cada color es un tramo: planear, vender y conectar, operar, cobrar y crecer. La franja de abajo sostiene a todos: datos e IA, y gobierno. La flecha punteada que vuelve al principio recuerda que lo que se aprende de los clientes actuales decide dónde se construye la próxima red.</figcaption></figure></section>
+<section><h2>Demanda y cobertura</h2><div class="prose"><p>La cadena empieza antes de que exista un cliente. El eslabón de <b>demanda</b> responde dónde hay mercado: cuántos hogares hay en una zona, cuánto pueden pagar, qué competencia ya está. Se trabaja con datos censales, mapas y el historial de ventas en zonas parecidas, y su resultado es una lista de zonas candidatas con su ARPU y su penetración esperados. Es la decisión más cara de toda la cadena, porque de ella depende dónde se entierra el CAPEX, como vimos en el capítulo 46.</p><p>El eslabón de <b>cobertura</b> responde algo más concreto: ¿desde qué direcciones se puede vender hoy? Una zona puede tener demanda y aun así no tener cobertura, porque la caja más cercana está llena o la red no llega. La cobertura vive en el GIS y en el inventario de planta del capítulo 37: cada dirección sabe a qué caja y a qué puerto podría conectarse, y cuántos lugares libres quedan. Cuando un vendedor consulta si «hay factibilidad», está preguntándole a este eslabón.</p></div></section>
+<section><h2>Red y despliegue</h2><div class="prose"><p>El eslabón de <b>red</b> es la promesa técnica hecha realidad: la fibra, los splitters, la OLT, el BNG, el core, la salida a Internet. Es donde más capítulos del libro viven, porque es donde está casi toda la tecnología: las bases de la parte 1 (capas, Ethernet, IP, routing, transporte), el acceso y la PON de los capítulos 16 a 18, el core del 21, la energía del 15 y la red móvil del 24.</p><p>El despliegue sigue un proceso propio, que el capítulo 39 recorre: diseño en el mapa, permisos, obra civil, tendido, fusiones, certificación y, por último, la carga de toda esa planta en el inventario para que la cobertura sepa que la zona ya se puede vender. Si ese último paso falla, la red existe pero el negocio no la ve.</p><p>Antes de seguir con el cliente, guarda este mapa de referencia: cada eslabón con sus sistemas, sus protocolos y los capítulos donde se explica. Toca una tarjeta para ir al capítulo principal.</p></div><figure class="fig fig-esquema" id="48-diagrama-2"><div class="lienzo"><svg viewBox="0 0 920 610" style="min-width:740px" role="img" aria-label="Los dieciséis eslabones de la cadena de valor, cada uno con sus sistemas, protocolos y capítulos del libro">
+<rect x="20" y="14" width="14" height="14" rx="3" class="d-inet"/><text x="40" y="26" class="t t-s t-m">Planear</text>
+<rect x="104.80000000000001" y="14" width="14" height="14" rx="3" class="d-casa"/><text x="124.80000000000001" y="26" class="t t-s t-m">Vender y conectar</text>
+<rect x="253.60000000000002" y="14" width="14" height="14" rx="3" class="d-oper"/><text x="273.6" y="26" class="t t-s t-m">Operar</text>
+<rect x="332.0" y="14" width="14" height="14" rx="3" class="d-sis"/><text x="352.0" y="26" class="t t-s t-m">Cobrar</text>
+<rect x="410.4" y="14" width="14" height="14" rx="3" class="c-enl"/><text x="430.4" y="26" class="t t-s t-m">Crecer</text>
+<rect x="488.79999999999995" y="14" width="14" height="14" rx="3" class="caja"/><text x="508.79999999999995" y="26" class="t t-s t-m">Piso transversal</text>
+<a href="46-como-gana-dinero-un-telco.html"><rect x="20" y="42" width="212" height="130" rx="10" class="caja"/>
+<rect x="20" y="42" width="212" height="28" rx="10" class="d-inet"/>
+<text x="32" y="61" class="t t-b">01 · Demanda</text>
+<text x="32" y="88" class="t t-xs t-m">SISTEMAS</text><text x="32" y="102" class="t t-s">BI y mapas de mercado</text>
+<text x="32" y="120" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="32" y="134" class="t t-s">datos censales y de ventas</text>
+<text x="32" y="152" class="t t-xs t-m">CAPÍTULOS</text><text x="32" y="166" class="t t-s t-b">46</text></a>
+<a href="37-la-planta-en-el-mapa.html"><rect x="242" y="42" width="212" height="130" rx="10" class="caja"/>
+<rect x="242" y="42" width="212" height="28" rx="10" class="d-inet"/>
+<text x="254" y="61" class="t t-b">02 · Cobertura</text>
+<text x="254" y="88" class="t t-xs t-m">SISTEMAS</text><text x="254" y="102" class="t t-s">GIS e inventario de planta</text>
+<text x="254" y="120" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="254" y="134" class="t t-s">APIs de factibilidad</text>
+<text x="254" y="152" class="t t-xs t-m">CAPÍTULOS</text><text x="254" y="166" class="t t-s t-b">37, 39</text></a>
+<a href="14-anatomia-de-una-red-de-operador.html"><rect x="464" y="42" width="212" height="130" rx="10" class="caja"/>
+<rect x="464" y="42" width="212" height="28" rx="10" class="d-inet"/>
+<text x="476" y="61" class="t t-b">03 · Red</text>
+<text x="476" y="88" class="t t-xs t-m">SISTEMAS</text><text x="476" y="102" class="t t-s">OLT, BNG, core, NMS</text>
+<text x="476" y="120" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="476" y="134" class="t t-s">GPON, Ethernet, IP, BGP, MPLS</text>
+<text x="476" y="152" class="t t-xs t-m">CAPÍTULOS</text><text x="476" y="166" class="t t-s t-b">1–7, 11, 14–18, 21, 24</text></a>
+<a href="34-bss.html"><rect x="686" y="42" width="212" height="130" rx="10" class="caja"/>
+<rect x="686" y="42" width="212" height="28" rx="10" class="d-casa"/>
+<text x="698" y="61" class="t t-b">04 · Ventas</text>
+<text x="698" y="88" class="t t-xs t-m">SISTEMAS</text><text x="698" y="102" class="t t-s">Web, app, CRM, catálogo</text>
+<text x="698" y="120" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="698" y="134" class="t t-s">HTTP, APIs REST</text>
+<text x="698" y="152" class="t t-xs t-m">CAPÍTULOS</text><text x="698" y="166" class="t t-s t-b">9, 34</text></a>
+<a href="36-oss.html"><rect x="20" y="182" width="212" height="130" rx="10" class="caja"/>
+<rect x="20" y="182" width="212" height="28" rx="10" class="d-casa"/>
+<text x="32" y="201" class="t t-b">05 · Órdenes</text>
+<text x="32" y="228" class="t t-xs t-m">SISTEMAS</text><text x="32" y="242" class="t t-s">Órdenes del BSS, OSS</text>
+<text x="32" y="260" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="32" y="274" class="t t-s">APIs, colas de mensajes</text>
+<text x="32" y="292" class="t t-xs t-m">CAPÍTULOS</text><text x="32" y="306" class="t t-s t-b">33, 36, 38</text></a>
+<a href="40-una-instalacion-sin-tocar-nada.html"><rect x="242" y="182" width="212" height="130" rx="10" class="caja"/>
+<rect x="242" y="182" width="212" height="28" rx="10" class="d-casa"/>
+<text x="254" y="201" class="t t-b">06 · Agenda</text>
+<text x="254" y="228" class="t t-xs t-m">SISTEMAS</text><text x="254" y="242" class="t t-s">Gestión de técnicos</text>
+<text x="254" y="260" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="254" y="274" class="t t-s">APIs, mensajería</text>
+<text x="254" y="292" class="t t-xs t-m">CAPÍTULOS</text><text x="254" y="306" class="t t-s t-b">36, 40</text></a>
+<a href="17-la-fibra-y-la-red-de-distribucion-optica.html"><rect x="464" y="182" width="212" height="130" rx="10" class="caja"/>
+<rect x="464" y="182" width="212" height="28" rx="10" class="d-casa"/>
+<text x="476" y="201" class="t t-b">07 · Instalación</text>
+<text x="476" y="228" class="t t-xs t-m">SISTEMAS</text><text x="476" y="242" class="t t-s">App de campo, medidores</text>
+<text x="476" y="260" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="476" y="274" class="t t-s">potencia óptica, OTDR</text>
+<text x="476" y="292" class="t t-xs t-m">CAPÍTULOS</text><text x="476" y="306" class="t t-s t-b">17, 40</text></a>
+<a href="19-de-la-casa-al-core.html"><rect x="686" y="182" width="212" height="130" rx="10" class="caja"/>
+<rect x="686" y="182" width="212" height="28" rx="10" class="d-casa"/>
+<text x="698" y="201" class="t t-b">08 · Activación</text>
+<text x="698" y="228" class="t t-xs t-m">SISTEMAS</text><text x="698" y="242" class="t t-s">Gestor de OLT, ACS, RADIUS</text>
+<text x="698" y="260" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="698" y="274" class="t t-s">OMCI, TR-069, RADIUS</text>
+<text x="698" y="292" class="t t-xs t-m">CAPÍTULOS</text><text x="698" y="306" class="t t-s t-b">19, 20, 28, 29, 43</text></a>
+<a href="31-el-noc.html"><rect x="20" y="322" width="212" height="130" rx="10" class="caja"/>
+<rect x="20" y="322" width="212" height="28" rx="10" class="d-oper"/>
+<text x="32" y="341" class="t t-b">09 · Operación</text>
+<text x="32" y="368" class="t t-xs t-m">SISTEMAS</text><text x="32" y="382" class="t t-s">NMS, monitoreo, NOC</text>
+<text x="32" y="400" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="32" y="414" class="t t-s">SNMP, Syslog, NETCONF</text>
+<text x="32" y="432" class="t t-xs t-m">CAPÍTULOS</text><text x="32" y="446" class="t t-s t-b">8, 10, 22, 23, 26, 27, 30, 31, 45</text></a>
+<a href="42-no-tengo-internet.html"><rect x="242" y="322" width="212" height="130" rx="10" class="caja"/>
+<rect x="242" y="322" width="212" height="28" rx="10" class="d-oper"/>
+<text x="254" y="341" class="t t-b">10 · Soporte</text>
+<text x="254" y="368" class="t t-xs t-m">SISTEMAS</text><text x="254" y="382" class="t t-s">Tickets, CRM, ACS</text>
+<text x="254" y="400" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="254" y="414" class="t t-s">TR-069, ping, traceroute</text>
+<text x="254" y="432" class="t t-xs t-m">CAPÍTULOS</text><text x="254" y="446" class="t t-s t-b">13, 25, 35, 41, 42</text></a>
+<a href="34-bss.html"><rect x="464" y="322" width="212" height="130" rx="10" class="caja"/>
+<rect x="464" y="322" width="212" height="28" rx="10" class="d-sis"/>
+<text x="476" y="341" class="t t-b">11 · Facturación</text>
+<text x="476" y="368" class="t t-xs t-m">SISTEMAS</text><text x="476" y="382" class="t t-s">Facturación del BSS</text>
+<text x="476" y="400" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="476" y="414" class="t t-s">RADIUS accounting</text>
+<text x="476" y="432" class="t t-xs t-m">CAPÍTULOS</text><text x="476" y="446" class="t t-s t-b">20, 34</text></a>
+<a href="44-corte-y-reconexion.html"><rect x="686" y="322" width="212" height="130" rx="10" class="caja"/>
+<rect x="686" y="322" width="212" height="28" rx="10" class="d-sis"/>
+<text x="698" y="341" class="t t-b">12 · Cobranza</text>
+<text x="698" y="368" class="t t-xs t-m">SISTEMAS</text><text x="698" y="382" class="t t-s">Pasarelas de pago, BSS</text>
+<text x="698" y="400" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="698" y="414" class="t t-s">APIs de pago</text>
+<text x="698" y="432" class="t t-xs t-m">CAPÍTULOS</text><text x="698" y="446" class="t t-s t-b">44</text></a>
+<a href="49-hacia-donde-va.html"><rect x="20" y="462" width="212" height="130" rx="10" class="caja"/>
+<rect x="20" y="462" width="212" height="28" rx="10" class="c-enl"/>
+<text x="32" y="481" class="t t-b">13 · Retención</text>
+<text x="32" y="508" class="t t-xs t-m">SISTEMAS</text><text x="32" y="522" class="t t-s">CRM, modelos de riesgo</text>
+<text x="32" y="540" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="32" y="554" class="t t-s">datos de uso y reclamos</text>
+<text x="32" y="572" class="t t-xs t-m">CAPÍTULOS</text><text x="32" y="586" class="t t-s t-b">41, 49</text></a>
+<a href="43-cambio-de-plan.html"><rect x="242" y="462" width="212" height="130" rx="10" class="caja"/>
+<rect x="242" y="462" width="212" height="28" rx="10" class="c-enl"/>
+<text x="254" y="481" class="t t-b">14 · Monetización</text>
+<text x="254" y="508" class="t t-xs t-m">SISTEMAS</text><text x="254" y="522" class="t t-s">Catálogo, CRM, ACS</text>
+<text x="254" y="540" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="254" y="554" class="t t-s">SIP, IGMP, Wi-Fi</text>
+<text x="254" y="572" class="t t-xs t-m">CAPÍTULOS</text><text x="254" y="586" class="t t-s t-b">22, 23, 25, 43</text></a>
+<a href="49-hacia-donde-va.html"><rect x="464" y="462" width="212" height="130" rx="10" class="caja"/>
+<rect x="464" y="462" width="212" height="28" rx="10" class="caja"/>
+<text x="476" y="481" class="t t-b">15 · Datos e IA</text>
+<text x="476" y="508" class="t t-xs t-m">SISTEMAS</text><text x="476" y="522" class="t t-s">Lago de datos, BI, modelos</text>
+<text x="476" y="540" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="476" y="554" class="t t-s">APIs, SQL</text>
+<text x="476" y="572" class="t t-xs t-m">CAPÍTULOS</text><text x="476" y="586" class="t t-s t-b">30, 49</text></a>
+<a href="47-regulacion.html"><rect x="686" y="462" width="212" height="130" rx="10" class="caja"/>
+<rect x="686" y="462" width="212" height="28" rx="10" class="caja"/>
+<text x="698" y="481" class="t t-b">16 · Gobierno</text>
+<text x="698" y="508" class="t t-xs t-m">SISTEMAS</text><text x="698" y="522" class="t t-s">Políticas, riesgos, auditoría</text>
+<text x="698" y="540" class="t t-xs t-m">PROTOCOLOS Y ESTÁNDARES</text><text x="698" y="554" class="t t-s">eTOM, ITIL, normas</text>
+<text x="698" y="572" class="t t-xs t-m">CAPÍTULOS</text><text x="698" y="586" class="t t-s t-b">12, 32, 47, 48</text></a>
+</svg></div><figcaption><b>Los dieciséis eslabones por dentro.</b> Cada tarjeta es un eslabón. Debajo del nombre, los sistemas que lo sostienen, los protocolos o estándares que usa y los capítulos donde se explica. El color del encabezado indica el tramo de la cadena al que pertenece. Cada tarjeta es un enlace al capítulo principal de ese eslabón.</figcaption></figure></section>
+<section><h2>Ventas y órdenes</h2><div class="prose"><p>El eslabón de <b>ventas</b> convierte una oportunidad en un cliente. Pasa por los canales: la web y la aplicación (con las APIs del capítulo 9), las tiendas, el teléfono, los vendedores en la calle. Se apoya en el catálogo de productos y el CRM del BSS (capítulo 34), y su salida no es un apretón de manos sino un <b>pedido</b> con datos completos: quién, dónde, qué plan, qué equipo.</p><p>El eslabón de <b>órdenes</b> toma ese pedido y lo convierte en trabajo ejecutable. El BSS genera la orden comercial; el OSS la descompone en tareas técnicas: reservar un puerto, asignar una ONT, programar una visita, preparar la configuración (capítulos 33, 36 y 38). Una orden mal armada, con una dirección incompleta o un plan que no existe en el sistema de red, se queda trabada y el cliente espera sin saber por qué.</p></div></section>
+<section><h2>Agendamiento, instalación y activación</h2><div class="prose"><p>El eslabón de <b>agendamiento</b> coordina dos agendas: la del cliente, que tiene que estar en casa, y la de las cuadrillas, que tienen zonas, horarios y materiales. Un buen agendamiento confirma el día antes, reprograma sin perder el turno y no manda al técnico a una dirección sin cobertura.</p><p>La <b>instalación</b> es el momento físico: la acometida desde la caja hasta la casa, la roseta, la ONT, las mediciones de potencia óptica del capítulo 17. Es el único eslabón donde la empresa entra a la casa del cliente, y la impresión que deja el técnico pesa durante años.</p><p>La <b>activación</b> es cuando el cliente pasa de tener un equipo a tener un servicio: la OLT reconoce la ONT, el sistema de gestión le carga la configuración (capítulos 28 y 29), RADIUS y el BNG la autorizan con la velocidad del plan (capítulos 19 y 20). En los operadores más automatizados, como el del capítulo 40, la activación ocurre sola en minutos, sin que el técnico llame a nadie.</p><p>Del clic en «comprar» al primer minuto de navegación, el cliente atraviesa seis eslabones y varios sistemas que se pasan la posta. El diagrama de flujo muestra ese relevo.</p></div><figure class="fig fig-flujo" id="48-diagrama-6"><div class="lienzo"><svg viewBox="0 0 950 600" style="min-width:740px" role="img" aria-label="Flujo de la venta a la activación: compra, consulta de cobertura, orden, turno, orden de trabajo, instalación, cierre con la serie de la ONT, configuración automática, navegación y aviso al BSS para facturar">
+<rect x="30" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-persona" x="40" y="26" width="30" height="30" class="ico"/>
+<text x="76" y="47" class="t t-b">Cliente</text>
+<rect x="180" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-factura" x="190" y="26" width="30" height="30" class="ico"/>
+<text x="226" y="40" class="t t-b">BSS</text><text x="226" y="57" class="t t-s t-m">ventas y órdenes</text>
+<rect x="340" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-monitor" x="350" y="26" width="30" height="30" class="ico"/>
+<text x="386" y="40" class="t t-b">OSS</text><text x="386" y="57" class="t t-s t-m">y orquestador</text>
+<rect x="510" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-llave" x="520" y="26" width="30" height="30" class="ico"/>
+<text x="556" y="40" class="t t-b">Técnico</text><text x="556" y="57" class="t t-s t-m">en campo</text>
+<rect x="660" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-olt" x="670" y="26" width="30" height="30" class="ico"/>
+<text x="706" y="40" class="t t-b">Red</text><text x="706" y="57" class="t t-s t-m">OLT, ACS, RADIUS</text>
+<line x1="90" y1="70" x2="90" y2="586" class="vida"/>
+<line x1="245" y1="70" x2="245" y2="586" class="vida"/>
+<line x1="410" y1="70" x2="410" y2="586" class="vida"/>
+<line x1="570" y1="70" x2="570" y2="586" class="vida"/>
+<line x1="730" y1="70" x2="730" y2="586" class="vida"/>
+<line x1="90" y1="104" x2="243" y2="114" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="98" y="97" class="t t-s">① Compra el plan en la web</text>
+<line x1="245" y1="148" x2="408" y2="158" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="253" y="141" class="t t-s">② ¿Hay cobertura en esta dirección?</text>
+<line x1="410" y1="192" x2="247" y2="202" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="253" y="185" class="t t-s">③ Sí: caja con puerto libre</text>
+<line x1="245" y1="236" x2="408" y2="246" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="253" y="229" class="t t-s">④ Orden de instalación</text>
+<line x1="410" y1="290" x2="92" y2="300" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+<text x="98" y="283" class="t t-s">⑤ Turno confirmado: martes en la mañana</text>
+<line x1="410" y1="334" x2="568" y2="344" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+<text x="418" y="327" class="t t-s">⑥ Orden de trabajo y materiales</text>
+<line x1="570" y1="378" x2="728" y2="388" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+<text x="578" y="371" class="t t-s">⑦ Instala la ONT y mide la luz</text>
+<line x1="570" y1="422" x2="412" y2="432" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+<text x="418" y="415" class="t t-s">⑧ Cierra la orden con la serie de la ONT</text>
+<line x1="410" y1="476" x2="728" y2="486" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="418" y="469" class="t t-s">⑨ Configura la OLT, el ACS y RADIUS</text>
+<line x1="730" y1="520" x2="92" y2="530" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="98" y="513" class="t t-s">⑩ Navega a la velocidad del plan</text>
+<line x1="410" y1="564" x2="247" y2="574" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="253" y="557" class="t t-s">⑪ Activo desde hoy: a facturar</text>
+<g class="t t-xs t-b">
+<path d="M830 92v158" class="ln s-red" style="stroke-width:3"/><text x="840" y="167" class="k-red">VENTAS</text><text x="840" y="181" class="k-red">Y ÓRDENES</text>
+<path d="M830 278v158" class="ln s-fis" style="stroke-width:3"/><text x="840" y="353" class="k-fis">AGENDA E</text><text x="840" y="367" class="k-fis">INSTALACIÓN</text>
+<path d="M830 464v114" class="ln s-enl" style="stroke-width:3"/><text x="840" y="517" class="k-enl">ACTIVACIÓN</text><text x="840" y="531" class="k-enl"></text>
+</g>
+<text x="14" y="300" class="t t-xs t-m" transform="rotate(-90 14 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>De la venta a la activación, paso a paso.</b> El tiempo corre hacia abajo. Cada flecha es un sistema o una persona que le entrega algo al siguiente: la consulta de cobertura, la orden, la reserva del puerto, el turno, la instalación, la configuración automática y, al final, el aviso al BSS para que empiece a facturar. Las fases de la derecha son los eslabones de la cadena. Cada flecha es también un lugar donde la cadena se puede cortar.</figcaption></figure></section>
+<section><h2>Operación y soporte</h2><div class="prose"><p>Con el cliente navegando empieza la parte más larga de la cadena: mantener el servicio funcionando durante años. La <b>operación</b> es el trabajo del NOC (capítulo 31) y de la gestión de red (capítulo 27): vigilar alarmas, ver la calidad (capítulo 26), automatizar cambios (capítulo 30), reparar cortes de fibra (capítulo 45) y mantener los servicios invisibles, como DNS y DHCP, del capítulo 8.</p><p>El <b>soporte</b> es lo que pasa cuando el cliente siente que algo anda mal: llama, escribe o abre un ticket (capítulo 35). Ahí entran el diagnóstico por capas del capítulo 42, la autogestión del Wi-Fi del 41 y la caja de herramientas del 13. Un soporte que resuelve en el primer contacto protege al cliente y al margen; uno que manda técnicos sin diagnosticar consume los dos.</p></div></section>
+<section><h2>Facturación y cobranza</h2><div class="prose"><p>El eslabón de <b>facturación</b> convierte el servicio en un cargo correcto: el plan, los prorrateos por altas y cambios a mitad de mes, los descuentos, los impuestos. Para que sea correcto, el BSS tiene que saber con exactitud qué tiene activo cada cliente, y para eso necesita que la red y el OSS le cuenten lo que pasó (capítulos 20 y 34).</p><p>La <b>cobranza</b> convierte ese cargo en dinero en la caja: medios de pago, recordatorios, avisos antes del corte, suspensión y reconexión (capítulo 44). Es donde la regulación del capítulo 47 se siente más cerca: los plazos de aviso y las reglas de corte cambian el diseño de todo el proceso.</p></div><figure class="fig fig-flujo" id="48-diagrama-7"><div class="lienzo"><svg viewBox="0 0 900 572" style="min-width:740px" role="img" aria-label="Flujo del servicio a la caja: el OSS avisa la activación, el BSS factura, el cliente paga y el medio de pago confirma; si no paga, aviso previo, suspensión y reconexión apenas entra el pago">
+<rect x="30" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-persona" x="40" y="26" width="30" height="30" class="ico"/>
+<text x="76" y="47" class="t t-b">Cliente</text>
+<rect x="220" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-factura" x="230" y="26" width="30" height="30" class="ico"/>
+<text x="266" y="40" class="t t-b">BSS</text><text x="266" y="57" class="t t-s t-m">facturación</text>
+<rect x="420" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-candado" x="430" y="26" width="30" height="30" class="ico"/>
+<text x="466" y="40" class="t t-b">Medio de pago</text><text x="466" y="57" class="t t-s t-m">banco o pasarela</text>
+<rect x="620" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-olt" x="630" y="26" width="30" height="30" class="ico"/>
+<text x="666" y="47" class="t t-b">OSS y red</text>
+<line x1="95" y1="70" x2="95" y2="558" class="vida"/>
+<line x1="295" y1="70" x2="295" y2="558" class="vida"/>
+<line x1="495" y1="70" x2="495" y2="558" class="vida"/>
+<line x1="685" y1="70" x2="685" y2="558" class="vida"/>
+<line x1="685" y1="104" x2="297" y2="114" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="303" y="97" class="t t-s">① Servicio activo desde el día 12</text>
+<line x1="295" y1="148" x2="97" y2="158" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="103" y="141" class="t t-s">② Factura con el primer mes prorrateado</text>
+<line x1="95" y1="202" x2="493" y2="212" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="103" y="195" class="t t-s">③ Paga con tarjeta, app o en un banco</text>
+<line x1="495" y1="246" x2="297" y2="256" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="303" y="239" class="t t-s">④ Pago confirmado</text>
+<line x1="295" y1="352" x2="97" y2="362" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="103" y="345" class="t t-s">⑤ Aviso previo con fecha de corte</text>
+<line x1="295" y1="396" x2="683" y2="406" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="303" y="389" class="t t-s">⑥ Orden de suspensión: plazo vencido</text>
+<line x1="685" y1="440" x2="97" y2="450" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="103" y="433" class="t t-s">⑦ Servicio suspendido: página de pago</text>
+<line x1="495" y1="490" x2="297" y2="500" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="303" y="483" class="t t-s">⑧ Pago recibido</text>
+<line x1="295" y1="532" x2="683" y2="542" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="303" y="525" class="t t-s">⑨ Reconectar ya</text>
+<text x="303" y="280" class="t t-s t-b">La cuenta queda al día (conciliación)</text>
+<line x1="30" y1="300" x2="760" y2="300" class="ln ln-d"/>
+<text x="36" y="318" class="t t-xs t-b t-m">SI EL PAGO NO LLEGA</text>
+<g class="t t-xs t-b">
+<path d="M780 92v68" class="ln s-red" style="stroke-width:3"/><text x="790" y="122" class="k-red">FACTURAR</text><text x="790" y="136" class="k-red"></text>
+<path d="M780 190v96" class="ln s-enl" style="stroke-width:3"/><text x="790" y="234" class="k-enl">COBRAR</text><text x="790" y="248" class="k-enl"></text>
+<path d="M780 340v116" class="ln s-apl" style="stroke-width:3"/><text x="790" y="394" class="k-apl">SI NO</text><text x="790" y="408" class="k-apl">PAGA</text>
+<path d="M780 478v70" class="ln s-enl" style="stroke-width:3"/><text x="790" y="509" class="k-enl">RECONECTAR</text><text x="790" y="523" class="k-enl"></text>
+</g>
+<text x="14" y="286" class="t t-xs t-m" transform="rotate(-90 14 286)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Del servicio a la caja.</b> El tiempo corre hacia abajo. El OSS le avisa al BSS desde cuándo está activo el servicio; el BSS emite la factura y se la envía al cliente; el cliente paga por un medio de pago, que confirma el cobro; y el BSS lo concilia. Si el pago no llega, el camino de abajo muestra el aviso previo, la suspensión que ejecuta el OSS en la red y la reconexión apenas entra el pago.</figcaption></figure></section>
+<section><h2>Retención y monetización</h2><div class="prose"><p>El eslabón de <b>retención</b> protege la base de clientes. Mira señales de riesgo, como reclamos repetidos, caídas, atrasos o un uso que baja, y actúa antes de que el cliente se vaya: una llamada, una visita preventiva, una mejora de plan. El capítulo 49 muestra cómo los datos permiten anticipar esas bajas.</p><p>La <b>monetización</b> busca que cada cliente valga más: un plan más rápido con el cambio en caliente del capítulo 43, un Wi-Fi extendido (capítulo 25), telefonía (capítulo 22) o televisión (capítulo 23). No se trata de vender cualquier cosa, sino lo que el cliente de verdad aprovecha: una mejora que no se nota se convierte en un reclamo.</p></div></section>
+<section><h2>Datos, IA y gobierno</h2><div class="prose"><p>Los dos últimos eslabones son transversales. <b>Datos e IA</b> reúne lo que generan todos los demás, de la red, las ventas, la factura y los tickets, en una sola fuente confiable, y lo usa para medir, predecir y automatizar (capítulos 30 y 49). Sin ese piso, cada área decide con su propia planilla y nadie ve la cadena entera.</p><p>El <b>gobierno</b> asegura que cada eslabón tenga un dueño, un indicador y un control: quién responde por la cobertura, cuál es la meta de tiempo de instalación, quién aprueba un cambio en la red, cómo se cumplen la seguridad (capítulos 12 y 32) y la regulación (capítulo 47). Es el eslabón que impide que la cadena dependa de la buena voluntad de cada uno.</p><p>Para cerrar el recorrido, este diagrama parte de los capítulos y los ubica en la cadena. Algunos aparecen en más de un eslabón, porque una misma tecnología sirve a varios.</p></div><figure class="fig fig-mapa" id="48-diagrama-5"><div class="lienzo"><svg viewBox="0 0 640 580" style="min-width:560px" role="img" aria-label="Mapa de los 49 capítulos del libro ubicados en los dieciséis eslabones de la cadena de valor">
+<rect x="20" y="14" width="14" height="14" rx="3" class="d-oper"/><text x="40" y="26" class="t t-s t-m">Partes 1 a 3: bases y red</text>
+<rect x="190.0" y="14" width="14" height="14" rx="3" class="d-sis"/><text x="210.0" y="26" class="t t-s t-m">Parte 4: sistemas</text>
+<rect x="315.2" y="14" width="14" height="14" rx="3" class="d-casa"/><text x="335.2" y="26" class="t t-s t-m">Parte 5: procesos</text>
+<rect x="440.4" y="14" width="14" height="14" rx="3" class="d-inet"/><text x="460.4" y="26" class="t t-s t-m">Parte 6: cadena de valor</text>
+<line x1="20" y1="73" x2="620" y2="73" class="ln" style="stroke-width:.5"/>
+<text x="20" y="64" class="t t-s t-b">Demanda</text>
+<rect x="120" y="48" width="29" height="22" rx="6" class="d-inet"/><text x="134.5" y="63" text-anchor="middle" class="t t-s t-b">46</text>
+<line x1="20" y1="105" x2="620" y2="105" class="ln" style="stroke-width:.5"/>
+<text x="20" y="96" class="t t-s t-b">Cobertura</text>
+<rect x="120" y="80" width="29" height="22" rx="6" class="d-sis"/><text x="134.5" y="95" text-anchor="middle" class="t t-s t-b">37</text>
+<rect x="153" y="80" width="29" height="22" rx="6" class="d-casa"/><text x="167.5" y="95" text-anchor="middle" class="t t-s t-b">39</text>
+<line x1="20" y1="137" x2="620" y2="137" class="ln" style="stroke-width:.5"/>
+<text x="20" y="128" class="t t-s t-b">Red</text>
+<rect x="120" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="127" text-anchor="middle" class="t t-s t-b">01</text>
+<rect x="153" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="167.5" y="127" text-anchor="middle" class="t t-s t-b">02</text>
+<rect x="186" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="200.5" y="127" text-anchor="middle" class="t t-s t-b">03</text>
+<rect x="219" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="233.5" y="127" text-anchor="middle" class="t t-s t-b">04</text>
+<rect x="252" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="266.5" y="127" text-anchor="middle" class="t t-s t-b">05</text>
+<rect x="285" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="299.5" y="127" text-anchor="middle" class="t t-s t-b">06</text>
+<rect x="318" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="332.5" y="127" text-anchor="middle" class="t t-s t-b">07</text>
+<rect x="351" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="365.5" y="127" text-anchor="middle" class="t t-s t-b">11</text>
+<rect x="384" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="398.5" y="127" text-anchor="middle" class="t t-s t-b">14</text>
+<rect x="417" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="431.5" y="127" text-anchor="middle" class="t t-s t-b">15</text>
+<rect x="450" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="464.5" y="127" text-anchor="middle" class="t t-s t-b">16</text>
+<rect x="483" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="497.5" y="127" text-anchor="middle" class="t t-s t-b">17</text>
+<rect x="516" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="530.5" y="127" text-anchor="middle" class="t t-s t-b">18</text>
+<rect x="549" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="563.5" y="127" text-anchor="middle" class="t t-s t-b">21</text>
+<rect x="582" y="112" width="29" height="22" rx="6" class="d-oper"/><text x="596.5" y="127" text-anchor="middle" class="t t-s t-b">24</text>
+<line x1="20" y1="169" x2="620" y2="169" class="ln" style="stroke-width:.5"/>
+<text x="20" y="160" class="t t-s t-b">Ventas</text>
+<rect x="120" y="144" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="159" text-anchor="middle" class="t t-s t-b">09</text>
+<rect x="153" y="144" width="29" height="22" rx="6" class="d-sis"/><text x="167.5" y="159" text-anchor="middle" class="t t-s t-b">34</text>
+<line x1="20" y1="201" x2="620" y2="201" class="ln" style="stroke-width:.5"/>
+<text x="20" y="192" class="t t-s t-b">Órdenes</text>
+<rect x="120" y="176" width="29" height="22" rx="6" class="d-sis"/><text x="134.5" y="191" text-anchor="middle" class="t t-s t-b">33</text>
+<rect x="153" y="176" width="29" height="22" rx="6" class="d-sis"/><text x="167.5" y="191" text-anchor="middle" class="t t-s t-b">36</text>
+<rect x="186" y="176" width="29" height="22" rx="6" class="d-sis"/><text x="200.5" y="191" text-anchor="middle" class="t t-s t-b">38</text>
+<line x1="20" y1="233" x2="620" y2="233" class="ln" style="stroke-width:.5"/>
+<text x="20" y="224" class="t t-s t-b">Agenda</text>
+<rect x="120" y="208" width="29" height="22" rx="6" class="d-sis"/><text x="134.5" y="223" text-anchor="middle" class="t t-s t-b">36</text>
+<rect x="153" y="208" width="29" height="22" rx="6" class="d-casa"/><text x="167.5" y="223" text-anchor="middle" class="t t-s t-b">40</text>
+<line x1="20" y1="265" x2="620" y2="265" class="ln" style="stroke-width:.5"/>
+<text x="20" y="256" class="t t-s t-b">Instalación</text>
+<rect x="120" y="240" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="255" text-anchor="middle" class="t t-s t-b">17</text>
+<rect x="153" y="240" width="29" height="22" rx="6" class="d-casa"/><text x="167.5" y="255" text-anchor="middle" class="t t-s t-b">40</text>
+<line x1="20" y1="297" x2="620" y2="297" class="ln" style="stroke-width:.5"/>
+<text x="20" y="288" class="t t-s t-b">Activación</text>
+<rect x="120" y="272" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="287" text-anchor="middle" class="t t-s t-b">19</text>
+<rect x="153" y="272" width="29" height="22" rx="6" class="d-oper"/><text x="167.5" y="287" text-anchor="middle" class="t t-s t-b">20</text>
+<rect x="186" y="272" width="29" height="22" rx="6" class="d-oper"/><text x="200.5" y="287" text-anchor="middle" class="t t-s t-b">28</text>
+<rect x="219" y="272" width="29" height="22" rx="6" class="d-oper"/><text x="233.5" y="287" text-anchor="middle" class="t t-s t-b">29</text>
+<rect x="252" y="272" width="29" height="22" rx="6" class="d-casa"/><text x="266.5" y="287" text-anchor="middle" class="t t-s t-b">43</text>
+<line x1="20" y1="329" x2="620" y2="329" class="ln" style="stroke-width:.5"/>
+<text x="20" y="320" class="t t-s t-b">Operación</text>
+<rect x="120" y="304" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="319" text-anchor="middle" class="t t-s t-b">08</text>
+<rect x="153" y="304" width="29" height="22" rx="6" class="d-oper"/><text x="167.5" y="319" text-anchor="middle" class="t t-s t-b">10</text>
+<rect x="186" y="304" width="29" height="22" rx="6" class="d-oper"/><text x="200.5" y="319" text-anchor="middle" class="t t-s t-b">22</text>
+<rect x="219" y="304" width="29" height="22" rx="6" class="d-oper"/><text x="233.5" y="319" text-anchor="middle" class="t t-s t-b">23</text>
+<rect x="252" y="304" width="29" height="22" rx="6" class="d-oper"/><text x="266.5" y="319" text-anchor="middle" class="t t-s t-b">26</text>
+<rect x="285" y="304" width="29" height="22" rx="6" class="d-oper"/><text x="299.5" y="319" text-anchor="middle" class="t t-s t-b">27</text>
+<rect x="318" y="304" width="29" height="22" rx="6" class="d-oper"/><text x="332.5" y="319" text-anchor="middle" class="t t-s t-b">30</text>
+<rect x="351" y="304" width="29" height="22" rx="6" class="d-oper"/><text x="365.5" y="319" text-anchor="middle" class="t t-s t-b">31</text>
+<rect x="384" y="304" width="29" height="22" rx="6" class="d-casa"/><text x="398.5" y="319" text-anchor="middle" class="t t-s t-b">45</text>
+<line x1="20" y1="361" x2="620" y2="361" class="ln" style="stroke-width:.5"/>
+<text x="20" y="352" class="t t-s t-b">Soporte</text>
+<rect x="120" y="336" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="351" text-anchor="middle" class="t t-s t-b">13</text>
+<rect x="153" y="336" width="29" height="22" rx="6" class="d-oper"/><text x="167.5" y="351" text-anchor="middle" class="t t-s t-b">25</text>
+<rect x="186" y="336" width="29" height="22" rx="6" class="d-sis"/><text x="200.5" y="351" text-anchor="middle" class="t t-s t-b">35</text>
+<rect x="219" y="336" width="29" height="22" rx="6" class="d-casa"/><text x="233.5" y="351" text-anchor="middle" class="t t-s t-b">41</text>
+<rect x="252" y="336" width="29" height="22" rx="6" class="d-casa"/><text x="266.5" y="351" text-anchor="middle" class="t t-s t-b">42</text>
+<line x1="20" y1="393" x2="620" y2="393" class="ln" style="stroke-width:.5"/>
+<text x="20" y="384" class="t t-s t-b">Facturación</text>
+<rect x="120" y="368" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="383" text-anchor="middle" class="t t-s t-b">20</text>
+<rect x="153" y="368" width="29" height="22" rx="6" class="d-sis"/><text x="167.5" y="383" text-anchor="middle" class="t t-s t-b">34</text>
+<line x1="20" y1="425" x2="620" y2="425" class="ln" style="stroke-width:.5"/>
+<text x="20" y="416" class="t t-s t-b">Cobranza</text>
+<rect x="120" y="400" width="29" height="22" rx="6" class="d-casa"/><text x="134.5" y="415" text-anchor="middle" class="t t-s t-b">44</text>
+<line x1="20" y1="457" x2="620" y2="457" class="ln" style="stroke-width:.5"/>
+<text x="20" y="448" class="t t-s t-b">Retención</text>
+<rect x="120" y="432" width="29" height="22" rx="6" class="d-casa"/><text x="134.5" y="447" text-anchor="middle" class="t t-s t-b">41</text>
+<rect x="153" y="432" width="29" height="22" rx="6" class="d-inet"/><text x="167.5" y="447" text-anchor="middle" class="t t-s t-b">49</text>
+<line x1="20" y1="489" x2="620" y2="489" class="ln" style="stroke-width:.5"/>
+<text x="20" y="480" class="t t-s t-b">Monetización</text>
+<rect x="120" y="464" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="479" text-anchor="middle" class="t t-s t-b">22</text>
+<rect x="153" y="464" width="29" height="22" rx="6" class="d-oper"/><text x="167.5" y="479" text-anchor="middle" class="t t-s t-b">23</text>
+<rect x="186" y="464" width="29" height="22" rx="6" class="d-oper"/><text x="200.5" y="479" text-anchor="middle" class="t t-s t-b">25</text>
+<rect x="219" y="464" width="29" height="22" rx="6" class="d-casa"/><text x="233.5" y="479" text-anchor="middle" class="t t-s t-b">43</text>
+<line x1="20" y1="521" x2="620" y2="521" class="ln" style="stroke-width:.5"/>
+<text x="20" y="512" class="t t-s t-b">Datos e IA</text>
+<rect x="120" y="496" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="511" text-anchor="middle" class="t t-s t-b">30</text>
+<rect x="153" y="496" width="29" height="22" rx="6" class="d-inet"/><text x="167.5" y="511" text-anchor="middle" class="t t-s t-b">49</text>
+<line x1="20" y1="553" x2="620" y2="553" class="ln" style="stroke-width:.5"/>
+<text x="20" y="544" class="t t-s t-b">Gobierno</text>
+<rect x="120" y="528" width="29" height="22" rx="6" class="d-oper"/><text x="134.5" y="543" text-anchor="middle" class="t t-s t-b">12</text>
+<rect x="153" y="528" width="29" height="22" rx="6" class="d-oper"/><text x="167.5" y="543" text-anchor="middle" class="t t-s t-b">32</text>
+<rect x="186" y="528" width="29" height="22" rx="6" class="d-inet"/><text x="200.5" y="543" text-anchor="middle" class="t t-s t-b">47</text>
+<rect x="219" y="528" width="29" height="22" rx="6" class="d-inet"/><text x="233.5" y="543" text-anchor="middle" class="t t-s t-b">48</text>
+</svg></div><figcaption><b>Cada capítulo en su eslabón.</b> Cada fila es un eslabón y cada ficha numerada, un capítulo del libro. El color de la ficha dice de qué parte del libro viene: las bases y la red (partes 1 a 3), los sistemas del negocio (parte 4), los procesos de punta a punta (parte 5) o la cadena de valor (parte 6). La fila de la red es la más larga porque ahí está casi toda la tecnología; las de facturación y cobranza son cortas, pero sin ellas nada de lo anterior se cobra.</figcaption></figure></section>
+<section><h2>Dónde se rompe la cadena (y cómo se nota)</h2><div class="prose"><p>Una cadena es tan fuerte como su eslabón más débil, y en un telco los cortes tienen síntomas reconocibles. Casi todos aparecen en el <b>paso de un eslabón al siguiente</b>, donde un sistema le entrega algo a otro o un área le pasa el trabajo a otra:</p><ul><li><b>Demanda sin cobertura real.</b> Se hace publicidad en una zona donde las cajas están llenas. Síntoma: muchas ventas rechazadas por «no hay factibilidad» y clientes molestos antes de serlo.</li><li><b>Red construida pero no cargada en el inventario.</b> La fibra está en el poste, pero el sistema dice que no hay cobertura. Síntoma: zonas nuevas que no venden durante semanas.</li><li><b>Ventas que no se instalan.</b> Pedidos con datos incompletos u órdenes trabadas entre el BSS y el OSS. Síntoma: una pila de órdenes vencidas y cancelaciones antes de la instalación.</li><li><b>Instalaciones que no activan.</b> El técnico deja la ONT, pero la configuración no llega. Síntoma: clientes «instalados» que llaman el mismo día para decir que no navegan.</li><li><b>Servicio activo sin factura.</b> La red activó, pero el BSS no se enteró. Síntoma: clientes que navegan gratis, a veces durante meses, y que nadie detecta hasta una auditoría.</li><li><b>Factura sin servicio.</b> Al revés: se cobra un plan que no está activo o una baja que no se procesó. Síntoma: reclamos de facturación y quejas ante el regulador.</li><li><b>Soporte que no ve la red.</b> El agente no puede consultar la ONT del cliente y agenda una visita. Síntoma: muchas visitas que terminan en «no se encontró falla».</li><li><b>Cobranza sin reconexión rápida.</b> El cliente paga, pero el servicio tarda en volver. Síntoma: llamadas enojadas justo después de pagar y bajas evitables.</li></ul><p>Todas estas roturas tienen dos cosas en común: el cliente las nota antes que la empresa, y casi siempre se resuelven <b>integrando</b> dos sistemas o <b>acordando</b> quién es responsable del paso entre dos áreas. Pruébalo tú mismo siguiendo a un cliente por la cadena.</p></div><div class="lab" id="48-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Sigue al cliente</h3></div><p class="hint">Acompaña a Laura desde que busca Internet en la web hasta que renueva su plan dos años después. Avanza eslabón por eslabón y mira qué sistemas y qué áreas la atienden. En cualquier paso puedes romper el eslabón para ver qué le pasa a Laura y a la empresa.</p><style>
+[id="48-lab-3"] .c48-tira{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
+[id="48-lab-3"] .c48-tira button{padding:6px 0;font-family:var(--f-mono);font-size:.8rem;min-width:0}
+[id="48-lab-3"] .c48-tira button[aria-current="step"]{background:var(--accent);color:var(--card);border-color:var(--accent)}
+[id="48-lab-3"] .c48-tira button.roto{background:var(--warm);color:var(--card);border-color:var(--warm)}
+[id="48-lab-3"] .c48-tira button.lejos{opacity:.35}
+[id="48-lab-3"] .c48-paso{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px;background:var(--card)}
+[id="48-lab-3"] .c48-paso h4{margin:0;font:700 1rem var(--f-display)}
+[id="48-lab-3"] .c48-paso p{margin:0}
+[id="48-lab-3"] .c48-paso dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.9rem}
+[id="48-lab-3"] .c48-paso dt{font:600 .75rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+[id="48-lab-3"] .c48-paso dd{margin:0}
+[id="48-lab-3"] .c48-tramo{font:600 .75rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:520px){[id="48-lab-3"] .c48-paso dl{grid-template-columns:1fr}}
+</style>
+<div class="c48-tira" id="c48-tira" role="group" aria-label="Los dieciséis eslabones"></div>
+<div class="c48-paso" id="c48-paso"></div>
+<div class="btns">
+  <button type="button" id="c48-ant">← Anterior</button>
+  <button type="button" id="c48-sig" class="primary">Siguiente →</button>
+  <button type="button" id="c48-romper" aria-pressed="false">Romper este eslabón</button>
+</div>
+<div class="readout" id="c48-out" aria-live="polite"></div></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región siguió a un cliente típico, de forma anónima, a lo largo de su primer año. Lo vio por primera vez como una visita a la página de cobertura desde el celular; su dirección cayó en una zona recién construida, consultada en el GIS. Compró por el chat de ventas y el BSS generó el pedido; el OSS reservó un puerto en la OLT y una ONT del almacén. El sistema de agenda le ofreció tres turnos y le confirmó por mensaje el día anterior. El técnico instaló, midió la potencia óptica y la ONT se activó sola en pocos minutos. En el tercer mes, una caída de su zona fue detectada por el NOC antes de que llamara, y recibió un aviso con la hora estimada de solución. En el quinto mes, un atraso en el pago le generó un recordatorio y un aviso previo; pagó antes de la fecha de corte. En el décimo mes, el modelo de retención lo marcó por bajo uso del Wi-Fi en una habitación; la oferta de un repetidor resolvió el problema y subió su ARPU. En un año lo tocaron al menos ocho áreas y una docena de sistemas, y él solo vio una empresa.</p></div><div class="ml"><b>En la práctica</b><p>Busca tu puesto en la cadena. Si trabajas en marketing o planificación, estás en demanda y cobertura; en ingeniería y obras, en la red; en ventas, en ventas y órdenes; en la mesa de despacho y en campo, en agendamiento, instalación y activación; en el NOC y en atención, en operación y soporte; en facturación y finanzas, en facturación y cobranza; en fidelización y producto, en retención y monetización; en sistemas, datos, calidad o legal, en el piso que sostiene a todos. Después mira a los lados: el eslabón anterior es quien te entrega el trabajo y el siguiente, a quien se lo entregas tú. Conocer a esas dos personas, y lo que necesitan de ti, es la forma más rápida de que la cadena no se corte en tu puesto.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Cuál es la diferencia entre el eslabón de demanda y el de cobertura?</summary><p>Demanda responde dónde hay mercado y cuánto puede pagar; cobertura responde desde qué direcciones se puede vender hoy porque la red llega y tiene lugar libre.</p></details><details><summary>¿Qué pasa si una zona se construye pero no se carga en el inventario?</summary><p>La red existe pero el negocio no la ve: la consulta de cobertura dice que no hay factibilidad y la zona no vende.</p></details><details><summary>Un cliente fue instalado pero llama el mismo día porque no navega. ¿Qué eslabón falló probablemente?</summary><p>La activación: la ONT quedó instalada, pero su configuración o su autorización en RADIUS y el BNG no llegaron.</p></details><details><summary>¿Por qué «servicio activo sin factura» es tan peligroso?</summary><p>Porque el cliente usa la red sin pagar y nadie lo nota, ya que el cliente no reclama; es ingreso perdido que solo aparece en una auditoría o conciliación.</p></details><details><summary>¿Por qué datos e IA y gobierno se dibujan como un piso y no como un eslabón más de la fila?</summary><p>Porque no son una etapa por la que pasa el cliente, sino capacidades que sostienen a todas las etapas: la información para decidir y los responsables, reglas y controles.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Cadena_de_valor" target="_blank" rel="noopener">Cadena de valor (Wikipedia) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Business_Process_Framework_(eTOM)" target="_blank" rel="noopener">eTOM, el mapa de procesos de TM Forum (Wikipedia, en inglés) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Customer_journey" target="_blank" rel="noopener">Customer journey: el recorrido del cliente (Wikipedia, en inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const P=[
+    ['Demanda','Planear','El área de planificación eligió el barrio de Laura: muchos hogares, buen poder de compra y poca fibra de la competencia.','Mapas de mercado, BI','Planificación comercial','46',
+     'El barrio nunca se eligió. Laura sigue con su conexión vieja y la empresa ni siquiera sabe que existe.'],
+    ['Cobertura','Planear','Laura escribe su dirección en la web y el sistema responde que su caja tiene puertos libres.','GIS, inventario de planta','Ingeniería de planta','37',
+     'La web dice «sin cobertura» aunque la fibra pasa por su calle, porque la zona no se cargó en el inventario. Laura contrata a la competencia.'],
+    ['Red','Planear','La fibra, la OLT y el BNG de su zona ya están construidos, certificados y en servicio.','OLT, BNG, core, NMS','Ingeniería y obras','14 a 18',
+     'La zona se vendió antes de terminar la obra. La instalación se pospone semanas y Laura cancela.'],
+    ['Ventas','Vender y conectar','Compra un plan de 300 Mbps por el chat de ventas, de noche, desde el celular.','Web, chat, CRM, catálogo','Ventas digitales','34',
+     'Nadie contesta el chat fuera de horario. Laura abandona la compra y vuelve a buscar en Internet.'],
+    ['Órdenes','Vender y conectar','El BSS crea el pedido y el OSS lo convierte en tareas: reservar un puerto en la OLT y una ONT del almacén.','BSS, OSS, orquestador','Sistemas y back office','36 y 38',
+     'La orden queda trabada entre el BSS y el OSS. Nadie la agenda y Laura llama tres veces preguntando por su instalación.'],
+    ['Agenda','Vender y conectar','Elige el martes en la mañana. El lunes recibe un mensaje que le confirma el turno.','Gestión de técnicos','Despacho','40',
+     'El técnico llega en otro horario y no hay nadie. Visita perdida, nuevo turno y una clienta que ya duda.'],
+    ['Instalación','Vender y conectar','El técnico tiende la acometida, instala la ONT y mide una potencia óptica con buen margen.','App de campo, medidor de potencia','Técnicos de campo','17 y 40',
+     'Un conector mal pulido deja la señal al límite. Desde la primera lluvia, la conexión de Laura se corta a ratos.'],
+    ['Activación','Vender y conectar','La OLT reconoce la ONT; el ACS y RADIUS le cargan la configuración y la velocidad del plan. Laura navega antes de que el técnico se vaya.','Gestor de OLT, ACS, RADIUS','Sistemas de red','19, 20 y 40',
+     'La ONT queda instalada pero sin configuración. Laura no navega el día de la instalación y llama a soporte esa misma tarde.'],
+    ['Operación','Operar','En el tercer mes, el NOC ve una alarma de corte de fibra en su zona y la repara antes de que ella lo note.','NMS, alarmas, NOC','Centro de operaciones','31 y 45',
+     'Nadie mira la alarma. Laura pasa la noche sin Internet y se entera de que fue un corte por los vecinos.'],
+    ['Soporte','Operar','Llama porque el Wi-Fi del dormitorio va lento. El agente revisa la ONT a distancia, cambia el canal y lo resuelve en la llamada.','Tickets, CRM, ACS','Atención al cliente','42',
+     'Le mandan un técnico sin diagnosticar. La visita cuesta varios meses de margen y el problema del Wi-Fi sigue igual.'],
+    ['Facturación','Cobrar','Recibe una factura clara, con el primer mes cobrado desde el día de la activación.','Facturación del BSS','Facturación','34',
+     'El BSS nunca se enteró de la activación. Laura navega meses sin factura: la empresa presta el servicio y no lo cobra.'],
+    ['Cobranza','Cobrar','Un mes se atrasa. Recibe un aviso con la fecha de corte y paga a tiempo desde la app.','Pasarela de pago, BSS','Cobranza','44',
+     'La cortan sin aviso y, después de pagar, la reconexión tarda un día. Laura presenta una queja ante el regulador.'],
+    ['Retención','Crecer','El modelo de riesgo la marca por un Wi-Fi débil en una habitación. La llaman antes de que se queje.','CRM, modelo de riesgo de baja','Fidelización','49',
+     'Nadie ve las señales. Cuando un vendedor de la competencia toca su puerta con una oferta, Laura se va.'],
+    ['Monetización','Crecer','Acepta un repetidor Wi-Fi por una cuota más. Su casa queda bien cubierta y su factura sube un poco.','Catálogo, CRM, ACS','Producto','25 y 43',
+     'Le ofrecen televisión que no usa. La llamada molesta, no vende nada y deja a Laura con la sensación de que no la escuchan.'],
+    ['Datos e IA','Piso transversal','Todo lo que pasó con Laura alimenta los modelos: en qué barrios vender, qué fallas anticipar, a quién llamar antes.','Lago de datos, BI, modelos','Datos y analítica','49',
+     'Cada área guarda su planilla. Nadie ve que todos los vecinos de Laura tienen el mismo problema de Wi-Fi.'],
+    ['Gobierno','Piso transversal','A los dos años, Laura renueva. Cada paso tuvo un dueño, un indicador y un control.','Indicadores, auditoría, políticas','Dirección, calidad y legal','47 y 48',
+     'Sin dueños ni indicadores, los mismos errores se repiten en todos los eslabones y nadie responde por ellos.']
+  ];
+  let i=0, roto=null;
+  const tira=$('#c48-tira');
+  tira.innerHTML=P.map((p,k)=>'<button type="button" data-k="'+k+'" aria-label="'+(k+1)+'. '+p[0]+'" title="'+p[0]+'">'+(k+1)+'</button>').join('');
+  function pintar(){
+    tira.querySelectorAll('button').forEach((b,k)=>{
+      if(k===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');
+      b.classList.toggle('roto',k===roto);
+      b.classList.toggle('lejos',roto!==null&&k>roto);
+    });
+    const p=P[i], esRoto=roto===i;
+    $('#c48-paso').innerHTML='<span class="c48-tramo">Eslabón '+(i+1)+' de 16 · '+p[1]+'</span><h4>'+p[0]+'</h4><p>'+(esRoto?'<b>Eslabón roto.</b> '+p[6]:p[2])+'</p>'+
+      '<dl><dt>Sistemas</dt><dd>'+p[3]+'</dd><dt>Quién atiende</dt><dd>'+p[4]+'</dd><dt>Capítulo</dt><dd>'+p[5]+'</dd></dl>';
+    $('#c48-romper').setAttribute('aria-pressed',String(esRoto));
+    $('#c48-romper').textContent=esRoto?'Reparar este eslabón':'Romper este eslabón';
+    $('#c48-ant').disabled=i===0;
+    $('#c48-sig').disabled=i===P.length-1;
+    let msg;
+    if(roto===null){
+      msg=i===P.length-1?'<span class="ok">La cadena aguantó: Laura renovó. Dos años de cuotas cobradas, un servicio adicional y una clienta que recomienda la empresa.</span>':
+        '<span>Laura avanza por la cadena. Eslabones recorridos: '+(i+1)+' de 16.</span>';
+    }else{
+      const p0=P[roto][0];
+      msg='<span class="warn">La cadena se cortó en «'+p0+'».</span>'+
+        (roto<=3?'<span>Laura nunca llegó a ser clienta: todo el CAPEX de su zona sigue esperando a alguien que lo pague.</span>':
+         roto<=7?'<span>Laura pagó o iba a pagar, pero su servicio no arrancó bien: la empresa gastó en venderle y conectarla y todavía no cobra.</span>':
+         roto<=11?'<span>Laura ya es clienta, pero la experiencia o el cobro fallaron: sube el costo de atenderla y crece el riesgo de que se vaya antes de pagar lo que costó.</span>':
+         '<span>Laura funcionaba bien, pero la empresa dejó de cuidarla o de aprender de ella: se pierde la renovación y el valor que podía crecer.</span>')+
+        (i>roto?'<span>Los eslabones que siguen ya no importan para Laura: aparecen atenuados.</span>':'');
+    }
+    $('#c48-out').innerHTML=msg;
+  }
+  tira.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;i=+b.dataset.k;pintar();});
+  $('#c48-ant').addEventListener('click',()=>{if(i>0){i--;pintar();}});
+  $('#c48-sig').addEventListener('click',()=>{if(i<P.length-1){i++;pintar();}});
+  $('#c48-romper').addEventListener('click',()=>{roto=(roto===i)?null:i;pintar();});
+  pintar();
+})();
+</script>
+</body>
+</html>

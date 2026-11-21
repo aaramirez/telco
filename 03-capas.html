@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Capas · Cómo funciona un telco</title>
+<meta name="description" content="Las redes funcionan porque el problema se divide en capas que se ocupan cada una de una sola cosa, y cada capa confía en que la de abajo hace su trabajo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="03-capas">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 03 DE 49</span><h1>Capas: el modelo OSI y TCP/IP</h1><p class="lede">Las redes funcionan porque el problema se divide en capas que se ocupan cada una de una sola cosa, y cada capa confía en que la de abajo hace su trabajo.</p></header>
+<section><div class="prose"><p>En el capítulo 1 seguimos un clic desde el celular hasta un servidor lejano. Pasó por más de una docena de máquinas, cada una de un fabricante distinto, y todas se entendieron. ¿Cómo es posible que un teléfono de una marca, un router de otra, una fibra fabricada en un tercer país y un servidor en otro continente cooperen sin conocerse? La respuesta es una idea muy simple que sostiene toda la industria: <b>dividir el problema en capas</b>.</p><p>Este capítulo presenta esas capas, explica cómo un mensaje se envuelve y se desenvuelve al pasar por ellas y te da el vocabulario que se usa todos los días en soporte y en el centro de operaciones: «es capa 1», «es un problema de capa 2», «la capa 7 está bien».</p></div><div class="analogia"><b>Imagínalo así</b><p>Una carta dentro de un sobre, dentro de una saca de correo, dentro de un camión. Quien escribe la carta no sabe nada de camiones; el chofer no abre los sobres; el empleado que arma las sacas solo lee el código postal. Cada nivel mira su propia etiqueta, hace su parte y confía en que los demás harán la suya.</p></div><figure class="fig fig-capas" id="03-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: las cinco capas, en todos los equipos del viaje">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class=""><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: las cinco capas, en todos los equipos del viaje</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo no se detiene en un tramo del viaje: enciende las cinco capas y todas las estaciones, porque las capas son el idioma con que se describe cualquier equipo de la red, de la casa al servidor.</figcaption></figure></section>
+<section><h2>Por qué dividir en capas</h2><div class="prose"><p>Imagina que tuvieras que diseñar, tú solo, todo lo necesario para que una foto llegue de tu celular al de un amigo en otro país. Tendrías que decidir cómo convertir la foto en señales, cómo viajan esas señales por el aire y por una fibra, cómo se encuentra el camino entre miles de redes, qué pasa si se pierde un pedazo y cómo sabe el otro teléfono que eso es una foto y no un audio. Es demasiado para un solo diseño.</p><p>Los ingenieros resolvieron ese problema como se resuelve cualquier problema grande: partiéndolo en problemas pequeños, uno encima del otro. Cada pedazo es una <b>capa</b>, y cada capa tiene tres reglas:</p><ul><li>Se ocupa de <b>una sola tarea</b>: mover bits, entregar al vecino, encontrar el camino, cuidar la conversación o entender el contenido.</li><li><b>Le presta un servicio a la capa de arriba</b> y usa el servicio de la capa de abajo, sin preguntar cómo lo hace.</li><li><b>Habla con su par</b> del otro lado: la capa de red del celular «conversa» con la capa de red del router, aunque físicamente el mensaje baje y suba por las demás.</li></ul><p>La ganancia es enorme. Si mañana aparece una fibra más rápida, solo cambia la capa física; las páginas web siguen funcionando igual. Si se inventa una aplicación nueva, no hay que tocar los routers. Y cada fabricante puede especializarse en una capa: unos hacen fibra, otros switches, otros routers, otros aplicaciones, y todo encaja porque las fronteras entre capas están escritas en normas públicas.</p></div></section>
+<section><h2>Las siete capas de OSI, una por una</h2><div class="prose"><p>En los años setenta y ochenta, la Organización Internacional de Normalización (<b>ISO</b>) publicó un modelo de referencia para ordenar esta idea: el modelo <b>OSI</b> (interconexión de sistemas abiertos), con siete capas. Se numeran de abajo hacia arriba, y de ahí vienen expresiones como «capa 2» o «capa 7».</p><h3>1 · Física</h3><p>Mueve bits de un punto a otro como algo físico: pulsos de luz en una fibra, voltajes en un cable de cobre, ondas de radio en el aire. Le importan los conectores, los colores de la luz, la potencia de la señal y la distancia. No sabe qué significan los bits; solo los transporta. Es el tema del capítulo 2.</p><h3>2 · Enlace</h3><p>Entrega un bloque de datos, la <b>trama</b>, al equipo vecino directo: del celular al router Wi-Fi, de la ONT a la OLT, de un switch a otro. Usa direcciones físicas (las <b>MAC</b>) y detecta si la trama llegó dañada. Ethernet y Wi-Fi viven aquí; el capítulo 4 los explica.</p><h3>3 · Red</h3><p>Encuentra el camino a través de muchas redes, salto a salto, hasta el destino final. Usa las <b>direcciones IP</b> y la deciden los <b>routers</b>. Es la capa que hace posible Internet como «red de redes» (capítulos 5 y 6).</p><h3>4 · Transporte</h3><p>Cuida la conversación de punta a punta: que lleguen todos los pedazos, en orden, y que cada uno se entregue a la aplicación correcta dentro del equipo, gracias a los <b>puertos</b>. <b>TCP</b> es el transporte cuidadoso; <b>UDP</b>, el rápido que no reclama lo perdido (capítulo 7).</p><h3>5 · Sesión</h3><p>Abre, mantiene y cierra el diálogo entre dos aplicaciones: quién habla, cuándo y cómo retomar si se corta.</p><h3>6 · Presentación</h3><p>Se ocupa del formato: cómo se representan las letras, cómo se comprime una imagen y cómo se cifra el contenido para que nadie lo lea en el camino.</p><h3>7 · Aplicación</h3><p>Es la capa que entiende el contenido: pedir una página (<b>HTTP</b>), averiguar una dirección (<b>DNS</b>), mandar un correo o iniciar una llamada. Ojo: «aplicación» no es la app del celular, sino el protocolo que esa app usa para hablar con la red.</p><p>Un truco para recordar el orden de abajo hacia arriba: <b>F</b>ísica, <b>E</b>nlace, <b>R</b>ed, <b>T</b>ransporte, <b>S</b>esión, <b>P</b>resentación, <b>A</b>plicación.</p></div></section>
+<section><h2>El modelo TCP/IP, el que se usa de verdad</h2><div class="prose"><p>OSI es el mapa con que se enseña y se conversa, pero Internet no se construyó sobre él. Se construyó sobre la familia de protocolos <b>TCP/IP</b>, desarrollada en paralelo y descrita por la comunidad de Internet en documentos como el RFC 1122. Ese modelo es más práctico y tiene menos capas: junta las tres capas de arriba de OSI en una sola de <b>aplicación</b> y las dos de abajo en una de <b>acceso a la red</b>.</p><p>¿Por qué ganó? Porque funcionaba, era gratis de usar y ya conectaba universidades y redes de investigación cuando OSI todavía era papel. En la práctica, nadie distingue hoy una capa de sesión o de presentación: esas tareas las resuelven la propia aplicación y <b>TLS</b>, el protocolo que pone el candado en el navegador.</p><p>Este libro usa un modelo <b>híbrido de cinco capas</b>, el más común en la industria: las cuatro de TCP/IP, pero separando la física del enlace, porque en un telco son mundos distintos (no es lo mismo un corte de fibra que una VLAN mal configurada). Los números de OSI se siguen usando para nombrar las capas: por eso un ingeniero dice «capa 7» para hablar de la aplicación aunque el modelo tenga cinco.</p></div><figure class="fig fig-comparacion" id="03-diagrama-6"><div class="lienzo"><svg viewBox="0 0 760 380" style="min-width:600px" role="img" aria-label="Comparación de modelos: las siete capas de OSI, las cuatro de TCP/IP y las cinco del libro. Sesión, presentación y aplicación de OSI forman la capa de aplicación; física y enlace forman el acceso a la red de TCP/IP, que el libro separa en dos">
+  <g class="t t-xs t-b t-m" text-anchor="middle">
+    <text x="130" y="28">MODELO OSI · 7 CAPAS</text>
+    <text x="380" y="28">MODELO TCP/IP · 4 CAPAS</text>
+    <text x="630" y="28">ESTE LIBRO · 5 CAPAS</text>
+  </g>
+
+  
+  <g class="t">
+    <rect x="30" y="44" width="200" height="40" rx="6" class="c-apl"/><text x="44" y="69" class="t-mono t-b k-apl">7</text><text x="66" y="69" class="t-b">Aplicación</text>
+    <rect x="30" y="90" width="200" height="40" rx="6" class="caja"/><text x="44" y="115" class="t-mono t-b t-m">6</text><text x="66" y="115">Presentación</text>
+    <rect x="30" y="136" width="200" height="40" rx="6" class="caja"/><text x="44" y="161" class="t-mono t-b t-m">5</text><text x="66" y="161">Sesión</text>
+    <rect x="30" y="182" width="200" height="40" rx="6" class="c-tra"/><text x="44" y="207" class="t-mono t-b k-tra">4</text><text x="66" y="207" class="t-b">Transporte</text>
+    <rect x="30" y="228" width="200" height="40" rx="6" class="c-red"/><text x="44" y="253" class="t-mono t-b k-red">3</text><text x="66" y="253" class="t-b">Red</text>
+    <rect x="30" y="274" width="200" height="40" rx="6" class="c-enl"/><text x="44" y="299" class="t-mono t-b k-enl">2</text><text x="66" y="299" class="t-b">Enlace de datos</text>
+    <rect x="30" y="320" width="200" height="40" rx="6" class="c-fis"/><text x="44" y="345" class="t-mono t-b k-fis">1</text><text x="66" y="345" class="t-b">Física</text>
+  </g>
+
+  
+  <g class="t">
+    <rect x="280" y="44" width="200" height="132" rx="6" class="c-apl"/><text x="380" y="106" text-anchor="middle" class="t-b">Aplicación</text><text x="380" y="124" text-anchor="middle" class="t-s t-m">HTTP, DNS, TLS…</text>
+    <rect x="280" y="182" width="200" height="40" rx="6" class="c-tra"/><text x="380" y="207" text-anchor="middle" class="t-b">Transporte</text>
+    <rect x="280" y="228" width="200" height="40" rx="6" class="c-red"/><text x="380" y="253" text-anchor="middle" class="t-b">Internet (IP)</text>
+    <rect x="280" y="274" width="200" height="86" rx="6" class="caja"/><text x="380" y="314" text-anchor="middle" class="t-b">Acceso a la red</text><text x="380" y="332" text-anchor="middle" class="t-s t-m">Ethernet, Wi-Fi, fibra…</text>
+  </g>
+
+  
+  <g class="t">
+    <rect x="530" y="44" width="200" height="132" rx="6" class="c-apl"/><text x="630" y="106" text-anchor="middle" class="t-b k-apl">Aplicación</text><text x="630" y="124" text-anchor="middle" class="t-s t-m">«capa 7»</text>
+    <rect x="530" y="182" width="200" height="40" rx="6" class="c-tra"/><text x="630" y="207" text-anchor="middle" class="t-b k-tra">Transporte · «capa 4»</text>
+    <rect x="530" y="228" width="200" height="40" rx="6" class="c-red"/><text x="630" y="253" text-anchor="middle" class="t-b k-red">Red · «capa 3»</text>
+    <rect x="530" y="274" width="200" height="40" rx="6" class="c-enl"/><text x="630" y="299" text-anchor="middle" class="t-b k-enl">Enlace · «capa 2»</text>
+    <rect x="530" y="320" width="200" height="40" rx="6" class="c-fis"/><text x="630" y="345" text-anchor="middle" class="t-b k-fis">Física · «capa 1»</text>
+  </g>
+
+  
+  <g class="ln ln-d">
+    <path d="M232 44H278M232 176H278M232 222H278M232 268H278M232 360H278"/>
+    <path d="M482 44H528M482 176H528M482 222H528M482 268H528M482 360H528"/>
+    <path d="M482 314H528"/>
+  </g>
+</svg></div><figcaption><b>Tres maneras de contar las mismas capas.</b> A la izquierda, las siete capas de OSI con su número; al centro, las cuatro de TCP/IP; a la derecha, las cinco que usa este libro, con sus colores. Las líneas punteadas muestran qué capas se juntan: sesión y presentación quedan dentro de aplicación, y TCP/IP no separa la física del enlace.</figcaption></figure></section>
+<section><h2>Encapsular: sobres dentro de sobres</h2><div class="prose"><p>Ahora veamos qué pasa con un mensaje concreto. Cuando tu navegador pide la página de <code>www.ejemplo.com</code>, el pedido baja por las capas del celular y cada una le agrega su propia etiqueta, llamada <b>encabezado</b>, como quien mete una carta en un sobre y ese sobre en otro:</p><ol class="steps"><li><span>La aplicación escribe el pedido: <code>GET /</code>, «quiero la página principal».</span></li><li><span>Transporte lo envuelve con un encabezado TCP que dice de qué puerto sale y a qué puerto va (el 443 de las páginas seguras). El conjunto se llama <b>segmento</b>.</span></li><li><span>Red agrega un encabezado IP con la dirección de origen y la de destino, <code>203.0.113.10</code>. Ahora es un <b>paquete</b>.</span></li><li><span>Enlace agrega un encabezado Ethernet o Wi-Fi con la MAC del vecino al que se lo entrega y una cola de control para detectar daños. Es una <b>trama</b>.</span></li><li><span>Física convierte la trama en <b>bits</b> y los manda como ondas de radio, voltajes o luz.</span></li></ol><p>Del otro lado ocurre lo inverso, <b>desencapsular</b>: cada capa lee su encabezado, comprueba que el mensaje es para ella, se lo quita y le pasa el resto a la capa de arriba. Al final, la aplicación del servidor recibe exactamente el <code>GET /</code> que escribió el navegador, sin rastro de los sobres.</p><p>Hay un detalle importante: en el camino, cada equipo abre solo los sobres que necesita. Un switch mira la trama y la vuelve a enviar sin tocar el paquete. Un router abre hasta el paquete, mira la IP de destino, decide el siguiente salto y <b>le pone una trama nueva</b> para el siguiente tramo. Nadie en el medio abre el segmento ni lee la página.</p></div><figure class="fig fig-flujo" id="03-diagrama-5"><div class="lienzo"><svg viewBox="0 0 960 540" style="min-width:740px" role="img" aria-label="Flujo de encapsular y desencapsular: en el celular la aplicación escribe GET, transporte agrega el encabezado TCP, red agrega el encabezado IP y enlace agrega Ethernet y lo envía como bits por la fibra; en el servidor enlace quita Ethernet, red quita IP y transporte quita TCP y entrega GET a la aplicación web">
+  <rect x="20" y="10" width="362" height="40" rx="10" class="caja"/><use href="#i-celular" x="30" y="15" width="30" height="30" class="ico"/><text x="68" y="35" class="t t-b">Celular <tspan class="t-s t-m">· emisor</tspan></text>
+  <rect x="470" y="10" width="362" height="40" rx="10" class="caja"/><use href="#i-servidor" x="480" y="15" width="30" height="30" class="ico"/><text x="518" y="35" class="t t-b">Servidor <tspan class="t-s t-m">· receptor</tspan></text>
+  <rect x="23" y="62" width="86" height="44" rx="8" class="c-apl"/>
+  <text x="66" y="89" text-anchor="middle" class="t t-s t-b">Aplicación</text>
+  <line x1="66" y1="106" x2="66" y2="510" class="vida"/>
+  <rect x="113" y="62" width="86" height="44" rx="8" class="c-tra"/>
+  <text x="156" y="89" text-anchor="middle" class="t t-s t-b">Transporte</text>
+  <line x1="156" y1="106" x2="156" y2="510" class="vida"/>
+  <rect x="203" y="62" width="86" height="44" rx="8" class="c-red"/>
+  <text x="246" y="89" text-anchor="middle" class="t t-s t-b">Red</text>
+  <line x1="246" y1="106" x2="246" y2="510" class="vida"/>
+  <rect x="293" y="62" width="86" height="44" rx="8" class="c-enl"/>
+  <text x="336" y="80" text-anchor="middle" class="t t-s t-b">Enlace y</text><text x="336" y="96" text-anchor="middle" class="t t-s t-b">física</text>
+  <line x1="336" y1="106" x2="336" y2="510" class="vida"/>
+  <rect x="473" y="62" width="86" height="44" rx="8" class="c-enl"/>
+  <text x="516" y="80" text-anchor="middle" class="t t-s t-b">Enlace y</text><text x="516" y="96" text-anchor="middle" class="t t-s t-b">física</text>
+  <line x1="516" y1="106" x2="516" y2="510" class="vida"/>
+  <rect x="563" y="62" width="86" height="44" rx="8" class="c-red"/>
+  <text x="606" y="89" text-anchor="middle" class="t t-s t-b">Red</text>
+  <line x1="606" y1="106" x2="606" y2="510" class="vida"/>
+  <rect x="653" y="62" width="86" height="44" rx="8" class="c-tra"/>
+  <text x="696" y="89" text-anchor="middle" class="t t-s t-b">Transporte</text>
+  <line x1="696" y1="106" x2="696" y2="510" class="vida"/>
+  <rect x="743" y="62" width="86" height="44" rx="8" class="c-apl"/>
+  <text x="786" y="89" text-anchor="middle" class="t t-s t-b">Aplicación</text>
+  <line x1="786" y1="106" x2="786" y2="510" class="vida"/>
+  <line x1="66" y1="150" x2="154" y2="150" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="72" y="143" class="t t-s">① Datos: GET /</text>
+  <rect x="72" y="157" width="46" height="16" class="c-apl"/><text x="95.0" y="169" text-anchor="middle" class="t t-xs t-b">DATOS</text>
+  <line x1="156" y1="200" x2="244" y2="200" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="162" y="193" class="t t-s">② + TCP (puertos) = segmento</text>
+  <rect x="162" y="207" width="30" height="16" class="c-tra"/><text x="177.0" y="219" text-anchor="middle" class="t t-xs t-b">TCP</text><rect x="192" y="207" width="46" height="16" class="c-apl"/><text x="215.0" y="219" text-anchor="middle" class="t t-xs t-b">DATOS</text>
+  <line x1="246" y1="250" x2="334" y2="250" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="252" y="243" class="t t-s">③ + IP (direcciones) = paquete</text>
+  <rect x="252" y="257" width="26" height="16" class="c-red"/><text x="265.0" y="269" text-anchor="middle" class="t t-xs t-b">IP</text><rect x="278" y="257" width="30" height="16" class="c-tra"/><text x="293.0" y="269" text-anchor="middle" class="t t-xs t-b">TCP</text><rect x="308" y="257" width="46" height="16" class="c-apl"/><text x="331.0" y="269" text-anchor="middle" class="t t-xs t-b">DATOS</text>
+  <line x1="336" y1="300" x2="514" y2="300" class="ln s-fis" style="stroke-width:3" marker-end="url(#fl-fis)"/>
+  <text x="342" y="293" class="t t-s">④ + Ethernet (MAC) = trama → bits por la fibra</text>
+  <rect x="342" y="307" width="30" height="16" class="c-enl"/><text x="357.0" y="319" text-anchor="middle" class="t t-xs t-b">ETH</text><rect x="372" y="307" width="26" height="16" class="c-red"/><text x="385.0" y="319" text-anchor="middle" class="t t-xs t-b">IP</text><rect x="398" y="307" width="30" height="16" class="c-tra"/><text x="413.0" y="319" text-anchor="middle" class="t t-xs t-b">TCP</text><rect x="428" y="307" width="46" height="16" class="c-apl"/><text x="451.0" y="319" text-anchor="middle" class="t t-xs t-b">DATOS</text><rect x="474" y="307" width="30" height="16" class="c-enl"/><text x="489.0" y="319" text-anchor="middle" class="t t-xs t-b">FCS</text>
+  <line x1="516" y1="350" x2="604" y2="350" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="600" y="343" text-anchor="end" class="t t-s">⑤ − Ethernet: ¿la MAC es mía? Sí</text>
+  <rect x="498" y="357" width="26" height="16" class="c-red"/><text x="511.0" y="369" text-anchor="middle" class="t t-xs t-b">IP</text><rect x="524" y="357" width="30" height="16" class="c-tra"/><text x="539.0" y="369" text-anchor="middle" class="t t-xs t-b">TCP</text><rect x="554" y="357" width="46" height="16" class="c-apl"/><text x="577.0" y="369" text-anchor="middle" class="t t-xs t-b">DATOS</text>
+  <line x1="606" y1="400" x2="694" y2="400" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="690" y="393" text-anchor="end" class="t t-s">⑥ − IP: ¿la IP es mía? Sí</text>
+  <rect x="614" y="407" width="30" height="16" class="c-tra"/><text x="629.0" y="419" text-anchor="middle" class="t t-xs t-b">TCP</text><rect x="644" y="407" width="46" height="16" class="c-apl"/><text x="667.0" y="419" text-anchor="middle" class="t t-xs t-b">DATOS</text>
+  <line x1="696" y1="450" x2="784" y2="450" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="780" y="443" text-anchor="end" class="t t-s">⑦ − TCP: puerto 443 → servidor web</text>
+  <rect x="734" y="457" width="46" height="16" class="c-apl"/><text x="757.0" y="469" text-anchor="middle" class="t t-xs t-b">DATOS</text>
+  <text x="786" y="502" text-anchor="middle" class="t t-s t-b">La app web lee GET /</text>
+  <g class="t t-xs t-b">
+    <path d="M846 136v170" class="ln s-apl" style="stroke-width:3"/><text x="856" y="210">ENCAPSULAR</text><text x="856" y="224" class="t-m">el emisor baja</text><text x="856" y="238" class="t-m">y agrega sobres</text>
+    <path d="M846 336v130" class="ln s-tra" style="stroke-width:3"/><text x="856" y="390">DESENCAPSULAR</text><text x="856" y="404" class="t-m">el receptor sube</text><text x="856" y="418" class="t-m">y quita sobres</text>
+  </g>
+  <text x="12" y="330" class="t t-xs t-m" transform="rotate(-90 12 330)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Encapsular al enviar, desencapsular al recibir.</b> Cada columna es una capa: a la izquierda las del celular, a la derecha las del servidor. Las flechas ①②③ bajan por el emisor agregando encabezados, la flecha ④ es el único viaje físico real, por la fibra, y las ⑤⑥⑦ suben por el receptor quitando un encabezado en cada paso. El tiempo corre hacia abajo.</figcaption></figure><div class="prose"><p>Los sobres cuestan: cada encabezado ocupa espacio que no es contenido. Un pedido corto puede viajar con más sobre que carta. Pruébalo en el laboratorio.</p></div><div class="lab" id="03-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Sobres dentro de sobres</h3></div><p class="hint">Elige qué mensaje mandar y avanza paso a paso: mira qué agrega cada capa al bajar por el celular, cómo viaja en bits y qué quita cada capa al subir por el servidor. Observa cuánto pesan los sobres frente al contenido.</p><style>
+[id="03-lab-2"] .opciones,[id="03-lab-2"] .opciones label{min-width:0}
+[id="03-lab-2"] #c03-msg{width:100%;min-width:0}
+[id="03-lab-2"] .c03-pilas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+[id="03-lab-2"] .c03-pila{display:grid;gap:5px;align-content:start}
+[id="03-lab-2"] .c03-pila h4{margin:0;font:700 .82rem var(--f-display);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+[id="03-lab-2"] .c03-capa{display:flex;gap:6px;align-items:center;border:1.5px solid var(--c);background:var(--cs);border-radius:7px;padding:6px 8px;font:600 .86rem var(--f-display);opacity:.4;transition:opacity .2s}
+[id="03-lab-2"] .c03-capa small{font:500 .72rem var(--f-mono);color:var(--muted);margin-left:auto}
+[id="03-lab-2"] .c03-capa.on{opacity:1;box-shadow:0 0 0 2px var(--c)}
+[id="03-lab-2"] .c03-capa.on::after{content:"◀";color:var(--c)}
+[id="03-lab-2"] .c03-medio{grid-column:1/-1;text-align:center;border:1.5px dashed var(--c-fis);border-radius:7px;padding:5px;font:600 .82rem var(--f-display);color:var(--c-fis);opacity:.4}
+[id="03-lab-2"] .c03-medio.on{opacity:1;border-style:solid;background:var(--c-fis-s)}
+[id="03-lab-2"] .c03-pkt{display:flex;min-height:46px;border-radius:8px;overflow-x:auto;min-width:0;border:1px solid var(--line)}
+[id="03-lab-2"] .c03-pkt span{display:grid;place-items:center;min-width:34px;padding:2px 3px;border-right:1px solid var(--card);background:var(--cs);color:var(--ink);font:700 .76rem var(--f-display);text-align:center;line-height:1.15}
+[id="03-lab-2"] .c03-pkt span small{display:block;font:500 .68rem var(--f-mono);color:var(--muted)}
+[id="03-lab-2"] .c03-pkt span.quitar{outline:2px dashed var(--warm);outline-offset:-3px}
+[id="03-lab-2"] .c03-bits{font:500 .8rem var(--f-mono);color:var(--c-fis);background:var(--c-fis-s);padding:8px 10px;overflow-wrap:anywhere;width:100%}
+</style>
+<div class="opciones">
+  <label>Mensaje que se envía
+    <select id="c03-msg">
+      <option value="80" selected>Pedido de página: GET / (80 bytes)</option>
+      <option value="12">Mensaje de chat: «¡Hola!» (12 bytes)</option>
+      <option value="1400">Un pedazo de una foto (1.400 bytes)</option>
+    </select></label>
+</div>
+<div class="c03-pilas" id="c03-pilas"></div>
+<div class="c03-pkt" id="c03-pkt" role="img" aria-label="El mensaje y sus sobres"></div>
+<div class="btns">
+  <button type="button" id="c03-atras">← Atrás</button>
+  <button type="button" id="c03-sig" class="primary">Siguiente paso →</button>
+  <button type="button" id="c03-reset">Volver a empezar</button>
+</div>
+<div class="readout" id="c03-out" aria-live="polite"></div></div></section>
+<section><h2>Dónde vive cada equipo y cada protocolo</h2><div class="prose"><p>Con las capas en la mano, cada equipo del libro se puede describir por <b>hasta qué capa lee</b>. Es una forma rápida de saber qué hace y qué no:</p><ul><li>La <b>fibra</b>, el <b>splitter</b> y los conectores son capa 1: mueven luz y no entienden nada de lo que llevan.</li><li>El <b>switch</b>, la <b>ONT</b> y la <b>OLT</b> trabajan en capa 2: entregan tramas entre vecinos y separan tráfico con VLAN.</li><li>El <b>router</b> de la casa, el <b>BNG</b> y los routers del <b>core</b> trabajan en capa 3: deciden caminos según la dirección IP.</li><li>Un <b>firewall</b> o el traductor de direcciones del router de casa (<b>NAT</b>) miran también la capa 4, los puertos.</li><li>El <b>celular</b> y el <b>servidor</b> usan las siete: son los únicos que entienden la página completa.</li></ul><p>Con los protocolos pasa lo mismo. Cada sigla del libro tiene su lugar en la pila, y saberlo ayuda a entender de qué depende: el DNS (capa 7) no puede funcionar si la sesión IP del cliente (capa 3) no está arriba, y esa sesión no existe si la ONT (capa 2) no se registró en la OLT, lo que a su vez exige que llegue luz (capa 1).</p></div><figure class="fig fig-esquema" id="03-diagrama-3"><div class="lienzo"><svg viewBox="0 0 920 476" style="min-width:720px" role="img" aria-label="La pila OSI con los protocolos y equipos del libro: aplicación con HTTP, DNS, SIP y RADIUS en celular y servidor; presentación y sesión resueltas por las aplicaciones y TLS; transporte con TCP y UDP en firewalls y NAT; red con IP, OSPF, BGP y MPLS en routers, BNG y core; enlace con Ethernet, Wi-Fi, VLAN y GPON en switch, ONT y OLT; física con fibra, cobre y radio en fibra, splitter y cables">
+  <g class="t t-xs t-b t-m"><text x="20" y="28">CAPA</text><text x="206" y="28">QUÉ HACE</text><text x="416" y="28">PROTOCOLOS DEL LIBRO</text><text x="650" y="28">EQUIPOS QUE LLEGAN HASTA AQUÍ</text></g>
+  <rect x="20" y="44" width="176" height="54" rx="7" class="c-apl"/><text x="34" y="77" class="t t-mono t-b k-apl">7</text><text x="58" y="77" class="t t-b">Aplicación</text>
+  <line x1="206" y1="98" x2="900" y2="98" class="ln ln-d"/>
+  <text x="206" y="67" class="t t-s">Entiende el contenido:</text><text x="206" y="84" class="t t-s">páginas, nombres, llamadas</text>
+  <text x="416" y="67" class="t t-s t-mono">HTTP · DNS · DHCP · SIP</text><text x="416" y="84" class="t t-s t-mono">SMTP · SSH · RADIUS · TR-069</text>
+  <use href="#i-celular" x="650" y="55" width="30" height="30" class="ico"/>
+  <use href="#i-servidor" x="684" y="55" width="30" height="30" class="ico"/>
+  <text x="724" y="67" class="t t-s">Celular y</text><text x="724" y="84" class="t t-s">servidor</text>
+  <rect x="20" y="104" width="176" height="54" rx="7" class="caja"/><text x="34" y="137" class="t t-mono t-b t-m">6</text><text x="58" y="137" class="t t-b">Presentación</text>
+  <line x1="206" y1="158" x2="900" y2="158" class="ln ln-d"/>
+  <text x="206" y="127" class="t t-s">Formato, compresión</text><text x="206" y="144" class="t t-s">y cifrado</text>
+  <text x="416" y="135" class="t t-s t-mono">TLS · UTF-8 · JPEG · JSON</text>
+  <text x="650" y="127" class="t t-s t-m">Lo resuelven las</text><text x="650" y="144" class="t t-s t-m">aplicaciones y TLS</text>
+  <rect x="20" y="164" width="176" height="54" rx="7" class="caja"/><text x="34" y="197" class="t t-mono t-b t-m">5</text><text x="58" y="197" class="t t-b">Sesión</text>
+  <line x1="206" y1="218" x2="900" y2="218" class="ln ln-d"/>
+  <text x="206" y="187" class="t t-s">Abrir, mantener y</text><text x="206" y="204" class="t t-s">cerrar el diálogo</text>
+  <text x="416" y="187" class="t t-s t-mono">sesiones de TLS, de SIP</text><text x="416" y="204" class="t t-s t-mono">o de cada aplicación</text>
+  <text x="650" y="187" class="t t-s t-m">Lo resuelven las</text><text x="650" y="204" class="t t-s t-m">aplicaciones y TLS</text>
+  <rect x="20" y="224" width="176" height="54" rx="7" class="c-tra"/><text x="34" y="257" class="t t-mono t-b k-tra">4</text><text x="58" y="257" class="t t-b">Transporte</text>
+  <line x1="206" y1="278" x2="900" y2="278" class="ln ln-d"/>
+  <text x="206" y="247" class="t t-s">Conversación completa y</text><text x="206" y="264" class="t t-s">a la app correcta (puertos)</text>
+  <text x="416" y="255" class="t t-s t-mono">TCP · UDP</text>
+  <use href="#i-candado" x="650" y="235" width="30" height="30" class="ico"/>
+  <text x="690" y="247" class="t t-s">Firewall y NAT</text><text x="690" y="264" class="t t-s">del router de casa</text>
+  <rect x="20" y="284" width="176" height="54" rx="7" class="c-red"/><text x="34" y="317" class="t t-mono t-b k-red">3</text><text x="58" y="317" class="t t-b">Red</text>
+  <line x1="206" y1="338" x2="900" y2="338" class="ln ln-d"/>
+  <text x="206" y="307" class="t t-s">Encontrar el camino</text><text x="206" y="324" class="t t-s">entre redes, salto a salto</text>
+  <text x="416" y="307" class="t t-s t-mono">IP · IPv6 · ICMP</text><text x="416" y="324" class="t t-s t-mono">OSPF · IS-IS · BGP · MPLS</text>
+  <use href="#i-router" x="650" y="295" width="30" height="30" class="ico"/>
+  <use href="#i-router-core" x="684" y="295" width="30" height="30" class="ico"/>
+  <text x="724" y="307" class="t t-s">Router de casa,</text><text x="724" y="324" class="t t-s">BNG y core</text>
+  <rect x="20" y="344" width="176" height="54" rx="7" class="c-enl"/><text x="34" y="377" class="t t-mono t-b k-enl">2</text><text x="58" y="377" class="t t-b">Enlace</text>
+  <line x1="206" y1="398" x2="900" y2="398" class="ln ln-d"/>
+  <text x="206" y="367" class="t t-s">Entregar al vecino</text><text x="206" y="384" class="t t-s">directo (MAC)</text>
+  <text x="416" y="367" class="t t-s t-mono">Ethernet · Wi-Fi · VLAN</text><text x="416" y="384" class="t t-s t-mono">PPPoE · GPON</text>
+  <use href="#i-ont" x="650" y="355" width="30" height="30" class="ico"/>
+  <use href="#i-olt" x="684" y="355" width="30" height="30" class="ico"/>
+  <text x="724" y="367" class="t t-s">Switch, ONT</text><text x="724" y="384" class="t t-s">y OLT</text>
+  <rect x="20" y="404" width="176" height="54" rx="7" class="c-fis"/><text x="34" y="437" class="t t-mono t-b k-fis">1</text><text x="58" y="437" class="t t-b">Física</text>
+  <text x="206" y="427" class="t t-s">Mover bits como luz,</text><text x="206" y="444" class="t t-s">radio o electricidad</text>
+  <text x="416" y="427" class="t t-s t-mono">fibra · cobre · radio</text><text x="416" y="444" class="t t-s t-mono">conectores · potencia</text>
+  <use href="#i-splitter" x="650" y="415" width="30" height="30" class="ico"/>
+  <text x="690" y="427" class="t t-s">Fibra, splitter,</text><text x="690" y="444" class="t t-s">cable y antena</text>
+</svg></div><figcaption><b>La pila OSI con los protocolos y equipos del libro.</b> Cada fila es una capa, de la física abajo a la aplicación arriba. La segunda columna resume su tarea; la tercera, qué protocolos del libro viven en ella; y la última, qué equipos trabajan hasta esa capa. Un equipo de una fila también usa todas las filas de abajo.</figcaption></figure><div class="prose"><p>Ojo con las etiquetas absolutas: la realidad es más desordenada que el modelo. Hay protocolos «entre capas», como <b>MPLS</b> (capítulo 21), al que se le dice capa 2,5, y equipos que mezclan funciones, como el router Wi-Fi de la casa, que es a la vez switch, router, firewall y punto de acceso de radio. El modelo es un mapa, no el territorio.</p></div></section>
+<section><h2>Diagnosticar por capas</h2><div class="prose"><p>La mayor utilidad práctica de las capas está en el diagnóstico. Cuando algo falla, se revisa <b>de abajo hacia arriba</b>: no tiene sentido buscar un error en la configuración del DNS si la ONT tiene la luz roja de pérdida de señal. Cada capa depende de las de abajo, así que la primera que falla explica todas las demás.</p><div class="tbl"><table><thead><tr><th>Capa</th><th>Pregunta que se hace</th><th>Señal típica de falla</th></tr></thead><tbody><tr><td>1 · Física</td><td>¿Llega la señal?</td><td>Luz LOS (pérdida de señal) roja en la ONT, potencia óptica baja, cable suelto</td></tr><tr><td>2 · Enlace</td><td>¿El equipo habla con su vecino?</td><td>ONT no registrada en la OLT, VLAN equivocada</td></tr><tr><td>3 · Red</td><td>¿Tiene dirección y camino?</td><td>Sin IP, sesión caída en el BNG, ping que no responde</td></tr><tr><td>4 · Transporte</td><td>¿Se abre la conversación?</td><td>Un puerto bloqueado por un firewall</td></tr><tr><td>7 · Aplicación</td><td>¿El servicio responde bien?</td><td>El DNS no resuelve, la página da error, la app se cae</td></tr></tbody></table></div><p>En soporte, esta tabla se convierte en un guion. Si el cliente ve la luz roja, es capa 1 y probablemente hay que enviar a un técnico. Si la ONT está bien pero no navega, puede ser capa 2 o 3, y casi siempre se resuelve desde los sistemas, sin visita. Si navega en todo menos en una aplicación, es capa 7 y muchas veces el problema ni siquiera está en la red del operador.</p></div></section>
+<section><h2>Quién escribe las reglas: IETF y los RFC, IEEE, ITU-T, 3GPP y Broadband Forum</h2><div class="prose"><p>Que equipos de distintos fabricantes se entiendan no es magia: hay organizaciones que escriben las reglas, los <b>estándares</b>, y los fabricantes las cumplen. Las que más aparecen en este libro son estas:</p><ul><li><b>IETF</b> (Grupo de Trabajo de Ingeniería de Internet): una comunidad abierta de ingenieros que escribe las reglas de Internet en documentos llamados <b>RFC</b> (literalmente, «pedido de comentarios»). IP, TCP, UDP, DNS, DHCP, HTTP, TLS, BGP, SIP y RADIUS son RFC. Su lema informal es «consenso aproximado y código que funciona».</li><li><b>IEEE</b> (Instituto de Ingenieros Eléctricos y Electrónicos): define las redes locales con la familia 802: Ethernet (802.3), Wi-Fi (802.11) y las VLAN (802.1Q).</li><li><b>ITU-T</b> (el sector de normalización de la Unión Internacional de Telecomunicaciones, de Naciones Unidas): define los tipos de fibra (G.652, G.657) y las redes ópticas pasivas, como GPON (G.984) y XGS-PON (G.9807).</li><li><b>3GPP</b>: una alianza de organismos de varios países que escribe las normas de la telefonía móvil: 4G (LTE) y 5G.</li><li><b>Broadband Forum</b>: reúne a operadores y fabricantes de banda ancha y escribe guías de cómo armar la red de acceso (TR-101) y cómo gestionar los equipos de la casa a distancia (TR-069).</li><li><b>ISO</b>: además del modelo OSI, dejó algunos protocolos que siguen vivos, como IS-IS, muy usado en el core de los operadores.</li></ul></div><figure class="fig fig-esquema" id="03-diagrama-4"><div class="lienzo"><svg viewBox="0 0 920 490" style="min-width:720px" role="img" aria-label="Quién escribe cada regla: el IETF define IP, TCP, UDP, DNS, DHCP, HTTP, TLS, SIP, BGP y RADIUS en documentos RFC; el IEEE, Ethernet, Wi-Fi y VLAN; la ITU-T, la fibra y GPON; 3GPP, las redes móviles 4G y 5G; el Broadband Forum, la red de acceso y la gestión remota TR-069; ISO, el modelo OSI e IS-IS">
+  <g class="t t-xs t-b t-m"><text x="20" y="28">ORGANISMO</text><text x="270" y="28">QUÉ DEFINE (COLOR = CAPA DONDE TRABAJA)</text></g>
+  <rect x="20" y="44" width="230" height="88" rx="8" class="caja"/><text x="36" y="85" class="t t-b">IETF</text><text x="36" y="102" class="t t-s t-m">documentos «RFC»</text>
+  <rect x="270" y="58" width="35" height="26" rx="13" class="c-red"/><text x="287" y="75" text-anchor="middle" class="t t-s t-b">IP</text>
+  <rect x="313" y="58" width="48" height="26" rx="13" class="c-red"/><text x="337" y="75" text-anchor="middle" class="t t-s t-b">IPv6</text>
+  <rect x="368" y="58" width="48" height="26" rx="13" class="c-red"/><text x="392" y="75" text-anchor="middle" class="t t-s t-b">ICMP</text>
+  <rect x="424" y="58" width="48" height="26" rx="13" class="c-red"/><text x="448" y="75" text-anchor="middle" class="t t-s t-b">OSPF</text>
+  <rect x="480" y="58" width="41" height="26" rx="13" class="c-red"/><text x="500" y="75" text-anchor="middle" class="t t-s t-b">BGP</text>
+  <rect x="529" y="58" width="41" height="26" rx="13" class="c-tra"/><text x="549" y="75" text-anchor="middle" class="t t-s t-b">TCP</text>
+  <rect x="578" y="58" width="41" height="26" rx="13" class="c-tra"/><text x="599" y="75" text-anchor="middle" class="t t-s t-b">UDP</text>
+  <rect x="627" y="58" width="41" height="26" rx="13" class="c-apl"/><text x="648" y="75" text-anchor="middle" class="t t-s t-b">DNS</text>
+  <rect x="676" y="58" width="48" height="26" rx="13" class="c-apl"/><text x="700" y="75" text-anchor="middle" class="t t-s t-b">DHCP</text>
+  <rect x="732" y="58" width="48" height="26" rx="13" class="c-apl"/><text x="756" y="75" text-anchor="middle" class="t t-s t-b">HTTP</text>
+  <rect x="788" y="58" width="41" height="26" rx="13" class="c-apl"/><text x="808" y="75" text-anchor="middle" class="t t-s t-b">TLS</text>
+  <rect x="837" y="58" width="41" height="26" rx="13" class="c-apl"/><text x="857" y="75" text-anchor="middle" class="t t-s t-b">SIP</text>
+  <rect x="270" y="92" width="60" height="26" rx="13" class="c-apl"/><text x="300" y="109" text-anchor="middle" class="t t-s t-b">RADIUS</text>
+  <rect x="20" y="142" width="230" height="54" rx="8" class="caja"/><text x="36" y="166" class="t t-b">IEEE</text><text x="36" y="183" class="t t-s t-m">normas «802»</text>
+  <rect x="270" y="156" width="124" height="26" rx="13" class="c-enl"/><text x="332" y="173" text-anchor="middle" class="t t-s t-b">Ethernet · 802.3</text>
+  <rect x="402" y="156" width="112" height="26" rx="13" class="c-enl"/><text x="458" y="173" text-anchor="middle" class="t t-s t-b">Wi-Fi · 802.11</text>
+  <rect x="522" y="156" width="105" height="26" rx="13" class="c-enl"/><text x="575" y="173" text-anchor="middle" class="t t-s t-b">VLAN · 802.1Q</text>
+  <rect x="20" y="206" width="230" height="54" rx="8" class="caja"/><text x="36" y="230" class="t t-b">ITU-T</text><text x="36" y="247" class="t t-s t-m">recomendaciones «G.»</text>
+  <rect x="270" y="220" width="156" height="26" rx="13" class="c-fis"/><text x="348" y="237" text-anchor="middle" class="t t-s t-b">Fibra · G.652 y G.657</text>
+  <rect x="434" y="220" width="99" height="26" rx="13" class="c-enl"/><text x="484" y="237" text-anchor="middle" class="t t-s t-b">GPON · G.984</text>
+  <rect x="541" y="220" width="124" height="26" rx="13" class="c-enl"/><text x="603" y="237" text-anchor="middle" class="t t-s t-b">XGS-PON · G.9807</text>
+  <rect x="20" y="270" width="230" height="54" rx="8" class="caja"/><text x="36" y="294" class="t t-b">3GPP</text><text x="36" y="311" class="t t-s t-m">redes móviles</text>
+  <rect x="270" y="284" width="73" height="26" rx="13" class="caja"/><text x="307" y="301" text-anchor="middle" class="t t-s t-b">4G (LTE)</text>
+  <rect x="351" y="284" width="35" height="26" rx="13" class="caja"/><text x="369" y="301" text-anchor="middle" class="t t-s t-b">5G</text>
+  <rect x="20" y="334" width="230" height="54" rx="8" class="caja"/><text x="36" y="358" class="t t-b">Broadband Forum</text><text x="36" y="375" class="t t-s t-m">informes «TR»</text>
+  <rect x="270" y="348" width="163" height="26" rx="13" class="c-enl"/><text x="351" y="365" text-anchor="middle" class="t t-s t-b">Red de acceso · TR-101</text>
+  <rect x="441" y="348" width="169" height="26" rx="13" class="c-apl"/><text x="525" y="365" text-anchor="middle" class="t t-s t-b">Gestión remota · TR-069</text>
+  <rect x="20" y="398" width="230" height="54" rx="8" class="caja"/><text x="36" y="422" class="t t-b">ISO</text><text x="36" y="439" class="t t-s t-m">normas ISO/IEC</text>
+  <rect x="270" y="412" width="86" height="26" rx="13" class="caja"/><text x="313" y="429" text-anchor="middle" class="t t-s t-b">Modelo OSI</text>
+  <rect x="364" y="412" width="54" height="26" rx="13" class="c-red"/><text x="391" y="429" text-anchor="middle" class="t t-s t-b">IS-IS</text>
+  <rect x="20" y="465" width="14" height="14" rx="3" class="c-apl"/><text x="40" y="476" class="t t-s">Aplicación</text>
+  <rect x="134" y="465" width="14" height="14" rx="3" class="c-tra"/><text x="154" y="476" class="t t-s">Transporte</text>
+  <rect x="248" y="465" width="14" height="14" rx="3" class="c-red"/><text x="268" y="476" class="t t-s">Red</text>
+  <rect x="313" y="465" width="14" height="14" rx="3" class="c-enl"/><text x="333" y="476" class="t t-s">Enlace</text>
+  <rect x="399" y="465" width="14" height="14" rx="3" class="c-fis"/><text x="419" y="476" class="t t-s">Física</text>
+  <rect x="485" y="465" width="14" height="14" rx="3" class="caja"/><text x="505" y="476" class="t t-s">Varias capas</text>
+</svg></div><figcaption><b>Quién escribe cada regla.</b> A la izquierda, cada organismo; a la derecha, los protocolos y normas del libro que define, con el color de la capa donde trabajan. La mayor parte de la capa de red hacia arriba es del IETF; el enlace y la física se reparten entre IEEE e ITU-T.</figcaption></figure><div class="prose"><p>Los estándares no son solo un tema de ingenieros. Cuando un operador compra equipos, exige que cumplan ciertas normas para poder mezclar marcas y no quedar atado a un solo proveedor. Y cuando un cliente pregunta si su router «es compatible», la respuesta está en qué normas cumple.</p></div></section>
+<section><h2>Cómo leer un diagrama de flujo de protocolo</h2><div class="prose"><p>A lo largo del libro, cada protocolo se explica con un <b>diagrama de flujo</b>, también llamado diagrama de secuencia. Todos tienen la misma forma, así que vale la pena aprender a leerlos una vez:</p><ul><li>Arriba están los <b>participantes</b>, cada uno en su recuadro con su ícono: los equipos o sistemas que conversan.</li><li>De cada participante baja una línea punteada, su <b>línea de vida</b>. El <b>tiempo corre hacia abajo</b>: lo que está más arriba pasó primero.</li><li>Cada <b>flecha es un mensaje</b>: sale de quien lo manda y apunta a quien lo recibe. Lleva un número en círculo (①②③) para seguir el orden y el nombre del mensaje en letra de código, con su significado en palabras.</li><li>El <b>color de la flecha es la capa</b> del protocolo: rosa para aplicación, violeta para transporte, azul para red, verde para enlace y ámbar para física.</li><li>A la derecha, unas <b>barras de fase</b> agrupan los mensajes por etapa y dicen cuántas <b>idas y vueltas</b> cuesta cada una. Cada ida y vuelta es tiempo de espera.</li></ul></div><figure class="fig fig-flujo" id="03-diagrama-7"><div class="lienzo"><svg viewBox="0 0 880 300" style="min-width:680px" role="img" aria-label="Anatomía de un diagrama de flujo: dos participantes, celular y DNS, con sus líneas de vida; dos mensajes numerados de color de la capa de aplicación; una barra de fase que dice una ida y vuelta; y una leyenda que explica cada parte">
+  
+  <rect x="60" y="14" width="140" height="52" rx="10" class="caja"/><use href="#i-celular" x="72" y="24" width="32" height="32" class="ico"/><text x="112" y="45" class="t t-b">Celular</text>
+  <rect x="330" y="14" width="150" height="52" rx="10" class="caja"/><use href="#i-guia" x="342" y="24" width="32" height="32" class="ico"/><text x="382" y="38" class="t t-b">DNS del</text><text x="382" y="55" class="t t-b">operador</text>
+  <line x1="130" y1="66" x2="130" y2="280" class="vida"/>
+  <line x1="405" y1="66" x2="405" y2="280" class="vida"/>
+
+  
+  <line x1="130" y1="122" x2="403" y2="122" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="140" y="114" class="t t-s"><tspan class="t-mono t-b">Query</tspan> ① ¿Dirección de www.ejemplo.com?</text>
+  <line x1="405" y1="186" x2="132" y2="186" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="200" y="178" class="t t-s"><tspan class="t-mono t-b">Response</tspan> ② Es 203.0.113.10</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M505 108v90" class="ln s-apl" style="stroke-width:3"/><text x="515" y="150" class="k-apl">DNS</text><text x="515" y="164" class="t-m">1 ida y vuelta</text>
+  </g>
+  <text x="22" y="200" class="t t-xs t-m" transform="rotate(-90 22 200)">TIEMPO ↓</text>
+
+  
+  <g class="t t-s t-b" text-anchor="middle">
+    <circle cx="214" cy="22" r="10" class="caja"/><text x="214" y="26">A</text>
+    <circle cx="420" cy="250" r="10" class="caja"/><text x="420" y="254">B</text>
+    <circle cx="112" cy="122" r="10" class="caja"/><text x="112" y="126">C</text>
+    <circle cx="270" cy="144" r="10" class="caja"/><text x="270" y="148">D</text>
+    <circle cx="505" cy="90" r="10" class="caja"/><text x="505" y="94">E</text>
+  </g>
+
+  
+  <line x1="610" y1="20" x2="610" y2="280" class="ln"/>
+  <g class="t t-s">
+    <text x="626" y="34"><tspan class="t-b">A · Participantes:</tspan> quién</text><text x="626" y="50">conversa, con su ícono.</text>
+    <text x="626" y="86"><tspan class="t-b">B · Línea de vida:</tspan> el tiempo</text><text x="626" y="102">corre hacia abajo.</text>
+    <text x="626" y="138"><tspan class="t-b">C · Número:</tspan> el orden</text><text x="626" y="154">de los mensajes.</text>
+    <text x="626" y="190"><tspan class="t-b">D · Flecha:</tspan> un mensaje; su</text><text x="626" y="206">color dice su capa.</text>
+    <text x="626" y="242"><tspan class="t-b">E · Fase:</tspan> la etapa y cuántas</text><text x="626" y="258">idas y vueltas cuesta.</text>
+  </g>
+</svg></div><figcaption><b>Anatomía de un diagrama de flujo.</b> Un ejemplo mínimo, la consulta al DNS del capítulo 1, con cada parte señalada: participantes, líneas de vida, mensajes numerados, el color de la capa y la barra de fase con su costo en idas y vueltas.</figcaption></figure><div class="prose"><p>Con esta clave puedes leer cualquier flujo del libro, desde el saludo de TCP hasta el alta de un cliente en el BNG. Un consejo: lee primero la columna de fases para saber de qué se trata y después sigue las flechas en orden.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región dibuja su red con este mismo mapa de capas, y lo usa para separar dos mundos que comparten la misma fibra: el tráfico del cliente y el tráfico de gestión. En la capa física son la misma luz. En la capa de enlace se separan con VLAN distintas: una para Internet, otra para la voz y otra para gestionar la ONT. En la capa de red usan direcciones distintas: el cliente recibe una IP con salida a Internet y la ONT recibe otra en una red privada de gestión, inalcanzable desde afuera. Y en la capa de aplicación hablan protocolos distintos: el cliente, HTTP y DNS; el sistema de gestión, el protocolo que configura la ONT a distancia. Así, aunque un cliente intente atacar su propio equipo desde Internet, el camino de gestión no está en su capa de red.</p></div><div class="ml"><b>En la práctica</b><p>«Es capa 1» quiere decir que el problema es físico (fibra, potencia, conector) y casi siempre necesita a un técnico. «Es capa 2 o 3» suele resolverse desde los sistemas: el registro de la ONT, la VLAN, la sesión o la dirección IP. «Es capa 7» apunta a un servicio o a una aplicación, a veces fuera de la red del operador. Saber traducir esas frases te permite entender un reporte del NOC, explicarle a un cliente qué está pasando y saber a qué área escalar un caso.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué se divide la red en capas?</summary><p>Para partir un problema enorme en tareas pequeñas e independientes: cada capa hace una sola cosa, usa el servicio de la de abajo y se puede cambiar sin tocar las demás.</p></details><details><summary>¿En qué se diferencia el modelo OSI del modelo TCP/IP?</summary><p>OSI tiene siete capas y es el mapa de referencia con que se enseña; TCP/IP tiene cuatro, junta sesión y presentación dentro de aplicación, y es el que usa Internet de verdad.</p></details><details><summary>¿Qué agrega la capa de red al encapsular un mensaje?</summary><p>Un encabezado IP con las direcciones de origen y destino, que convierte el segmento en un paquete.</p></details><details><summary>Un router recibe una trama. ¿Hasta qué capa la abre y qué hace después?</summary><p>Hasta la capa 3: lee la IP de destino, decide el siguiente salto y envuelve el paquete en una trama nueva para el siguiente tramo, sin abrir el segmento ni el contenido.</p></details><details><summary>La ONT de un cliente tiene la luz LOS encendida y él dice que el DNS no funciona. ¿Por dónde empiezas?</summary><p>Por la capa 1: sin señal óptica nada de arriba puede funcionar. El DNS es solo el síntoma.</p></details><details><summary>¿Qué organismo escribe las reglas de TCP, IP y DNS, y cómo se llaman esos documentos?</summary><p>El IETF, en documentos llamados RFC.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Modelo_OSI" target="_blank" rel="noopener">Modelo OSI (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Familia_de_protocolos_de_internet" target="_blank" rel="noopener">Familia de protocolos de Internet, TCP/IP (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.ietf.org/about/introduction/" target="_blank" rel="noopener">Qué es el IETF y cómo trabaja (en inglés) <small>lectura</small></a><a class="vid" href="https://www.rfc-editor.org/rfc/rfc1122" target="_blank" rel="noopener">RFC 1122: los requisitos de los equipos de Internet y sus capas (en inglés) <small>referencia</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const CAPAS=[['apl','Aplicación','capa 7'],['tra','Transporte','capa 4'],['red','Red','capa 3'],['enl','Enlace','capa 2'],['fis','Física','capa 1']];
+  const SOBRE={
+    tcp:{n:'TCP',c:'tra',b:20,d:'puertos 51514 → 443'},
+    ip:{n:'IP',c:'red',b:20,d:'198.51.100.25 → 203.0.113.10'},
+    eth:{n:'Ethernet',c:'enl',b:14,d:'MAC 02:1a:2b… → 02:aa:bb…'},
+    fcs:{n:'FCS',c:'enl',b:4,d:'control'}
+  };
+  const NOMBRE={80:'GET /',12:'«¡Hola!»',1400:'foto (trozo)'};
+  // pasos: lado (e emisor, r receptor, m medio), capa, sobres presentes, sobre a quitar, texto
+  const PASOS=[
+    {l:'e',k:'apl',s:[],t:'La aplicación del celular escribe el mensaje. Todavía no hay ningún sobre: solo el contenido.'},
+    {l:'e',k:'tra',s:['tcp'],t:'Transporte lo envuelve con un encabezado TCP: sale del puerto 51514 y va al puerto 443, el de las páginas seguras. Ahora es un segmento.'},
+    {l:'e',k:'red',s:['ip','tcp'],t:'Red agrega un encabezado IP con la dirección de origen y la de destino (203.0.113.10). Ahora es un paquete.'},
+    {l:'e',k:'enl',s:['eth','ip','tcp','fcs'],t:'Enlace agrega un encabezado Ethernet con la MAC del vecino que lo recibe y, al final, una cola de control (FCS) para detectar daños. Ahora es una trama.'},
+    {l:'m',k:'fis',s:'bits',t:'Física convierte la trama en ceros y unos y los manda como pulsos de luz por la fibra. Es el único viaje real: todo lo demás ocurre dentro de los equipos.'},
+    {l:'r',k:'enl',s:['eth','ip','tcp','fcs'],x:['eth','fcs'],t:'Enlace del servidor lee la MAC de destino: es la suya. Revisa el FCS: la trama llegó sana. Quita el sobre Ethernet y pasa el paquete hacia arriba. (Simplificado: en la realidad, cada router del camino cambia este sobre.)'},
+    {l:'r',k:'red',s:['ip','tcp'],x:['ip'],t:'Red lee la IP de destino: 203.0.113.10 es la suya. Quita el sobre IP y pasa el segmento a transporte.'},
+    {l:'r',k:'tra',s:['tcp'],x:['tcp'],t:'Transporte mira el puerto de destino, 443, y sabe a qué aplicación entregarlo: al servidor web. Quita el sobre TCP.'},
+    {l:'r',k:'apl',s:[],t:'La aplicación del servidor recibe exactamente el mismo mensaje que escribió el celular, sin rastro de los sobres.'}
+  ];
+  let paso=0;
+  function pila(lado,titulo){
+    return '<div class="c03-pila"><h4>'+titulo+'</h4>'+CAPAS.map(([k,n,num])=>
+      '<div class="c03-capa" data-lado="'+lado+'" data-k="'+k+'" style="--c:var(--c-'+k+');--cs:var(--c-'+k+'-s)">'+n+' <small>'+num+'</small></div>').join('')+'</div>';
+  }
+  q('#c03-pilas').innerHTML=pila('e','Celular · envía')+pila('r','Servidor · recibe')+'<div class="c03-medio" id="c03-medio">〰 luz por la fibra 〰</div>';
+  function bits(n){
+    let s='',x=0x5a;
+    for(let i=0;i<12;i++){x=(x*73+41)&255;s+=x.toString(2).padStart(8,'0')+' ';}
+    return s+'… ('+(n*8).toLocaleString('es')+' bits)';
+  }
+  function dibujar(){
+    const p=PASOS[paso], datos=+q('#c03-msg').value;
+    document.querySelectorAll('[id="03-lab-2"] .c03-capa').forEach(el=>{
+      el.classList.toggle('on',(el.dataset.lado===p.l||p.l==='m')&&el.dataset.k===p.k);
+    });
+    q('#c03-medio').classList.toggle('on',p.l==='m');
+    const sobres=p.s==='bits'?['eth','ip','tcp','fcs']:p.s;
+    const bytesSobre=sobres.reduce((a,k)=>a+SOBRE[k].b,0), total=datos+bytesSobre;
+    const seg=(k)=>{
+      if(k==='datos')return '<span style="--cs:var(--c-apl-s);flex:'+Math.max(datos,30)+' 1 0">Datos<small>'+NOMBRE[datos]+' · '+datos+' B</small></span>';
+      const o=SOBRE[k], quita=p.x&&p.x.includes(k);
+      return '<span'+(quita?' class="quitar"':'')+' style="--cs:var(--c-'+o.c+'-s);flex:'+Math.max(o.b,30)+' 1 0">'+o.n+'<small>'+o.b+' B</small></span>';
+    };
+    if(p.s==='bits'){
+      q('#c03-pkt').innerHTML='<div class="c03-bits">'+bits(total)+'</div>';
+    }else{
+      const orden=sobres.filter(k=>k!=='fcs').map(seg).join('')+seg('datos')+(sobres.includes('fcs')?seg('fcs'):'');
+      q('#c03-pkt').innerHTML=orden;
+    }
+    q('#c03-pkt').setAttribute('aria-label','Contenido actual: '+(p.s==='bits'?'bits en la fibra':(sobres.length?sobres.map(k=>SOBRE[k].n).join(', ')+' y datos':'solo los datos')));
+    const pct=Math.round(bytesSobre/total*100);
+    const det=sobres.filter(k=>k!=='fcs').map(k=>SOBRE[k].n+': '+SOBRE[k].d).join(' · ');
+    q('#c03-out').innerHTML='<span class="big">Paso '+(paso+1)+' de '+PASOS.length+' · '+(p.l==='e'?'celular':p.l==='r'?'servidor':'en el medio')+'</span>'+
+      '<span>'+p.t+'</span>'+(det?'<span>'+det+'</span>':'')+
+      '<span>Contenido '+datos+' B + sobres '+bytesSobre+' B = '+total+' B en total.</span>'+
+      (bytesSobre?'<span class="'+(pct>40?'warn':'ok')+'">Los sobres son el '+pct+' % de lo que viaja'+(pct>40?': para un mensaje corto, hay más sobre que carta.':'.')+'</span>':'');
+    q('#c03-atras').disabled=paso===0;
+    q('#c03-sig').disabled=paso===PASOS.length-1;
+  }
+  q('#c03-sig').addEventListener('click',()=>{if(paso<PASOS.length-1){paso++;dibujar();}});
+  q('#c03-atras').addEventListener('click',()=>{if(paso>0){paso--;dibujar();}});
+  q('#c03-reset').addEventListener('click',()=>{paso=0;dibujar();});
+  q('#c03-msg').addEventListener('change',dibujar);
+  dibujar();
+})();
+</script>
+</body>
+</html>

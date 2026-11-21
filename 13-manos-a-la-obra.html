@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manos a la obra · Cómo funciona un telco</title>
+<meta name="description" content="Con unas pocas herramientas que ya están en cualquier computadora o celular (ping, traceroute, nslookup, la configuración de red, una prueba de velocidad y Wireshark) cualquier persona puede ver con sus propios ojos los mensajes que este libro dibuja y diagnosticar en qué capa está un problema.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="13-manos-a-la-obra">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 13 DE 49</span><h1>Manos a la obra: la caja de herramientas del diagnóstico</h1><p class="lede">Con unas pocas herramientas que ya están en cualquier computadora o celular (ping, traceroute, nslookup, la configuración de red, una prueba de velocidad y Wireshark) cualquier persona puede ver con sus propios ojos los mensajes que este libro dibuja y diagnosticar en qué capa está un problema.</p></header>
+<section><div class="prose"><p>Hasta aquí, este libro dibujó cientos de mensajes: la pregunta al DNS, el saludo TCP, el candado de TLS. Este capítulo es distinto: es para que los veas de verdad, en tu propia computadora, con herramientas que ya vienen instaladas. No hace falta ser técnico. Hace falta abrir una ventana de comandos y saber qué mirar.</p><p>Además de satisfacer la curiosidad, estas herramientas sirven para algo muy práctico: decir <b>en qué capa</b> está un problema. «No tengo Internet» puede ser el Wi-Fi, la fibra, el DNS o el sitio que se cayó. Con cinco comandos se sabe cuál.</p></div><div class="analogia"><b>Imagínalo así</b><p>El maletín de un médico: el termómetro, el estetoscopio y el tensiómetro no curan, pero dicen dónde mirar; cada herramienta de red mide una cosa y hay que saber cuál usar primero.</p></div><figure class="fig fig-capas" id="13-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: una herramienta para mirar cada capa, de tu equipo al servidor">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: una herramienta para mirar cada capa, de tu equipo al servidor</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Las herramientas de este capítulo miran todas las capas, desde tu equipo hasta el servidor del otro lado. Lo único que no se ve con ellas es la planta del operador por dentro (el splitter y la OLT), que se mira con las herramientas del propio operador.</figcaption></figure><div class="prose"><p>Para abrir la ventana de comandos: en Windows, escribe <code>cmd</code> en el menú de inicio; en Mac, abre la aplicación Terminal; en Linux, la terminal. Todo lo que sigue es de solo lectura: estos comandos miran, no cambian nada.</p></div></section>
+<section><h2>Mi dirección y mi puerta de enlace: ipconfig, ip y la configuración del celular</h2><div class="prose"><p>El primer paso es preguntarle a tu equipo cómo está conectado. En Windows se escribe <code>ipconfig</code> (o <code>ipconfig /all</code> para ver más). En Mac y Linux, <code>ip addr</code> y <code>ip route</code>, o <code>ifconfig</code> en equipos más viejos. En el celular, la misma información está en los ajustes del Wi-Fi, tocando la red a la que estás conectado.</p><p>Lo que importa mirar son cuatro datos:</p><ul><li><b>Dirección IPv4</b>, por ejemplo <code>192.168.1.34</code>: el número que el router de la casa le prestó a tu equipo (capítulo 5).</li><li><b>Máscara de subred</b>, casi siempre <code>255.255.255.0</code>: dice qué direcciones son «de la casa».</li><li><b>Puerta de enlace predeterminada</b>, casi siempre <code>192.168.1.1</code>: el router, la salida hacia el resto del mundo.</li><li><b>Servidores DNS</b> (en <code>ipconfig /all</code>): a quién le pregunta tu equipo los nombres (capítulo 8).</li></ul><p>Hay una señal de alarma que conviene memorizar: si la dirección empieza con <b><code>169.254</code></b>, tu equipo no recibió dirección del router y se inventó una. Es como un huésped que llega al hotel, no encuentra a nadie en la recepción y se asigna solo una habitación: no va a llegar lejos. El problema está en la casa, entre el equipo y el router.</p></div><figure class="fig fig-capas" id="13-diagrama-2"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:720px" role="img" aria-label="Qué herramienta mira cada capa: aplicación con navegador, nslookup y prueba de velocidad; transporte con netstat y ss; red con ipconfig, ping y traceroute; enlace con el estado del Wi-Fi y la dirección física; física con las luces de la ONT y la potencia óptica; Wireshark cruza todas las capas">
+  <g class="t t-b">
+    <rect x="16" y="14" width="140" height="52" rx="8" class="c-apl"/><text x="30" y="45" class="k-apl">Aplicación</text>
+    <rect x="16" y="76" width="140" height="52" rx="8" class="c-tra"/><text x="30" y="107" class="k-tra">Transporte</text>
+    <rect x="16" y="138" width="140" height="52" rx="8" class="c-red"/><text x="30" y="169" class="k-red">Red</text>
+    <rect x="16" y="200" width="140" height="52" rx="8" class="c-enl"/><text x="30" y="231" class="k-enl">Enlace</text>
+    <rect x="16" y="262" width="140" height="52" rx="8" class="c-fis"/><text x="30" y="293" class="k-fis">Física</text>
+  </g>
+  <g class="t t-s">
+    
+    <rect x="170" y="18" width="150" height="44" rx="6" class="caja"/><text x="180" y="36" class="t-mono t-b">nslookup · dig</text><text x="180" y="52" class="t-m">¿se traduce el nombre?</text>
+    <rect x="330" y="18" width="160" height="44" rx="6" class="caja"/><text x="340" y="36" class="t-b">Prueba de velocidad</text><text x="340" y="52" class="t-m">¿cuánto baja y sube?</text>
+    <rect x="500" y="18" width="160" height="44" rx="6" class="caja"/><text x="510" y="36" class="t-b">El navegador</text><text x="510" y="52" class="t-m">¿carga el sitio?</text>
+    
+    <rect x="170" y="80" width="150" height="44" rx="6" class="caja"/><text x="180" y="98" class="t-mono t-b">netstat · ss</text><text x="180" y="114" class="t-m">conexiones y puertos</text>
+    
+    <rect x="170" y="142" width="150" height="44" rx="6" class="caja"/><text x="180" y="160" class="t-mono t-b">ipconfig · ip</text><text x="180" y="176" class="t-m">mi IP y mi salida</text>
+    <rect x="330" y="142" width="160" height="44" rx="6" class="caja"/><text x="340" y="160" class="t-mono t-b">ping</text><text x="340" y="176" class="t-m">¿llego? ¿cuánto tarda?</text>
+    <rect x="500" y="142" width="160" height="44" rx="6" class="caja"/><text x="510" y="160" class="t-mono t-b">tracert · traceroute</text><text x="510" y="176" class="t-m">¿por dónde paso?</text>
+    
+    <rect x="170" y="204" width="150" height="44" rx="6" class="caja"/><text x="180" y="222" class="t-b">Estado del Wi-Fi</text><text x="180" y="238" class="t-m">¿conectado? ¿señal?</text>
+    <rect x="330" y="204" width="160" height="44" rx="6" class="caja"/><text x="340" y="222" class="t-mono t-b">ipconfig /all</text><text x="340" y="238" class="t-m">la dirección física (MAC)</text>
+    <rect x="500" y="204" width="160" height="44" rx="6" class="caja ln-d"/><text x="510" y="222" class="t-b">Estado de la ONT</text><text x="510" y="238" class="t-m">en línea, desde cuándo</text>
+    
+    <rect x="170" y="266" width="150" height="44" rx="6" class="caja"/><text x="180" y="284" class="t-b">Luces de la ONT</text><text x="180" y="300" class="t-m">¿hay luz roja (LOS)?</text>
+    <rect x="330" y="266" width="160" height="44" rx="6" class="caja"/><text x="340" y="284" class="t-b">El cable y el Wi-Fi</text><text x="340" y="300" class="t-m">¿bien enchufado? ¿lejos?</text>
+    <rect x="500" y="266" width="160" height="44" rx="6" class="caja ln-d"/><text x="510" y="284" class="t-b">Potencia óptica</text><text x="510" y="300" class="t-m">cuánta luz llega (dBm)</text>
+  </g>
+  
+  <rect x="690" y="14" width="194" height="300" rx="10" class="caja"/>
+  <text x="787" y="44" text-anchor="middle" class="t t-b">Wireshark</text>
+  <text x="787" y="62" text-anchor="middle" class="t t-s t-m">muestra cada paquete</text>
+  <text x="787" y="76" text-anchor="middle" class="t t-s t-m">con todas sus capas</text>
+  <rect x="712" y="96" width="150" height="28" rx="5" class="c-apl"/><text x="787" y="115" text-anchor="middle" class="t t-s">DNS · HTTP · TLS</text>
+  <rect x="712" y="130" width="150" height="28" rx="5" class="c-tra"/><text x="787" y="149" text-anchor="middle" class="t t-s">TCP · UDP</text>
+  <rect x="712" y="164" width="150" height="28" rx="5" class="c-red"/><text x="787" y="183" text-anchor="middle" class="t t-s">IP · ICMP</text>
+  <rect x="712" y="198" width="150" height="28" rx="5" class="c-enl"/><text x="787" y="217" text-anchor="middle" class="t t-s">Ethernet · Wi-Fi · ARP</text>
+  <rect x="712" y="232" width="150" height="28" rx="5" class="caja ln-d"/><text x="787" y="251" text-anchor="middle" class="t t-s t-m">la luz no se captura</text>
+  <rect x="696" y="282" width="12" height="12" rx="2" class="caja ln-d"/><text x="714" y="292" class="t t-xs t-m">LADO DEL OPERADOR</text>
+</svg></div><figcaption><b>Qué herramienta mira cada capa.</b> Las filas son las capas y, en cada una, las herramientas que la examinan. Los recuadros punteados son herramientas del lado del operador, que el cliente no ve. Wireshark, a la derecha, cruza todas las capas porque muestra cada paquete entero.</figcaption></figure></section>
+<section><h2>¿Llego? ping y cómo leer tiempos y pérdidas</h2><div class="prose"><p><code>ping</code> es el termómetro de la red. Manda un mensaje corto a otro equipo, un «eco» del protocolo <b>ICMP</b> (el de los mensajes de control de la red, RFC 792), y espera que se lo devuelva. Mide dos cosas: si llega la respuesta y cuánto tarda la ida y vuelta.</p><p>Se usa así: <code>ping 192.168.1.1</code> (el router), <code>ping 203.0.113.10</code> (un servidor afuera, por su número) o <code>ping www.ejemplo.com</code> (por nombre). En Windows manda cuatro ecos y se detiene; en Mac y Linux sigue hasta que aprietas Control+C.</p><p>Cómo leer el resultado:</p><ul><li><b>El tiempo</b>, en milisegundos. Hasta el router por cable, menos de 1 ms; por Wi-Fi, de 2 a 10 ms. Hasta un servidor del mismo país, entre 10 y 40 ms; a otro continente, entre 100 y 250 ms, por la distancia que recorre la luz.</li><li><b>Las pérdidas.</b> «Perdidos = 0 (0 % perdidos)» es lo normal. Unas pocas pérdidas ya se notan en una videollamada; muchas hacen que todo se sienta trabado.</li><li><b>La variación.</b> Si el mínimo es 18 ms y el máximo 180 ms, la conexión es inestable. Es lo típico de un Wi-Fi con mala señal o una red saturada.</li></ul><p>Una advertencia: algunos servidores y routers no responden a ping a propósito, por seguridad. Que un sitio no conteste no siempre quiere decir que esté caído. Por eso siempre conviene comparar contra algo que sí suele responder.</p></div></section>
+<section><h2>¿Por dónde paso? traceroute y tracert salto a salto</h2><div class="prose"><p><code>ping</code> dice si llegas; <b>traceroute</b> dice <b>por dónde</b> pasas. En Windows se escribe <code>tracert www.ejemplo.com</code>; en Mac y Linux, <code>traceroute www.ejemplo.com</code>. La respuesta es una lista numerada: cada línea es un router del camino, un <b>salto</b>, con tres medidas de tiempo.</p><p>Usa un truco ingenioso con el campo <b>TTL</b> («tiempo de vida») de los paquetes IP, que el capítulo 6 presentó. Cada router le resta uno al TTL y, si llega a cero, descarta el paquete y le avisa al remitente con un mensaje ICMP de «tiempo excedido». Traceroute manda primero paquetes con TTL 1 (el primer router los descarta y avisa), después con TTL 2 (el segundo avisa), y así hasta llegar al destino. Cada aviso revela quién está en ese salto y cuánto se tardó en llegar hasta él.</p></div><figure class="fig fig-comparacion" id="13-diagrama-4"><div class="lienzo"><svg viewBox="0 0 960 640" style="min-width:760px" role="img" aria-label="La salida de ping y de traceroute anotada: en el ping, la dirección que resolvió el DNS, el tiempo de ida y vuelta, el TTL, las pérdidas y la variación; en el traceroute, el número de salto, las tres medidas de tiempo, quién respondió, el salto que no contesta y el salto donde el tiempo sube">
+  
+  <text x="16" y="22" class="t t-xs t-b t-m">PING</text>
+  <rect x="16" y="30" width="560" height="248" rx="8" class="caja"/>
+  <g class="t t-s t-mono">
+    <text x="30" y="54" class="t-b">C:\&gt; ping www.ejemplo.com</text>
+    <text x="30" y="80">Haciendo ping a www.ejemplo.com <tspan class="k-apl t-b">[203.0.113.10]</tspan> con 32 bytes</text>
+    <text x="30" y="96">de datos:</text>
+    <text x="30" y="118">Respuesta desde 203.0.113.10: bytes=32 <tspan class="k-red t-b">tiempo=18ms</tspan> <tspan class="k-tra t-b">TTL=56</tspan></text>
+    <text x="30" y="134">Respuesta desde 203.0.113.10: bytes=32 tiempo=17ms TTL=56</text>
+    <text x="30" y="150">Respuesta desde 203.0.113.10: bytes=32 tiempo=21ms TTL=56</text>
+    <text x="30" y="166">Respuesta desde 203.0.113.10: bytes=32 tiempo=18ms TTL=56</text>
+    <text x="30" y="192">Estadísticas de ping para 203.0.113.10:</text>
+    <text x="58" y="208">Paquetes: enviados = 4, recibidos = 4, <tspan class="k-fis t-b">perdidos = 0</tspan></text>
+    <text x="58" y="224"><tspan class="k-fis t-b">(0% perdidos)</tspan>,</text>
+    <text x="30" y="246">Tiempos aproximados de ida y vuelta en milisegundos:</text>
+    <text x="58" y="262"><tspan class="k-enl t-b">Mínimo = 17ms, Máximo = 21ms</tspan>, Media = 18ms</text>
+  </g>
+  <g class="t t-s t-b">
+    <text x="554" y="80">①</text><text x="554" y="118">②③</text><text x="554" y="216">④</text><text x="554" y="262">⑤</text>
+  </g>
+  <g class="t t-s">
+    <text x="600" y="54" class="t-b k-apl">① La dirección que dio el DNS</text>
+    <text x="600" y="70" class="t-m">Si no aparece: el nombre no se resolvió.</text>
+    <text x="600" y="98" class="t-b k-red">② Tiempo de ida y vuelta</text>
+    <text x="600" y="114" class="t-m">Router: 1 a 10 ms. Mismo país: 10 a 40 ms.</text>
+    <text x="600" y="130" class="t-m">Otro continente: 100 a 250 ms.</text>
+    <text x="600" y="156" class="t-b k-tra">③ TTL de la respuesta</text>
+    <text x="600" y="172" class="t-m">Cuántos saltos más podía dar al volver.</text>
+    <text x="600" y="198" class="t-b k-fis">④ Pérdidas</text>
+    <text x="600" y="214" class="t-m">Lo sano es 0 %. Unas pocas ya se notan</text>
+    <text x="600" y="230" class="t-m">en una videollamada.</text>
+    <text x="600" y="252" class="t-b k-enl">⑤ Mínimo y máximo</text>
+    <text x="600" y="268" class="t-m">Si están muy lejos: conexión inestable.</text>
+  </g>
+
+  
+  <text x="16" y="314" class="t t-xs t-b t-m">TRACEROUTE</text>
+  <rect x="16" y="322" width="560" height="300" rx="8" class="caja"/>
+  <g class="t t-s t-mono">
+    <text x="30" y="346" class="t-b">C:\&gt; tracert www.ejemplo.net</text>
+    <text x="30" y="370">Traza a www.ejemplo.net [192.0.2.80]</text>
+    <text x="30" y="386">sobre caminos de 30 saltos como máximo:</text>
+    <text y="412"><tspan x="40" class="k-apl t-b">1</tspan><tspan x="80" class="k-red t-b">2 ms</tspan><tspan x="140" class="k-red t-b">1 ms</tspan><tspan x="200" class="k-red t-b">2 ms</tspan><tspan x="262" class="k-tra t-b">192.168.1.1</tspan></text>
+    <text y="430"><tspan x="40">2</tspan><tspan x="80">5 ms</tspan><tspan x="140">4 ms</tspan><tspan x="200">5 ms</tspan><tspan x="262">100.64.0.1</tspan></text>
+    <text y="448"><tspan x="40">3</tspan><tspan x="80">6 ms</tspan><tspan x="140">5 ms</tspan><tspan x="200">6 ms</tspan><tspan x="262">198.51.100.1</tspan></text>
+    <text y="466"><tspan x="40">4</tspan><tspan x="80">9 ms</tspan><tspan x="140">8 ms</tspan><tspan x="200">9 ms</tspan><tspan x="262">198.51.100.9</tspan></text>
+    <text y="484" class="k-fis t-b"><tspan x="40">5</tspan><tspan x="80">*</tspan><tspan x="140">*</tspan><tspan x="200">*</tspan><tspan x="262">Tiempo de espera agotado</tspan></text>
+    <text y="502" class="k-enl t-b"><tspan x="40">6</tspan><tspan x="80">96 ms</tspan><tspan x="140">95 ms</tspan><tspan x="200">97 ms</tspan><tspan x="262">192.0.2.33</tspan></text>
+    <text y="520"><tspan x="40">7</tspan><tspan x="80">97 ms</tspan><tspan x="140">96 ms</tspan><tspan x="200">97 ms</tspan><tspan x="262">192.0.2.80</tspan></text>
+    <text x="30" y="546">Traza completa.</text>
+  </g>
+  <g class="t t-s t-b">
+    <text x="554" y="412">①②③</text><text x="554" y="484">④</text><text x="554" y="502">⑤</text>
+  </g>
+  <g class="t t-s">
+    <text x="600" y="346" class="t-b k-apl">① Número de salto</text>
+    <text x="600" y="362" class="t-m">El 1 es siempre el router de la casa.</text>
+    <text x="600" y="388" class="t-b k-red">② Tres medidas de tiempo</text>
+    <text x="600" y="404" class="t-m">Ida y vuelta hasta ese router, tres veces.</text>
+    <text x="600" y="430" class="t-b k-tra">③ Quién respondió</text>
+    <text x="600" y="446" class="t-m">Su dirección (a veces también su nombre).</text>
+    <text x="600" y="472" class="t-b k-fis">④ Asteriscos</text>
+    <text x="600" y="488" class="t-m">Ese router no contesta. No es falla si los</text>
+    <text x="600" y="504" class="t-m">saltos siguientes sí responden.</text>
+    <text x="600" y="530" class="t-b k-enl">⑤ El tiempo sube y se queda arriba</text>
+    <text x="600" y="546" class="t-m">Un tramo largo: de 9 a 96 ms, por ejemplo</text>
+    <text x="600" y="562" class="t-m">un cable submarino a otro continente.</text>
+  </g>
+  <text x="30" y="600" class="t t-xs t-m">DIRECCIONES DE EJEMPLO. EN MAC Y LINUX EL COMANDO ES traceroute Y LA SALIDA SE PARECE.</text>
+</svg></div><figcaption><b>La salida de ping y traceroute, línea por línea.</b> Arriba, un ping a <code>www.ejemplo.com</code>, en el mismo país; abajo, un traceroute a <code>www.ejemplo.net</code>, en otro continente. Los números en círculo marcan los campos que importan y, a la derecha, qué significa cada uno. En el traceroute, el salto con asteriscos no es una falla: ese router simplemente no contesta.</figcaption></figure><div class="prose"><p>Tres cosas para leer un traceroute sin asustarse:</p><ol class="steps"><li><span><b>Los asteriscos (<code>* * *</code>) en un salto del medio</b> no son un problema si los saltos siguientes responden: ese router está configurado para no contestar.</span></li><li><span><b>Si desde un salto todo son asteriscos hasta el final</b>, el camino se corta ahí. El último salto que respondió dice hasta dónde llegas.</span></li><li><span><b>Un salto donde el tiempo sube y se queda arriba</b> marca un tramo largo, como un cable submarino. Si el tiempo sube en un salto y vuelve a bajar en el siguiente, es solo un router ocupado que contesta sin apuro.</span></li></ol></div></section>
+<section><h2>¿Resuelve el nombre? nslookup y dig</h2><div class="prose"><p>Muchas veces «no tengo Internet» en realidad es «no tengo DNS»: hay camino, pero el equipo no logra traducir los nombres a direcciones. Para comprobarlo existe <code>nslookup</code>, que está en Windows, Mac y Linux, y su primo más detallado <code>dig</code>, en Mac y Linux.</p><p><code>nslookup www.ejemplo.com</code> muestra dos bloques: arriba, <b>qué servidor DNS respondió</b> (el del operador, normalmente); abajo, la respuesta, con el nombre y su dirección IP. Si dice «respuesta no autoritativa», no es un error: quiere decir que el servidor del operador lo tenía guardado de una consulta anterior y no tuvo que preguntar al dueño del dominio.</p><p>El truco más útil es preguntarle <b>a otro servidor DNS</b>, escribiendo su dirección al final: <code>nslookup www.ejemplo.com 192.0.2.53</code>. Si el DNS del operador no responde y otro sí, el problema está en el DNS, no en la conexión. Y si <code>ping 203.0.113.10</code> funciona pero <code>ping www.ejemplo.com</code> dice que no encuentra el host, el diagnóstico es el mismo.</p></div></section>
+<section><h2>¿Qué conexiones tengo abiertas? netstat y ss</h2><div class="prose"><p><code>netstat -n</code> (en Windows, Mac y Linux) o <code>ss -tun</code> (en Linux) muestran las conversaciones TCP y UDP que tu equipo tiene abiertas en ese momento. Cada línea dice tu dirección y puerto, la dirección y puerto del otro lado y el <b>estado</b> de la conexión, que vienen del capítulo 7:</p><ul><li><b>ESTABLISHED</b>: la conversación está andando. Un puerto remoto <code>443</code> es una página o una app con candado (HTTPS).</li><li><b>SYN_SENT</b>: tu equipo mandó el primer saludo y nadie contestó. Muchas líneas así indican que no llegas al otro lado.</li><li><b>TIME_WAIT</b>: una conversación que terminó hace poco.</li><li><b>LISTENING</b> (o LISTEN): tu equipo espera conexiones en ese puerto, como un servidor.</li></ul><p>Para la mayoría de las personas es una herramienta de curiosidad: abre una página y mira cómo aparecen cinco o diez conexiones nuevas a distintos servidores. Para soporte, es una forma de confirmar si una aplicación está conectada o se quedó esperando.</p></div><div class="lab" id="13-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Consola guiada</h3></div><p class="hint">Elige un caso, ejecuta los comandos con los botones (o escríbelos) y lee la salida como en una computadora de verdad. Debajo de cada resultado se explica qué mirar. Cuando creas que sabes qué le pasa a la conexión, responde la pregunta del final.</p><style>
+[id="13-lab-5"] [hidden]{display:none}
+[id="13-lab-5"] .c13-term{background:var(--ink);color:var(--card);border-radius:10px;padding:12px 14px;font:400 .82rem/1.45 var(--f-mono);min-height:220px;max-height:420px;overflow:auto;white-space:pre;tab-size:4}
+[id="13-lab-5"] .c13-term .cmd{color:var(--accent-soft);font-weight:700}
+[id="13-lab-5"] .c13-linea{display:flex;gap:8px;align-items:center;background:var(--ink);color:var(--card);border-radius:8px;padding:6px 10px;font:500 .9rem var(--f-mono)}
+[id="13-lab-5"] .c13-linea input{flex:1;min-width:0;background:transparent;border:0;color:var(--card);font:inherit;outline:none}
+[id="13-lab-5"] .c13-linea:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+[id="13-lab-5"] .c13-cmds button{font-family:var(--f-mono);font-size:.8rem}
+[id="13-lab-5"] .c13-mirar{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;padding:10px 14px;font-size:.95rem}
+[id="13-lab-5"] .c13-mirar b{font-family:var(--f-display)}
+[id="13-lab-5"] .c13-preg{display:grid;gap:8px;border-top:1px dashed var(--line);padding-top:12px}
+[id="13-lab-5"] .c13-preg>b{font-family:var(--f-display)}
+</style>
+<div class="btns" role="group" aria-label="Elige el caso">
+  <button type="button" data-caso="0" aria-pressed="true">Caso 1</button>
+  <button type="button" data-caso="1" aria-pressed="false">Caso 2</button>
+  <button type="button" data-caso="2" aria-pressed="false">Caso 3</button>
+  <button type="button" data-caso="3" aria-pressed="false">Caso 4</button>
+  <button type="button" data-caso="4" aria-pressed="false">Caso 5</button>
+</div>
+<div class="btns c13-cmds" role="group" aria-label="Comandos">
+  <button type="button" data-cmd="ipconfig /all">ipconfig /all</button>
+  <button type="button" data-cmd="ping 192.168.1.1">ping 192.168.1.1</button>
+  <button type="button" data-cmd="ping 203.0.113.10">ping 203.0.113.10</button>
+  <button type="button" data-cmd="ping www.ejemplo.com">ping www.ejemplo.com</button>
+  <button type="button" data-cmd="nslookup www.ejemplo.com">nslookup www.ejemplo.com</button>
+  <button type="button" data-cmd="nslookup www.ejemplo.com 192.0.2.53">nslookup … 192.0.2.53</button>
+  <button type="button" data-cmd="tracert www.ejemplo.com">tracert www.ejemplo.com</button>
+  <button type="button" data-cmd="netstat -n">netstat -n</button>
+  <button type="button" data-cmd="cls">cls</button>
+</div>
+<div class="c13-term" id="c13-term" role="log" aria-label="Salida de la consola" tabindex="0"></div>
+<label class="c13-linea"><span aria-hidden="true">C:\&gt;</span><input id="c13-in" autocomplete="off" spellcheck="false" aria-label="Escribe un comando y presiona Enter" placeholder="escribe un comando y presiona Enter"></label>
+<div class="c13-mirar" id="c13-mirar" aria-live="polite"><b>Qué mirar:</b> empieza por <code>ipconfig /all</code> y sigue el orden del capítulo: router, afuera por número, nombres y camino.</div>
+<div class="c13-preg">
+  <b>¿Qué le pasa a esta conexión?</b>
+  <div class="btns" role="group" aria-label="Tu diagnóstico">
+    <button type="button" data-dx="0">Todo funciona</button>
+    <button type="button" data-dx="1">Wi-Fi débil</button>
+    <button type="button" data-dx="2">Falla el DNS</button>
+    <button type="button" data-dx="3">Corte más allá de la casa</button>
+    <button type="button" data-dx="4">El equipo no recibió dirección</button>
+  </div>
+  <div class="readout" id="c13-dx" aria-live="polite" hidden></div>
+</div></div></section>
+<section><h2>Pruebas de velocidad bien hechas: por cable, contra qué servidor y a qué hora</h2><div class="prose"><p>La prueba de velocidad es la herramienta más usada y la peor usada. Mide cuánto puedes bajar y subir en unos segundos contra un servidor de pruebas, y además la latencia. Pero el número que da depende de muchas cosas además del plan contratado. El Broadband Forum, que define las normas de la banda ancha, describe en su documento TR-143 cómo medir bien. En la práctica se resume en cinco reglas:</p><ol class="steps"><li><span><b>Por cable, si se puede.</b> Por Wi-Fi mides el Wi-Fi, que suele ser el cuello de botella (capítulo 25). Un plan de 900 Mbps casi nunca llega completo a un celular a dos habitaciones del router.</span></li><li><span><b>Con todo lo demás apagado.</b> Si alguien mira una película en 4K en la sala, la prueba comparte la conexión con esa película.</span></li><li><span><b>Contra un servidor cercano.</b> Lo ideal es uno dentro de la red del operador o en la misma ciudad. Contra un servidor lejano, la distancia baja el resultado, como mostró el laboratorio del capítulo 1.</span></li><li><span><b>Varias veces y a distintas horas.</b> Una sola prueba no dice nada; tres a la mañana y tres a la noche sí dicen si hay congestión en la hora pico.</span></li><li><span><b>Mirando las unidades.</b> Las pruebas miden en <b>megabits</b> por segundo (Mbps); los navegadores y las descargas suelen mostrar <b>megabytes</b> por segundo (MB/s). Un megabyte son ocho megabits: 100 Mbps son unos 12 MB/s.</span></li></ol><p>Además de la velocidad, mira la <b>latencia con carga</b> que muestran muchas pruebas: si el ping sube muchísimo mientras se descarga, la conexión se llena y se atasca, y eso se siente en juegos y videollamadas aunque la velocidad sea buena.</p></div></section>
+<section><h2>Wireshark: ver un paquete de verdad</h2><div class="prose"><p><b>Wireshark</b> es un programa gratuito y de código abierto que <b>captura</b> todos los paquetes que pasan por la tarjeta de red de tu equipo y te los muestra uno por uno. Es el microscopio de este maletín: con él se ven, de verdad, las capas del capítulo 3.</p><p>La pantalla tiene tres partes:</p><ul><li><b>La lista de paquetes</b>, con número, momento, origen, destino, protocolo y un resumen (<code>Info</code>). Los colores ayudan a distinguir los protocolos.</li><li><b>El detalle</b> del paquete elegido, capa por capa: la trama Ethernet o Wi-Fi, el paquete IP, el segmento TCP o UDP y, arriba, la aplicación. Cada capa se despliega para ver sus campos.</li><li><b>Los bytes en crudo</b>, en hexadecimal, para los muy curiosos.</li></ul><p>Como una captura de un minuto tiene miles de paquetes, el truco está en los <b>filtros</b>. Se escriben en la barra de arriba: <code>dns</code> muestra solo las consultas de nombres; <code>tcp.flags.syn==1</code>, solo los primeros saludos TCP; <code>tls.handshake</code>, los saludos de TLS; <code>ip.addr==203.0.113.10</code>, todo lo que va o viene de esa dirección.</p><p>Una regla antes de empezar: Wireshark solo se usa en <b>tu propio equipo</b> o en redes donde tienes <b>autorización</b> para capturar. En una computadora de la empresa, pregunta antes a sistemas: capturar tráfico ajeno puede violar la privacidad de otras personas y las políticas internas.</p></div></section>
+<section><h2>Leer en Wireshark los flujos del libro: DHCP, DNS, el saludo TCP y TLS</h2><div class="prose"><p>Si abres Wireshark, empiezas a capturar y luego desconectas y reconectas el Wi-Fi y abres una página, vas a ver, en orden, casi todos los flujos de la primera parte del libro:</p><ul><li><b>DHCP</b>: cuatro paquetes, <code>Discover</code>, <code>Offer</code>, <code>Request</code> y <code>ACK</code>, en los que tu equipo pide y recibe su dirección (capítulo 8).</li><li><b>ARP</b>: «¿quién tiene <code>192.168.1.1</code>?», para averiguar la dirección física del router (capítulo 5).</li><li><b>DNS</b>: una <code>Standard query</code> con el nombre del sitio y una <code>Standard query response</code> con su dirección IP.</li><li><b>El saludo TCP</b>: tres paquetes marcados <code>[SYN]</code>, <code>[SYN, ACK]</code> y <code>[ACK]</code> (capítulo 7).</li><li><b>TLS</b>: un <code>Client Hello</code>, donde todavía se lee <b>a qué sitio</b> vas, y un <code>Server Hello</code>. Después, todo dice <code>Application Data</code>: el contenido viaja cifrado y Wireshark ya no puede leerlo.</li></ul><p>Ese último punto es una lección en sí misma: quien espía la red ve con quién hablas, pero no qué dices.</p></div><div class="lab" id="13-lab-6"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Una captura de Wireshark</h3></div><p class="hint">Esta es una captura de ejemplo de un equipo que se conecta a la red y abre <code>www.ejemplo.com</code>. Escribe un filtro o usa los botones, toca un paquete para ver sus capas y completa los tres retos: la respuesta del DNS, el saludo de tres pasos y el saludo de TLS.</p><style>
+[id="13-lab-6"] .c13-filtro{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+[id="13-lab-6"] .c13-filtro input{flex:1 1 220px;min-width:0;font:500 .92rem var(--f-mono);padding:7px 10px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+[id="13-lab-6"] .c13-filtro input.ok{border-color:var(--good);background:var(--good-soft)}
+[id="13-lab-6"] .c13-filtro input.mal{border-color:var(--warm);background:var(--warm-soft)}
+[id="13-lab-6"] .c13-lista{overflow:auto;max-height:360px;border:1px solid var(--line);border-radius:8px}
+[id="13-lab-6"] table{font:400 .8rem var(--f-mono);white-space:nowrap}
+[id="13-lab-6"] th{position:sticky;top:0;background:var(--card);z-index:1}
+[id="13-lab-6"] td,[id="13-lab-6"] th{padding:5px 8px}
+[id="13-lab-6"] tbody tr{cursor:pointer}
+[id="13-lab-6"] tbody tr:focus{outline:2px solid var(--accent);outline-offset:-2px}
+[id="13-lab-6"] tbody tr.sel td{background:var(--accent)!important;color:var(--card)}
+[id="13-lab-6"] tr.p-dhcp td{background:var(--d-casa-s)}
+[id="13-lab-6"] tr.p-arp td{background:var(--c-enl-s)}
+[id="13-lab-6"] tr.p-dns td{background:var(--c-fis-s)}
+[id="13-lab-6"] tr.p-tcp td{background:var(--c-tra-s)}
+[id="13-lab-6"] tr.p-tls td{background:var(--c-apl-s)}
+[id="13-lab-6"] tr.p-icmp td{background:var(--c-red-s)}
+[id="13-lab-6"] .c13-det{border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:10px 12px;display:grid;gap:4px;font:400 .82rem var(--f-mono);min-width:0}
+[id="13-lab-6"] .c13-det div{border-left:4px solid var(--line);padding:2px 8px;overflow-wrap:anywhere}
+[id="13-lab-6"] .c13-det .que{font:400 .95rem var(--f-body);border:0;padding:4px 0 0}
+[id="13-lab-6"] .c13-retos{list-style:none;margin:0;padding:0;display:grid;gap:4px;font:500 .9rem var(--f-display)}
+[id="13-lab-6"] .c13-retos li::before{content:"○ ";color:var(--muted)}
+[id="13-lab-6"] .c13-retos li.hecho::before{content:"● ";color:var(--good)}
+[id="13-lab-6"] .c13-retos li.hecho{color:var(--good)}
+</style>
+<div class="c13-filtro">
+  <input id="c13-f" placeholder="Filtro de visualización… (por ejemplo: dns)" aria-label="Filtro de visualización" autocomplete="off" spellcheck="false">
+  <div class="btns" role="group" aria-label="Filtros de ejemplo">
+    <button type="button" data-f="dhcp">dhcp</button>
+    <button type="button" data-f="dns">dns</button>
+    <button type="button" data-f="tcp.flags.syn==1">tcp.flags.syn==1</button>
+    <button type="button" data-f="tls.handshake">tls.handshake</button>
+    <button type="button" data-f="">limpiar</button>
+  </div>
+</div>
+<p class="hint" id="c13-fmsg" aria-live="polite"></p>
+<div class="c13-lista">
+  <table>
+    <thead><tr><th>N.º</th><th>Tiempo</th><th>Origen</th><th>Destino</th><th>Protocolo</th><th>Info</th></tr></thead>
+    <tbody id="c13-filas"></tbody>
+  </table>
+</div>
+<div class="c13-det" id="c13-det" aria-live="polite">Toca o selecciona con el teclado un paquete para ver sus capas.</div>
+<ul class="c13-retos" id="c13-retos" aria-live="polite">
+  <li data-r="dns">Reto 1: encuentra la respuesta del DNS que trae la dirección de www.ejemplo.com.</li>
+  <li data-r="tcp">Reto 2: encuentra los tres paquetes del saludo TCP (SYN, SYN-ACK y ACK).</li>
+  <li data-r="tls">Reto 3: encuentra el Client Hello de TLS y lee a qué sitio va.</li>
+</ul></div></section>
+<section><h2>Herramientas del lado del operador: la potencia óptica, el estado de la ONT y la sesión</h2><div class="prose"><p>El cliente ve su lado de la conexión; el operador ve el suyo, que es mucho más grande. Desde los sistemas de gestión, un agente de soporte o un técnico del NOC mira tres cosas que ningún comando de la computadora muestra:</p><ul><li><b>La potencia óptica.</b> Cuánta luz recibe la ONT desde la central, medida en <b>dBm</b> (una escala de potencia donde los números negativos más grandes son menos luz). Una fibra doblada, un conector sucio o un empalme malo bajan la potencia aunque el cliente no lo note todavía.</li><li><b>El estado de la ONT.</b> Si está en línea, desde cuándo, si perdió la luz (la alarma <b>LOS</b>, pérdida de señal) o si avisó que se quedaba sin energía antes de apagarse (el famoso «último suspiro», <i>dying gasp</i>), que distingue un corte de fibra de un corte de luz en la casa.</li><li><b>La sesión del cliente.</b> Si el BNG lo reconoció, qué dirección IP le dio, desde cuándo está conectado y a qué velocidad lo autorizó RADIUS (capítulos 19 y 20).</li></ul></div><figure class="fig fig-comparacion" id="13-diagrama-7"><div class="lienzo"><svg viewBox="0 0 900 260" style="min-width:700px" role="img" aria-label="Regla de la potencia óptica que recibe una ONT GPON: por encima de menos 8 dBm, demasiada luz; de menos 8 a menos 25 dBm, zona sana; de menos 25 a menos 27, al límite; por debajo de menos 27, cortes o sin servicio; y sin luz, la alarma LOS">
+  <text x="20" y="24" class="t t-xs t-b t-m">POTENCIA QUE RECIBE LA ONT (dBm)</text>
+  <text x="880" y="24" text-anchor="end" class="t t-xs t-b t-m">MÁS LUZ ←    → MENOS LUZ</text>
+  
+  <rect x="40" y="40" width="84" height="64" rx="6" class="caja"/>
+  <rect x="124" y="40" width="476" height="64" rx="6" class="d-casa"/>
+  <rect x="600" y="40" width="56" height="64" rx="6" class="d-oper"/>
+  <rect x="656" y="40" width="140" height="64" rx="6" class="d-sis"/>
+  <rect x="796" y="40" width="84" height="64" rx="6" class="d-inet"/>
+  <g class="t t-s t-b" text-anchor="middle">
+    <text x="82" y="68">Demasiada</text><text x="82" y="84">luz</text>
+    <text x="362" y="68" class="k-casa">Zona sana</text><text x="362" y="84" class="t-m" style="font-weight:400">la ONT lee la luz sin esfuerzo</text>
+    <text x="628" y="68" class="k-oper">Límite</text><text x="628" y="84" class="t-m" style="font-weight:400">revisar</text>
+    <text x="726" y="68" class="k-sis">Cortes</text><text x="726" y="84" class="t-m" style="font-weight:400">o sin servicio</text>
+    <text x="838" y="68" class="k-inet">Sin luz</text><text x="838" y="84" class="t-m" style="font-weight:400">alarma LOS</text>
+  </g>
+  
+  <path d="M40 104v8M124 104v8M264 104v8M404 104v8M600 104v8M656 104v8M796 104v8" class="ln"/>
+  <g class="t t-s t-mono" text-anchor="middle">
+    <text x="40" y="128">−5</text><text x="124" y="128">−8</text><text x="264" y="128">−13</text><text x="404" y="128">−18</text><text x="600" y="128">−25</text><text x="656" y="128">−27</text><text x="796" y="128">−32</text>
+  </g>
+  
+  <path d="M404 136v30" class="ln" marker-end="url(#fl)"/>
+  <rect x="300" y="170" width="208" height="40" rx="7" class="caja"/>
+  <text x="404" y="187" text-anchor="middle" class="t t-s t-b">−18 dBm</text><text x="404" y="202" text-anchor="middle" class="t t-s t-m">una ONT recién instalada</text>
+  <path d="M628 136v30" class="ln" marker-end="url(#fl)"/>
+  <rect x="524" y="170" width="208" height="40" rx="7" class="caja"/>
+  <text x="628" y="187" text-anchor="middle" class="t t-s t-b">−26 dBm</text><text x="628" y="202" text-anchor="middle" class="t t-s t-m">conector sucio o fibra doblada</text>
+  <path d="M838 136v30" class="ln" marker-end="url(#fl)"/>
+  <rect x="748" y="170" width="140" height="40" rx="7" class="caja"/>
+  <text x="818" y="187" text-anchor="middle" class="t t-s t-b">sin lectura</text><text x="818" y="202" text-anchor="middle" class="t t-s t-m">fibra cortada</text>
+  <text x="20" y="246" class="t t-s t-m">Valores típicos de GPON (clase B+). Cada 3 dB menos es la mitad de la luz: −21 dBm es la mitad de −18 dBm.</text>
+</svg></div><figcaption><b>La regla de la potencia óptica.</b> Los valores típicos que recibe una ONT en una red GPON, de más luz (izquierda) a menos luz (derecha). La franja central es la zona sana; hacia la derecha la señal se acerca al límite de lo que la ONT puede leer y aparecen cortes. Cada 3 dB menos es la mitad de la luz. Cada tecnología y cada clase de equipo tiene su propio rango exacto.</figcaption></figure><div class="prose"><p>Esas herramientas viven en el gestor de las OLT, en el <b>ACS</b> que administra los equipos de la casa (capítulo 28) y en el sistema de monitoreo. En el mercado hay muchas, como SmartOLT, GenieACS o Zabbix, junto a los gestores propios de cada fabricante. El ACS, además, puede pedirle a la ONT que haga ella misma un ping, un traceroute o una prueba de velocidad (las pruebas que describe el TR-143), sin depender del Wi-Fi ni de la computadora del cliente.</p></div></section>
+<section><h2>El orden correcto: de la capa física a la aplicación</h2><div class="prose"><p>El médico no pide una resonancia antes de tomar la temperatura. En redes pasa lo mismo: se empieza por abajo, porque si una capa falla, todas las de arriba fallan también, y mirar arriba primero lleva a conclusiones equivocadas. El orden es este:</p><ol class="steps"><li><span><b>Física y enlace.</b> ¿Las luces de la ONT están bien (sin la luz roja de LOS)? ¿El equipo está conectado al Wi-Fi o al cable?</span></li><li><span><b>Mi dirección.</b> <code>ipconfig</code>: ¿tengo una dirección normal y una puerta de enlace, o una <code>169.254</code>?</span></li><li><span><b>Hasta el router.</b> <code>ping 192.168.1.1</code>: si falla o pierde, el problema está dentro de la casa.</span></li><li><span><b>Hacia afuera, por número.</b> <code>ping 203.0.113.10</code> (o cualquier dirección conocida): si falla y el router respondía, el problema está más allá de la casa.</span></li><li><span><b>Los nombres.</b> <code>nslookup www.ejemplo.com</code>: si falla pero el ping por número funcionaba, es el DNS.</span></li><li><span><b>El camino.</b> <code>tracert</code>: dónde se corta o dónde sube el tiempo.</span></li><li><span><b>La aplicación y la velocidad.</b> Si todo lo anterior está bien, prueba de velocidad por cable y revisión del sitio o la app en particular.</span></li></ol></div><figure class="fig fig-flujo" id="13-diagrama-3"><div class="lienzo"><svg viewBox="0 0 1000 600" style="min-width:760px" role="img" aria-label="Flujo del diagnóstico: ipconfig en la propia computadora; ping al router; ping a un servidor de Internet por su número; nslookup al DNS del operador; traceroute salto a salto; y prueba de velocidad. A la derecha, qué indica que falle cada paso">
+  
+  <rect x="30" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-monitor" x="38" y="26" width="30" height="30" class="ico"/><text x="74" y="40" class="t t-b">Tu</text><text x="74" y="57" class="t t-b">computadora</text>
+  <rect x="200" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-router" x="208" y="26" width="30" height="30" class="ico"/><text x="244" y="40" class="t t-b">Router</text><text x="244" y="57" class="t t-s t-m">de la casa</text>
+  <rect x="370" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-guia" x="378" y="26" width="30" height="30" class="ico"/><text x="414" y="40" class="t t-b">DNS del</text><text x="414" y="57" class="t t-b">operador</text>
+  <rect x="540" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-servidor" x="548" y="26" width="30" height="30" class="ico"/><text x="584" y="40" class="t t-b">Servidor</text><text x="584" y="57" class="t t-s t-m">en Internet</text>
+  <line x1="95" y1="70" x2="95" y2="580" class="vida"/>
+  <line x1="265" y1="70" x2="265" y2="580" class="vida"/>
+  <line x1="435" y1="70" x2="435" y2="580" class="vida"/>
+  <line x1="605" y1="70" x2="605" y2="580" class="vida"/>
+
+  
+  <path d="M95 96h44v26h-42" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="148" y="106" class="t t-s"><tspan class="t-mono t-b">ipconfig</tspan> ① ¿Tengo dirección</text>
+  <text x="148" y="121" class="t t-s">y puerta de enlace?</text>
+
+  
+  <line x1="95" y1="160" x2="263" y2="168" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="102" y="154" class="t t-s"><tspan class="t-mono t-b">ping 192.168.1.1</tspan> ②</text>
+  <line x1="265" y1="182" x2="97" y2="190" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="140" y="204" class="t t-s">Respuesta en 2 ms</text>
+
+  
+  <line x1="95" y1="236" x2="603" y2="246" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="102" y="230" class="t t-s"><tspan class="t-mono t-b">ping 203.0.113.10</tspan> ③ ¿Salgo de la casa?</text>
+  <line x1="605" y1="260" x2="97" y2="270" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="300" y="284" class="t t-s">Respuesta en 18 ms</text>
+
+  
+  <line x1="95" y1="316" x2="433" y2="324" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="102" y="310" class="t t-s"><tspan class="t-mono t-b">nslookup www.ejemplo.com</tspan> ④</text>
+  <line x1="435" y1="338" x2="97" y2="346" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="180" y="360" class="t t-s">Es 203.0.113.10</text>
+
+  
+  <line x1="95" y1="392" x2="263" y2="398" class="ln s-red ln-d" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <line x1="95" y1="404" x2="433" y2="412" class="ln s-red ln-d" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <line x1="95" y1="416" x2="603" y2="426" class="ln s-red ln-d" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="102" y="386" class="t t-s"><tspan class="t-mono t-b">tracert www.ejemplo.com</tspan> ⑤ salto a salto</text>
+
+  
+  <line x1="95" y1="470" x2="603" y2="480" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <line x1="605" y1="496" x2="97" y2="506" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="102" y="464" class="t t-s"><tspan class="t-b">Prueba de velocidad</tspan> ⑥ por cable, servidor cercano</text>
+  <text x="102" y="540" class="t t-s t-b">Lo primero que falla dice dónde buscar.</text>
+
+  
+  <text x="700" y="88" class="t t-xs t-b t-m">SI FALLA AQUÍ…</text>
+  <g class="t t-s">
+    <rect x="696" y="96" width="292" height="40" rx="7" class="d-casa"/><text x="706" y="113">① Dirección 169.254: el equipo no habla</text><text x="706" y="128">con el router. Problema en la casa.</text>
+    <rect x="696" y="160" width="292" height="40" rx="7" class="d-casa"/><text x="706" y="177">② No responde o pierde: Wi-Fi, cable</text><text x="706" y="192">o router. Problema en la casa.</text>
+    <rect x="696" y="232" width="292" height="40" rx="7" class="d-oper"/><text x="706" y="249">③ El router sí, afuera no: ONT, fibra</text><text x="706" y="264">o red del operador.</text>
+    <rect x="696" y="312" width="292" height="40" rx="7" class="d-oper"/><text x="706" y="329">④ Afuera sí, el nombre no: es el DNS.</text><text x="706" y="344">Probar con otro servidor DNS.</text>
+    <rect x="696" y="390" width="292" height="40" rx="7" class="d-inet"/><text x="706" y="407">⑤ Muestra el último salto que responde</text><text x="706" y="422">y dónde sube el tiempo.</text>
+    <rect x="696" y="466" width="292" height="40" rx="7" class="d-inet"/><text x="706" y="483">⑥ Todo bien pero lento: Wi-Fi, horario</text><text x="706" y="498">pico o el plan contratado.</text>
+  </g>
+  <text x="20" y="320" class="t t-xs t-m" transform="rotate(-90 20 320)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El diagnóstico, paso a paso.</b> Cada flecha es una prueba que lanza tu computadora, en orden y de abajo hacia arriba en las capas: primero <code>ipconfig</code> sin salir del equipo, después <code>ping</code> al router y a un servidor de Internet, luego <code>nslookup</code> al DNS, <code>tracert</code> y la prueba de velocidad. A la derecha, qué quiere decir que falle cada paso. Lo primero que falla dice dónde buscar.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>En la mesa de ayuda de un operador FTTH, un cliente llama diciendo que «no tiene Internet». En vez de reiniciar todo, el agente le pide dos cosas, o las hace él mismo desde el ACS: un ping a una dirección IP conocida y un ping a un nombre. Si el ping por número responde con tiempos normales pero el ping por nombre dice que no encuentra el host, la conexión está bien y el problema es el DNS: lo confirma con un <code>nslookup</code> que se queda sin respuesta contra el servidor del operador pero funciona contra otro. Con esa evidencia escala al NOC en dos minutos, y el NOC ve que no es un cliente sino cientos. Si en cambio el ping por número tampoco responde, mira la potencia óptica y el estado de la ONT: si hay LOS en varios clientes de la misma zona, es un corte de fibra y ya hay un evento masivo abierto; si es solo él, se agenda una visita técnica.</p></div></section>
+<section><h2>Qué no hacer: no compartir capturas con datos de clientes</h2><div class="prose"><p>Las herramientas de este capítulo muestran mucho, y no todo es para compartir:</p><ul><li><b>Una captura de Wireshark puede tener datos personales</b>: direcciones IP, nombres de sitios visitados, a veces usuarios y contenido si algo viajaba sin cifrar. No se manda por chat ni por correo personal, y en un caso de soporte se comparte solo por los canales autorizados.</li><li><b>No captures donde no te corresponde.</b> Capturar el tráfico de otras personas sin autorización puede ser un delito, además de una falta a las políticas de la empresa.</li><li><b>Cuidado con las capturas de pantalla.</b> Una foto de un sistema de gestión con el nombre, la dirección o la potencia óptica de un cliente es un dato de cliente. Antes de pegarla en un grupo, tápalos.</li><li><b>No ejecutes comandos que no entiendes</b>, sobre todo si te los manda alguien por mensaje «para arreglar tu conexión»: es un engaño clásico (capítulo 12).</li></ul></div><div class="ml"><b>En la práctica</b><p>Con <code>ipconfig</code>, <code>ping</code> y <code>nslookup</code>, cualquier empleado puede revisar su propia conexión antes de llamar a sistemas y describir el problema con precisión: «llego al router, no llego a ninguna dirección de afuera» es mucho más útil que «no anda Internet». Para quien atiende clientes, el mismo método en orden (física, dirección, router, afuera, nombres) separa en minutos lo que se resuelve en casa de lo que hay que escalar, y evita mandar un técnico a arreglar un DNS.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>Tu computadora tiene la dirección <code>169.254.77.12</code>. ¿Qué quiere decir?</summary><p>Que no recibió dirección del router por DHCP y se asignó una sola. El problema está dentro de la casa, entre el equipo y el router.</p></details><details><summary>El ping a <code>203.0.113.10</code> responde bien, pero el ping a <code>www.ejemplo.com</code> dice que no encuentra el host. ¿Dónde está el problema?</summary><p>En el DNS: hay conexión, pero no se traducen los nombres.</p></details><details><summary>En un traceroute, el salto 5 muestra <code>* * *</code> y los saltos 6 y 7 responden. ¿Hay una falla en el salto 5?</summary><p>No. Ese router no contesta a los avisos de traceroute, pero deja pasar el tráfico, porque los saltos siguientes responden.</p></details><details><summary>¿Por qué conviene hacer la prueba de velocidad por cable?</summary><p>Porque por Wi-Fi se mide sobre todo el Wi-Fi, que suele ser el cuello de botella, y no la conexión que llega a la casa.</p></details><details><summary>En Wireshark, ¿por qué se puede leer el nombre del sitio en el Client Hello pero no el contenido de la página?</summary><p>Porque el nombre viaja antes de que se acuerde la llave del cifrado; después, todo viaja como Application Data cifrada.</p></details><details><summary>¿Qué mira el operador que el cliente no puede ver desde su computadora?</summary><p>La potencia óptica que recibe la ONT, su estado (en línea, LOS o falta de energía) y la sesión del cliente en el BNG.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.wireshark.org/docs/wsug_html_chunked/" target="_blank" rel="noopener">Guía del usuario de Wireshark <small>lectura</small></a><a class="vid" href="https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/tracert" target="_blank" rel="noopener">Comando tracert de Windows (Microsoft Learn) <small>lectura</small></a><a class="vid" href="https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/ping" target="_blank" rel="noopener">Comando ping de Windows (Microsoft Learn) <small>lectura</small></a><a class="vid" href="https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/nslookup" target="_blank" rel="noopener">Comando nslookup de Windows (Microsoft Learn) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s), raiz=q('[id="13-lab-5"]');
+  const IP='192.168.1.34', GW='192.168.1.1', DNS='198.51.100.53', ALT='192.0.2.53', SRV='203.0.113.10', SITIO='www.ejemplo.com';
+  const DX=['Todo funciona','Wi-Fi débil','Falla el DNS','Corte más allá de la casa','El equipo no recibió dirección'];
+  const EXPL=[
+    'Todo responde: el router en milisegundos, el servidor de afuera sin pérdidas, el nombre se resuelve y el traceroute llega al final. Si el cliente igual dice que algo anda mal, el problema está en el sitio o en la aplicación, no en la conexión.',
+    'Hay dirección y se llega a todos lados, pero hasta el router mismo los tiempos saltan de 3 a más de 100 ms y se pierden respuestas. Si ya falla el primer tramo, el problema está en la casa: es el Wi-Fi. Acercarse al router o usar cable lo confirma.',
+    'El router y el servidor responden por número, pero ningún nombre se traduce: el DNS del operador no contesta y otro DNS sí. La conexión está bien; hay que escalar el DNS (y, mientras tanto, se puede usar otro).',
+    'El equipo tiene dirección y el router responde, pero nada más allá: el traceroute muere después del salto 1. El problema está entre el router y la red del operador: la ONT, la fibra o la central. El siguiente paso es mirar las luces de la ONT o la potencia óptica.',
+    'La dirección empieza con 169.254 y no hay puerta de enlace: el equipo no consiguió dirección del router. Todo lo demás falla por eso. Hay que revisar la conexión al Wi-Fi o al cable y reiniciar el router.'
+  ];
+  let caso=0;
+  const r=(a,b)=>Math.round(a+Math.random()*(b-a));
+  function pingLineas(dest,tipo){
+    // tipo: ok-lan, ok-wan, wifi, timeout, error
+    const out=[];let tiempos=[];
+    for(let i=0;i<4;i++){
+      if(tipo==='timeout'){out.push('Tiempo de espera agotado para esta solicitud.');continue;}
+      if(tipo==='error'){out.push('Error general.');continue;}
+      if(tipo==='wifi'&&i===2){out.push('Tiempo de espera agotado para esta solicitud.');continue;}
+      let t=tipo==='ok-lan'?r(1,3):tipo==='ok-wan'?r(17,21):(dest===GW?[3,148,0,62][i]:[24,171,0,96][i]);
+      tiempos.push(t);
+      out.push('Respuesta desde '+dest+': bytes=32 tiempo='+t+'ms TTL='+(dest===GW?64:56));
+    }
+    const rec=tiempos.length, perd=4-rec;
+    out.push('','Estadísticas de ping para '+dest+':','    Paquetes: enviados = 4, recibidos = '+rec+', perdidos = '+perd,'    ('+perd*25+'% perdidos),');
+    if(rec){const mn=Math.min(...tiempos),mx=Math.max(...tiempos),me=Math.round(tiempos.reduce((a,b)=>a+b,0)/rec);
+      out.push('Tiempos aproximados de ida y vuelta en milisegundos:','    Mínimo = '+mn+'ms, Máximo = '+mx+'ms, Media = '+me+'ms');}
+    return out;
+  }
+  function ipconfig(){
+    const sinIP=caso===4;
+    return ['','Configuración IP de Windows','','   Nombre de host. . . . . . . . . . . . . : PC-OFICINA','','Adaptador de LAN inalámbrica Wi-Fi:','',
+      '   Descripción . . . . . . . . . . . . . . : Adaptador de red inalámbrica',
+      '   Dirección física. . . . . . . . . . . . : 3C-52-82-1A-2B-3C',
+      '   DHCP habilitado . . . . . . . . . . . . : sí',
+      '   Vínculo: dirección IPv6 local. . . . . : fe80::1c2a:4bff:fe3d:9e10%12',
+      sinIP?'   Dirección IPv4 de configuración automática: 169.254.77.12(Preferido)':'   Dirección IPv4. . . . . . . . . . . . . : '+IP+'(Preferido)',
+      '   Máscara de subred . . . . . . . . . . . : 255.255.'+(sinIP?'0.0':'255.0'),
+      '   Puerta de enlace predeterminada . . . . : '+(sinIP?'':GW),
+      '   Servidor DHCP . . . . . . . . . . . . . : '+(sinIP?'':GW),
+      '   Servidores DNS. . . . . . . . . . . . . : '+(sinIP?'':DNS)];
+  }
+  function ping(dest){
+    let nombre=null;
+    if(dest.toLowerCase()===SITIO){nombre=SITIO;
+      if(caso===2||caso===4) return ['La solicitud de ping no pudo encontrar el host '+SITIO+'. Compruebe el nombre y','vuelva a intentarlo.'];
+      if(caso===3) return ['La solicitud de ping no pudo encontrar el host '+SITIO+'. Compruebe el nombre y','vuelva a intentarlo.'];
+      dest=SRV;}
+    if(!/^\d+\.\d+\.\d+\.\d+$/.test(dest)) return ['La solicitud de ping no pudo encontrar el host '+dest+'. Compruebe el nombre y','vuelva a intentarlo.'];
+    const cab='Haciendo ping a '+(nombre?nombre+' ['+dest+']':dest)+' con 32 bytes de datos:';
+    let tipo;
+    if(caso===4) tipo='error';
+    else if(dest===GW) tipo=caso===1?'wifi':'ok-lan';
+    else if(caso===3) tipo='timeout';
+    else tipo=caso===1?'wifi':'ok-wan';
+    if(dest!==GW&&dest!==SRV&&dest!==DNS&&dest!==ALT&&caso!==3&&caso!==4) tipo=caso===1?'wifi':'ok-wan';
+    if(tipo==='error') return ['',cab.replace(' con',' con'),'PING: error en la transmisión. Error general.','PING: error en la transmisión. Error general.','PING: error en la transmisión. Error general.','PING: error en la transmisión. Error general.'];
+    return ['',cab].concat(pingLineas(dest,tipo));
+  }
+  function nslookup(server){
+    const s=server||DNS, nombreSrv=s===DNS?'dns1.ejemplo.net':'dns.ejemplo.org';
+    const falla=caso===4||caso===3||(caso===2&&s===DNS);
+    if(falla) return ['DNS request timed out.','    timeout was 2 seconds.','Servidor:  Unknown','Address:  '+s,'','DNS request timed out.','    timeout was 2 seconds.','*** Se agotó el tiempo de espera de la solicitud a Unknown'];
+    return ['Servidor:  '+nombreSrv,'Address:  '+s,'','Respuesta no autoritativa:','Nombre:  '+SITIO,'Address:  '+SRV];
+  }
+  function tracert(){
+    if(caso===2||caso===4) return ['No se puede resolver el nombre del sistema de destino '+SITIO+'.'];
+    const L=['','Traza a '+SITIO+' ['+SRV+']','sobre caminos de 30 saltos como máximo:',''];
+    const f=(n,a,b,c,ip)=>String(n).padStart(3)+String(a).padStart(9)+String(b).padStart(9)+String(c).padStart(9)+'  '+ip;
+    const T='Tiempo de espera agotado para esta solicitud.';
+    if(caso===3){L.push(f(1,'2 ms','1 ms','2 ms',GW));for(let i=2;i<=6;i++)L.push(f(i,'*','*','*',T));L.push('  …','Traza completa.');return L;}
+    const w=caso===1;
+    L.push(f(1,w?'4 ms':'2 ms',w?'131 ms':'1 ms',w?'*':'2 ms',GW));
+    L.push(f(2,w?'9 ms':'5 ms','4 ms','5 ms','100.64.0.1'));
+    L.push(f(3,w?'88 ms':'6 ms','5 ms','6 ms','198.51.100.1'));
+    L.push(f(4,'9 ms',w?'47 ms':'8 ms','9 ms','198.51.100.9'));
+    L.push(f(5,'*','*','*',T));
+    L.push(f(6,'17 ms',w?'142 ms':'17 ms','18 ms','192.0.2.33'));
+    L.push(f(7,'18 ms','17 ms',w?'96 ms':'18 ms',SRV));
+    L.push('','Traza completa.');return L;
+  }
+  function netstat(){
+    const L=['','Conexiones activas','','  Proto  Dirección local          Dirección remota        Estado'];
+    const ip=caso===4?'169.254.77.12':IP;
+    const fila=(l,rm,e)=>'  TCP    '+(l+'                         ').slice(0,25)+(rm+'                        ').slice(0,24)+e;
+    if(caso===4){L.push(fila(ip+':52410','203.0.113.10:443','SYN_SENT'));return L;}
+    if(caso===3){L.push(fila(ip+':52410','203.0.113.10:443','SYN_SENT'),fila(ip+':52411','203.0.113.10:443','SYN_SENT'),fila(ip+':52398','192.0.2.80:443','SYN_SENT'));return L;}
+    if(caso===2){L.push(fila(ip+':52301','203.0.113.25:443','ESTABLISHED'));return L;}
+    L.push(fila(ip+':52344','203.0.113.10:443','ESTABLISHED'),fila(ip+':52345','203.0.113.10:443','ESTABLISHED'),fila(ip+':52350','192.0.2.80:443','TIME_WAIT'),fila(ip+':52352','198.51.100.70:443','ESTABLISHED'));
+    return L;
+  }
+  const MIRAR={
+    ipconfig:()=>caso===4?'La dirección empieza con <b>169.254</b> y no hay puerta de enlace: el equipo no recibió dirección del router. Es una señal de alarma.':'Mira la <b>dirección IPv4</b> (192.168…, normal), la <b>puerta de enlace</b> (el router) y los <b>servidores DNS</b>. Si la dirección empezara con 169.254, el equipo no habría recibido dirección.',
+    pinggw:()=>'Es el primer tramo: tu equipo y el router. Lo sano es <b>de 1 a 10 ms y 0 % perdidos</b>. Si aquí ya hay pérdidas o tiempos que saltan, el problema está dentro de la casa.',
+    pingip:()=>'Sale de la casa sin depender del DNS, porque usa el número. Si el router respondía y esto no, el problema está <b>más allá de la casa</b>.',
+    pingnombre:()=>'Primero hay que traducir el nombre. Si dice que <b>no encuentra el host</b> pero el ping por número funcionaba, sospecha del DNS.',
+    ns:()=>'Arriba, <b>qué servidor DNS</b> respondió; abajo, la dirección del sitio. «Respuesta no autoritativa» es normal: venía de la memoria del servidor.',
+    nsalt:()=>'Le preguntas a <b>otro servidor DNS</b>. Si este responde y el del operador no, la conexión está bien y el problema es el DNS del operador.',
+    tracert:()=>'Cada línea es un salto. Los <b>asteriscos</b> en un salto del medio no son falla si los siguientes responden; si desde un salto <b>todo son asteriscos</b>, el camino se corta ahí.',
+    netstat:()=>'Mira la columna <b>Estado</b>: ESTABLISHED es una conversación andando; varias en <b>SYN_SENT</b> quieren decir que el equipo saluda y nadie contesta.'
+  };
+  const term=q('#c13-term');
+  function imprimir(cmd,lineas,mirar){
+    const div=document.createElement('div');
+    const c=document.createElement('span');c.className='cmd';c.textContent='C:\\> '+cmd;div.appendChild(c);
+    div.appendChild(document.createTextNode('\n'+lineas.join('\n')+'\n\n'));
+    term.appendChild(div);term.scrollTop=term.scrollHeight;
+    q('#c13-mirar').innerHTML='<b>Qué mirar:</b> '+mirar;
+  }
+  function ejecutar(linea){
+    const t=linea.trim().replace(/\s+/g,' '), p=t.split(' '), c=(p[0]||'').toLowerCase();
+    if(!t) return;
+    if(c==='cls'||c==='clear'){term.textContent='';return;}
+    if(c==='ipconfig'||c==='ip'||c==='ifconfig'){imprimir(t,ipconfig(),MIRAR.ipconfig());return;}
+    if(c==='ping'){const d=(p[1]||'').toLowerCase();if(!d){imprimir(t,['Uso: ping destino'],'Escribe a quién: <code>ping 192.168.1.1</code>.');return;}
+      imprimir(t,ping(d),d===GW?MIRAR.pinggw():/^\d/.test(d)?MIRAR.pingip():MIRAR.pingnombre());return;}
+    if(c==='nslookup'){const srv=p[2];imprimir(t,nslookup(srv),srv?MIRAR.nsalt():MIRAR.ns());return;}
+    if(c==='tracert'||c==='traceroute'){imprimir(t,tracert(),MIRAR.tracert());return;}
+    if(c==='netstat'||c==='ss'){imprimir(t,netstat(),MIRAR.netstat());return;}
+    if(c==='ayuda'||c==='help'){imprimir(t,['Comandos: ipconfig /all, ping <destino>, nslookup <nombre> [servidor],','tracert <destino>, netstat -n, cls'],'Estos son los comandos de esta consola simulada.');return;}
+    imprimir(t,["'"+p[0]+"' no se reconoce como un comando interno o externo,",'programa o archivo por lotes ejecutable.'],'Esta consola entiende ipconfig, ping, nslookup, tracert y netstat. Escribe <code>ayuda</code> para ver la lista.');
+  }
+  const ORD=[0,1,2,3,4];for(let i=4;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ORD[i],ORD[j]]=[ORD[j],ORD[i]];}
+  function setCaso(n){
+    caso=ORD[n];raiz.querySelectorAll('[data-caso]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.caso===n)));
+    term.textContent='Consola simulada · caso '+(n+1)+'. Escribe «ayuda» para ver los comandos.'+String.fromCharCode(10,10);
+    const res=q('#c13-dx');res.hidden=true;res.innerHTML='';
+    q('#c13-mirar').innerHTML='<b>Caso '+(n+1)+'.</b> Un usuario dice que «Internet no anda bien». Empieza por <code>ipconfig /all</code> y sigue el orden: router, afuera por número, nombres y camino.';
+  }
+  raiz.querySelectorAll('[data-caso]').forEach(b=>b.addEventListener('click',()=>setCaso(+b.dataset.caso)));
+  raiz.querySelectorAll('[data-cmd]').forEach(b=>b.addEventListener('click',()=>ejecutar(b.dataset.cmd)));
+  q('#c13-in').addEventListener('keydown',e=>{if(e.key==='Enter'){ejecutar(e.target.value);e.target.value='';}});
+  raiz.querySelectorAll('[data-dx]').forEach(b=>b.addEventListener('click',()=>{
+    const ok=+b.dataset.dx===caso, res=q('#c13-dx');res.hidden=false;
+    res.innerHTML='<span class="'+(ok?'ok':'warn')+'">'+(ok?'¡Bien diagnosticado!':'No es eso.')+' Respuesta: '+DX[caso]+'.</span><span style="font-family:var(--f-body);white-space:normal">'+EXPL[caso]+'</span>';
+  }));
+  setCaso(0);
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const YO='192.168.1.34', GW='192.168.1.1', DNS='198.51.100.53', SRV='203.0.113.10';
+  const MY='3c:52:82:1a:2b:3c', MGW='02:00:5e:10:00:01';
+  // [tiempo, origen, destino, proto, info, capas extra, explicación, etiquetas]
+  const P=[
+    [0.000000,'0.0.0.0','255.255.255.255','DHCP','DHCP Discover - Transaction ID 0x3c1a77e2',{udp:[68,67]},'Tu equipo todavía no tiene dirección y grita a toda la red: «¿hay algún servidor DHCP?». Por eso el origen es 0.0.0.0 y el destino, «todos».',['dhcp']],
+    [0.004113,GW,YO,'DHCP','DHCP Offer    - Transaction ID 0x3c1a77e2',{udp:[67,68]},'El router ofrece una dirección: 192.168.1.34.',['dhcp']],
+    [0.004890,'0.0.0.0','255.255.255.255','DHCP','DHCP Request  - Transaction ID 0x3c1a77e2',{udp:[68,67]},'Tu equipo acepta la oferta, todavía sin usar la dirección.',['dhcp']],
+    [0.009321,GW,YO,'DHCP','DHCP ACK      - Transaction ID 0x3c1a77e2',{udp:[67,68]},'El router confirma: la dirección es tuya por un tiempo (la concesión). Fin del flujo DHCP de cuatro pasos.',['dhcp']],
+    [0.012450,MY,'Broadcast','ARP','Who has 192.168.1.1? Tell 192.168.1.34',{},'ARP: tu equipo pregunta qué dirección física (MAC) tiene el router, para poder mandarle tramas. No hay capa IP: ARP vive en la capa de enlace.',['arp']],
+    [0.013002,MGW,MY,'ARP','192.168.1.1 is at 02:00:5e:10:00:01',{},'El router responde con su dirección física.',['arp']],
+    [1.201337,YO,DNS,'DNS','Standard query 0x5a1f A www.ejemplo.com',{udp:[53122,53]},'Tu equipo le pregunta al DNS del operador la dirección de www.ejemplo.com. Va por UDP al puerto 53.',['dns']],
+    [1.219874,DNS,YO,'DNS','Standard query response 0x5a1f A www.ejemplo.com A 203.0.113.10',{udp:[53,53122]},'La respuesta del DNS: www.ejemplo.com es 203.0.113.10. Tardó unos 18 ms.',['dns','r-dns']],
+    [1.221050,YO,SRV,'TCP','52344 → 443 [SYN] Seq=0 Win=64240 Len=0 MSS=1460',{tcp:[52344,443,'SYN']},'Primer paso del saludo TCP: «¿hablamos?». El puerto 443 es HTTPS.',['tcp','syn','r-tcp']],
+    [1.239902,SRV,YO,'TCP','443 → 52344 [SYN, ACK] Seq=0 Ack=1 Win=65535 Len=0 MSS=1452',{tcp:[443,52344,'SYN, ACK']},'Segundo paso: el servidor acepta, «sí, hablemos».',['tcp','syn','r-tcp']],
+    [1.240011,YO,SRV,'TCP','52344 → 443 [ACK] Seq=1 Ack=1 Win=64240 Len=0',{tcp:[52344,443,'ACK']},'Tercer paso: «listo». La conexión TCP está abierta.',['tcp','r-tcp']],
+    [1.240530,YO,SRV,'TLSv1.3','Client Hello (SNI=www.ejemplo.com)',{tcp:[52344,443,'PSH, ACK'],tls:'Handshake Protocol: Client Hello · Server Name: www.ejemplo.com'},'El Client Hello de TLS. Todavía no hay llave, así que el nombre del sitio (SNI) se lee en claro.',['tcp','tls','hs','r-tls']],
+    [1.259101,SRV,YO,'TCP','443 → 52344 [ACK] Seq=1 Ack=518 Win=65535 Len=0',{tcp:[443,52344,'ACK']},'El servidor confirma que recibió el Client Hello.',['tcp']],
+    [1.260244,SRV,YO,'TLSv1.3','Server Hello, Change Cipher Spec, Application Data',{tcp:[443,52344,'PSH, ACK'],tls:'Handshake Protocol: Server Hello · el certificado ya viaja cifrado'},'El Server Hello: el servidor elige cómo cifrar. Desde aquí todo, incluso el certificado, va cifrado.',['tcp','tls','hs']],
+    [1.262876,YO,SRV,'TLSv1.3','Change Cipher Spec, Application Data',{tcp:[52344,443,'PSH, ACK'],tls:'Application Data (cifrado)'},'Tu equipo termina el saludo TLS. El candado está puesto.',['tcp','tls']],
+    [1.263101,YO,SRV,'TLSv1.3','Application Data',{tcp:[52344,443,'PSH, ACK'],tls:'Application Data (cifrado)'},'El pedido de la página (GET /). Va cifrado: Wireshark ya no puede leerlo.',['tcp','tls']],
+    [1.301772,SRV,YO,'TLSv1.3','Application Data',{tcp:[443,52344,'PSH, ACK'],tls:'Application Data (cifrado)'},'La respuesta del servidor con la página, cifrada.',['tcp','tls']],
+    [1.302015,SRV,YO,'TLSv1.3','Application Data',{tcp:[443,52344,'PSH, ACK'],tls:'Application Data (cifrado)'},'Más pedazos de la página, cifrados.',['tcp','tls']],
+    [1.302200,YO,SRV,'TCP','52344 → 443 [ACK] Seq=595 Ack=3109 Win=64240 Len=0',{tcp:[52344,443,'ACK']},'Tu equipo confirma que recibió los datos.',['tcp']],
+    [2.104521,YO,DNS,'DNS','Standard query 0x8c03 A img.ejemplo.com',{udp:[53123,53]},'La página tiene imágenes en otro servidor: nueva consulta DNS.',['dns']],
+    [2.121655,DNS,YO,'DNS','Standard query response 0x8c03 A img.ejemplo.com A 203.0.113.25',{udp:[53,53123]},'Respuesta: img.ejemplo.com es 203.0.113.25.',['dns']],
+    [3.500118,YO,SRV,'ICMP','Echo (ping) request  id=0x0001, seq=1/256, ttl=128',{icmp:'Type: 8 (Echo request)'},'Alguien hizo un ping al servidor: el eco de ICMP, sin puertos.',['icmp']],
+    [3.518440,SRV,YO,'ICMP','Echo (ping) reply    id=0x0001, seq=1/256, ttl=56',{icmp:'Type: 0 (Echo reply)'},'La respuesta del ping, 18 ms después.',['icmp']]
+  ];
+  const clase={DHCP:'dhcp',ARP:'arp',DNS:'dns',TCP:'tcp','TLSv1.3':'tls',ICMP:'icmp'};
+  let sel=-1;
+  const hechos={dns:false,tcp:new Set(),tls:false};
+  function cond(c,p){
+    c=c.trim().toLowerCase();if(!c) return true;
+    const [t,o,d,proto,,cap,,tags]=p;
+    const pr=proto.toLowerCase();
+    let m;
+    if(c==='dhcp'||c==='bootp') return pr==='dhcp';
+    if(c==='arp') return pr==='arp';
+    if(c==='dns') return pr==='dns';
+    if(c==='icmp') return pr==='icmp';
+    if(c==='tls'||c==='ssl') return pr.startsWith('tls');
+    if(c==='tcp') return !!cap.tcp;
+    if(c==='udp') return !!cap.udp;
+    if(c==='ip') return pr!=='arp';
+    if(c==='tcp.flags.syn==1') return tags.includes('syn');
+    if(c==='tls.handshake'||c==='tls.handshake.type==1') return c.endsWith('==1')?tags.includes('r-tls'):tags.includes('hs');
+    if(m=c.match(/^ip\.(addr|src|dst)\s*==\s*([\d.]+)$/)){
+      if(pr==='arp') return false;
+      return m[1]==='src'?o===m[2]:m[1]==='dst'?d===m[2]:(o===m[2]||d===m[2]);}
+    if(m=c.match(/^(tcp|udp)\.port\s*==\s*(\d+)$/)){const k=cap[m[1]];return !!k&&(k[0]==+m[2]||k[1]==+m[2]);}
+    throw new Error('no');
+  }
+  function pasa(f,p){
+    return f.split('||').some(o=>o.split('&&').every(a=>cond(a.replace(/\band\b/g,''),p)));
+  }
+  function dibujar(){
+    const f=q('#c13-f').value.replace(/\s+or\s+/g,'||').replace(/\s+and\s+/g,'&&');
+    let vis;
+    try{vis=P.map((p,i)=>[p,i]).filter(([p])=>pasa(f,p));q('#c13-f').className=f.trim()?'ok':'';
+      q('#c13-fmsg').textContent=f.trim()?'Mostrando '+vis.length+' de '+P.length+' paquetes.':'Sin filtro: '+P.length+' paquetes.';}
+    catch(e){q('#c13-f').className='mal';q('#c13-fmsg').textContent='Filtro no válido. Prueba con: dhcp, arp, dns, tcp, udp, tls, icmp, ip.addr==203.0.113.10, tcp.port==443, tcp.flags.syn==1 o tls.handshake (se combinan con && y ||).';return;}
+    q('#c13-filas').innerHTML=vis.map(([p,i])=>'<tr tabindex="0" data-i="'+i+'" class="p-'+clase[p[3]]+(i===sel?' sel':'')+'"><td>'+(i+1)+'</td><td>'+p[0].toFixed(6)+'</td><td>'+p[1]+'</td><td>'+p[2]+'</td><td>'+p[3]+'</td><td>'+p[4].replace(/ {2,}/g,' ')+'</td></tr>').join('');
+  }
+  function detalle(i){
+    sel=i;const [t,o,d,proto,info,cap,que]=P[i];
+    const capa=(color,txt)=>'<div style="border-left-color:'+color+'">'+txt+'</div>';
+    let h=capa('var(--muted)','Frame '+(i+1)+': capturado en '+t.toFixed(6)+' s');
+    const arp=proto==='ARP';
+    const mo=o===GW||o===DNS||o===SRV?MGW:MY, md=arp?(d==='Broadcast'?'ff:ff:ff:ff:ff:ff':d):(d==='255.255.255.255'?'ff:ff:ff:ff:ff:ff':(d===YO?MY:MGW));
+    h+=capa('var(--c-enl)','Ethernet II · Origen: '+(arp?o:mo)+' · Destino: '+md);
+    if(arp) h+=capa('var(--c-enl)','Address Resolution Protocol · '+info);
+    else{
+      h+=capa('var(--c-red)','Internet Protocol Version 4 · Origen: '+o+' · Destino: '+d);
+      if(cap.udp) h+=capa('var(--c-tra)','User Datagram Protocol · Puerto origen: '+cap.udp[0]+' · Puerto destino: '+cap.udp[1]);
+      if(cap.tcp) h+=capa('var(--c-tra)','Transmission Control Protocol · Puerto origen: '+cap.tcp[0]+' · Puerto destino: '+cap.tcp[1]+' · Flags: ['+cap.tcp[2]+']');
+      if(cap.icmp) h+=capa('var(--c-red)','Internet Control Message Protocol · '+cap.icmp);
+      if(proto==='DNS') h+=capa('var(--c-apl)','Domain Name System · '+info);
+      if(proto==='DHCP') h+=capa('var(--c-apl)','Dynamic Host Configuration Protocol · '+info.replace(/ {2,}/g,' '));
+      if(cap.tls) h+=capa('var(--c-apl)','Transport Layer Security · '+cap.tls);
+    }
+    h+='<p class="que">'+que+'</p>';
+    q('#c13-det').innerHTML=h;
+    // retos
+    const tags=P[i][7];
+    if(tags.includes('r-dns')) hechos.dns=true;
+    if(tags.includes('r-tcp')) hechos.tcp.add(i);
+    if(tags.includes('r-tls')) hechos.tls=true;
+    const li=r=>q('#c13-retos [data-r="'+r+'"]');
+    li('dns').classList.toggle('hecho',hechos.dns);
+    li('tcp').classList.toggle('hecho',hechos.tcp.size===3);
+    if(hechos.tcp.size&&hechos.tcp.size<3) li('tcp').textContent='Reto 2: encuentra los tres paquetes del saludo TCP (SYN, SYN-ACK y ACK). Llevas '+hechos.tcp.size+' de 3.';
+    if(hechos.tcp.size===3) li('tcp').textContent='Reto 2: encontraste el saludo TCP: paquetes 9, 10 y 11.';
+    if(hechos.dns) li('dns').textContent='Reto 1: encontraste la respuesta del DNS: paquete 8, www.ejemplo.com es 203.0.113.10.';
+    li('tls').classList.toggle('hecho',hechos.tls);
+    if(hechos.tls) li('tls').textContent='Reto 3: encontraste el Client Hello: paquete 12, va a www.ejemplo.com (se lee en el SNI).';
+    dibujar();
+    const tr=q('#c13-filas tr[data-i="'+i+'"]');if(tr)tr.focus({preventScroll:true});
+  }
+  q('#c13-filas').addEventListener('click',e=>{const tr=e.target.closest('tr');if(tr)detalle(+tr.dataset.i);});
+  q('#c13-filas').addEventListener('keydown',e=>{
+    const tr=e.target.closest('tr');if(!tr)return;
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();detalle(+tr.dataset.i);}
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const n=e.key==='ArrowDown'?tr.nextElementSibling:tr.previousElementSibling;if(n){detalle(+n.dataset.i);}}
+  });
+  q('#c13-f').addEventListener('input',dibujar);
+  document.querySelectorAll('[id="13-lab-6"] [data-f]').forEach(b=>b.addEventListener('click',()=>{q('#c13-f').value=b.dataset.f;dibujar();}));
+  dibujar();
+})();
+</script>
+</body>
+</html>

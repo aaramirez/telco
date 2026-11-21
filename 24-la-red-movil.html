@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La red móvil · Cómo funciona un telco</title>
+<meta name="description" content="Una red móvil tiene las mismas piezas que una red fija (acceso, core, identificación del cliente y facturación), pero con un reto extra: el cliente se mueve, y la red tiene que seguirlo de antena en antena sin cortar la conexión.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="24-la-red-movil">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 24 DE 49</span><h1>La red móvil: 4G y 5G por dentro</h1><p class="lede">Una red móvil tiene las mismas piezas que una red fija (acceso, core, identificación del cliente y facturación), pero con un reto extra: el cliente se mueve, y la red tiene que seguirlo de antena en antena sin cortar la conexión.</p></header>
+<section><div class="analogia"><b>Imagínalo así</b><p>Una carrera de relevos: cada antena lleva al cliente un tramo y le pasa el testigo a la siguiente sin que el corredor se detenga; la SIM es el pasaporte que todas las antenas reconocen.</p></div><figure class="fig fig-capas" id="24-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la red móvil; la antena hace el trabajo del Wi-Fi, la ONT y la OLT">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class="apagado"><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la red móvil; la antena hace el trabajo del Wi-Fi, la ONT y la OLT</text>
+</svg></div><figcaption><b>Dónde estamos.</b> En la red móvil, la antena reemplaza al Wi-Fi, a la ONT y a la OLT del viaje de un clic: el celular le habla directo por radio. El capítulo recorre las capas física y de enlace (la radio) y la de red (el core móvil que identifica al cliente, le da una dirección IP y lo saca a Internet).</figcaption></figure></section>
+<section><h2>Celdas y antenas: por qué se llama «celular»</h2><div class="prose"><p>Una antena no puede cubrir una ciudad entera: su potencia es limitada, y aunque pudiera, todos los teléfonos de la ciudad tendrían que repartirse la misma radio. La solución, de los años setenta, fue dividir el territorio en <b>celdas</b>: zonas pequeñas, cada una atendida por su propia antena. De ahí viene el nombre «teléfono celular».</p><p>La gracia de las celdas es que permiten <b>reusar</b> las frecuencias. Dos celdas vecinas usan frecuencias distintas para no interferirse, pero una celda a varios kilómetros puede volver a usar las mismas. Así, la misma porción de radio atiende a miles de personas en distintos barrios. Cuantas más celdas, más pequeñas y más clientes en total puede atender la red.</p><p>En la práctica, cada torre suele llevar tres antenas apuntando en distintas direcciones, como tres porciones de una torta, y cada porción es una celda. En las ciudades hay además <b>celdas pequeñas</b> en postes, techos y centros comerciales, que agregan capacidad donde hay mucha gente. La antena con su electrónica se llama <b>estación base</b>: en 4G, <i>eNodeB</i>; en 5G, <i>gNodeB</i>.</p></div><figure class="fig fig-esquema" id="24-diagrama-7"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:680px" role="img" aria-label="Celdas y bandas: a la izquierda, una grilla de celdas hexagonales en tres colores, donde las celdas del mismo color reusan las mismas frecuencias sin tocarse; a la derecha, tres bandas de frecuencia: la baja llega lejos con poca capacidad, la media es el equilibrio y la alta lleva mucha capacidad con poco alcance">
+  <text x="20" y="26" class="t t-xs t-b t-m">CELDAS QUE REUSAN FRECUENCIAS</text>
+  <polygon points="100.0,70.0 85.0,96.0 55.0,96.0 40.0,70.0 55.0,44.0 85.0,44.0" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="70.0" cy="70.0" r="2.6" class="k-red"/>
+  <polygon points="145.0,96.0 130.0,122.0 100.0,122.0 85.0,96.0 100.0,70.0 130.0,70.0" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="115.0" cy="96.0" r="2.6" class="k-enl"/>
+  <polygon points="190.0,70.0 175.0,96.0 145.0,96.0 130.0,70.0 145.0,44.0 175.0,44.0" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="160.0" cy="70.0" r="2.6" class="k-red"/>
+  <polygon points="235.0,96.0 220.0,122.0 190.0,122.0 175.0,96.0 190.0,70.0 220.0,70.0" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="205.0" cy="96.0" r="2.6" class="k-enl"/>
+  <polygon points="280.0,70.0 265.0,96.0 235.0,96.0 220.0,70.0 235.0,44.0 265.0,44.0" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="250.0" cy="70.0" r="2.6" class="k-red"/>
+  <polygon points="325.0,96.0 310.0,122.0 280.0,122.0 265.0,96.0 280.0,70.0 310.0,70.0" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="295.0" cy="96.0" r="2.6" class="k-enl"/>
+  <polygon points="370.0,70.0 355.0,96.0 325.0,96.0 310.0,70.0 325.0,44.0 355.0,44.0" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="340.0" cy="70.0" r="2.6" class="k-red"/>
+  <polygon points="100.0,122.0 85.0,147.9 55.0,147.9 40.0,122.0 55.0,96.0 85.0,96.0" class="c-tra" style="stroke-width:1.2"/>
+  <circle cx="70.0" cy="122.0" r="2.6" class="k-tra"/>
+  <polygon points="145.0,147.9 130.0,173.9 100.0,173.9 85.0,147.9 100.0,122.0 130.0,122.0" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="115.0" cy="147.9" r="2.6" class="k-red"/>
+  <polygon points="190.0,122.0 175.0,147.9 145.0,147.9 130.0,122.0 145.0,96.0 175.0,96.0" class="c-tra" style="stroke-width:1.2"/>
+  <circle cx="160.0" cy="122.0" r="2.6" class="k-tra"/>
+  <polygon points="235.0,147.9 220.0,173.9 190.0,173.9 175.0,147.9 190.0,122.0 220.0,122.0" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="205.0" cy="147.9" r="2.6" class="k-red"/>
+  <polygon points="280.0,122.0 265.0,147.9 235.0,147.9 220.0,122.0 235.0,96.0 265.0,96.0" class="c-tra" style="stroke-width:1.2"/>
+  <circle cx="250.0" cy="122.0" r="2.6" class="k-tra"/>
+  <polygon points="325.0,147.9 310.0,173.9 280.0,173.9 265.0,147.9 280.0,122.0 310.0,122.0" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="295.0" cy="147.9" r="2.6" class="k-red"/>
+  <polygon points="370.0,122.0 355.0,147.9 325.0,147.9 310.0,122.0 325.0,96.0 355.0,96.0" class="c-tra" style="stroke-width:1.2"/>
+  <circle cx="340.0" cy="122.0" r="2.6" class="k-tra"/>
+  <polygon points="100.0,173.9 85.0,199.9 55.0,199.9 40.0,173.9 55.0,147.9 85.0,147.9" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="70.0" cy="173.9" r="2.6" class="k-enl"/>
+  <polygon points="145.0,199.9 130.0,225.9 100.0,225.9 85.0,199.9 100.0,173.9 130.0,173.9" class="c-tra" style="stroke-width:1.2"/>
+  <circle cx="115.0" cy="199.9" r="2.6" class="k-tra"/>
+  <polygon points="190.0,173.9 175.0,199.9 145.0,199.9 130.0,173.9 145.0,147.9 175.0,147.9" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="160.0" cy="173.9" r="2.6" class="k-enl"/>
+  <polygon points="235.0,199.9 220.0,225.9 190.0,225.9 175.0,199.9 190.0,173.9 220.0,173.9" class="c-tra" style="stroke-width:1.2"/>
+  <circle cx="205.0" cy="199.9" r="2.6" class="k-tra"/>
+  <polygon points="280.0,173.9 265.0,199.9 235.0,199.9 220.0,173.9 235.0,147.9 265.0,147.9" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="250.0" cy="173.9" r="2.6" class="k-enl"/>
+  <polygon points="325.0,199.9 310.0,225.9 280.0,225.9 265.0,199.9 280.0,173.9 310.0,173.9" class="c-tra" style="stroke-width:1.2"/>
+  <circle cx="295.0" cy="199.9" r="2.6" class="k-tra"/>
+  <polygon points="370.0,173.9 355.0,199.9 325.0,199.9 310.0,173.9 325.0,147.9 355.0,147.9" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="340.0" cy="173.9" r="2.6" class="k-enl"/>
+  <polygon points="100.0,225.9 85.0,251.9 55.0,251.9 40.0,225.9 55.0,199.9 85.0,199.9" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="70.0" cy="225.9" r="2.6" class="k-red"/>
+  <polygon points="145.0,251.9 130.0,277.8 100.0,277.8 85.0,251.9 100.0,225.9 130.0,225.9" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="115.0" cy="251.9" r="2.6" class="k-enl"/>
+  <polygon points="190.0,225.9 175.0,251.9 145.0,251.9 130.0,225.9 145.0,199.9 175.0,199.9" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="160.0" cy="225.9" r="2.6" class="k-red"/>
+  <polygon points="235.0,251.9 220.0,277.8 190.0,277.8 175.0,251.9 190.0,225.9 220.0,225.9" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="205.0" cy="251.9" r="2.6" class="k-enl"/>
+  <polygon points="280.0,225.9 265.0,251.9 235.0,251.9 220.0,225.9 235.0,199.9 265.0,199.9" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="250.0" cy="225.9" r="2.6" class="k-red"/>
+  <polygon points="325.0,251.9 310.0,277.8 280.0,277.8 265.0,251.9 280.0,225.9 310.0,225.9" class="c-enl" style="stroke-width:1.2"/>
+  <circle cx="295.0" cy="251.9" r="2.6" class="k-enl"/>
+  <polygon points="370.0,225.9 355.0,251.9 325.0,251.9 310.0,225.9 325.0,199.9 355.0,199.9" class="c-red" style="stroke-width:1.2"/>
+  <circle cx="340.0" cy="225.9" r="2.6" class="k-red"/>
+  <g class="t t-s"><rect x="40" y="300" width="12" height="12" rx="2" class="c-red"/><text x="58" y="310">grupo A</text><rect x="120" y="300" width="12" height="12" rx="2" class="c-enl"/><text x="138" y="310">grupo B</text><rect x="200" y="300" width="12" height="12" rx="2" class="c-tra"/><text x="218" y="310">grupo C</text><text x="290" y="310" class="t-m">de frecuencias</text></g>
+  <text x="470" y="26" class="t t-xs t-b t-m">CADA BANDA, UN COMPROMISO</text>
+  <text x="470" y="70" class="t t-b">Banda baja</text><text x="570" y="70" class="t t-s t-m">700 a 900 MHz</text>
+  <rect x="470" y="80" width="380" height="6" rx="3.0" class="c-fis"/>
+  <text x="470" y="104" class="t t-s">llega lejos y entra a los edificios; pocos datos</text>
+  <text x="470" y="146" class="t t-b">Banda media</text><text x="570" y="146" class="t t-s t-m">1,7 a 3,8 GHz</text>
+  <rect x="470" y="156" width="230" height="14" rx="6" class="c-fis"/>
+  <text x="470" y="188" class="t t-s">el equilibrio: la base del 5G</text>
+  <text x="470" y="230" class="t t-b">Banda alta</text><text x="570" y="230" class="t t-s t-m">26 a 28 GHz</text>
+  <rect x="470" y="240" width="80" height="26" rx="6" class="c-fis"/>
+  <text x="470" y="284" class="t t-s">muchísimos datos, unos cientos de metros</text>
+  <g class="t t-xs t-m"><text x="470" y="312">LARGO DE LA BARRA = ALCANCE · GROSOR = CAPACIDAD</text></g>
+</svg></div><figcaption><b>Celdas y bandas.</b> A la izquierda, las celdas: cada color es un grupo de frecuencias, y las celdas del mismo color están lejos entre sí para poder reusarlas sin interferirse. A la derecha, el compromiso de las bandas: las frecuencias bajas llegan lejos y atraviesan paredes, pero llevan pocos datos; las altas llevan muchos datos, pero alcanzan poco.</figcaption></figure></section>
+<section><h2>El espectro: el recurso que se licita</h2><div class="prose"><p>Las ondas de radio son un bien público, y cada país decide quién usa cada porción del <b>espectro</b>. Los operadores móviles obtienen sus frecuencias del Estado, normalmente en <b>subastas</b>, por plazos de 15 o 20 años, y pagan montos muy altos. Es uno de los costos más grandes de un operador móvil y una razón de por qué hay pocos en cada país.</p><p>No todas las frecuencias son iguales:</p><ul><li><b>Bandas bajas</b> (por debajo de 1 GHz): llegan lejos y atraviesan paredes. Ideales para cubrir zonas rurales y el interior de los edificios, pero llevan pocos datos.</li><li><b>Bandas medias</b> (de 1,7 a 3,8 GHz): el equilibrio. La banda de 3,5 GHz es la estrella del 5G.</li><li><b>Bandas altas</b> u ondas milimétricas (26 o 28 GHz): enormes cantidades de datos, pero alcanzan unos cientos de metros y se bloquean con una pared o incluso con la mano.</li></ul><p>Un operador combina varias bandas en la misma torre, y el teléfono puede usar varias a la vez para sumar velocidad.</p></div></section>
+<section><h2>La SIM y la identidad del abonado</h2><div class="prose"><p>En la red fija, el operador reconoce al cliente por el número de serie de su ONT. En la móvil, el cliente se identifica con la <b>SIM</b>, el chip que va en el teléfono (o la eSIM, que es lo mismo pero grabado en el teléfono). La SIM guarda dos cosas fundamentales:</p><ul><li>El <b>IMSI</b> (identidad internacional del abonado móvil): un número de hasta 15 dígitos que dice de qué país es (código de país móvil), de qué operador (código de red móvil) y qué abonado es. No es el número de teléfono: el número que marcamos es otro dato, asociado al IMSI en las bases del operador.</li><li>Una <b>clave secreta</b> que nunca sale de la SIM. La misma clave está guardada solo en la base de abonados del operador.</li></ul><p>Ese secreto compartido es el pasaporte de la analogía: cualquier antena del operador, o de otro operador en el extranjero, puede comprobar que la SIM es legítima sin que la clave viaje jamás por el aire. En 5G el IMSI pasa a llamarse SUPI y, a diferencia del 4G, se envía cifrado incluso la primera vez, para que nadie pueda espiar quién está conectado.</p></div></section>
+<section><h2>Conectarse a la red: el registro (attach) y la autenticación</h2><div class="prose"><p>Al encender el teléfono, este busca una celda de su operador, se conecta por radio y pide registrarse. Este proceso se llama <b>attach</b> y tiene cuatro partes: conectarse a la antena, demostrar quién es, activar el cifrado y abrir la sesión de datos.</p><p>La parte más ingeniosa es la autenticación, llamada <b>AKA</b> (acuerdo de autenticación y claves). La base de abonados genera un número al azar y, con la clave secreta, calcula tres cosas: un desafío para el teléfono, una prueba de que la red es legítima y la respuesta que espera recibir. El teléfono le pasa el desafío a la SIM; la SIM verifica primero que la red sea auténtica (así un falso operador no puede engañar al teléfono) y después calcula su respuesta. Si coincide con la esperada, el cliente es quien dice ser. Las dos puntas derivan además, del mismo secreto, las claves que cifran la conversación por radio.</p><p>Es el mismo principio del registro de voz del capítulo 22, pero en las dos direcciones: el teléfono prueba quién es y la red también.</p></div><figure class="fig fig-flujo" id="24-diagrama-2"><div class="lienzo"><svg viewBox="0 0 1060 790" style="min-width:780px" role="img" aria-label="Flujo del registro de un teléfono en 4G: conexión de radio con la antena; pedido de registro con el IMSI; el MME pide desafíos al HSS; la SIM verifica la red y responde; se activa el cifrado; el MME informa la ubicación al HSS, abre la sesión de datos con el SGW y el PGW y acepta el registro con una dirección IP">
+  <defs>
+    <symbol id="i24-2-sim" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h8.5L19 7v14.5H6z"/><rect x="9" y="11" width="7" height="7" rx="1"/><path d="M12.5 11v7M9 14.5h7"/></g></symbol>
+    <symbol id="i24-2-antena" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9.5 7.5 21.5M12 9.5l4.5 12M9 17.5h6"/><circle cx="12" cy="8" r="1.4"/><path d="M8.5 4.5a5 5 0 0 0 0 7M15.5 4.5a5 5 0 0 1 0 7M6 2.5a8.5 8.5 0 0 0 0 11M18 2.5a8.5 8.5 0 0 1 0 11"/></g></symbol>
+  </defs>
+  <rect x="15" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i24-2-sim" x="25" y="26" width="32" height="32" class="ico"/><text x="65" y="40" class="t t-b">Teléfono</text><text x="65" y="57" class="t t-s t-m">con su SIM</text>
+  <line x1="90" y1="70" x2="90" y2="775" class="vida"/>
+  <rect x="195" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i24-2-antena" x="205" y="26" width="32" height="32" class="ico"/><text x="245" y="40" class="t t-b">Antena</text><text x="245" y="57" class="t t-s t-m">eNodeB</text>
+  <line x1="270" y1="70" x2="270" y2="775" class="vida"/>
+  <rect x="395" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-router-core" x="405" y="26" width="32" height="32" class="ico"/><text x="445" y="40" class="t t-b">MME</text><text x="445" y="57" class="t t-s t-m">control</text>
+  <line x1="470" y1="70" x2="470" y2="775" class="vida"/>
+  <rect x="585" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-persona" x="595" y="26" width="32" height="32" class="ico"/><text x="635" y="40" class="t t-b">HSS</text><text x="635" y="57" class="t t-s t-m">base de abonados</text>
+  <line x1="660" y1="70" x2="660" y2="775" class="vida"/>
+  <rect x="775" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-nube" x="785" y="26" width="32" height="32" class="ico"/><text x="825" y="40" class="t t-b">SGW y PGW</text><text x="825" y="57" class="t t-s t-m">salida a Internet</text>
+  <line x1="850" y1="70" x2="850" y2="775" class="vida"/>
+  <line x1="90" y1="100" x2="268" y2="112" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="98" y="94" class="t t-s"><tspan class="t-mono t-b">RRC</tspan> ① Quiero conectarme</text>
+  <line x1="270" y1="140" x2="92" y2="152" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="120" y="134" class="t t-s">② Canal asignado</text>
+  <line x1="90" y1="186" x2="468" y2="198" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="98" y="180" class="t t-s"><tspan class="t-mono t-b">Attach Request</tspan> ③ Soy el IMSI 001 01 0123456789</text>
+  <line x1="470" y1="226" x2="658" y2="238" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="478" y="220" class="t t-s">④ ¿Quién es? Dame desafíos</text>
+  <line x1="660" y1="262" x2="472" y2="274" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="500" y="256" class="t t-s">⑤ RAND, AUTN y respuesta esperada</text>
+  <line x1="470" y1="306" x2="92" y2="318" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="300" class="t t-s"><tspan class="t-mono t-b">Authentication Request</tspan> ⑥ RAND + AUTN</text>
+  <rect x="35.0" y="330" width="260" height="36" rx="8" class="c-red"/><text x="165" y="345" text-anchor="middle" class="t t-xs">la SIM comprueba AUTN (la red es legítima)</text><text x="165" y="359" text-anchor="middle" class="t t-xs">y calcula RES con su clave secreta</text>
+  <line x1="90" y1="396" x2="468" y2="408" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="98" y="390" class="t t-s"><tspan class="t-mono t-b">Authentication Response</tspan> ⑦ RES</text>
+  <rect x="380.0" y="416" width="180" height="36" rx="8" class="c-red"/><text x="470" y="431" text-anchor="middle" class="t t-xs">RES = respuesta esperada</text><text x="470" y="445" text-anchor="middle" class="t t-xs">el cliente es quien dice ser</text>
+  <line x1="470" y1="478" x2="92" y2="490" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="472" class="t t-s"><tspan class="t-mono t-b">Security Mode</tspan> ⑧ Activemos el cifrado</text>
+  <line x1="90" y1="514" x2="468" y2="526" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="98" y="508" class="t t-s">⑨ Cifrado activo</text>
+  <line x1="470" y1="558" x2="658" y2="570" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="478" y="552" class="t t-s"><tspan class="t-mono t-b">Update Location</tspan> ⑩ Está en esta zona</text>
+  <line x1="660" y1="594" x2="472" y2="606" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="500" y="588" class="t t-s">⑪ Perfil y plan del cliente</text>
+  <line x1="470" y1="634" x2="848" y2="646" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="478" y="628" class="t t-s"><tspan class="t-mono t-b">Create Session</tspan> ⑫ Abrir sesión de datos</text>
+  <line x1="850" y1="670" x2="472" y2="682" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="500" y="664" class="t t-s">⑬ Tu IP: 100.64.12.34</text>
+  <line x1="470" y1="710" x2="92" y2="722" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="704" class="t t-s"><tspan class="t-mono t-b">Attach Accept</tspan> ⑭ Registrado: tu IP y tu identidad temporal</text>
+  <line x1="90" y1="746" x2="468" y2="758" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="98" y="740" class="t t-s"><tspan class="t-mono t-b">Attach Complete</tspan> ⑮ Listo</text>
+  <g class="t t-xs t-b">
+    <path d="M950 92v64" class="ln s-enl" style="stroke-width:3"/><text x="960" y="118" class="k-enl">RADIO</text><text x="960" y="132" class="t-m">antena</text>
+    <path d="M950 178v274" class="ln s-red" style="stroke-width:3"/><text x="960" y="309" class="k-red">IDENTIDAD</text><text x="960" y="323" class="t-m">AKA: desafío</text><text x="960" y="337" class="t-m">y respuesta</text>
+    <path d="M950 470v60" class="ln s-red" style="stroke-width:3"/><text x="960" y="494" class="k-red">SEGURIDAD</text><text x="960" y="508" class="t-m">cifrado</text>
+    <path d="M950 550v212" class="ln s-red" style="stroke-width:3"/><text x="960" y="650" class="k-red">SESIÓN</text><text x="960" y="664" class="t-m">ubicación, IP</text><text x="960" y="678" class="t-m">y plan</text>
+  </g>
+  <text x="10" y="440" class="t t-xs t-m" transform="rotate(-90 10 440)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El registro de un teléfono en la red 4G.</b> Primero el teléfono se conecta por radio a la antena. Después pide registrarse; el core pide a la base de abonados un desafío, la SIM demuestra que conoce la clave secreta (y comprueba que la red también la conoce) y se activa el cifrado. Al final el core avisa en qué zona está el cliente, abre la sesión de datos y le da una dirección IP. En 5G los pasos son los mismos, con otros nombres de equipos (AMF, AUSF, UDM, SMF y UPF).</figcaption></figure></section>
+<section><h2>El core móvil: de EPC (4G) al core 5G</h2><div class="prose"><p>Detrás de las antenas está el <b>core móvil</b>, que hace lo mismo que el BNG, RADIUS y los routers del core fijo, repartido en funciones con nombre propio. En 4G se llama <b>EPC</b> (núcleo de paquetes evolucionado):</p><ul><li>El <b>MME</b> es el controlador: autentica al teléfono, sabe en qué zona está y coordina los traspasos. Nunca toca los datos del cliente, solo la señalización.</li><li>El <b>HSS</b> es la base de abonados: claves, perfiles y qué servicios tiene cada cliente.</li><li>El <b>SGW</b> es el punto de anclaje mientras el teléfono se mueve entre antenas.</li><li>El <b>PGW</b> es la puerta a Internet: le da la dirección IP al teléfono, aplica las reglas de su plan y cuenta lo que consume. Es el pariente móvil del BNG.</li></ul><p>El <b>core 5G</b> reparte lo mismo en piezas más pequeñas, pensadas como programas que corren en servidores comunes o en la nube: el <b>AMF</b> controla el acceso y la movilidad, el <b>AUSF</b> y el <b>UDM</b> guardan las claves y los perfiles, el <b>SMF</b> maneja las sesiones y el <b>UPF</b> lleva los datos. La gran idea de los dos diseños es separar el <b>plano de control</b> (quién eres, dónde estás) del <b>plano de usuario</b> (tus paquetes), para poder agrandar cada uno por separado.</p></div><figure class="fig fig-arquitectura" id="24-diagrama-5"><div class="lienzo"><svg viewBox="0 0 1000 420" style="min-width:740px" role="img" aria-label="Arquitectura 4G y 5G: el celular habla por radio con la antena; en 4G la antena se conecta al EPC (MME y HSS para el control, SGW y PGW para los datos); en 5G al core 5G (AMF, SMF y AUSF con UDM para el control, UPF para los datos); los datos salen a Internet">
+  <defs><symbol id="i24-5-antena" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9.5 7.5 21.5M12 9.5l4.5 12M9 17.5h6"/><circle cx="12" cy="8" r="1.4"/><path d="M8.5 4.5a5 5 0 0 0 0 7M15.5 4.5a5 5 0 0 1 0 7M6 2.5a8.5 8.5 0 0 0 0 11M18 2.5a8.5 8.5 0 0 1 0 11"/></g></symbol></defs>
+  <rect x="10" y="14" width="130" height="362" rx="12" class="d-casa"/>
+  <rect x="150" y="14" width="190" height="362" rx="12" class="d-oper"/>
+  <rect x="350" y="14" width="510" height="362" rx="12" class="d-oper"/>
+  <rect x="870" y="14" width="120" height="362" rx="12" class="d-inet"/>
+  <text x="75" y="34" text-anchor="middle" class="t t-xs t-b k-casa">CLIENTE</text>
+  <text x="245" y="34" text-anchor="middle" class="t t-xs t-b k-oper">ACCESO DE RADIO</text>
+  <text x="605" y="34" text-anchor="middle" class="t t-xs t-b k-oper">CORE MÓVIL</text>
+  <text x="930" y="34" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <line x1="360" y1="196" x2="850" y2="196" class="ln ln-d" style="stroke-width:.8"/>
+  <text x="366" y="60" class="t t-xs t-b k-oper">4G · EPC</text>
+  <rect x="30" y="90" width="90" height="72" rx="9" class="caja"/>
+  <use href="#i-celular" x="62.0" y="96" width="26" height="26" class="ico"/>
+  <text x="75.0" y="138" text-anchor="middle" class="t t-s t-b">Celular</text><text x="75.0" y="152" text-anchor="middle" class="t t-xs t-m">SIM</text>
+  <rect x="185" y="90" width="120" height="72" rx="9" class="caja"/>
+  <use href="#i24-5-antena" x="232.0" y="96" width="26" height="26" class="ico"/>
+  <text x="245.0" y="138" text-anchor="middle" class="t t-s t-b">Antena</text><text x="245.0" y="152" text-anchor="middle" class="t t-xs t-m">eNodeB</text>
+  <line x1="120" y1="126" x2="185" y2="126" class="ln ln-d" style="stroke-width:2"/>
+  <rect x="400" y="68" width="110" height="46" rx="9" class="c-apl"/>
+  <text x="455.0" y="90" text-anchor="middle" class="t t-s t-b">MME</text><text x="455.0" y="106" text-anchor="middle" class="t t-xs t-m">control y movilidad</text>
+  <rect x="530" y="68" width="110" height="46" rx="9" class="c-apl"/>
+  <text x="585.0" y="90" text-anchor="middle" class="t t-s t-b">HSS</text><text x="585.0" y="106" text-anchor="middle" class="t t-xs t-m">base de abonados</text>
+  <rect x="400" y="130" width="110" height="46" rx="9" class="c-red"/>
+  <text x="455.0" y="152" text-anchor="middle" class="t t-s t-b">SGW</text><text x="455.0" y="168" text-anchor="middle" class="t t-xs t-m">anclaje al moverse</text>
+  <rect x="660" y="130" width="110" height="46" rx="9" class="c-red"/>
+  <text x="715.0" y="152" text-anchor="middle" class="t t-s t-b">PGW</text><text x="715.0" y="168" text-anchor="middle" class="t t-xs t-m">IP, plan y salida</text>
+  <path d="M305 153H400" class="ln s-red" style="stroke-width:3.4"/>
+  <path d="M510 153H660" class="ln s-red" style="stroke-width:3.4"/>
+  <path d="M770 153H850V182H885" class="ln s-red" style="stroke-width:3.4" marker-end="url(#fl-red)"/>
+  <path d="M305 110H400" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <path d="M510 91H530" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <path d="M455 114V130" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <text x="366" y="234" class="t t-xs t-b k-oper">5G · CORE 5G</text>
+  <rect x="30" y="264" width="90" height="72" rx="9" class="caja"/>
+  <use href="#i-celular" x="62.0" y="270" width="26" height="26" class="ico"/>
+  <text x="75.0" y="312" text-anchor="middle" class="t t-s t-b">Celular</text><text x="75.0" y="326" text-anchor="middle" class="t t-xs t-m">SIM</text>
+  <rect x="185" y="264" width="120" height="72" rx="9" class="caja"/>
+  <use href="#i24-5-antena" x="232.0" y="270" width="26" height="26" class="ico"/>
+  <text x="245.0" y="312" text-anchor="middle" class="t t-s t-b">Antena</text><text x="245.0" y="326" text-anchor="middle" class="t t-xs t-m">gNodeB</text>
+  <line x1="120" y1="300" x2="185" y2="300" class="ln ln-d" style="stroke-width:2"/>
+  <rect x="400" y="242" width="110" height="46" rx="9" class="c-apl"/>
+  <text x="455.0" y="264" text-anchor="middle" class="t t-s t-b">AMF</text><text x="455.0" y="280" text-anchor="middle" class="t t-xs t-m">acceso y movilidad</text>
+  <rect x="530" y="242" width="110" height="46" rx="9" class="c-apl"/>
+  <text x="585.0" y="264" text-anchor="middle" class="t t-s t-b">SMF</text><text x="585.0" y="280" text-anchor="middle" class="t t-xs t-m">sesiones</text>
+  <rect x="660" y="242" width="110" height="46" rx="9" class="c-apl"/>
+  <text x="715.0" y="264" text-anchor="middle" class="t t-s t-b">AUSF y UDM</text><text x="715.0" y="280" text-anchor="middle" class="t t-xs t-m">claves y perfiles</text>
+  <rect x="660" y="304" width="110" height="46" rx="9" class="c-red"/>
+  <text x="715.0" y="326" text-anchor="middle" class="t t-s t-b">UPF</text><text x="715.0" y="342" text-anchor="middle" class="t t-xs t-m">datos y salida</text>
+  <path d="M305 327H660" class="ln s-red" style="stroke-width:3.4"/>
+  <path d="M305 284H400" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <path d="M510 265H530" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <path d="M640 265H660" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <path d="M585 288V327H660" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <rect x="885" y="160" width="90" height="72" rx="9" class="caja"/>
+  <use href="#i-nube" x="917.0" y="166" width="26" height="26" class="ico"/>
+  <text x="930.0" y="208" text-anchor="middle" class="t t-s t-b">Internet</text><text x="930.0" y="222" text-anchor="middle" class="t t-xs t-m"></text>
+  <path d="M770 327H850V214H885" class="ln s-red" style="stroke-width:3.4" marker-end="url(#fl-red)"/>
+  <g class="t t-s t-m"><line x1="160" y1="400" x2="190" y2="400" class="ln s-red" style="stroke-width:3.4"/><text x="196" y="404">tus datos (plano de usuario)</text><line x1="400" y1="400" x2="430" y2="400" class="ln s-apl ln-d" style="stroke-width:2"/><text x="436" y="404">señalización (plano de control)</text><line x1="660" y1="400" x2="690" y2="400" class="ln ln-d" style="stroke-width:2"/><text x="696" y="404">radio</text></g>
+</svg></div><figcaption><b>Arquitectura de 4G y 5G.</b> Arriba, la red 4G: el celular habla con la antena (eNodeB), que se conecta por el <i>backhaul</i> al EPC; abajo, la 5G, con la antena gNodeB y el core 5G. En las dos, las líneas gruesas son tus datos (plano de usuario), que salen a Internet por el PGW o el UPF, y las punteadas son la señalización (plano de control), que maneja el MME o el AMF con la base de abonados.</figcaption></figure></section>
+<section><h2>Moverse sin cortarse: el traspaso (handover)</h2><div class="prose"><p>Vas en un auto hablando por teléfono. A medida que te alejas de una antena, su señal se debilita y la de la siguiente se hace más fuerte. En algún momento la red tiene que pasarte de una a otra, y debe hacerlo en milisegundos, sin que se corte la llamada. Ese relevo se llama <b>traspaso</b> o <i>handover</i>.</p><p>El teléfono mide todo el tiempo la señal de su celda y de las vecinas, y le informa a la antena cuando una vecina se oye claramente mejor. La antena actual prepara el terreno con la vecina, le ordena al teléfono que se cambie, le reenvía los paquetes que quedaron en camino y, cuando el teléfono ya llegó, el core cambia el camino de los datos hacia la nueva antena. La interrupción dura unas decenas de milisegundos: imperceptible.</p><p>Lo delicado es decidir <b>cuándo</b>. Si la red cambia apenas la vecina se oye un poquito mejor, en el límite entre dos celdas el teléfono rebota de una a otra (el efecto <i>ping-pong</i>), gastando recursos. Si espera demasiado, la señal de la celda vieja puede caer antes del cambio y la llamada se corta. Los ingenieros de radio ajustan ese margen, llamado <b>histéresis</b>, celda por celda. Pruébalo.</p></div><figure class="fig fig-flujo" id="24-diagrama-6"><div class="lienzo"><svg viewBox="0 0 1000 560" style="min-width:740px" role="img" aria-label="Flujo del traspaso: el teléfono informa que la antena B se oye mejor; A pide lugar a B y B acepta; A ordena el cambio y reenvía los datos en camino; el teléfono se conecta a B; B pide al core cambiar el camino de los datos; A libera sus recursos">
+  <defs>
+    <symbol id="i24-6-antena" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9.5 7.5 21.5M12 9.5l4.5 12M9 17.5h6"/><circle cx="12" cy="8" r="1.4"/><path d="M8.5 4.5a5 5 0 0 0 0 7M15.5 4.5a5 5 0 0 1 0 7M6 2.5a8.5 8.5 0 0 0 0 11M18 2.5a8.5 8.5 0 0 1 0 11"/></g></symbol>
+  </defs>
+  <rect x="25" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-celular" x="35" y="26" width="32" height="32" class="ico"/><text x="75" y="40" class="t t-b">Teléfono</text><text x="75" y="57" class="t t-s t-m">en el auto</text>
+  <line x1="100" y1="70" x2="100" y2="540" class="vida"/>
+  <rect x="255" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i24-6-antena" x="265" y="26" width="32" height="32" class="ico"/><text x="305" y="40" class="t t-b">Antena A</text><text x="305" y="57" class="t t-s t-m">la que deja</text>
+  <line x1="330" y1="70" x2="330" y2="540" class="vida"/>
+  <rect x="485" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i24-6-antena" x="495" y="26" width="32" height="32" class="ico"/><text x="535" y="40" class="t t-b">Antena B</text><text x="535" y="57" class="t t-s t-m">la que recibe</text>
+  <line x1="560" y1="70" x2="560" y2="540" class="vida"/>
+  <rect x="715" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-router-core" x="725" y="26" width="32" height="32" class="ico"/><text x="765" y="40" class="t t-b">Core</text><text x="765" y="57" class="t t-s t-m">MME y SGW</text>
+  <line x1="790" y1="70" x2="790" y2="540" class="vida"/>
+  <line x1="100" y1="104" x2="328" y2="116" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="108" y="98" class="t t-s"><tspan class="t-mono t-b">Measurement Report</tspan> ① B se oye 4 dB mejor que A</text>
+  <line x1="330" y1="152" x2="558" y2="164" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="338" y="146" class="t t-s"><tspan class="t-mono t-b">Handover Request</tspan> ② ¿Tienes lugar para él?</text>
+  <line x1="560" y1="184" x2="332" y2="196" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="360" y="214" class="t t-s">③ Sí, que use este canal</text>
+  <line x1="330" y1="236" x2="102" y2="248" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="130" y="230" class="t t-s"><tspan class="t-mono t-b">Handover Command</tspan> ④ Cámbiate a B</text>
+  <line x1="330" y1="276" x2="558" y2="276" class="ln s-tra" style="stroke-width:3.2" marker-end="url(#fl-tra)"/>
+  <text x="338" y="270" class="t t-s">⑤ Paquetes que quedaron en camino</text>
+  <rect x="20" y="276" width="190" height="36" rx="8" class="c-enl"/><text x="115" y="291" text-anchor="middle" class="t t-xs">el teléfono cambia de antena:</text><text x="115" y="305" text-anchor="middle" class="t t-xs">unas decenas de ms sin datos</text>
+  <line x1="100" y1="340" x2="558" y2="352" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="220" y="334" class="t t-s">⑥ Llegué: acceso por radio a B</text>
+  <line x1="560" y1="386" x2="788" y2="398" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="568" y="380" class="t t-s"><tspan class="t-mono t-b">Path Switch</tspan> ⑦ Manda sus datos por mí</text>
+  <line x1="790" y1="418" x2="562" y2="430" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="600" y="448" class="t t-s">⑧ Camino cambiado</text>
+  <line x1="560" y1="470" x2="332" y2="482" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="360" y="464" class="t t-s"><tspan class="t-mono t-b">Release</tspan> ⑨ Ya puedes soltarlo</text>
+  <path d="M790 516H104" class="ln s-tra" style="stroke-width:3.2" marker-end="url(#fl-tra)"/><text x="400" y="510" class="t t-s">los datos ahora bajan del core por B</text>
+  <g class="t t-xs t-b">
+    <path d="M880 98v24" class="ln s-enl" style="stroke-width:3"/><text x="890" y="108" class="k-enl">DECIDIR</text><text x="890" y="122" class="t-m">el teléfono mide</text>
+    <path d="M880 146v60" class="ln s-red" style="stroke-width:3"/><text x="890" y="174" class="k-red">PREPARAR</text><text x="890" y="188" class="t-m">A y B acuerdan</text>
+    <path d="M880 230v128" class="ln s-enl" style="stroke-width:3"/><text x="890" y="292" class="k-enl">EJECUTAR</text><text x="890" y="306" class="t-m">cambio de antena</text>
+    <path d="M880 380v140" class="ln s-red" style="stroke-width:3"/><text x="890" y="448" class="k-red">COMPLETAR</text><text x="890" y="462" class="t-m">cambia el camino</text>
+  </g>
+</svg></div><figcaption><b>El traspaso entre dos antenas.</b> El teléfono informa que la antena B se oye mejor. La antena A le pide lugar a B, le ordena al teléfono cambiarse y le pasa los datos que estaban en camino. El teléfono se conecta a B, y B le pide al core que mande los datos por ella. Por último, A libera sus recursos.</figcaption></figure><div class="lab" id="24-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>El viaje en auto</h3></div><p class="hint">Toca «Arrancar» o mueve el auto por la ruta. Las curvas muestran la señal de cada antena a lo largo del camino y las marcas, cada traspaso. Cambia la histéresis, el margen que exige la red antes de cambiar de antena, para ver cuándo aparece el ping-pong y cuándo se corta la llamada.</p><div class="btns">
+  <button type="button" id="c24-play" class="primary">Arrancar</button>
+  <button type="button" id="c24-reset">Volver al inicio</button>
+</div>
+<div class="ctls">
+  <label class="ctl">Posición del auto <output id="c24-pos-o"></output><input type="range" id="c24-pos" min="0" max="12" step="0.02" value="0"></label>
+  <label class="ctl">Histéresis (margen para cambiar) <output id="c24-hys-o"></output><input type="range" id="c24-hys" min="0" max="12" step="0.5" value="3"></label>
+</div>
+<canvas id="c24-mapa" aria-label="Mapa de la ruta con cuatro antenas y el auto"></canvas>
+<canvas id="c24-graf" aria-label="Señal de cada antena a lo largo de la ruta, con los traspasos marcados"></canvas>
+<div class="legend" id="c24-ley"></div>
+<div class="readout" id="c24-out" aria-live="polite"></div>
+<p class="hint" id="c24-nota" aria-live="polite"></p></div></section>
+<section><h2>Roaming: usar la red de otro operador</h2><div class="prose"><p>Cuando viajas a otro país, tu operador no tiene antenas allá. Aun así, tu teléfono funciona gracias al <b>roaming</b> (itinerancia): acuerdos entre operadores para atender a los clientes del otro.</p><p>Al llegar, tu teléfono encuentra la red del operador visitado y pide registrarse. Ese operador lee en tu IMSI el código de país y de red, ve que no eres suyo y le pregunta a tu operador, por una red internacional de interconexión entre operadores, si te conoce: tu base de abonados le entrega los desafíos para autenticarte. Si todo está en orden, te deja usar su red y anota tu consumo. Después, los operadores liquidan esas cuentas entre ellos, y tu operador te cobra según tu plan.</p><p>Los datos pueden salir a Internet por dos caminos: volviendo a tu país por el core de tu operador (lo más común, y por eso navegar en roaming tiene algo más de retardo) o saliendo directo en el país visitado.</p></div></section>
+<section><h2>VoLTE y la voz en 4G y 5G</h2><div class="prose"><p>Las redes 2G y 3G tenían dos mitades: una de circuitos para la voz y otra de paquetes para los datos. El 4G es <b>solo IP</b>: no tiene circuitos. Al principio, para llamar, el teléfono «se bajaba» a 3G y volvía al 4G al colgar. La solución definitiva fue <b>VoLTE</b> (voz sobre LTE): la voz viaja como VoIP, con SIP y RTP, gestionada por el núcleo IMS que vimos en el capítulo 22.</p><p>Lo especial de VoLTE es que la red le reserva a la voz un <b>canal dedicado con prioridad</b> y una velocidad garantizada, separado de los datos. Así, aunque descargues un video a la vez, la llamada no se entrecorta. Además usa códecs de voz HD, conecta en uno o dos segundos y permite navegar durante la llamada. En 5G, su sucesora se llama <b>VoNR</b> (voz sobre nueva radio), y la llamada por Wi-Fi del celular usa el mismo núcleo IMS.</p></div></section>
+<section><h2>5G: más velocidad, menos latencia, muchos dispositivos y «rebanadas» de red</h2><div class="prose"><p>La UIT definió para el 5G tres grandes usos, con metas distintas:</p><ul><li><b>Banda ancha móvil mejorada</b>: mucha más velocidad (con picos teóricos de 20 Gbps) para video, realidad virtual y conexión de hogares.</li><li><b>Comunicaciones ultraconfiables y de baja latencia</b>: retardos de pocos milisegundos y casi cero fallas, para controlar máquinas, robots o vehículos.</li><li><b>Comunicaciones masivas de máquinas</b>: hasta un millón de dispositivos por kilómetro cuadrado, como sensores y medidores que mandan poquitos datos y duran años con una batería.</li></ul><p>Para lograrlo, el 5G suma espectro nuevo, antenas con decenas de elementos que dirigen el haz hacia cada teléfono y un core moderno. Su idea más novedosa es el <b>network slicing</b> («rebanadas de red»): crear sobre la misma infraestructura varias redes lógicas, cada una con sus propias garantías. Una rebanada para los celulares comunes, otra de baja latencia para una fábrica y otra para los servicios de emergencia.</p><p>Un detalle: muchos de los primeros despliegues 5G son <b>no autónomos</b> (NSA): usan antenas 5G para los datos pero se apoyan en el core 4G. El 5G <b>autónomo</b> (SA), con core 5G propio, es el que habilita de verdad la baja latencia y las rebanadas.</p></div><figure class="fig fig-comparacion" id="24-diagrama-8"><div class="lienzo"><svg viewBox="0 0 900 350" style="min-width:680px" role="img" aria-label="Las tres caras del 5G: banda ancha móvil mejorada con picos de 20 Gbps, comunicaciones ultraconfiables de baja latencia con alrededor de 1 milisegundo, y comunicaciones masivas de máquinas con un millón de equipos por kilómetro cuadrado; abajo, una misma red física dividida en tres rebanadas lógicas">
+  <rect x="20" y="14" width="276" height="170" rx="12" class="c-red"/>
+  <text x="36" y="38" class="t t-xs t-b k-red">BANDA ANCHA</text><text x="36" y="52" class="t t-xs t-b k-red">MEJORADA</text>
+  <text x="36" y="96" class="t t-b" style="font-size:28px">20 Gbps</text><text x="36" y="116" class="t t-s t-m">de pico teórico</text>
+  <text x="36" y="150" class="t t-s">video 4K, realidad virtual,</text><text x="36" y="166" class="t t-s">acceso fijo inalámbrico</text>
+  <rect x="312" y="14" width="276" height="170" rx="12" class="c-tra"/>
+  <text x="328" y="38" class="t t-xs t-b k-tra">BAJA LATENCIA</text><text x="328" y="52" class="t t-xs t-b k-tra">Y ALTA CONFIABILIDAD</text>
+  <text x="328" y="96" class="t t-b" style="font-size:28px">≈ 1 ms</text><text x="328" y="116" class="t t-s t-m">en la radio, casi sin fallas</text>
+  <text x="328" y="150" class="t t-s">robots, vehículos,</text><text x="328" y="166" class="t t-s">control de máquinas</text>
+  <rect x="604" y="14" width="276" height="170" rx="12" class="c-enl"/>
+  <text x="620" y="38" class="t t-xs t-b k-enl">MASIVA</text><text x="620" y="52" class="t t-xs t-b k-enl">DE MÁQUINAS</text>
+  <text x="620" y="96" class="t t-b" style="font-size:28px">1 millón</text><text x="620" y="116" class="t t-s t-m">de equipos por km²</text>
+  <text x="620" y="150" class="t t-s">medidores, sensores,</text><text x="620" y="166" class="t t-s">agricultura</text>
+  <text x="20" y="216" class="t t-xs t-b t-m">NETWORK SLICING: VARIAS REDES LÓGICAS SOBRE LA MISMA RED</text>
+  <rect x="40" y="228" width="820" height="24" rx="6" class="c-red"/><text x="56" y="244" class="t t-s t-b">Rebanada para celulares: mucha velocidad</text>
+  <rect x="40" y="258" width="820" height="24" rx="6" class="c-tra"/><text x="56" y="274" class="t t-s t-b">Rebanada para una fábrica: latencia garantizada</text>
+  <rect x="40" y="288" width="820" height="24" rx="6" class="c-enl"/><text x="56" y="304" class="t t-s t-b">Rebanada para medidores: millones de conexiones</text>
+  <rect x="20" y="318" width="860" height="26" rx="6" class="caja"/><text x="450" y="335" text-anchor="middle" class="t t-s t-b">Una sola red física: antenas, transporte y core 5G</text>
+</svg></div><figcaption><b>Las tres caras del 5G y sus rebanadas.</b> Cada columna es un uso del 5G con su meta principal: velocidad, latencia o cantidad de dispositivos. Abajo, la misma red física dividida en rebanadas lógicas, cada una ajustada a un tipo de cliente.</figcaption></figure></section>
+<section><h2>Acceso fijo inalámbrico: 5G como alternativa a la fibra</h2><div class="prose"><p>El <b>acceso fijo inalámbrico</b> (FWA) usa la red móvil para dar Internet a una casa. En vez de llevar una fibra, el operador instala un equipo con antena 5G (o 4G) que recibe la señal de la torre y la reparte por Wi-Fi dentro del hogar. Es rápido de instalar, no necesita obras en la calle y llega a zonas donde la fibra todavía no llegó.</p><p>Su límite es la física de la radio: la capacidad de una celda se <b>comparte</b> entre todos los clientes móviles y fijos de esa zona, la señal depende del clima, de los árboles y de los edificios, y la velocidad cae en las horas de más uso. La fibra, en cambio, tiene una capacidad enorme por puerto, latencia estable y velocidades simétricas. Por eso el FWA compite con la fibra sobre todo donde la fibra no llega o donde el cliente usa poco, y los operadores lo usan para ganar clientes rápido mientras despliegan fibra.</p><p>La tabla de abajo muestra que, al final, las dos redes resuelven los mismos problemas con piezas equivalentes.</p></div><figure class="fig fig-comparacion" id="24-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 470" style="min-width:640px" role="img" aria-label="Comparación pieza por pieza de la red móvil y la red FTTH: equipo del cliente, identidad, acceso, medio compartido, transporte, base de clientes, puerta a Internet, movilidad y recurso escaso">
+  <rect x="230" y="12" width="300" height="50" rx="10" class="c-enl"/><use href="#i-celular" x="246" y="21" width="32" height="32" class="ico"/><text x="288" y="43" class="t t-b">Red móvil 4G y 5G</text>
+  <rect x="545" y="12" width="300" height="50" rx="10" class="c-fis"/><use href="#i-ont" x="561" y="21" width="32" height="32" class="ico"/><text x="603" y="43" class="t t-b">Red de fibra FTTH</text>
+  <line x1="14" y1="74" x2="846" y2="74" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="101" class="t t-s t-b">Equipo del cliente</text><text x="246" y="101" class="t t-s">celular con SIM</text><text x="561" y="101" class="t t-s">ONT y router Wi-Fi</text>
+  <line x1="14" y1="117" x2="846" y2="117" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="144" class="t t-s t-b">Identidad del cliente</text><text x="246" y="144" class="t t-s">SIM: IMSI y clave secreta</text><text x="561" y="144" class="t t-s">número de serie de la ONT</text>
+  <line x1="14" y1="160" x2="846" y2="160" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="187" class="t t-s t-b">Acceso</text><text x="246" y="187" class="t t-s">antena (eNodeB o gNodeB)</text><text x="561" y="187" class="t t-s">OLT, splitter y fibra</text>
+  <line x1="14" y1="203" x2="846" y2="203" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="230" class="t t-s t-b">Medio compartido</text><text x="246" y="230" class="t t-s">la radio de la celda</text><text x="561" y="230" class="t t-s">la luz del puerto PON</text>
+  <line x1="14" y1="246" x2="846" y2="246" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="273" class="t t-s t-b">Hasta la central</text><text x="246" y="273" class="t t-s">backhaul de fibra o microondas</text><text x="561" y="273" class="t t-s">red de agregación</text>
+  <line x1="14" y1="289" x2="846" y2="289" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="316" class="t t-s t-b">Quién es y qué puede</text><text x="246" y="316" class="t t-s">HSS o UDM</text><text x="561" y="316" class="t t-s">RADIUS</text>
+  <line x1="14" y1="332" x2="846" y2="332" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="359" class="t t-s t-b">IP y puerta a Internet</text><text x="246" y="359" class="t t-s">PGW o UPF</text><text x="561" y="359" class="t t-s">BNG</text>
+  <line x1="14" y1="375" x2="846" y2="375" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="402" class="t t-s t-b">Moverse</text><text x="246" y="402" class="t t-s t-b">traspaso entre antenas</text><text x="561" y="402" class="t t-s t-b">no hace falta: es fija</text>
+  <line x1="14" y1="418" x2="846" y2="418" class="ln" style="stroke-width:.8"/>
+  <text x="20" y="445" class="t t-s t-b">Recurso escaso</text><text x="246" y="445" class="t t-s t-b">espectro licenciado</text><text x="561" y="445" class="t t-s t-b">fibra tendida en la calle</text>
+</svg></div><figcaption><b>La red móvil y la red FTTH, pieza por pieza.</b> Cada fila es una función de la red y cada columna, cómo la resuelve cada tecnología. El cliente se identifica con la SIM en vez del número de serie de la ONT; la antena hace el papel de la OLT; el PGW o UPF hace el del BNG. Lo que solo tiene la móvil es el traspaso; lo que la limita es el espectro.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>En una misma ciudad, un operador de fibra y los operadores móviles compiten y a la vez se necesitan. Compiten por la conexión del hogar: los móviles ofrecen acceso fijo inalámbrico 5G y planes con muchos datos que algunos clientes usan como Internet de casa. Pero se complementan en la infraestructura: las torres móviles necesitan fibra para conectarse al core, y el operador de fibra puede vendérsela como servicio mayorista. Además, buena parte del tráfico de los celulares dentro de las casas viaja por el Wi-Fi conectado a la fibra, y los operadores de fibra que quieren ofrecer paquetes «fijo más móvil» suelen hacerlo como operador móvil virtual, usando la red de un operador móvil existente.</p></div><div class="ml"><b>En la práctica</b><p>Entender la red móvil ayuda a leer a la competencia. Cuando un cliente compara la fibra con un plan 5G para su casa, conviene saber que la capacidad de una celda se comparte y varía con la hora, mientras que la fibra da latencia estable y subida simétrica, algo clave para el teletrabajo, los juegos y las cámaras. También explica por qué los paquetes convergentes (fibra más móvil) fidelizan: el cliente que tiene las dos cosas con el mismo operador se va mucho menos. Y para quien atiende reclamos: si el cliente dice que «el celular anda mal en casa», muchas veces la solución es la llamada por Wi-Fi sobre su fibra.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué se divide el territorio en celdas?</summary><p>Porque así se pueden reusar las mismas frecuencias en celdas lejanas y atender a muchos más clientes con el mismo espectro.</p></details><details><summary>¿Qué guarda la SIM que permite autenticar al cliente sin enviar contraseñas?</summary><p>El IMSI y una clave secreta que solo conocen la SIM y la base de abonados; con ella responde a un desafío al azar.</p></details><details><summary>En la autenticación móvil, ¿quién demuestra su identidad a quién?</summary><p>Los dos: la SIM verifica que la red es legítima y la red verifica que la SIM es legítima.</p></details><details><summary>¿Qué equipo de la red móvil cumple un papel parecido al BNG de la red fija?</summary><p>El PGW en 4G (o el UPF con el SMF en 5G): da la dirección IP, aplica el plan y es la salida a Internet.</p></details><details><summary>¿Qué pasa si la histéresis del traspaso es muy baja? ¿Y muy alta?</summary><p>Muy baja: el teléfono rebota entre celdas (ping-pong). Muy alta: el cambio llega tarde y la llamada se puede cortar.</p></details><details><summary>¿Por qué el acceso fijo inalámbrico puede ir más lento a la noche?</summary><p>Porque comparte la capacidad de la celda con todos los usuarios de la zona, y a esa hora hay más gente conectada.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Telefon%C3%ADa_m%C3%B3vil" target="_blank" rel="noopener">Telefonía móvil (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/5G" target="_blank" rel="noopener">5G (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Handover" target="_blank" rel="noopener">Handover (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.3gpp.org/technologies/5g-system-overview" target="_blank" rel="noopener">Acerca del 5G y la arquitectura del sistema (3GPP, en inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab,$=L.$;
+  const LARGO=12, CEL=[{x:1.2,y:0.5,n:'A'},{x:4.6,y:-0.6,n:'B'},{x:7.8,y:0.55,n:'C'},{x:11,y:-0.5,n:'D'}];
+  const COL=['--c-red','--c-enl','--c-tra','--c-fis'];
+  const UMBRAL=-109, TTT=0.32, PASO=0.01;
+  function senal(i,p){
+    const c=CEL[i], d=Math.max(0.08,Math.hypot(p-c.x,c.y));
+    return -78-38*Math.log10(d/0.4)+3*Math.sin(p*3.1+i*1.7)+1.8*Math.sin(p*23+i*2.3)+1.2*Math.sin(p*61+i*0.7);
+  }
+  function simular(){
+    const hys=+$('#c24-hys').value, dt=PASO*1000/(60/3.6); // segundos por paso, a 60 km/h
+    let serv=0, cand=-1, tc=0, tbaja=0, ultimo={p:-99,de:-1};
+    const tramos=[], ev=[]; let ini=0;
+    for(let k=0;k*PASO<=LARGO+1e-9;k++){
+      const p=k*PASO;
+      const s=CEL.map((_,i)=>senal(i,p));
+      let mejor=-1;
+      s.forEach((v,i)=>{if(i!==serv&&v>s[serv]+hys&&(mejor<0||v>s[mejor]))mejor=i;});
+      if(mejor>=0){ if(mejor===cand)tc+=dt; else {cand=mejor;tc=dt;} } else {cand=-1;tc=0;}
+      if(s[serv]<UMBRAL)tbaja+=dt; else tbaja=0;
+      if(tbaja>=0.5){
+        const best=s.indexOf(Math.max(...s));
+        ev.push({p,tipo:'corte',de:serv,a:best}); tramos.push({de:ini,a:p,c:serv}); ini=p; serv=best; tbaja=0;cand=-1;tc=0;continue;
+      }
+      if(cand>=0&&tc>=TTT){
+        const pp=ultimo.de===cand&&(p-ultimo.p)<0.6;
+        ev.push({p,tipo:pp?'pingpong':'ho',de:serv,a:cand}); tramos.push({de:ini,a:p,c:serv}); ini=p;
+        ultimo={p,de:serv}; serv=cand; cand=-1; tc=0;
+      }
+    }
+    tramos.push({de:ini,a:LARGO,c:serv});
+    return {ev,tramos,hys};
+  }
+  let sim=simular();
+  const servEn=p=>{const tr=sim.tramos.find(r=>p>=r.de&&p<=r.a);return tr?tr.c:0;};
+  function mapa(ctx,w,h){
+    ctx.clearRect(0,0,w,h);
+    const pos=+$('#c24-pos').value, X=p=>14+p/LARGO*(w-28), Y=y=>h/2+y*(h*0.62);
+    ctx.strokeStyle=L.tok('--line');ctx.lineWidth=10;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(X(0),Y(0));ctx.lineTo(X(LARGO),Y(0));ctx.stroke();
+    ctx.strokeStyle=L.tok('--muted');ctx.lineWidth=1;ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(X(0),Y(0));ctx.lineTo(X(LARGO),Y(0));ctx.stroke();ctx.setLineDash([]);
+    const sv=servEn(pos);
+    CEL.forEach((c,i)=>{
+      const col=L.tok(COL[i]);
+      ctx.globalAlpha=.10;ctx.fillStyle=col;ctx.beginPath();ctx.arc(X(c.x),Y(c.y),(w-28)/LARGO*1.6,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+      ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(X(c.x),Y(c.y)-12);ctx.lineTo(X(c.x)-7,Y(c.y)+8);ctx.lineTo(X(c.x)+7,Y(c.y)+8);ctx.closePath();ctx.fill();
+      ctx.font='700 12px '+L.tok('--f-display');ctx.textAlign='center';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(c.n,X(c.x)+11,Y(c.y));
+    });
+    const c=CEL[sv];
+    ctx.strokeStyle=L.tok(COL[sv]);ctx.lineWidth=2.5;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(X(pos),Y(0));ctx.lineTo(X(c.x),Y(c.y));ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=L.tok('--ink');ctx.beginPath();ctx.roundRect?ctx.roundRect(X(pos)-10,Y(0)-6,20,12,3):ctx.rect(X(pos)-10,Y(0)-6,20,12);ctx.fill();
+  }
+  function graf(ctx,w,h){
+    const pos=+$('#c24-pos').value;
+    const F=L.frame(ctx,w,h,{x0:0,x1:LARGO,y0:-125,y1:-60,sx:2,sy:10});
+    CEL.forEach((_,i)=>L.curve(ctx,F,p=>senal(i,p),L.tok(COL[i]),1.2,[4,3]));
+    sim.tramos.forEach(r=>{if(r.de<pos)L.seg(ctx,F,p=>senal(r.c,p),r.de,Math.min(r.a,pos),L.tok(COL[r.c]),3.2,200);});
+    F.clip();
+    ctx.strokeStyle=L.tok('--warm');ctx.lineWidth=1;ctx.setLineDash([2,4]);ctx.beginPath();ctx.moveTo(F.X(0),F.Y(UMBRAL));ctx.lineTo(F.X(LARGO),F.Y(UMBRAL));ctx.stroke();ctx.setLineDash([]);
+    sim.ev.filter(e=>e.p<=pos).forEach(e=>{
+      const x=F.X(e.p), col=e.tipo==='ho'?L.tok('--ink'):L.tok('--warm');
+      ctx.strokeStyle=col;ctx.lineWidth=e.tipo==='ho'?1.5:2.2;ctx.beginPath();ctx.moveTo(x,F.p.t);ctx.lineTo(x,F.p.t+F.ph);ctx.stroke();
+      if(e.tipo==='corte'){ctx.font='700 13px '+L.tok('--f-display');ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText('✕',x,F.p.t+10);}
+    });
+    ctx.strokeStyle=L.tok('--accent');ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(F.X(pos),F.p.t);ctx.lineTo(F.X(pos),F.p.t+F.ph);ctx.stroke();
+    ctx.restore();
+    ctx.font='11px '+L.tok('--f-mono');ctx.fillStyle=L.tok('--warm');ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText('se corta',F.X(LARGO)-2,F.Y(UMBRAL)-2);
+  }
+  const rMapa=L.canvasWidget($('#c24-mapa'),w=>w<520?0.45:0.16,mapa);
+  const rGraf=L.canvasWidget($('#c24-graf'),w=>w<520?0.7:0.36,graf);
+  $('#c24-ley').innerHTML=CEL.map((c,i)=>'<span><i style="background:var('+COL[i]+')"></i>antena '+c.n+'</span>').join('')+
+    '<span><i style="background:var(--ink);border-radius:1px;width:3px"></i>traspaso</span><span><i style="background:var(--warm);border-radius:1px;width:3px"></i>ping-pong o corte</span>';
+  function texto(){
+    const pos=+$('#c24-pos').value, sv=servEn(pos), s=senal(sv,pos), hechos=sim.ev.filter(e=>e.p<=pos);
+    const n=t=>hechos.filter(e=>e.tipo===t).length, tot=sim.ev.length;
+    $('#c24-out').innerHTML='<span>Kilómetro '+L.fmt(pos,1).replace('.',',')+' · conectado a la antena <b class="big">'+CEL[sv].n+'</b> con '+Math.round(s)+' dBm</span>'+
+      '<span>Traspasos limpios: <b class="ok">'+n('ho')+'</b> · ping-pong: <b class="'+(n('pingpong')?'warn':'ok')+'">'+n('pingpong')+'</b> · llamadas cortadas: <b class="'+(n('corte')?'warn':'ok')+'">'+n('corte')+'</b></span>';
+    const pp=sim.ev.filter(e=>e.tipo==='pingpong').length, ct=sim.ev.filter(e=>e.tipo==='corte').length;
+    let nota;
+    if(ct) nota='Con '+L.fmt(sim.hys,1).replace('.',',')+' dB de histéresis la red espera demasiado: la señal de la antena vieja cae por debajo de '+UMBRAL+' dBm antes del cambio y la llamada se corta ('+ct+' vez/veces en todo el viaje). Baja la histéresis.';
+    else if(pp) nota='Con tan poco margen, en el límite entre dos antenas el teléfono rebota de una a otra cada vez que la señal tiembla: '+pp+' traspasos de ida y vuelta en todo el viaje, que gastan recursos y pueden causar microcortes. Sube un poco la histéresis.';
+    else nota='Buen ajuste: '+tot+' traspasos en todo el viaje, uno por cada antena nueva, sin rebotes ni cortes. Prueba llevar la histéresis a 0 o a más de 8 dB.';
+    $('#c24-nota').textContent=nota;
+  }
+  function todo(){rMapa();rGraf();texto();}
+  L.bindOut('#c24-pos',v=>'km '+L.fmt(v,1).replace('.',','));L.bindOut('#c24-hys',v=>L.fmt(v,1).replace('.',',')+' dB');
+  $('#c24-pos').addEventListener('input',todo);
+  $('#c24-hys').addEventListener('input',()=>{sim=simular();todo();});
+  let anim=null;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function parar(){if(anim){cancelAnimationFrame(anim);anim=null;}$('#c24-play').textContent='Arrancar';}
+  $('#c24-play').addEventListener('click',()=>{
+    if(anim){parar();return;}
+    if(+$('#c24-pos').value>=LARGO)$('#c24-pos').value=0;
+    if(reduce){$('#c24-pos').value=LARGO;$('#c24-pos').dispatchEvent(new Event('input'));return;}
+    $('#c24-play').textContent='Pausar';let t0=null;
+    const paso=ts=>{if(t0===null)t0=ts;const dtt=(ts-t0)/1000;t0=ts;
+      const v=Math.min(LARGO,+$('#c24-pos').value+dtt*0.9);
+      $('#c24-pos').value=v;$('#c24-pos').dispatchEvent(new Event('input'));
+      if(v>=LARGO){parar();return;} anim=requestAnimationFrame(paso);};
+    anim=requestAnimationFrame(paso);
+  });
+  $('#c24-reset').addEventListener('click',()=>{parar();$('#c24-pos').value=0;$('#c24-pos').dispatchEvent(new Event('input'));});
+  $('#c24-pos').value=6.2; todo(); $('#c24-pos').dispatchEvent(new Event('input'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Automatización de red · Cómo funciona un telco</title>
+<meta name="description" content="Cuando hay que cambiar algo en cientos o miles de equipos, hacerlo a mano es lento y propenso a errores; la automatización convierte el cambio en un programa que se prueba, se aplica por lotes, se registra y se puede deshacer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="30-automatizacion-de-red">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 30 DE 49</span><h1>Automatización de red: scripts, Ansible y APIs</h1><p class="lede">Cuando hay que cambiar algo en cientos o miles de equipos, hacerlo a mano es lento y propenso a errores; la automatización convierte el cambio en un programa que se prueba, se aplica por lotes, se registra y se puede deshacer.</p></header>
+<section><div class="prose"><p>Un martes por la tarde alguien decide que todos los equipos de la red deben usar un servidor de hora nuevo. Si la red tiene veinte routers, un ingeniero entra a cada uno, escribe dos líneas y se va a su casa. Si tiene cuatrocientas OLT, dos mil switches y cien mil equipos en casas de clientes, ese mismo cambio a mano tomaría semanas, y en algún equipo alguien escribiría un número mal.</p><p>Este capítulo trata de cómo los operadores resuelven ese problema: escribiendo el cambio una sola vez, como un programa, y dejando que una máquina lo aplique igual en todos los equipos, de a poco, revisando cada paso y con la puerta abierta para volver atrás.</p></div><div class="analogia"><b>Imagínalo así</b><p>Una receta de cocina escrita frente a un cocinero que improvisa: la receta sale igual cada vez, la puede seguir cualquiera y, si algo sale mal, se sabe en qué paso fue. El cocinero que improvisa puede ser brillante, pero no puede cocinar en mil restaurantes a la vez, y cuando el plato sale salado nadie sabe por qué.</p></div><figure class="fig fig-capas" id="30-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: programas que configuran muchos equipos a la vez">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: programas que configuran muchos equipos a la vez</text>
+</svg></div><figcaption><b>Dónde estamos.</b> La automatización no es una capa nueva: es un programa que conversa con los equipos usando protocolos de la capa de aplicación (SSH, NETCONF, HTTP) para cambiar cómo trabajan en todas las demás. Por eso se encienden la capa de aplicación y los equipos que el operador administra, de la ONT al core.</figcaption></figure></section>
+<section><h2>Por qué automatizar: errores, tiempo y escala</h2><div class="prose"><p>Hay tres razones, y las tres crecen con el tamaño de la red.</p><ul><li><b>Errores.</b> Una persona que repite la misma tarea cien veces se equivoca alguna vez: un dígito cambiado, una línea olvidada, el equipo equivocado. Un programa no se cansa ni se distrae. Si se equivoca, se equivoca siempre igual, y eso es más fácil de detectar y corregir.</li><li><b>Tiempo.</b> Entrar a un equipo, revisar, cambiar, guardar y comprobar lleva unos minutos. Multiplicado por miles de equipos son semanas. Un programa trabaja con decenas de equipos en paralelo y termina en una noche.</li><li><b>Escala.</b> Un operador FTTH suma clientes todos los días. Si cada cliente nuevo exige que alguien configure algo a mano, el equipo humano tiene que crecer al mismo ritmo que la red. Con automatización, la red crece y el equipo no tanto.</li></ul><p>Hay una cuarta razón menos visible: la <b>trazabilidad</b>. Un programa deja registro de qué hizo, en qué equipo y a qué hora. Cuando algo falla a las tres de la mañana, saber qué cambió y quién lo cambió ahorra horas de búsqueda.</p></div><div class="lab" id="30-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>A mano o automático</h3></div><p class="hint">Elige cuántos equipos hay que cambiar y cuánto tarda una persona en cada uno. Después activa «el programa tiene un error» y mira qué pasa con y sin lote piloto: la automatización ahorra tiempo, pero sin piloto también multiplica los errores.</p><style>
+.c30-cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));min-width:0;gap:14px}
+.c30-col{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:8px;background:var(--paper);min-width:0}
+.c30-col h4{margin:0;font:700 .95rem var(--f-display)}
+.c30-t{font:700 1.3rem var(--f-display)}
+.c30-t small{display:block;font:500 .8rem var(--f-body);color:var(--muted)}
+.c30-barra{height:12px;border-radius:6px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+.c30-barra i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.c30-red{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:2px;min-width:0}
+.c30-red i{display:block;min-width:0;aspect-ratio:1;border-radius:2px;background:var(--good-soft);border:1px solid var(--good)}
+.c30-red i.mal{background:var(--warm);border-color:var(--warm)}
+.c30-red i.rev{background:var(--warm-soft);border-color:var(--warm)}
+.c30-e{font:500 .86rem var(--f-display)}
+@media (prefers-reduced-motion: reduce){.c30-barra i{transition:none}}
+</style>
+<div class="ctls">
+  <label class="ctl"><span>Equipos a cambiar</span><output id="c30-n-o"></output><input type="range" id="c30-n" min="50" max="2000" step="50" value="500"></label>
+  <label class="ctl"><span>Minutos por equipo, a mano</span><output id="c30-m-o"></output><input type="range" id="c30-m" min="1" max="10" step="1" value="4"></label>
+  <label class="ctl"><span>Equipos con error al hacerlo a mano</span><output id="c30-p-o"></output><input type="range" id="c30-p" min="0.2" max="5" step="0.2" value="1"></label>
+</div>
+<div class="btns" role="group" aria-label="Condiciones del programa">
+  <button type="button" id="c30-bug" aria-pressed="false">El programa tiene un error</button>
+  <button type="button" id="c30-piloto" aria-pressed="true">Usar lote piloto de 20 equipos</button>
+</div>
+<div class="c30-cmp">
+  <div class="c30-col">
+    <h4>A mano, una persona</h4>
+    <div class="c30-t" id="c30-tm"></div>
+    <div class="c30-barra"><i id="c30-bm"></i></div>
+    <div class="c30-red" id="c30-rm" aria-hidden="true"></div>
+    <div class="c30-e" id="c30-em"></div>
+  </div>
+  <div class="c30-col">
+    <h4>Automático, 25 equipos a la vez</h4>
+    <div class="c30-t" id="c30-ta"></div>
+    <div class="c30-barra"><i id="c30-ba"></i></div>
+    <div class="c30-red" id="c30-ra" aria-hidden="true"></div>
+    <div class="c30-e" id="c30-ea"></div>
+  </div>
+</div>
+<div class="legend"><span>Cada cuadrito es el 1 % de los equipos.</span><span>Verde: bien.</span><span>Rojo: quedó con error.</span><span>Rosado: falló y se restauró.</span></div>
+<p class="hint" id="c30-nota" aria-live="polite"></p></div></section>
+<section><h2>De la consola (CLI) a las APIs</h2><div class="prose"><p>Durante décadas, configurar un equipo de red quería decir conectarse a su <b>consola</b>, la <b>CLI</b> (interfaz de línea de comandos): una pantalla negra donde se escriben órdenes como <code>interface gigabit 0/1</code> o <code>ip address 192.0.2.1</code>. Cada fabricante tiene su propio idioma de comandos, y el equipo responde con texto pensado para que lo lea una persona.</p><p>Ese texto es el problema cuando quien lee es un programa. Si el fabricante cambia el formato de una respuesta en una versión nueva, el programa que la leía se rompe. Por eso la industria se movió hacia las <b>API</b> (interfaces de programación): puertas de entrada pensadas para que hablen dos programas, con preguntas y respuestas en formatos estructurados como <b>JSON</b> o <b>XML</b>, que tienen campos con nombre y no dependen de cómo se ve la pantalla.</p><p>La diferencia es como pedir un dato por teléfono a una persona frente a llenar un formulario. Por teléfono te pueden contestar «sí, está en línea desde ayer como a las tres»; el formulario dice <code>estado: en línea</code> y <code>desde: 2026-11-20 15:02</code>. Los dos dicen lo mismo, pero solo el segundo lo entiende un programa sin adivinar.</p><p>En la práctica conviven los dos mundos: equipos modernos con API y equipos viejos que solo hablan por consola. Las herramientas de automatización saben usar ambos.</p></div></section>
+<section><h2>Scripts: Python y las bibliotecas para hablar con equipos</h2><div class="prose"><p>El primer paso de casi todo ingeniero de red hacia la automatización es un <b>script</b>: un programa corto, casi siempre en <b>Python</b>, que repite lo que la persona haría a mano. Abre una conexión <b>SSH</b> (el acceso remoto cifrado del capítulo 10) a cada equipo de una lista, escribe los comandos, lee la respuesta y anota el resultado.</p><p>Para no reinventar todo, existen bibliotecas que ya saben conectarse a equipos de decenas de fabricantes y esperar el momento justo para escribir cada comando. Netmiko y Scrapli son ejemplos del mercado para hablar por consola; NAPALM ofrece funciones comunes («dame las interfaces», «reemplaza la configuración») para varias marcas; ncclient habla NETCONF. Con ellas, un script de veinte líneas puede recorrer cien equipos y entregar una planilla con la versión de software de cada uno.</p><p>Los scripts son rápidos de escribir y muy útiles para <b>consultar</b>: inventarios, auditorías, reportes. Para <b>cambiar</b> cosas tienen un riesgo: hacen exactamente lo que dicen, aunque el equipo ya estuviera bien o en un estado inesperado. Para eso aparecieron herramientas que piensan distinto.</p></div></section>
+<section><h2>Ansible: recetas (playbooks) que describen el estado deseado</h2><div class="prose"><p><b>Ansible</b> es una herramienta de automatización de código abierto muy usada en redes (otras del mercado son Salt, Nornir o las plataformas de los propios fabricantes). Su idea central es que no le dices <b>qué comandos escribir</b>, sino <b>cómo debe quedar</b> el equipo. A esa descripción se le llama <b>estado deseado</b>.</p><p>Una receta de Ansible se llama <b>playbook</b> y se escribe en un formato de texto fácil de leer llamado YAML. Tiene tres ingredientes:</p><ul><li><b>El inventario</b>: la lista de equipos, agrupados por zona, modelo o función («todas las OLT del norte»).</li><li><b>Las tareas</b>: lo que debe quedar configurado en cada uno («el servidor DNS es 192.0.2.53»).</li><li><b>Las condiciones</b>: a qué equipos aplica cada tarea («solo los del modelo A»).</li></ul><p>Ansible entra a cada equipo, mira cómo está y <b>cambia solo lo que no coincide</b> con la receta. Si un equipo ya estaba bien, no lo toca y lo informa como «sin cambios». A esa propiedad se la llama <b>idempotencia</b>: aplicar la receta una vez o diez veces deja el mismo resultado. Es lo que permite volver a correrla sin miedo después de un corte a mitad de camino.</p></div><figure class="fig fig-flujo" id="30-diagrama-3"><div class="lienzo"><svg viewBox="0 0 880 500" style="min-width:690px" role="img" aria-label="Flujo de un playbook: el operador ejecuta la receta; Ansible lee el inventario y las tareas; pregunta al equipo A su DNS, no coincide y lo cambia; pregunta al equipo B, ya coincide y no lo toca; entrega un reporte con uno cambiado y ninguno fallido">
+  
+  <rect x="10" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-persona" x="20" y="26" width="32" height="32" class="ico"/><text x="58" y="47" class="t t-b">Operador</text>
+  <rect x="150" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-servidor" x="160" y="26" width="32" height="32" class="ico"/><text x="198" y="47" class="t t-b">Ansible</text>
+  <rect x="300" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-factura" x="310" y="26" width="32" height="32" class="ico"/><text x="348" y="40" class="t t-b">Inventario</text><text x="348" y="57" class="t t-s t-m">y receta (YAML)</text>
+  <rect x="470" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-router-core" x="480" y="26" width="32" height="32" class="ico"/><text x="518" y="47" class="t t-b">Equipo A</text>
+  <rect x="610" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-router-core" x="620" y="26" width="32" height="32" class="ico"/><text x="658" y="47" class="t t-b">Equipo B</text>
+  <line x1="70" y1="70" x2="70" y2="485" class="vida"/>
+  <line x1="215" y1="70" x2="215" y2="485" class="vida"/>
+  <line x1="375" y1="70" x2="375" y2="485" class="vida"/>
+  <line x1="530" y1="70" x2="530" y2="485" class="vida"/>
+  <line x1="670" y1="70" x2="670" y2="485" class="vida"/>
+
+  
+  <line x1="70" y1="104" x2="213" y2="112" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="78" y="98" class="t t-s">① Ejecutar receta</text>
+  <line x1="215" y1="138" x2="373" y2="146" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="224" y="132" class="t t-s">② ¿Qué equipos y tareas?</text>
+  <line x1="375" y1="164" x2="217" y2="172" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="250" y="188" class="t t-s">③ <tspan class="t-mono">A y B · dns: 192.0.2.53</tspan></text>
+
+  
+  <line x1="215" y1="218" x2="528" y2="226" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="224" y="212" class="t t-s">④ SSH: ¿cuál es tu DNS?</text>
+  <line x1="530" y1="242" x2="217" y2="250" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="380" y="264" class="t t-s">⑤ <tspan class="t-mono">198.51.100.7</tspan></text>
+  <line x1="215" y1="282" x2="528" y2="290" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="224" y="276" class="t t-s">⑥ <tspan class="t-b">No coincide: cambiar</tspan></text>
+  <rect x="540" y="276" width="62" height="20" rx="6" class="c-apl"/><text x="571" y="290" text-anchor="middle" class="t t-xs t-b">CAMBIADO</text>
+
+  
+  <line x1="215" y1="330" x2="668" y2="338" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="224" y="324" class="t t-s">⑦ SSH: ¿cuál es tu DNS?</text>
+  <line x1="670" y1="354" x2="217" y2="362" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="430" y="376" class="t t-s">⑧ <tspan class="t-mono">192.0.2.53</tspan></text>
+  <rect x="616" y="384" width="108" height="20" rx="6" class="caja"/><text x="670" y="398" text-anchor="middle" class="t t-xs t-b t-m">SIN CAMBIOS</text>
+  <text x="224" y="400" class="t t-s t-m">Ya coincide: no se toca</text>
+
+  
+  <line x1="215" y1="440" x2="72" y2="448" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="78" y="470" class="t t-s">⑨ <tspan class="t-b">Reporte:</tspan> <tspan class="t-mono">ok=2 changed=1 failed=0</tspan></text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M760 96v96" class="ln s-apl" style="stroke-width:3"/><text x="770" y="138">LEER</text><text x="770" y="152" class="t-m">inventario</text>
+    <path d="M760 208v90" class="ln s-apl" style="stroke-width:3"/><text x="770" y="248">EQUIPO A</text><text x="770" y="262" class="t-m">compara</text><text x="770" y="276" class="t-m">y corrige</text>
+    <path d="M760 320v86" class="ln s-apl" style="stroke-width:3"/><text x="770" y="358">EQUIPO B</text><text x="770" y="372" class="t-m">compara</text><text x="770" y="386" class="t-m">y lo deja</text>
+    <path d="M760 432v44" class="ln s-apl" style="stroke-width:3"/><text x="770" y="452">REPORTE</text>
+  </g>
+</svg></div><figcaption><b>Cómo corre un playbook.</b> Ansible lee el inventario y la receta, se conecta a cada equipo, compara lo que hay con lo que debería haber y cambia solo la diferencia. El equipo A tenía otro DNS y se corrige; el equipo B ya estaba bien y no se toca. Al final, un reporte resume cuántos equipos quedaron bien, cuántos cambiaron y cuántos fallaron.</figcaption></figure><div class="lab" id="30-lab-6"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Lee la receta</h3></div><p class="hint">Esta receta cambia el servidor DNS de un grupo de equipos. Para cada equipo del inventario, predice qué pasará: «cambiado», «sin cambios», «omitido», «falló» o «no lo toca» porque está fuera del grupo. Después ejecútala y compara.</p><style>
+.c30-yaml{font:500 .84rem/1.55 var(--f-mono);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0;overflow-x:auto;white-space:pre}
+.c30-yaml .c{color:var(--muted)}
+.c30-yaml .k{color:var(--c-apl);font-weight:600}
+.c30-eqs{display:grid;gap:8px}
+.c30-eq{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--paper)}
+.c30-eq b{font:600 .9rem var(--f-mono)}
+.c30-eq small{display:block;color:var(--muted);font-size:.82rem}
+.c30-eq .res{grid-column:1/-1;font:600 .84rem var(--f-display)}
+.c30-eq .res:empty{display:none}
+.c30-eq .res.ok{color:var(--good)}
+.c30-eq .res.no{color:var(--warm)}
+@media (max-width:520px){.c30-eq{grid-template-columns:minmax(0,1fr)}}
+</style>
+<pre class="c30-yaml" aria-label="Receta de ejemplo"><span class="k">- name:</span> DNS nuevo en las OLT del norte
+  <span class="k">hosts:</span> olt_norte            <span class="c"># grupo del inventario</span>
+  <span class="k">tasks:</span>
+    <span class="k">- name:</span> Fijar el servidor DNS
+      <span class="k">config_dns:</span>
+        <span class="k">servidor:</span> 192.0.2.53
+      <span class="k">when:</span> modelo == "A"      <span class="c"># solo el modelo A</span></pre>
+<div class="c30-eqs" id="c30-filas"></div>
+<div class="btns">
+  <button type="button" class="primary" id="c30-run">Ejecutar la receta</button>
+  <button type="button" id="c30-reset">Volver a empezar</button>
+</div>
+<div class="readout" id="c30-out" aria-live="polite"><span>Elige una predicción para cada equipo y ejecuta la receta.</span></div></div></section>
+<section><h2>Modelos de datos y protocolos: NETCONF, RESTCONF y YANG</h2><div class="prose"><p>Para que un programa configure equipos de distintos fabricantes, hace falta un idioma común. La industria lo construyó en dos piezas.</p><p><b>YANG</b> es el <b>modelo de datos</b>: un plano que describe qué se puede configurar en un equipo y cómo se llama cada cosa. Funciona como el formulario oficial de un trámite: dice que hay una casilla «interfaz», que dentro tiene «nombre», «descripción» y «encendida sí o no», y qué valores acepta cada una. Hay modelos estándar, escritos por el IETF y por grupos como OpenConfig, y modelos propios de cada fabricante.</p><p><b>NETCONF</b> es el <b>protocolo</b> con el que el programa entrega ese formulario lleno. Viaja dentro de SSH y usa mensajes XML. Su gran aporte es la <b>configuración candidata</b>: el programa escribe los cambios en un borrador, el equipo los <b>valida</b> y solo cuando todo está bien se aplican de una sola vez con un <code>commit</code>. Si algo falla a mitad de camino, no queda un equipo medio configurado. Muchos equipos aceptan además un <b>commit confirmado</b>: si en unos minutos nadie confirma que el cambio funcionó, el equipo vuelve solo a la configuración anterior. Es la red de seguridad para un cambio que deja al equipo inaccesible.</p><p><b>RESTCONF</b> ofrece lo mismo con el estilo de las API web del capítulo 9: pedidos HTTP (<code>GET</code> para leer, <code>PATCH</code> para cambiar) y respuestas en JSON o XML, sobre los mismos modelos YANG.</p></div><figure class="fig fig-flujo" id="30-diagrama-7"><div class="lienzo"><svg viewBox="0 0 780 560" style="min-width:620px" role="img" aria-label="Flujo de una sesión NETCONF dentro de SSH: saludo con capacidades, bloqueo de la configuración, cambio en el borrador candidato, validación, commit, desbloqueo y cierre; si la validación falla, se descarta el borrador">
+  
+  <rect x="40" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-servidor" x="52" y="26" width="32" height="32" class="ico"/><text x="92" y="40" class="t t-b">Programa</text><text x="92" y="57" class="t t-s t-m">de automatización</text>
+  <rect x="460" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-router-core" x="472" y="26" width="32" height="32" class="ico"/><text x="512" y="40" class="t t-b">Equipo</text><text x="512" y="57" class="t t-s t-m">router u OLT</text>
+  <rect x="110" y="80" width="460" height="22" rx="6" class="c-tra"/>
+  <text x="340" y="95" text-anchor="middle" class="t t-s t-b k-tra">Todo viaja cifrado dentro de una sesión SSH (puerto 830)</text>
+  <line x1="120" y1="102" x2="120" y2="545" class="vida"/>
+  <line x1="540" y1="102" x2="540" y2="545" class="vida"/>
+
+  
+  <line x1="120" y1="130" x2="538" y2="138" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="130" y="124" class="t t-s"><tspan class="t-mono t-b">hello</tspan> ① Hablo NETCONF</text>
+  <line x1="540" y1="152" x2="122" y2="160" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="230" y="176" class="t t-s"><tspan class="t-mono t-b">hello</tspan> ② Yo también; conozco estos modelos YANG</text>
+
+  
+  <line x1="120" y1="206" x2="538" y2="214" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="130" y="200" class="t t-s"><tspan class="t-mono t-b">lock</tspan> ③ Que nadie más toque la configuración</text>
+  <line x1="540" y1="226" x2="122" y2="234" class="ln s-apl" style="stroke-width:1.6" marker-end="url(#fl-apl)"/>
+  <text x="400" y="246" class="t t-s"><tspan class="t-mono">ok</tspan> ④</text>
+
+  
+  <line x1="120" y1="276" x2="538" y2="284" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="130" y="270" class="t t-s"><tspan class="t-mono t-b">edit-config</tspan> ⑤ En el borrador: DNS = 192.0.2.53</text>
+  <line x1="540" y1="296" x2="122" y2="304" class="ln s-apl" style="stroke-width:1.6" marker-end="url(#fl-apl)"/>
+  <text x="400" y="316" class="t t-s"><tspan class="t-mono">ok</tspan> ⑥ (aún no se aplica)</text>
+
+  
+  <line x1="120" y1="344" x2="538" y2="352" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="130" y="338" class="t t-s"><tspan class="t-mono t-b">validate</tspan> ⑦ ¿El borrador es correcto?</text>
+  <line x1="540" y1="364" x2="122" y2="372" class="ln s-apl" style="stroke-width:1.6" marker-end="url(#fl-apl)"/>
+  <text x="300" y="386" class="t t-s"><tspan class="t-mono">ok</tspan> ⑧ · si hay error: <tspan class="t-mono">discard-changes</tspan></text>
+
+  
+  <line x1="120" y1="418" x2="538" y2="426" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="130" y="412" class="t t-s"><tspan class="t-mono t-b">commit</tspan> ⑨ Aplica todo junto</text>
+  <line x1="540" y1="438" x2="122" y2="446" class="ln s-apl" style="stroke-width:1.6" marker-end="url(#fl-apl)"/>
+  <text x="380" y="460" class="t t-s"><tspan class="t-mono">ok</tspan> ⑩ Cambio activo</text>
+
+  
+  <line x1="120" y1="492" x2="538" y2="500" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="130" y="486" class="t t-s"><tspan class="t-mono t-b">unlock · close-session</tspan> ⑪ Listo, libero y cierro</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M640 118v64" class="ln s-apl" style="stroke-width:3"/><text x="650" y="148">SALUDO</text><text x="650" y="162" class="t-m">capacidades</text>
+    <path d="M640 196v54" class="ln s-apl" style="stroke-width:3"/><text x="650" y="226">BLOQUEO</text>
+    <path d="M640 264v56" class="ln s-apl" style="stroke-width:3"/><text x="650" y="290">BORRADOR</text><text x="650" y="304" class="t-m">candidato</text>
+    <path d="M640 332v58" class="ln s-apl" style="stroke-width:3"/><text x="650" y="364">VALIDAR</text>
+    <path d="M640 406v58" class="ln s-apl" style="stroke-width:3"/><text x="650" y="438">APLICAR</text>
+    <path d="M640 480v30" class="ln s-apl" style="stroke-width:3"/><text x="650" y="500">CERRAR</text>
+  </g>
+  <text x="20" y="420" class="t t-xs t-m" transform="rotate(-90 20 420)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Una sesión NETCONF, paso a paso.</b> El programa y el equipo se saludan contándose qué saben hacer; el programa bloquea la configuración para que nadie más la toque, escribe el cambio en el borrador, pide validarlo y lo aplica con un <code>commit</code>. Al final libera el bloqueo y cierra. Si la validación falla, descarta el borrador y el equipo sigue como estaba.</figcaption></figure></section>
+<section><h2>APIs de las plataformas: gestor de OLT, ACS y NMS</h2><div class="prose"><p>En una red FTTH no siempre se habla con cada equipo por separado. Muchas veces se le pide el cambio a una <b>plataforma</b> que ya administra cientos de equipos, como las del capítulo 29:</p><ul><li>El <b>gestor de OLT</b> (por ejemplo, SmartOLT o el sistema del fabricante) expone una API para autorizar una ONT, cambiarle el perfil de velocidad o consultar su señal óptica.</li><li>El <b>ACS</b> (por ejemplo, GenieACS o una plataforma comercial) permite, por API, cambiar el nombre del Wi-Fi de miles de equipos de clientes o programar una actualización de firmware.</li><li>El <b>NMS</b> de monitoreo (por ejemplo, Zabbix o LibreNMS) entrega por API la lista de alarmas activas o el tráfico de un puerto.</li></ul><p>Para el programa que automatiza, cada plataforma es un intermediario: él pide «cambia el DNS de estas 3.000 ONT» y la plataforma se encarga de hablar con cada una en su protocolo (OMCI, TR-069). Así el automatismo no necesita saber los detalles de cada marca.</p></div><figure class="fig fig-arquitectura" id="30-diagrama-4"><div class="lienzo"><svg viewBox="0 0 960 390" style="min-width:760px" role="img" aria-label="Arquitectura de la automatización: el ingeniero escribe y revisa recetas en un repositorio; la herramienta de automatización las toma y llega a la red por dos caminos: las API del gestor de OLT, el ACS y el NMS, o directo a la OLT, el BNG y el core por SSH, NETCONF o RESTCONF; los respaldos vuelven al repositorio; el ACS configura la ONT de la casa">
+  <rect x="10" y="14" width="590" height="336" rx="12" class="d-sis"/>
+  <rect x="610" y="14" width="190" height="336" rx="12" class="d-oper"/>
+  <rect x="810" y="14" width="140" height="336" rx="12" class="d-casa"/>
+  <text x="305" y="38" text-anchor="middle" class="t t-xs t-b k-sis">SISTEMAS DE OPERACIÓN</text>
+  <text x="705" y="38" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  <text x="880" y="38" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+
+  
+  <path d="M160 82H300V158" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="186" y="76" class="t t-s">recetas</text>
+  <path d="M250 158V106H164" class="ln ln-d s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="168" y="124" class="t t-s t-m">respaldos</text>
+  <path d="M95 248V124" class="ln" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <text x="102" y="184" class="t t-s">revisa y</text><text x="102" y="198" class="t t-s">aprueba</text>
+  <path d="M370 180L428 96M370 188H428M370 196L428 278" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="384" y="130" class="t t-s t-b k-apl">API</text>
+  
+  <path d="M300 216V330H622V108" class="ln s-apl" style="stroke-width:2"/>
+  <path d="M622 108H638M622 196H638M622 290H638" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="312" y="324" class="t t-s"><tspan class="t-b k-apl">directo:</tspan> SSH · NETCONF · RESTCONF</text>
+  
+  <path d="M580 84H638" class="ln" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <path d="M638 270H582" class="ln ln-d" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <text x="586" y="264" class="t t-xs t-m">SNMP</text>
+  <path d="M580 176H596V140H860V158" class="ln ln-d" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <text x="776" y="134" class="t t-xs t-m">TR-069</text>
+  <path d="M770 92H900V158" class="ln s-fis" style="stroke-width:3"/>
+  <text x="808" y="86" class="t t-xs k-fis">fibra</text>
+
+  
+  <rect x="30" y="58" width="130" height="62" rx="10" class="caja"/><use href="#i-servidor" x="38" y="72" width="32" height="32" class="ico"/><text x="74" y="84" class="t t-b">Repositorio</text><text x="74" y="101" class="t t-s t-m">Git: recetas</text><text x="74" y="114" class="t t-s t-m">y configuraciones</text>
+  <rect x="30" y="250" width="130" height="56" rx="10" class="caja"/><use href="#i-persona" x="38" y="262" width="32" height="32" class="ico"/><text x="74" y="276" class="t t-b">Ingeniero</text><text x="74" y="293" class="t t-s t-m">escribe la receta</text>
+  <rect x="220" y="160" width="150" height="56" rx="10" class="caja"/><use href="#i-servidor" x="228" y="172" width="32" height="32" class="ico"/><text x="266" y="186" class="t t-b">Herramienta</text><text x="266" y="203" class="t t-s t-m">Ansible, scripts</text>
+
+  <rect x="430" y="62" width="150" height="50" rx="10" class="caja"/><use href="#i-monitor" x="438" y="71" width="30" height="30" class="ico"/><text x="474" y="84" class="t t-b">Gestor de OLT</text><text x="474" y="100" class="t t-s t-m">API REST</text>
+  <rect x="430" y="160" width="150" height="50" rx="10" class="caja"/><use href="#i-monitor" x="438" y="169" width="30" height="30" class="ico"/><text x="474" y="182" class="t t-b">ACS</text><text x="474" y="198" class="t t-s t-m">API REST</text>
+  <rect x="430" y="254" width="150" height="50" rx="10" class="caja"/><use href="#i-monitor" x="438" y="263" width="30" height="30" class="ico"/><text x="474" y="276" class="t t-b">NMS</text><text x="474" y="292" class="t t-s t-m">API REST</text>
+
+  <rect x="640" y="62" width="130" height="50" rx="10" class="caja"/><use href="#i-olt" x="648" y="71" width="30" height="30" class="ico"/><text x="686" y="92" class="t t-b">OLT</text>
+  <rect x="640" y="170" width="130" height="50" rx="10" class="caja"/><use href="#i-router-core" x="648" y="179" width="30" height="30" class="ico"/><text x="686" y="200" class="t t-b">BNG</text>
+  <rect x="640" y="264" width="130" height="50" rx="10" class="caja"/><use href="#i-router-core" x="648" y="273" width="30" height="30" class="ico"/><text x="686" y="294" class="t t-b">Core</text>
+
+  <rect x="826" y="160" width="110" height="74" rx="10" class="caja"/><use href="#i-ont" x="864" y="166" width="34" height="34" class="ico"/><text x="881" y="216" text-anchor="middle" class="t t-b">ONT</text><text x="881" y="229" text-anchor="middle" class="t t-xs t-m">Y WI-FI</text>
+
+  
+  <g class="t t-xs t-m">
+    <line x1="30" y1="372" x2="56" y2="372" class="ln s-apl" style="stroke-width:2"/><text x="62" y="376">la automatización da órdenes</text>
+    <line x1="250" y1="372" x2="276" y2="372" class="ln ln-d"/><text x="282" y="376">datos y respaldos que vuelven</text>
+    <line x1="480" y1="372" x2="506" y2="372" class="ln"/><text x="512" y="376">la plataforma gestiona</text>
+    <line x1="680" y1="372" x2="706" y2="372" class="ln s-fis" style="stroke-width:3"/><text x="712" y="376" class="k-fis">fibra</text>
+  </g>
+</svg></div><figcaption><b>Las piezas de la automatización.</b> A la izquierda, el repositorio donde viven las recetas y las configuraciones guardadas. En el centro, la herramienta de automatización. A la derecha, los dos caminos hacia la red: directo a los equipos por SSH, NETCONF o RESTCONF, o a través de las API de las plataformas, que a su vez gestionan las ONT de las casas. Las flechas punteadas son los respaldos que vuelven al repositorio.</figcaption></figure></section>
+<section><h2>Cambios masivos con lote piloto, verificación y vuelta atrás</h2><div class="prose"><p>Ningún operador serio aplica un cambio a toda la red de una sola vez. Un cambio masivo bien hecho sigue siempre la misma secuencia:</p><ol class="steps"><li><span><b>Preparar.</b> Escribir el cambio, revisarlo entre dos personas, probarlo en un laboratorio y guardar un <b>respaldo</b> de la configuración actual de cada equipo.</span></li><li><span><b>Probar en un lote piloto.</b> Aplicarlo a un grupo pequeño de equipos reales, elegido para que represente la variedad de la red: distintos modelos, zonas y versiones.</span></li><li><span><b>Verificar.</b> Comprobar con datos que todo sigue bien: los equipos responden, los clientes navegan, no aparecen alarmas nuevas.</span></li><li><span><b>Aplicar al resto por lotes.</b> Si el piloto salió bien, seguir con el resto en tandas, verificando entre una y otra.</span></li><li><span><b>Deshacer si falla.</b> Si en cualquier lote algo sale mal, detenerse y restaurar el respaldo en los equipos afectados. A esto se le llama <b>vuelta atrás</b> (<i>rollback</i>), y se escribe antes de empezar, no durante la emergencia.</span></li></ol><p>Estos cambios se hacen en una <b>ventana de mantenimiento</b>, casi siempre de madrugada, cuando hay menos clientes conectados y un problema afecta a menos gente.</p></div><figure class="fig fig-flujo" id="30-diagrama-2"><div class="lienzo"><svg viewBox="0 0 890 600" style="min-width:700px" role="img" aria-label="Flujo de un cambio masivo: el ingeniero entrega la receta revisada; la herramienta respalda todos los equipos; aplica el cambio al lote piloto; el monitoreo confirma que todo sigue bien; se aplica al resto por tandas; una tanda falla y la herramienta restaura el respaldo solo en esos equipos y entrega un reporte">
+  
+  <rect x="10" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-persona" x="20" y="26" width="32" height="32" class="ico"/><text x="58" y="47" class="t t-b">Ingeniero</text>
+  <rect x="160" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-servidor" x="170" y="26" width="32" height="32" class="ico"/><text x="208" y="40" class="t t-b">Herramienta</text><text x="208" y="57" class="t t-s t-m">de automatización</text>
+  <rect x="320" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-olt" x="330" y="26" width="32" height="32" class="ico"/><text x="368" y="40" class="t t-b">Lote piloto</text><text x="368" y="57" class="t t-s t-m">20 equipos</text>
+  <rect x="470" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-olt" x="480" y="26" width="32" height="32" class="ico"/><text x="518" y="40" class="t t-b">Resto</text><text x="518" y="57" class="t t-s t-m">480 equipos</text>
+  <rect x="620" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-monitor" x="630" y="26" width="32" height="32" class="ico"/><text x="668" y="47" class="t t-b">Monitoreo</text>
+  <line x1="75" y1="70" x2="75" y2="585" class="vida"/>
+  <line x1="230" y1="70" x2="230" y2="585" class="vida"/>
+  <line x1="385" y1="70" x2="385" y2="585" class="vida"/>
+  <line x1="535" y1="70" x2="535" y2="585" class="vida"/>
+  <line x1="685" y1="70" x2="685" y2="585" class="vida"/>
+
+  
+  <line x1="75" y1="108" x2="228" y2="118" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="84" y="102" class="t t-s">① Receta revisada</text>
+  <line x1="230" y1="146" x2="533" y2="156" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <circle cx="385" cy="151" r="4" class="k-apl"/>
+  <text x="240" y="140" class="t t-s">② Guardar respaldo de todos</text>
+  <line x1="535" y1="176" x2="232" y2="186" class="ln ln-d s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="300" y="200" class="t t-s t-m">③ Configuraciones actuales guardadas</text>
+
+  
+  <line x1="230" y1="232" x2="383" y2="242" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="240" y="226" class="t t-s">④ <tspan class="t-b">Aplicar cambio</tspan></text>
+  <line x1="230" y1="268" x2="683" y2="278" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="400" y="262" class="t t-s">⑤ ¿El piloto sigue bien?</text>
+  <line x1="685" y1="298" x2="232" y2="308" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="400" y="322" class="t t-s">⑥ Sin alarmas nuevas, clientes navegando</text>
+  <line x1="230" y1="342" x2="77" y2="350" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="84" y="366" class="t t-s">⑦ Piloto OK. ⑧ «Sigue»</text>
+
+  
+  <line x1="230" y1="400" x2="533" y2="410" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="240" y="394" class="t t-s">⑨ <tspan class="t-b">Tandas 1, 2, 3…</tspan> verificando entre una y otra</text>
+  <line x1="685" y1="436" x2="232" y2="446" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="400" y="460" class="t t-s">⑩ <tspan class="t-b">Tanda 4: alarmas ✕</tspan></text>
+
+  
+  <line x1="230" y1="490" x2="533" y2="500" class="ln ln-d s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="240" y="484" class="t t-s">⑪ <tspan class="t-b">Detener y restaurar</tspan> solo en la tanda 4</text>
+  <line x1="230" y1="534" x2="77" y2="542" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="84" y="562" class="t t-s">⑫ Reporte: qué cambió, qué volvió atrás</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M770 98v104" class="ln s-apl" style="stroke-width:3"/><text x="780" y="144">PREPARAR</text><text x="780" y="158" class="t-m">respaldo</text>
+    <path d="M770 222v146" class="ln s-apl" style="stroke-width:3"/><text x="780" y="290">PILOTO</text><text x="780" y="304" class="t-m">probar y</text><text x="780" y="318" class="t-m">verificar</text>
+    <path d="M770 388v74" class="ln s-apl" style="stroke-width:3"/><text x="780" y="422">RESTO</text><text x="780" y="436" class="t-m">por tandas</text>
+    <path d="M770 478v90" class="ln s-apl" style="stroke-width:3"/><text x="780" y="518">VUELTA</text><text x="780" y="532">ATRÁS</text><text x="780" y="546" class="t-m">si falla</text>
+  </g>
+  <text x="20" y="560" class="t t-xs t-m" transform="rotate(-90 20 560)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Un cambio masivo con red de seguridad.</b> El tiempo corre hacia abajo. Primero se respaldan todos los equipos; luego el cambio va solo al lote piloto y el monitoreo confirma que todo sigue bien; recién entonces se aplica al resto por tandas. Si una tanda falla, la herramienta se detiene y restaura el respaldo solo en esos equipos.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región necesita cambiar el servidor DNS que reciben decenas de miles de equipos de clientes. El equipo técnico escribe el cambio en la plataforma de gestión, lo revisa en pareja y lo prueba con los equipos del propio laboratorio. A la una de la mañana lo aplica a un piloto de unos cientos de clientes repartidos entre todos los modelos de ONT, y durante veinte minutos mira dos indicadores: que las consultas al DNS nuevo crecen y que no aumentan las sesiones caídas. Con eso en verde, sigue por tandas de algunos miles. En la tanda cuatro aparece un modelo antiguo que no acepta el cambio: la herramienta se detiene, deja esos equipos con la configuración de antes y el resto sigue. A las cinco el cambio está hecho, con un reporte de qué equipos quedaron pendientes y por qué.</p></div></section>
+<section><h2>La configuración como código: versiones, revisiones y respaldos</h2><div class="prose"><p>Si las recetas son programas, se pueden tratar como cualquier software. A esa práctica se le llama <b>configuración como código</b> (o <i>infraestructura como código</i>):</p><ul><li><b>Versiones.</b> Las recetas y las configuraciones viven en un <b>repositorio</b> con control de versiones, como Git. Cada cambio queda registrado con quién lo hizo, cuándo y por qué, y se puede volver a cualquier versión anterior.</li><li><b>Revisiones.</b> Antes de aplicar un cambio, otra persona lo revisa, igual que un contador revisa un asiento antes de cerrar el mes.</li><li><b>Respaldos automáticos.</b> Herramientas como Oxidized o RANCID (ejemplos del mercado) guardan cada noche la configuración de todos los equipos en el repositorio. Si alguien cambió algo a mano, aparece como una diferencia y se puede investigar.</li></ul><p>La consecuencia más valiosa es que <b>la configuración de la red deja de vivir en la memoria de las personas</b>. Si un ingeniero se va de vacaciones, la receta sigue ahí.</p></div></section>
+<section><h2>Automatizar respuestas: cuando una alarma dispara una acción</h2><div class="prose"><p>La automatización no sirve solo para cambios planificados. También puede <b>reaccionar</b>. Cuando el sistema de monitoreo detecta algo conocido, en vez de solo avisar a una persona, dispara una acción ya probada:</p><ul><li>Una ONT deja de reportar al ACS: el sistema consulta su estado en la OLT y adjunta el resultado al ticket antes de que nadie lo abra.</li><li>Un puerto se llena de errores: se recoge automáticamente el diagnóstico completo del equipo para el ingeniero.</li><li>Un cliente reinicia su equipo desde la app: la plataforma verifica después que volvió en línea y con buena señal.</li></ul><p>La regla de oro es empezar por acciones que <b>juntan información</b> y dejar las que <b>cambian cosas</b> para cuando se tiene mucha confianza. Diagnosticar solo es inofensivo; reiniciar solo un equipo del core por una alarma mal interpretada puede tumbar una ciudad.</p></div></section>
+<section><h2>Riesgos: un error automatizado se multiplica</h2><div class="prose"><p>La misma propiedad que hace valiosa la automatización la vuelve peligrosa: <b>repite todo a gran velocidad, incluido el error</b>. Una persona que se equivoca daña un equipo; un programa que se equivoca daña mil en el tiempo que la persona tarda en tomar un café.</p><p>Los riesgos típicos y sus remedios:</p><ul><li><b>Un error en la receta.</b> Se contiene con revisión, laboratorio y lote piloto.</li><li><b>Un inventario equivocado</b> (la receta va a equipos que no debía). Se contiene con un inventario confiable y con condiciones explícitas en cada tarea.</li><li><b>Credenciales poderosas.</b> La herramienta de automatización entra a toda la red; si alguien la roba, roba la red. Se protege con cuentas propias, permisos mínimos y registro de cada ejecución (capítulo 32).</li><li><b>Saber automatizar sin saber de redes.</b> La herramienta no reemplaza el criterio de quien entiende qué hace el cambio.</li></ul></div></section>
+<section><h2>Por dónde empezar: tareas repetitivas y de bajo riesgo</h2><div class="prose"><p>Los equipos que tienen éxito con la automatización no empiezan por lo más difícil. Empiezan por lo que <b>se repite mucho y casi no puede romper nada</b>:</p><ol class="steps"><li><span><b>Leer antes que escribir</b>: inventarios, versiones de software, respaldos diarios, reportes de puertos libres.</span></li><li><span><b>Diagnósticos de un clic</b> para soporte: el estado completo de un cliente (señal, sesión, Wi-Fi) en una sola consulta.</span></li><li><span><b>Altas repetitivas</b> con una plantilla fija, como autorizar una ONT con el perfil de su plan.</span></li><li><span><b>Cambios masivos con piloto</b>, cuando ya hay respaldos, revisión y vuelta atrás.</span></li></ol><p>Cada paso deja algo que el siguiente aprovecha: el inventario confiable del paso uno es el que hace seguro el paso cuatro.</p></div><div class="ml"><b>En la práctica</b><p>Cuando el equipo técnico anuncia un cambio «esta madrugada, por lotes», está aplicando la secuencia de este capítulo: de noche para afectar a menos clientes, por lotes para detenerse a tiempo. Si trabajas en atención o ventas, pregunta qué clientes están en el piloto y a qué hora termina la ventana: si alguien llama esa mañana, sabrás si su caso puede tener que ver. Y si tu área repite a mano una tarea sobre muchos clientes o equipos, esa tarea es candidata a automatizarse: llévala al equipo técnico con el volumen y el tiempo que hoy cuesta.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué un script que lee la pantalla de la consola puede romperse con una actualización del equipo?</summary><p>Porque la consola responde con texto pensado para personas; si el fabricante cambia el formato, el script ya no encuentra el dato. Las API responden con campos con nombre que no dependen de cómo se ve la pantalla.</p></details><details><summary>¿Qué significa que un playbook sea idempotente?</summary><p>Que aplicarlo una vez o varias deja el mismo resultado: solo cambia lo que no coincide con el estado deseado y no toca lo que ya estaba bien.</p></details><details><summary>¿Qué aporta la configuración candidata de NETCONF?</summary><p>Permite escribir los cambios en un borrador, validarlos y aplicarlos todos juntos con un commit, de modo que el equipo nunca queda medio configurado.</p></details><details><summary>¿Para qué sirve el lote piloto en un cambio masivo?</summary><p>Para descubrir un error con pocos equipos afectados, antes de que el programa lo repita en toda la red.</p></details><details><summary>¿Qué tareas conviene automatizar primero?</summary><p>Las que se repiten mucho y casi no pueden romper nada: consultas, inventarios, respaldos y diagnósticos.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.redhat.com/es/topics/automation/what-is-network-automation" target="_blank" rel="noopener">¿Qué es la automatización de la red? (Red Hat) <small>lectura</small></a><a class="vid" href="https://docs.ansible.com/ansible/latest/getting_started/index.html" target="_blank" rel="noopener">Primeros pasos con Ansible (documentación oficial, en inglés) <small>lectura</small></a><a class="vid" href="https://www.rfc-editor.org/rfc/rfc6241" target="_blank" rel="noopener">RFC 6241: el protocolo NETCONF (IETF, en inglés) <small>lectura</small></a><a class="vid" href="https://www.rfc-editor.org/rfc/rfc8040" target="_blank" rel="noopener">RFC 8040: el protocolo RESTCONF (IETF, en inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$,bindOut}=window.Lab;
+  const PARALELO=25, MIN_TANDA=1.5, PREPARAR=90, VERIFICAR=20, PILOTO=20;
+  const coma=s=>String(s).replace('.',',');
+  function horas(min){
+    if(min<60) return Math.round(min)+' min';
+    const h=min/60;
+    return (h<10?coma(h.toFixed(1)):Math.round(h))+' h';
+  }
+  function jornadas(min){const d=min/60/8;return d<1?'menos de una jornada':(d<10?coma(d.toFixed(1)):Math.round(d))+' jornadas de 8 horas';}
+  function grilla(el,malos,revertidos,n){
+    const pm=malos>0?Math.max(1,Math.round(malos/n*100)):0, pr=revertidos>0?Math.max(1,Math.round(revertidos/n*100)):0;
+    let h='';
+    for(let i=0;i<100;i++){h+='<i class="'+(i<pm?'mal':i<pm+pr?'rev':'')+'"></i>';}
+    el.innerHTML=h;
+  }
+  function dibujar(){
+    const n=+$('#c30-n').value, m=+$('#c30-m').value, p=+$('#c30-p').value/100;
+    const bug=$('#c30-bug').getAttribute('aria-pressed')==='true', piloto=$('#c30-piloto').getAttribute('aria-pressed')==='true';
+    const tManual=n*m;
+    let tAuto=PREPARAR+Math.ceil(n/PARALELO)*MIN_TANDA+(piloto?VERIFICAR:0);
+    let malosA=0, revA=0;
+    if(bug){
+      if(piloto){revA=PILOTO;tAuto=PREPARAR+Math.ceil(PILOTO/PARALELO)*MIN_TANDA+VERIFICAR;}
+      else{malosA=n;}
+    }
+    const malosM=Math.round(n*p), max=Math.max(tManual,tAuto);
+    $('#c30-tm').innerHTML=horas(tManual)+'<small>'+jornadas(tManual)+'</small>';
+    $('#c30-ta').innerHTML=horas(tAuto)+'<small>'+(bug&&piloto?'se detuvo en el piloto':'incluye '+PREPARAR+' min de preparar y probar')+'</small>';
+    $('#c30-bm').style.width=(tManual/max*100)+'%';
+    $('#c30-ba').style.width=(tAuto/max*100)+'%';
+    grilla($('#c30-rm'),malosM,0,n);
+    grilla($('#c30-ra'),malosA,revA,n);
+    $('#c30-em').textContent='Unos '+malosM+' equipos con error, cada uno distinto y difícil de encontrar.';
+    $('#c30-ea').textContent=!bug?'Ningún equipo con error: el programa hace lo mismo en todos.':
+      piloto?PILOTO+' equipos fallaron en el piloto y se restauraron; los otros '+(n-PILOTO)+' no se tocaron.':
+      'Los '+n+' equipos quedaron con el mismo error.';
+    let nota;
+    if(!bug) nota='Automatizado, el cambio toma '+horas(tAuto)+' frente a '+horas(tManual)+' a mano, y sin los '+malosM+' errores sueltos de la persona cansada.';
+    else if(piloto) nota='El error apareció en el piloto: '+PILOTO+' equipos afectados unos minutos y restaurados. Se corrige la receta y se vuelve a intentar.';
+    else nota='Sin lote piloto, el programa repitió su error en los '+n+' equipos en '+horas(tAuto)+'. Es el riesgo de la automatización: un error se multiplica.';
+    $('#c30-nota').textContent=nota;
+  }
+  bindOut('#c30-n',v=>v+' equipos');
+  bindOut('#c30-m',v=>v+' min');
+  bindOut('#c30-p',v=>coma(v.toFixed(1))+' %');
+  ['#c30-n','#c30-m','#c30-p'].forEach(s=>$(s).addEventListener('input',dibujar));
+  ['#c30-bug','#c30-piloto'].forEach(s=>$(s).addEventListener('click',e=>{
+    const b=e.currentTarget;b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');dibujar();}));
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const OPC=[['','— elige —'],['cambiado','Cambiado'],['sin','Sin cambios'],['omitido','Omitido'],['fallo','Falló'],['fuera','No lo toca (fuera del grupo)']];
+  const EQ=[
+    {n:'olt-norte-01',g:'olt_norte',m:'A',d:'198.51.100.7',r:true,ok:'cambiado',x:'Está en el grupo, es modelo A y su DNS no coincide: Ansible lo cambia.'},
+    {n:'olt-norte-02',g:'olt_norte',m:'A',d:'192.0.2.53',r:true,ok:'sin',x:'Ya tenía el DNS correcto. Por idempotencia, Ansible no lo toca y lo informa como «ok».'},
+    {n:'olt-norte-03',g:'olt_norte',m:'B',d:'198.51.100.7',r:true,ok:'omitido',x:'Es modelo B: la condición «when» no se cumple y la tarea se salta (skipped).'},
+    {n:'olt-norte-04',g:'olt_norte',m:'A',d:'198.51.100.7',r:false,ok:'fallo',x:'No responde: Ansible no puede entrar y lo marca como inalcanzable. Hay que revisarlo y volver a correr la receta.'},
+    {n:'olt-sur-01',g:'olt_sur',m:'A',d:'198.51.100.7',r:true,ok:'fuera',x:'Está en el grupo olt_sur y la receta apunta a olt_norte: ni siquiera se conecta a él.'}
+  ];
+  const NOM={cambiado:'Cambiado',sin:'Sin cambios',omitido:'Omitido',fallo:'Falló',fuera:'Fuera del grupo'};
+  function armar(){
+    $('#c30-filas').innerHTML=EQ.map((e,i)=>'<div class="c30-eq"><div><b>'+e.n+'</b><small>grupo '+e.g+' · modelo '+e.m+' · DNS '+e.d+' · '+(e.r?'responde':'no responde')+'</small></div>'+
+      '<select id="c30-s'+i+'" aria-label="Predicción para '+e.n+'">'+OPC.map(o=>'<option value="'+o[0]+'">'+o[1]+'</option>').join('')+'</select>'+
+      '<div class="res" id="c30-r'+i+'"></div></div>').join('');
+    $('#c30-out').innerHTML='<span>Elige una predicción para cada equipo y ejecuta la receta.</span>';
+  }
+  function ejecutar(){
+    let aciertos=0, falta=0;
+    const lineas=EQ.map((e,i)=>{
+      const v=$('#c30-s'+i).value, bien=v===e.ok, celda=$('#c30-r'+i);
+      if(!v)falta++;
+      if(bien)aciertos++;
+      celda.textContent=(bien?'✓ ':'✗ ')+NOM[e.ok];
+      celda.className='res '+(bien?'ok':'no');
+      return '<span><b>'+e.n+'</b>: '+e.x+'</span>';
+    });
+    $('#c30-out').innerHTML='<span class="big">Acertaste '+aciertos+' de '+EQ.length+(falta?' ('+falta+' sin predicción)':'')+'</span>'+
+      '<span>Resumen de Ansible: cambiados=1 sin cambios=1 omitidos=1 fallidos=1</span>'+lineas.join('');
+  }
+  $('#c30-run').addEventListener('click',ejecutar);
+  $('#c30-reset').addEventListener('click',armar);
+  armar();
+})();
+</script>
+</body>
+</html>

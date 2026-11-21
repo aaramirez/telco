@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cuando se corta la fibra · Cómo funciona un telco</title>
+<meta name="description" content="La red avisa de sus fallas antes que los clientes, y leer bien esos avisos permite saber dónde está el corte, cuántos clientes afecta y avisarles antes de que llamen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="45-cuando-se-corta-la-fibra">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 45 DE 49</span><h1>Cuando se corta la fibra: alarmas y monitoreo proactivo</h1><p class="lede">La red avisa de sus fallas antes que los clientes, y leer bien esos avisos permite saber dónde está el corte, cuántos clientes afecta y avisarles antes de que llamen.</p></header>
+<section><div class="prose"><p>Son las tres de la madrugada. Un camión demasiado alto engancha un cable de fibra colgado entre dos postes y lo arranca. En ese mismo segundo, decenas de casas se quedan sin Internet. Casi todos duermen; nadie va a llamar hasta las siete.</p><p>La red, en cambio, sí se entera al instante. La OLT nota que dejó de recibir luz de muchas ONT a la vez y lo reporta. Si el operador lee bien esos avisos, a las tres y cinco ya sabe qué tramo se cortó, a qué clientes afecta y a qué distancia está el daño. A las siete, cuando los clientes despiertan, puede que la cuadrilla ya esté reparando y que cada uno tenga un mensaje en el celular. Este capítulo cuenta cómo se logra.</p></div><div class="analogia"><b>Imagínalo así</b><p>Los detectores de humo conectados de un edificio. Si suena uno solo, alguien quemó una tostada en su apartamento. Si suenan todos los del tercer piso a la vez, el problema es del piso, y no tiene sentido tocar puerta por puerta: hay que ir al pasillo. Y si un detector avisa «me estoy quedando sin batería», no hay fuego: hay que cambiar la pila.</p></div><figure class="fig fig-capas" id="45-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: de la alarma de la red al aviso al cliente">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class=""><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class="apagado"><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class="apagado"><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class="apagado"><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class=""><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class=""><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: de la alarma de la red al aviso al cliente</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo vive en el OSS, la parte que vigila la red y gestiona sus fallas, y en la propia red, que genera las alarmas. Termina en los canales, cuando se avisa al cliente. En la cadena de valor es operación y soporte.</figcaption></figure></section>
+<section><h2>Último aliento (dying gasp) frente a pérdida de señal</h2><div class="prose"><p>En el capítulo 42 vimos que cuando una ONT deja de responder, la OLT anota la causa. Para el monitoreo, esa causa es la primera gran bifurcación, porque separa dos mundos con soluciones muy distintas:</p><ul><li><b>Último aliento</b> (<i>dying gasp</i>). La ONT detectó que se quedaba sin electricidad y, con la poca energía que le queda, mandó un último mensaje a la OLT: «me apago». La fibra está bien. Si es un solo cliente, alguien desenchufó el equipo. Si son muchos de la misma zona a la vez, se fue la luz en el barrio: hay que avisar, pero no hay nada que reparar en la fibra.</li><li><b>Pérdida de señal</b> (<i>LOS</i>). La OLT dejó de recibir la luz de la ONT, sin aviso previo. La ONT puede seguir encendida, pero no hay camino de vidrio entre las dos. Es la firma de un <b>corte de fibra</b>.</li></ul><p>Hay otras alarmas que completan el cuadro: la ONT que recibe luz pero no logra entenderla (pérdida de trama), la que transmite cuando no le toca y molesta a sus vecinas, o la potencia que cruza un umbral. Pero la pareja último aliento y pérdida de señal es la que responde la pregunta más urgente: <b>¿es electricidad o es fibra?</b></p></div><figure class="fig fig-comparacion" id="45-diagrama-6"><div class="lienzo"><svg viewBox="0 0 860 330" style="min-width:660px" role="img" aria-label="Comparación: con el último aliento la ONT se queda sin energía y avisa a la OLT que se apaga, es un problema eléctrico; con la pérdida de señal la fibra se corta y la luz deja de llegar sin aviso. Si es un cliente o si son muchos a la vez, la acción cambia">
+  
+  <rect x="20" y="14" width="400" height="160" rx="12" class="caja"/>
+  <text x="36" y="40" class="t t-b">Último aliento (dying gasp)</text><text x="404" y="40" text-anchor="end" class="t t-xs t-b t-m">ES ELECTRICIDAD</text>
+  <use href="#i-ont" x="50" y="80" width="40" height="40" class="ico"/><text x="70" y="140" text-anchor="middle" class="t t-s">ONT</text>
+  <text x="70" y="160" text-anchor="middle" class="t t-s t-m">sin energía</text>
+  <use href="#i-olt" x="330" y="80" width="40" height="40" class="ico"/><text x="350" y="140" text-anchor="middle" class="t t-s">OLT</text>
+  <line x1="96" y1="100" x2="324" y2="100" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="100" y1="84" x2="320" y2="84" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="210" y="76" text-anchor="middle" class="t t-s t-b k-enl">«me apago»</text>
+  <text x="210" y="124" text-anchor="middle" class="t t-s">la fibra está bien</text>
+  
+  <rect x="440" y="14" width="400" height="160" rx="12" class="caja"/>
+  <text x="456" y="40" class="t t-b">Pérdida de señal (LOS)</text><text x="824" y="40" text-anchor="end" class="t t-xs t-b t-m">ES FIBRA</text>
+  <use href="#i-ont" x="470" y="80" width="40" height="40" class="ico"/><text x="490" y="140" text-anchor="middle" class="t t-s">ONT</text>
+  <text x="490" y="160" text-anchor="middle" class="t t-s t-m">encendida</text>
+  <use href="#i-olt" x="750" y="80" width="40" height="40" class="ico"/><text x="770" y="140" text-anchor="middle" class="t t-s">OLT</text>
+  <line x1="516" y1="100" x2="618" y2="100" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="642" y1="100" x2="744" y2="100" class="ln s-fis" style="stroke-width:3"/>
+  <path d="M622 88 l16 24 M638 88 l-16 24" class="ln" style="stroke-width:2.4"/>
+  <text x="630" y="76" text-anchor="middle" class="t t-s t-b">corte</text>
+  <text x="630" y="130" text-anchor="middle" class="t t-s">la luz deja de llegar, sin aviso</text>
+  
+  <text x="20" y="206" class="t t-xs t-b t-m">SI ES UN SOLO CLIENTE</text>
+  <rect x="20" y="214" width="400" height="38" rx="8" class="c-enl"/><text x="34" y="238" class="t t-s">Enchufe o adaptador: se guía por teléfono, sin visita</text>
+  <rect x="440" y="214" width="400" height="38" rx="8" class="d-sis"/><text x="454" y="238" class="t t-s">Acometida o conector de ese cliente: visita</text>
+  <text x="20" y="278" class="t t-xs t-b t-m">SI SON MUCHOS EN EL MISMO MINUTO</text>
+  <rect x="20" y="286" width="400" height="38" rx="8" class="c-fis"/><text x="34" y="310" class="t t-s">Apagón en el barrio: avisar, no hay fibra que reparar</text>
+  <rect x="440" y="286" width="400" height="38" rx="8" class="d-sis"/><text x="454" y="310" class="t t-s">Corte en un tramo común: ticket masivo y cuadrilla</text>
+</svg></div><figcaption><b>Dos maneras de desaparecer.</b> A la izquierda, la ONT se queda sin energía y alcanza a mandar su último aliento: la OLT sabe que es un problema eléctrico. A la derecha, la fibra se corta: la luz deja de llegar y la OLT solo sabe que la perdió. Abajo, qué significa cada una si le pasa a un cliente o a muchos al mismo tiempo.</figcaption></figure></section>
+<section><h2>Correlacionar por puerto y por caja</h2><div class="prose"><p>Una alarma sola dice poco. Cincuenta alarmas juntas dicen mucho, si se ordenan bien. <b>Correlacionar</b> es justamente eso: agrupar alarmas que tienen algo en común para encontrar la causa que comparten.</p><p>La clave está en la forma de la red. Como vimos en los capítulos 17 y 18, un <b>puerto PON</b> de la OLT alimenta una fibra troncal; esa fibra llega a un <b>splitter primario</b> y se divide en ramales; cada ramal llega a una <b>caja</b> en un poste o en una pared, con otro splitter, y de cada caja salen las <b>acometidas</b>, el cable que entra a cada casa. Es un árbol.</p><p>Entonces, cuando caen varias ONT con pérdida de señal <b>en el mismo minuto</b>, la pregunta es: ¿cuál es el tramo más bajo del árbol que comparten todas?</p><ul><li>Si caen <b>todas las ONT de un puerto</b>, el problema está en lo que tienen todas en común: la troncal, entre la OLT y el splitter primario (o el propio puerto de la OLT).</li><li>Si caen <b>todas las ONT de una caja</b> y las de las otras cajas siguen bien, el corte está en el ramal que llega a esa caja, o en su splitter.</li><li>Si cae <b>una sola ONT</b>, el problema es su acometida, sus conectores o el equipo.</li></ul><p>Para hacer esta cuenta, el sistema de monitoreo necesita saber de qué caja y de qué puerto cuelga cada cliente. Ese dato vive en el inventario de red y en el mapa (capítulo 37). Un inventario desactualizado es un monitoreo ciego: el sistema ve cincuenta alarmas sueltas en lugar de un corte.</p></div><figure class="fig fig-esquema" id="45-diagrama-5"><div class="lienzo"><svg viewBox="0 0 860 380" style="min-width:660px" role="img" aria-label="Alarmas agrupadas: un puerto PON alimenta una troncal, un splitter primario y cuatro cajas con ocho clientes cada una; las ocho ONT de la caja B tienen pérdida de señal en el mismo minuto y las demás están en línea, así que el corte está en el ramal hacia la caja B">
+  <rect x="20" y="150" width="110" height="60" rx="10" class="caja"/><use href="#i-olt" x="30" y="162" width="34" height="34" class="ico"/><text x="70" y="176" class="t t-s t-b">OLT</text><text x="70" y="192" class="t t-s t-m">puerto 1/3</text>
+  <line x1="130" y1="180" x2="222" y2="180" class="ln s-fis" style="stroke-width:3"/><text x="176" y="170" text-anchor="middle" class="t t-s">troncal</text>
+  <use href="#i-splitter" x="222" y="163" width="34" height="34" class="ico"/><text x="239" y="214" text-anchor="middle" class="t t-s">splitter</text><text x="239" y="228" text-anchor="middle" class="t t-s">primario</text>
+  <path d="M258 180 C300 180 300 60 340 60 H392" class="ln s-fis" style="stroke-width:2.4"/>
+  <rect x="392" y="40" width="80" height="40" rx="8" class="caja"/><text x="432" y="65" text-anchor="middle" class="t t-s t-b">Caja A</text>
+  <line x1="472" y1="60" x2="500" y2="60" class="ln s-fis" style="stroke-width:1.6"/>
+  <rect x="506" y="49" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="536" y="49" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="566" y="49" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="596" y="49" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="626" y="49" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="656" y="49" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="686" y="49" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="716" y="49" width="22" height="22" rx="5" class="c-enl"/>
+  <text x="752" y="64" class="t t-s t-m">8 en línea</text>
+  <path d="M258 180 C300 180 300 140 340 140 H392" class="ln s-fis" style="stroke-width:2.4"/>
+  <rect x="392" y="120" width="80" height="40" rx="8" class="d-sis"/><text x="432" y="145" text-anchor="middle" class="t t-s t-b">Caja B</text>
+  <line x1="472" y1="140" x2="500" y2="140" class="ln s-fis" style="stroke-width:1.6"/>
+  <rect x="506" y="129" width="22" height="22" rx="5" class="d-sis"/>
+  <rect x="536" y="129" width="22" height="22" rx="5" class="d-sis"/>
+  <rect x="566" y="129" width="22" height="22" rx="5" class="d-sis"/>
+  <rect x="596" y="129" width="22" height="22" rx="5" class="d-sis"/>
+  <rect x="626" y="129" width="22" height="22" rx="5" class="d-sis"/>
+  <rect x="656" y="129" width="22" height="22" rx="5" class="d-sis"/>
+  <rect x="686" y="129" width="22" height="22" rx="5" class="d-sis"/>
+  <rect x="716" y="129" width="22" height="22" rx="5" class="d-sis"/>
+  <text x="752" y="140" class="t t-s t-b">8 de 8 sin luz</text>
+  <path d="M258 180 C300 180 300 220 340 220 H392" class="ln s-fis" style="stroke-width:2.4"/>
+  <rect x="392" y="200" width="80" height="40" rx="8" class="caja"/><text x="432" y="225" text-anchor="middle" class="t t-s t-b">Caja C</text>
+  <line x1="472" y1="220" x2="500" y2="220" class="ln s-fis" style="stroke-width:1.6"/>
+  <rect x="506" y="209" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="536" y="209" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="566" y="209" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="596" y="209" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="626" y="209" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="656" y="209" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="686" y="209" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="716" y="209" width="22" height="22" rx="5" class="c-enl"/>
+  <text x="752" y="224" class="t t-s t-m">8 en línea</text>
+  <path d="M258 180 C300 180 300 300 340 300 H392" class="ln s-fis" style="stroke-width:2.4"/>
+  <rect x="392" y="280" width="80" height="40" rx="8" class="caja"/><text x="432" y="305" text-anchor="middle" class="t t-s t-b">Caja D</text>
+  <line x1="472" y1="300" x2="500" y2="300" class="ln s-fis" style="stroke-width:1.6"/>
+  <rect x="506" y="289" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="536" y="289" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="566" y="289" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="596" y="289" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="626" y="289" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="656" y="289" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="686" y="289" width="22" height="22" rx="5" class="c-enl"/>
+  <rect x="716" y="289" width="22" height="22" rx="5" class="c-enl"/>
+  <text x="752" y="304" class="t t-s t-m">8 en línea</text>
+  <path d="M352 132 l14 16 M366 132 l-14 16" class="ln" style="stroke-width:2.6"/>
+  <text x="752" y="158" class="t t-s">LOS · 14:05</text>
+  <rect x="20" y="344" width="16" height="16" rx="4" class="c-enl"/><text x="44" y="357" class="t t-s">ONT en línea</text>
+  <rect x="150" y="344" width="16" height="16" rx="4" class="d-sis"/><text x="174" y="357" class="t t-s">ONT con pérdida de señal en el mismo minuto</text>
+  <path d="M590 346 l12 14 M602 346 l-12 14" class="ln" style="stroke-width:2.4"/><text x="610" y="357" class="t t-s t-b">tramo común más bajo</text>
+</svg></div><figcaption><b>Alarmas agrupadas por puerto y por caja.</b> El árbol de un puerto PON: la troncal, el splitter primario, cuatro cajas y sus clientes. En anaranjado, las ONT con pérdida de señal en el mismo minuto: todas las de la caja B y ninguna de las demás. El tramo más bajo que comparten es el ramal hacia la caja B, y ahí apunta la búsqueda.</figcaption></figure><div class="lab" id="45-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Mapa de alarmas</h3></div><p class="hint">Elige un escenario. Mira qué ONT se cayeron, a qué hora y por qué causa, y decide qué tramo falló: la troncal, el ramal a una caja, la acometida de un solo cliente o la energía del barrio.</p><style>
+[id="45-lab-2"] .c45m-arbol{display:grid;gap:6px;border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--paper)}
+[id="45-lab-2"] .c45m-raiz{font:600 .85rem var(--f-display);color:var(--muted)}
+[id="45-lab-2"] .c45m-raiz b{color:var(--ink)}
+[id="45-lab-2"] .c45m-fila{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+[id="45-lab-2"] .c45m-caja{font:700 .82rem var(--f-display);min-width:64px;padding-left:14px;border-left:3px solid var(--c-fis)}
+[id="45-lab-2"] .c45m-ont{width:22px;height:22px;border-radius:5px;border:1.5px solid var(--good);background:var(--good-soft)}
+[id="45-lab-2"] .c45m-ont.los{border-color:var(--warm);background:var(--warm-soft)}
+[id="45-lab-2"] .c45m-ont.dg{border-color:var(--c-fis);background:var(--c-fis-s)}
+[id="45-lab-2"] .legend i{border-radius:3px;border:1.5px solid}
+@media (max-width:520px){[id="45-lab-2"] .c45m-fila{gap:4px;flex-wrap:nowrap}[id="45-lab-2"] .c45m-ont{width:18px;height:18px;flex:none}[id="45-lab-2"] .c45m-caja{min-width:58px;padding-left:8px}}
+[id="45-lab-2"] .c45m-sub{font:600 .82rem var(--f-display);color:var(--muted)}
+[id="45-lab-2"] .readout{font-family:var(--f-body);font-size:.95rem}
+</style>
+<p class="c45m-sub">1. Elige un escenario</p>
+<div class="btns" id="c45m-esc" role="group" aria-label="Escenarios"></div>
+<div class="c45m-arbol" id="c45m-arbol" role="img" aria-label="Estado de las ONT del puerto, por caja"></div>
+<div class="legend"><span><i style="background:var(--good-soft);border-color:var(--good)"></i>En línea</span><span><i style="background:var(--warm-soft);border-color:var(--warm)"></i>Pérdida de señal</span><span><i style="background:var(--c-fis-s);border-color:var(--c-fis)"></i>Último aliento</span></div>
+<div class="tbl"><table><thead><tr><th>Hora</th><th>Dónde</th><th>Causa</th><th class="num">ONT</th></tr></thead><tbody id="c45m-alarmas"></tbody></table></div>
+<p class="c45m-sub">2. ¿Qué falló?</p>
+<div class="btns" id="c45m-resp" role="group" aria-label="Posibles causas"></div>
+<div class="readout" id="c45m-res" aria-live="polite"><span>Elige una respuesta.</span></div></div></section>
+<section><h2>Ubicar el corte (OTDR)</h2><div class="prose"><p>La correlación dice <b>qué tramo</b> se cortó, pero un tramo puede medir varios kilómetros. Para saber <b>en qué punto exacto</b>, se usa un <b>OTDR</b> (reflectómetro óptico en el dominio del tiempo). El nombre asusta, pero la idea es la de un eco.</p><p>El OTDR se conecta a un extremo de la fibra y dispara pulsos de luz muy cortos. A medida que el pulso avanza, una pequeña parte de la luz rebota y vuelve. El equipo mide cuánta luz vuelve y cuánto tarda. Como sabe a qué velocidad viaja la luz en el vidrio, convierte el tiempo en distancia. Cada empalme, cada conector y cada splitter deja una marca en la curva. Y donde la fibra está cortada aparece un <b>reflejo fuerte seguido de nada</b>: ahí se acaba el vidrio.</p></div><figure class="fig fig-esquema" id="45-diagrama-7"><div class="lienzo"><svg viewBox="0 0 860 330" style="min-width:640px" role="img" aria-label="Traza de un OTDR: la luz que vuelve baja de a poco con la distancia, con escalones en un empalme a 1,0 km y en el splitter a 1,8 km; a 3,2 km aparece un pico seguido de caída: ahí se corta la fibra, aunque debería llegar hasta 5,0 km">
+  
+  <line x1="80" y1="30" x2="80" y2="270" class="ln"/>
+  <line x1="80" y1="270" x2="800" y2="270" class="ln" marker-end="url(#fl)"/>
+  <text x="20" y="22" class="t t-xs t-b t-m">LUZ QUE VUELVE</text>
+  <g class="t t-s t-mono t-m" text-anchor="middle">
+    <text x="80" y="290">0</text><text x="220" y="290">1</text><text x="360" y="290">2</text><text x="500" y="290">3</text><text x="640" y="290">4</text><text x="780" y="290">5</text>
+  </g>
+  <text x="440" y="318" text-anchor="middle" class="t t-xs t-m">DISTANCIA DESDE LA CENTRAL (KM)</text>
+  
+  <path d="M536 133 L780 148" class="ln ln-d" style="stroke-width:2"/>
+  <text x="780" y="170" text-anchor="end" class="t t-s t-m">así debería seguir, hasta 5,0 km</text>
+  
+  <path d="M80 34 L86 50 L220 60 L222 66 L332 74 L334 118 L528 132 L530 104 L536 250 L800 254" class="ln s-fis" style="stroke-width:2.6"/>
+  
+  <g class="t t-s">
+    <line x1="221" y1="82" x2="221" y2="100" class="ln"/><text x="221" y="114" text-anchor="middle">empalme</text><text x="221" y="128" text-anchor="middle" class="t t-s t-m">1,0 km</text>
+    <line x1="334" y1="136" x2="334" y2="154" class="ln"/><text x="334" y="168" text-anchor="middle">splitter</text><text x="334" y="182" text-anchor="middle" class="t t-s t-m">1,8 km</text>
+  </g>
+  <circle cx="530" cy="104" r="7" class="d-sis"/>
+  <text x="546" y="96" class="t t-b">corte a 3,2 km</text>
+  <text x="546" y="112" class="t t-s">reflejo fuerte y después, nada</text>
+  <text x="560" y="240" class="t t-s t-m">solo ruido: ya no hay fibra</text>
+</svg></div><figcaption><b>Lo que muestra un OTDR.</b> El eje horizontal es la distancia desde la central y el vertical, cuánta luz vuelve. La línea baja poco a poco porque la fibra pierde un poco de luz por kilómetro; los escalones son empalmes y el splitter, y el pico seguido de caída es el final de la fibra. Si la fibra debería medir 5,0 km y se acaba a los 3,2 km, el corte está a 3,2 km de la central.</figcaption></figure><div class="prose"><p>Con esa distancia, el técnico va al <b>mapa de la red</b>: «3,2 km por esta ruta» se traduce en un tramo concreto de calle, entre dos postes. Hay un detalle práctico: la fibra no va en línea recta. Tiene curvas, sube y baja por los postes y guarda <b>reservas</b>, rollos de cable de sobra que se dejan para futuras reparaciones. Por eso los mapas bien hechos registran esas reservas: sin ellas, el punto calculado puede quedar a decenas de metros del real.</p><p>Muchos operadores ya no esperan a que un técnico llegue con el OTDR: instalan <b>monitoreo de fibra permanente</b>, equipos en la central que vigilan las troncales todo el tiempo y calculan la distancia al corte en cuanto ocurre.</p></div></section>
+<section><h2>Ticket masivo y lista de afectados</h2><div class="prose"><p>Con el corte identificado, empieza la gestión del <b>incidente</b>. La regla de oro es que <b>un corte es un solo problema</b>, aunque afecte a cien clientes. Por eso se abre un <b>ticket masivo</b> (o ticket padre): un solo caso que representa la falla, con su causa, su ubicación y su prioridad.</p><p>De ese ticket se desprende la <b>lista de afectados</b>: el sistema cruza el puerto y las cajas involucradas con el inventario y obtiene cada cliente que cuelga de ese tramo, incluidos los que todavía no notaron nada. Esa lista sirve para todo lo que sigue:</p><ul><li>El centro de atención la ve en pantalla: cuando un afectado llama, su caso se <b>asocia</b> al ticket masivo en lugar de abrir uno nuevo, y el agente ya sabe qué decir.</li><li>La respuesta automática del teléfono puede avisar del corte en la zona antes de que la persona hable con alguien.</li><li>Se calcula el <b>impacto</b>: cuántos clientes, cuántos son empresas, cuántos tienen contratos con tiempos de reparación garantizados. Con eso se decide la prioridad.</li><li>Al cerrar, se sabe exactamente a quién confirmar que el servicio volvió y, si corresponde, a quién compensar.</li></ul></div><figure class="fig fig-flujo" id="45-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 620" style="min-width:680px" role="img" aria-label="Flujo de un corte de fibra: las ONT pierden la luz, la OLT envía alarmas al monitoreo, el monitoreo las correlaciona y entrega una falla al NOC, el NOC abre un ticket masivo, se avisa a los afectados y se despacha la cuadrilla; al reparar, las ONT vuelven solas, las alarmas se despejan y el incidente se cierra con un aviso">
+  <g class="t t-s t-b">
+    <rect x="16" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-ont" x="22" y="26" width="26" height="26" class="ico"/><text x="52" y="37">ONT</text><text x="52" y="53" class="t t-s t-m">del puerto</text>
+    <rect x="136" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-olt" x="142" y="26" width="26" height="26" class="ico"/><text x="172" y="44">OLT</text>
+    <rect x="256" y="14" width="108" height="52" rx="10" class="d-oper"/><use href="#i-monitor" x="262" y="26" width="26" height="26" class="ico"/><text x="292" y="37">Monitoreo</text><text x="292" y="53" class="t t-s">de fallas</text>
+    <rect x="376" y="14" width="108" height="52" rx="10" class="d-oper"/><use href="#i-persona" x="382" y="26" width="26" height="26" class="ico"/><text x="412" y="44">NOC</text>
+    <rect x="496" y="14" width="108" height="52" rx="10" class="d-casa"/><use href="#i-celular" x="502" y="26" width="26" height="26" class="ico"/><text x="532" y="37">CRM</text><text x="532" y="53" class="t t-s">y avisos</text>
+    <rect x="616" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-persona" x="622" y="26" width="26" height="26" class="ico"/><text x="652" y="44">Cuadrilla</text>
+  </g>
+  <line x1="70" y1="66" x2="70" y2="600" class="vida"/>
+  <line x1="190" y1="66" x2="190" y2="600" class="vida"/>
+  <line x1="310" y1="66" x2="310" y2="600" class="vida"/>
+  <line x1="430" y1="66" x2="430" y2="600" class="vida"/>
+  <line x1="550" y1="66" x2="550" y2="600" class="vida"/>
+  <line x1="670" y1="66" x2="670" y2="600" class="vida"/>
+  
+  <rect x="16" y="82" width="228" height="32" rx="8" class="d-sis"/><text x="28" y="103" class="t t-s t-b">Corte: 41 ONT pierden la luz</text>
+  <line x1="190" y1="140" x2="308" y2="140" class="ln s-enl" style="stroke-width:2.4" marker-end="url(#fl-enl)"/>
+  <text x="198" y="132" class="t t-s">① LOS ×41</text>
+  <rect x="250" y="156" width="240" height="40" rx="8" class="caja"/><text x="262" y="173" class="t t-s t-b">② Correlaciona: mismo puerto,</text><text x="262" y="188" class="t t-s t-b">mismo minuto, cuatro cajas</text>
+  <line x1="310" y1="222" x2="428" y2="222" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="318" y="214" class="t t-s">③ Una falla: troncal</text>
+  
+  <line x1="430" y1="262" x2="548" y2="262" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="438" y="254" class="t t-s">④ Ticket masivo</text>
+  <rect x="470" y="276" width="250" height="34" rx="8" class="d-casa"/><text x="482" y="297" class="t t-s t-b">⑤ SMS y app a los 41 afectados</text>
+  <line x1="430" y1="340" x2="668" y2="340" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="438" y="332" class="t t-s">⑥ OTDR: corte a 2,7 km · despacho</text>
+  <rect x="590" y="356" width="150" height="34" rx="8" class="c-fis"/><text x="602" y="377" class="t t-s t-b">⑦ Empalma la fibra</text>
+  
+  <line x1="70" y1="420" x2="188" y2="420" class="ln s-enl" style="stroke-width:2.4" marker-end="url(#fl-enl)"/>
+  <text x="78" y="412" class="t t-s">⑧ Vuelve la luz</text>
+  <line x1="190" y1="456" x2="308" y2="456" class="ln s-enl" style="stroke-width:2.4" marker-end="url(#fl-enl)"/>
+  <text x="198" y="448" class="t t-s">⑨ En línea ×41</text>
+  <line x1="310" y1="492" x2="428" y2="492" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="318" y="484" class="t t-s">⑩ Alarmas despejadas</text>
+  <line x1="430" y1="528" x2="548" y2="528" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="438" y="520" class="t t-s">⑪ Cerrar incidente</text>
+  <rect x="470" y="544" width="250" height="34" rx="8" class="d-casa"/><text x="482" y="565" class="t t-s t-b">⑫ «Ya tienes servicio»</text>
+  
+  <g class="t t-xs t-b">
+    <path d="M770 82v150" class="ln s-enl" style="stroke-width:3"/><text x="778" y="150" class="k-enl">DETECTAR</text><text x="778" y="164" class="t-m">minutos</text>
+    <path d="M770 248v146" class="ln" style="stroke-width:3"/><text x="778" y="314" class="t-m">AVISAR Y</text><text x="778" y="328" class="t-m">REPARAR</text>
+    <path d="M770 406v172" class="ln s-apl" style="stroke-width:3"/><text x="778" y="490" class="k-apl">CERRAR</text>
+  </g>
+</svg></div><figcaption><b>Del corte al cierre del incidente.</b> El tiempo corre hacia abajo. Las ONT pierden la luz; la OLT avisa al sistema de monitoreo; el monitoreo correlaciona y le pasa una sola falla al NOC; el NOC abre el ticket masivo, obtiene la lista de afectados, avisa a los clientes y despacha la cuadrilla. Cuando la fibra se repara, las ONT vuelven solas, el monitoreo lo confirma y el incidente se cierra con un último aviso.</figcaption></figure></section>
+<section><h2>Avisar al cliente de forma proactiva</h2><div class="prose"><p>Avisar antes de que el cliente llame cambia por completo la experiencia de una falla. Quien recibe «Detectamos un corte de fibra en tu zona. Ya estamos trabajando. Estimamos restablecer el servicio a las 11:00» no necesita llamar, y no siente que tuvo que descubrir el problema por su cuenta.</p><p>Un buen aviso proactivo cumple algunas reglas:</p><ul><li><b>Llega rápido</b>, idealmente antes de que el cliente note la falla o en los primeros minutos.</li><li><b>Llega por un canal que funciona sin el servicio caído</b>: un SMS o la app usando los datos móviles, no un correo que el cliente no puede abrir sin Internet.</li><li><b>Dice qué, dónde y hasta cuándo</b>, con una hora estimada realista. Prometer de menos y cumplir antes vale más que lo contrario.</li><li><b>Se actualiza</b> si la reparación se demora y <b>cierra</b> con un mensaje cuando el servicio vuelve.</li><li><b>No molesta a quien no está afectado</b>: por eso importa que la lista salga del inventario y no de una zona aproximada del mapa.</li></ul><p>Y no todos los eventos merecen un aviso: el último aliento de una casa es un enchufe, no un incidente. Avisar de más enseña a ignorar los avisos.</p></div></section>
+<section><h2>Detectar la degradación antes de la caída</h2><div class="prose"><p>Los cortes por un camión o una excavadora son instantáneos. Pero muchas fallas avisan con semanas de anticipación: un conector que se ensucia, una fibra doblada que empeora con el calor, un empalme en el que entra humedad. En esos casos la potencia de luz que recibe la ONT <b>baja poco a poco</b>, mucho antes de que el cliente note nada.</p><p>La OLT y el ACS pueden reportar la potencia de cada ONT de forma periódica. Guardada en el tiempo, esa medición forma una <b>tendencia</b>, y la tendencia permite tres tipos de alerta:</p><ul><li><b>Por umbral</b>: la potencia cruzó un valor de alerta, por ejemplo −25 dBm, aunque el servicio todavía funcione.</li><li><b>Por cambio</b>: la potencia bajó varios decibelios en pocos días, aunque todavía esté lejos del umbral. Suele delatar un golpe o una curva nueva.</li><li><b>Por grupo</b>: todas las ONT de una caja se degradan juntas. El problema no es de ningún cliente, sino de la caja o de su splitter.</li></ul><p>Cada alerta así se convierte en una visita de <b>mantenimiento preventivo</b>, agendada en horario normal, en lugar de una reparación de urgencia con el cliente enojado. El desafío es calibrar: umbrales muy estrictos llenan la agenda de falsas alarmas; umbrales muy flojos avisan tarde.</p></div><div class="lab" id="45-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Tendencias de potencia óptica</h3></div><p class="hint">Elige una ONT y mira su potencia durante 60 días. Mueve el umbral de alerta y activa la alerta por cambio brusco. ¿Con cuántos días de anticipación te enteras de que va a fallar? ¿Cuántas falsas alarmas genera tu umbral?</p><style>
+[id="45-lab-3"] .c45t-check{display:flex;gap:8px;align-items:flex-start;font:500 .88rem var(--f-display)}
+[id="45-lab-3"] .c45t-check input{margin-top:3px;accent-color:var(--accent)}
+[id="45-lab-3"] .c45t-exp{font-size:.95rem;border-left:3px solid var(--accent);padding-left:10px}
+</style>
+<div class="opciones">
+  <label>ONT
+    <select id="c45t-ont">
+      <option value="a">Casa 1: estable</option>
+      <option value="b" selected>Casa 2: baja de a poco</option>
+      <option value="c">Casa 3: un escalón y después baja</option>
+      <option value="d">Casa 4: sube y baja con el clima</option>
+    </select></label>
+</div>
+<div class="ctls">
+  <label class="ctl">Umbral de alerta <output id="c45t-umbral-o"></output>
+    <input type="range" id="c45t-umbral" min="-27" max="-21" step="0.5" value="-25"></label>
+</div>
+<label class="c45t-check"><input type="checkbox" id="c45t-cambio"> Alertar también si la potencia cae más de 2 dB en 7 días</label>
+<canvas id="c45t-cv" role="img" aria-label="Potencia óptica recibida por la ONT durante 60 días, con el umbral de alerta y el límite en que la ONT deja de funcionar"></canvas>
+<div class="legend"><span><i style="background:var(--c-fis)"></i>Potencia recibida (dBm)</span><span><i style="background:var(--accent)"></i>Umbral de alerta</span><span><i style="background:var(--warm)"></i>La ONT deja de funcionar (−27,5)</span></div>
+<div aria-live="polite" style="display:grid;gap:8px"><div class="readout" id="c45t-res"></div><p class="c45t-exp" id="c45t-exp"></p></div></div></section>
+<section><h2>Aprender de cada incidente</h2><div class="prose"><p>Cuando el servicio vuelve, el incidente no termina: falta entender qué pasó para que no vuelva a pasar, o para que la próxima vez se resuelva más rápido. Por eso los incidentes importantes se cierran con un <b>análisis posterior</b>: una revisión sin buscar culpables que reconstruye la línea de tiempo y responde preguntas concretas.</p><ul><li>¿Cuánto tardamos en <b>detectar</b> la falla, y quién se enteró primero, la red o un cliente?</li><li>¿Cuánto tardamos en <b>ubicarla</b> y en llegar? ¿El mapa y las reservas estaban bien documentados?</li><li>¿Cuánto tardamos en <b>repararla</b>? A ese tiempo, promediado entre incidentes, se le llama <b>tiempo medio de reparación</b>.</li><li>¿A cuántos clientes avisamos antes de que llamaran?</li><li>¿Cuál fue la <b>causa raíz</b> y qué cambiamos? Una ruta aérea que cruza una avenida con camiones altos se puede elevar o pasar por debajo de la calle. Un tramo que se corta seguido justifica un camino alternativo.</li></ul><p>Con el tiempo, estos análisis convierten incidentes sueltos en decisiones de inversión: qué rutas reforzar, dónde poner monitoreo de fibra permanente, cuántas cuadrillas de guardia hacen falta de noche.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región recibe, un martes a las 3:12, 41 alarmas de pérdida de señal en el mismo minuto, todas del mismo puerto PON de una OLT. El sistema de monitoreo las correlaciona: las cuatro cajas del puerto están afectadas, así que el problema está antes del splitter primario, en la troncal. Ninguna alarma es de último aliento: no es un apagón. El NOC abre un solo ticket masivo, la lista de afectados sale del inventario (41 clientes, dos de ellos empresas) y a las 3:20 sale un SMS con una hora estimada. La medición con OTDR desde la central ubica el corte a unos 2,7 km, y el mapa lo traduce a un cruce de avenida. La cuadrilla de guardia encuentra el cable arrancado por un camión, lo empalma y a las 6:40 las 41 ONT vuelven solas. A las 7:00, cuando la mayoría despierta, el servicio ya funciona y el mensaje de cierre está en su celular. El análisis posterior recomienda pasar ese cruce por debajo de la calle.</p></div><div class="ml"><b>En la práctica</b><p>Este capítulo explica los avisos masivos, los tiempos de reparación y por qué un incidente se cierra con un análisis. Si atiendes clientes, el ticket masivo te dice en segundos si quien llama está dentro de un corte conocido. Si trabajas en comunicación o experiencia del cliente, el aviso proactivo es tu mejor herramienta durante una falla. Y si decides inversiones, los análisis de incidentes te dicen dónde una ruta nueva o un monitor de fibra ahorran más de lo que cuestan.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué diferencia hay entre una alarma de último aliento y una de pérdida de señal?</summary><p>El último aliento es el aviso que manda la ONT al quedarse sin electricidad: es un problema de energía. La pérdida de señal significa que dejó de llegar luz sin aviso: suele ser un corte de fibra.</p></details><details><summary>Caen con pérdida de señal todas las ONT de una caja, pero ninguna de las otras cajas del mismo puerto. ¿Dónde buscas?</summary><p>En el ramal que llega a esa caja o en su splitter: es el tramo más bajo que comparten todas las afectadas.</p></details><details><summary>¿Cómo sabe un OTDR a qué distancia está el corte?</summary><p>Mide cuánto tarda en volver el reflejo del pulso de luz; como conoce la velocidad de la luz en la fibra, convierte ese tiempo en distancia.</p></details><details><summary>¿Por qué se abre un solo ticket masivo en lugar de uno por cliente?</summary><p>Porque es una sola falla: el ticket masivo concentra la causa y la reparación, y los reclamos de los afectados se asocian a él sin duplicar trabajo.</p></details><details><summary>¿Por qué el aviso proactivo de un corte conviene mandarlo por SMS o por la app y no por correo?</summary><p>Porque el cliente afectado no tiene Internet en su casa; el aviso debe llegar por un canal que funcione sin el servicio caído.</p></details><details><summary>¿Qué permite la tendencia de potencia óptica?</summary><p>Detectar fibras y conectores que se degradan semanas antes de la caída y repararlos con una visita preventiva, antes del reclamo.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/OTDR" target="_blank" rel="noopener">Reflectómetro óptico en el dominio del tiempo (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.itu.int/rec/T-REC-G.984.3" target="_blank" rel="noopener">G.984.3: la capa de convergencia de GPON, donde se definen sus alarmas (UIT-T) <small>lectura</small></a><a class="vid" href="https://www.atlassian.com/es/incident-management/postmortem" target="_blank" rel="noopener">Gestión de incidentes y análisis posteriores (Atlassian) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const CAJAS=['A','B','C','D'];
+  const RESP=[['troncal','La troncal (OLT → splitter primario)'],['A','El ramal a la caja A'],['B','El ramal a la caja B'],['C','El ramal a la caja C'],['D','El ramal a la caja D'],['acom','La acometida de un solo cliente'],['energia','Energía del barrio, no la fibra']];
+  // estado por caja: array de 8 con '', 'los' o 'dg'; alarmas: [hora, dónde, causa, n]
+  const all=v=>Array(8).fill(v);
+  const ESC=[
+    {n:'Madrugada',est:{A:all('los'),B:all('los'),C:all('los'),D:all('los')},al:[['03:12','Cajas A, B, C y D','Pérdida de señal',32]],ok:'troncal',
+     exp:'Cayeron las cuatro cajas en el mismo minuto y sin último aliento: lo único que comparten todas es la troncal entre la OLT y el splitter primario.'},
+    {n:'Mediodía',est:{A:all(''),B:all('los'),C:all(''),D:all('')},al:[['14:05','Caja B','Pérdida de señal',8]],ok:'B',
+     exp:'Solo la caja B, completa y en el mismo minuto, mientras las demás siguen en línea: el corte está en el ramal que llega a la caja B o en su splitter.'},
+    {n:'Tormenta',est:{A:all(''),B:all(''),C:['dg','dg','','dg','dg','dg','','dg'],D:['dg','dg','dg','','dg','dg','dg','dg']},al:[['19:40','Caja C','Último aliento',6],['19:40','Caja D','Último aliento',7]],ok:'energia',
+     exp:'Trece ONT cayeron a la vez, pero todas avisaron con su último aliento y algunas casas de esas mismas cajas siguen en línea (quizá con respaldo eléctrico). Es un apagón: no hay fibra que reparar.'},
+    {n:'Una casa',est:{A:['','','','','los','','',''],B:all(''),C:all(''),D:all('')},al:[['10:22','Caja A, cliente 5','Pérdida de señal',1]],ok:'acom',
+     exp:'Una sola ONT perdió la señal y sus vecinas de la caja A siguen bien: el problema es la acometida, los conectores o el equipo de ese cliente.'},
+    {n:'Ruido',est:{A:['','','dg','','','','',''],B:all(''),C:all(''),D:all('los')},al:[['16:58','Caja A, cliente 3','Último aliento',1],['17:31','Caja D','Pérdida de señal',8]],ok:'D',
+     exp:'El último aliento de la caja A es otro evento, a otra hora: alguien desenchufó un equipo. Las ocho de la caja D cayeron juntas por pérdida de señal: el corte está en el ramal a la caja D.'}
+  ];
+  let i=0;
+  function pintar(){
+    const e=ESC[i];
+    q('#c45m-arbol').innerHTML='<div class="c45m-raiz"><b>OLT · puerto 1/3</b> → troncal → splitter primario →</div>'+
+      CAJAS.map(c=>'<div class="c45m-fila"><span class="c45m-caja">Caja '+c+'</span>'+e.est[c].map((v,k)=>'<span class="c45m-ont '+v+'" title="Caja '+c+', cliente '+(k+1)+'"></span>').join('')+'</div>').join('');
+    q('#c45m-alarmas').innerHTML=e.al.map(a=>'<tr><td>'+a[0]+'</td><td>'+a[1]+'</td><td>'+a[2]+'</td><td class="num">'+a[3]+'</td></tr>').join('');
+    q('#c45m-esc').querySelectorAll('button').forEach((b,k)=>b.setAttribute('aria-pressed',k===i?'true':'false'));
+    q('#c45m-resp').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','false'));
+    q('#c45m-res').innerHTML='<span>Elige una respuesta.</span>';
+  }
+  q('#c45m-esc').innerHTML=ESC.map((e,k)=>'<button type="button" data-i="'+k+'">'+e.n+'</button>').join('');
+  q('#c45m-resp').innerHTML=RESP.map(r=>'<button type="button" data-k="'+r[0]+'">'+r[1]+'</button>').join('');
+  q('#c45m-esc').addEventListener('click',ev=>{const b=ev.target.closest('button');if(b){i=+b.dataset.i;pintar();}});
+  q('#c45m-resp').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;
+    const e=ESC[i], ok=b.dataset.k===e.ok, nom=RESP.find(r=>r[0]===e.ok)[1];
+    q('#c45m-resp').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+    q('#c45m-res').innerHTML=(ok?'<span class="ok">¡Correcto! '+nom+'.</span>':'<span class="warn">No. La respuesta es: '+nom+'.</span>')+'<span>'+e.exp+'</span>';
+  });
+  pintar();
+})();
+</script>
+<script>
+(function(){
+  const L=window.Lab, q=s=>document.querySelector(s);
+  const FALLA=-27.5, DIAS=60;
+  const ruido=(d,s)=>0.25*Math.sin(d*2.3+s)+0.15*Math.sin(d*5.1+s*2);
+  const SERIES={
+    a:d=>-19.6+ruido(d,1),
+    b:d=>-19.2-0.14*d+ruido(d,2),
+    c:d=>(d<30?-20.2:-24.4-0.11*(d-30))+ruido(d,3),
+    d:d=>-21.8+1.6*Math.sin(d/2.2)+ruido(d,4)
+  };
+  const EXP={
+    a:'Una ONT sana: la potencia se mueve unas décimas por día, nada más. Cualquier alerta aquí es una falsa alarma.',
+    b:'La potencia baja un poco cada día: un conector que se ensucia o un empalme que toma humedad. Sin vigilancia, el cliente llamaría el día que deje de funcionar.',
+    c:'Un escalón brusco el día 30: alguien dobló la fibra en una visita o un golpe en la caja. Después sigue bajando. La alerta por cambio lo detecta el mismo día, aunque el valor todavía esté lejos del umbral.',
+    d:'La potencia oscila con la temperatura, pero no empeora. Un umbral demasiado estricto dispara alarmas que no sirven y enseña a ignorarlas.'
+  };
+  let datos=[];
+  function calcular(){
+    const k=q('#c45t-ont').value, u=+q('#c45t-umbral').value, cambio=q('#c45t-cambio').checked, f=SERIES[k];
+    datos=[];for(let d=0;d<=DIAS;d++)datos.push(f(d));
+    let alerta=null, motivo='', falla=null, falsas=0, dentro=false;
+    for(let d=0;d<=DIAS;d++){
+      const v=datos[d];
+      const porUmbral=v<u, porCambio=cambio&&d>=7&&(v-datos[d-7])<-2;
+      if(falla===null&&v<FALLA)falla=d;
+      if(alerta===null&&(porUmbral||porCambio)){alerta=d;motivo=porUmbral?'umbral':'cambio brusco';}
+      const a=porUmbral||porCambio;
+      if(a&&!dentro)falsas++;
+      dentro=a;
+    }
+    return {k,u,cambio,alerta,motivo,falla,falsas};
+  }
+  let R=calcular();
+  const cv=q('#c45t-cv');
+  const dibujar=L.canvasWidget(cv,w=>w<520?0.75:0.42,(ctx,w,h)=>{
+    const F=L.frame(ctx,w,h,{x0:0,x1:DIAS,y0:-30,y1:-16,sx:10,sy:2});
+    const lin=(y,c,dash)=>{ctx.strokeStyle=c;ctx.lineWidth=1.6;ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(F.X(0),F.Y(y));ctx.lineTo(F.X(DIAS),F.Y(y));ctx.stroke();ctx.setLineDash([]);};
+    lin(FALLA,L.tok('--warm'),[]);
+    lin(R.u,L.tok('--accent'),[6,4]);
+    L.curve(ctx,F,d=>{const i=Math.floor(d),t=d-i;return i>=DIAS?datos[DIAS]:datos[i]*(1-t)+datos[i+1]*t;},L.tok('--c-fis'),2.4);
+    if(R.alerta!==null)L.dot(ctx,F.X(R.alerta),F.Y(datos[R.alerta]),L.tok('--accent'),5);
+    if(R.falla!==null)L.dot(ctx,F.X(R.falla),F.Y(datos[R.falla]),L.tok('--warm'),5);
+    ctx.font='600 11px '+L.tok('--f-display');ctx.fillStyle=L.tok('--muted');ctx.textAlign='right';ctx.textBaseline='bottom';
+    ctx.fillText('días',F.p.l+F.pw,F.p.t+F.ph-2);ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('dBm',F.p.l+4,F.p.t+2);
+  });
+  function actualizar(){
+    q('#c45t-umbral-o').textContent=q('#c45t-umbral').value.replace('.',',')+' dBm';
+    R=calcular();dibujar();
+    let html;
+    if(R.falla!==null){
+      if(R.alerta!==null&&R.alerta<R.falla)html='<span class="ok">Alerta el día '+R.alerta+' (por '+R.motivo+') · la ONT fallaría el día '+R.falla+'</span><span class="big">'+(R.falla-R.alerta)+' días para una visita preventiva</span>';
+      else html='<span class="warn">La ONT deja de funcionar el día '+R.falla+' y la alerta '+(R.alerta===null?'nunca llegó':'llegó el día '+R.alerta)+'.</span><span>El cliente se entera antes que el operador: ajusta el umbral o activa la alerta por cambio.</span>';
+    }else{
+      html=R.falsas?'<span class="warn">Esta ONT no va a fallar, pero tu configuración disparó '+R.falsas+' alerta'+(R.falsas>1?'s':'')+' falsa'+(R.falsas>1?'s':'')+'.</span>':'<span class="ok">Sin falla y sin alertas: el umbral no molesta a una ONT sana.</span>';
+    }
+    q('#c45t-res').innerHTML=html;
+    q('#c45t-exp').textContent=EXP[R.k];
+  }
+  ['#c45t-ont','#c45t-umbral','#c45t-cambio'].forEach(s=>q(s).addEventListener('input',actualizar));
+  actualizar();
+})();
+</script>
+</body>
+</html>

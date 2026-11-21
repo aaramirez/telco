@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Autogestión del Wi-Fi y actualizaciones de firmware · Cómo funciona un telco</title>
+<meta name="description" content="Cuando el cliente cambia su clave Wi-Fi desde la app o el operador actualiza el software de miles de equipos de noche, la misma maquinaria de gestión remota trabaja sin visitas ni llamadas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="41-autogestion-del-wi-fi-y-actualizaciones-de-firmware">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 41 DE 49</span><h1>Autogestión del Wi-Fi y actualizaciones de firmware</h1><p class="lede">Cuando el cliente cambia su clave Wi-Fi desde la app o el operador actualiza el software de miles de equipos de noche, la misma maquinaria de gestión remota trabaja sin visitas ni llamadas.</p></header>
+<section><div class="prose"><p>Hace no tanto, cambiar la clave del Wi-Fi de la casa era un pequeño drama. Había que conectar una computadora al router, escribir una dirección rara en el navegador, adivinar la contraseña de administrador que venía pegada debajo del equipo y navegar por menús en inglés. La mayoría de los clientes terminaba llamando al operador, y muchas veces el operador terminaba mandando un técnico.</p><p>Hoy el cliente abre la app, escribe el nombre y la clave nuevos, toca «Guardar» y en unos segundos su red cambió. Esa misma noche, sin que nadie lo note, el operador puede estar actualizando el software de diez mil equipos iguales al suyo. Las dos cosas usan la misma maquinaria: el servidor de gestión remota de equipos que conociste en el capítulo 28, el <b>ACS</b>, y su sucesor, el controlador <b>USP</b>. Este capítulo sigue esas dos operaciones de punta a punta.</p></div><div class="analogia"><b>Imagínalo así</b><p>Las actualizaciones automáticas del celular: llegan de noche, mientras cargas el teléfono; no le llegan a todo el mundo el mismo día, sino por tandas; y si la versión nueva no arranca, el teléfono vuelve solo a la anterior. Con el router de tu casa pasa lo mismo, solo que quien decide las tandas es el operador.</p></div><figure class="fig fig-capas" id="41-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: autogestión del cliente y operación masiva de los equipos">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class=""><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class="apagado"><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class="apagado"><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class=""><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class=""><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: autogestión del cliente y operación masiva de los equipos</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo pasa por los canales (la app del cliente), la capa de integración (el orquestador), el OSS (el ACS o el controlador USP) y el equipo de la casa. En la cadena de valor está en la operación del día a día y en el soporte: son cosas que, si no se automatizan, terminan en una llamada o en una visita.</figcaption></figure></section>
+<section><h2>Cambiar SSID y clave desde la app</h2><div class="prose"><p>El nombre de la red Wi-Fi se llama <b>SSID</b> (del inglés <i>service set identifier</i>, el identificador de la red). Es lo que ves en la lista de redes del celular. La clave es la contraseña que protege esa red. Los dos datos viven dentro de la ONT o del router Wi-Fi del cliente, en su memoria de configuración.</p><p>Cuando el cliente toca «Guardar» en la app, el pedido hace este camino:</p><ol class="steps"><li><span>La <b>app</b> valida lo que se escribió antes de mandar nada: que la clave tenga al menos 8 caracteres, como exige la seguridad WPA2, y que el nombre no tenga caracteres que el equipo no acepte. Rechazar aquí cuesta cero; rechazar en el equipo cuesta una sesión de gestión.</span></li><li><span>La app manda el pedido al <b>orquestador</b> (capítulo 38), que sabe qué equipo tiene ese cliente: busca el número de serie de su ONT.</span></li><li><span>El orquestador le pide al <b>ACS</b> que cree una tarea: «en el equipo con esta serie, cambia estos dos parámetros».</span></li><li><span>El ACS <b>despierta</b> a la ONT, abre una sesión de gestión con ella y le escribe los valores nuevos.</span></li><li><span>La ONT los aplica, reinicia su radio Wi-Fi y confirma.</span></li><li><span>La confirmación sube por el mismo camino hasta la app, que le dice al cliente «listo».</span></li></ol><p>Los valores no se mandan como «nombre» y «clave» a secas. El protocolo TR-069 usa un <b>modelo de datos</b>, una especie de árbol de carpetas donde cada dato del equipo tiene una ruta fija. En el modelo moderno, el TR-181, el nombre de la red es <code>Device.WiFi.SSID.1.SSID</code> y la clave es el dato <code>KeyPassphrase</code> dentro de <code>Device.WiFi.AccessPoint.1.Security</code>. Como esas rutas son estándar, el mismo pedido sirve para equipos de fabricantes distintos. Si la casa tiene dos bandas (2,4 y 5 GHz) con el mismo nombre, el pedido cambia las dos.</p><p>Hay un detalle que conviene que el cliente sepa, y que la app debería decirle: al cambiar la clave, <b>todos sus dispositivos se desconectan</b> y tienen que volver a conectarse con la clave nueva. El televisor inteligente, la impresora y la cámara de la entrada no se enteran solos. Muchas llamadas de «cambié la clave y se me cayó todo» son exactamente eso.</p></div><figure class="fig fig-flujo" id="41-diagrama-4"><div class="lienzo"><svg viewBox="0 0 900 560" style="min-width:700px" role="img" aria-label="Flujo del cambio de clave Wi-Fi con TR-069: el cliente lo pide en la app, la app al orquestador, el orquestador crea una tarea en el ACS; el ACS despierta a la ONT con un Connection Request, la ONT abre sesión con un Inform, el ACS escribe el SSID y la clave con SetParameterValues, la ONT confirma y la confirmación vuelve hasta la app">
+  <rect x="22" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-persona" x="28" y="25" width="28" height="28" class="ico"/>
+  <text x="62" y="45" class="t t-s t-b">Cliente</text>
+  <line x1="80" y1="66" x2="80" y2="530" class="vida"/>
+  <rect x="162" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-celular" x="168" y="25" width="28" height="28" class="ico"/>
+  <text x="202" y="45" class="t t-s t-b">App</text>
+  <line x1="220" y1="66" x2="220" y2="530" class="vida"/>
+  <rect x="312" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-monitor" x="318" y="25" width="28" height="28" class="ico"/>
+  <text x="352" y="38" class="t t-s t-b">Orques-</text><text x="352" y="53" class="t t-s t-b">tador</text>
+  <line x1="370" y1="66" x2="370" y2="530" class="vida"/>
+  <rect x="472" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-servidor" x="478" y="25" width="28" height="28" class="ico"/>
+  <text x="512" y="45" class="t t-s t-b">ACS</text>
+  <line x1="530" y1="66" x2="530" y2="530" class="vida"/>
+  <rect x="632" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-ont" x="638" y="25" width="28" height="28" class="ico"/>
+  <text x="672" y="45" class="t t-s t-b">ONT</text>
+  <line x1="690" y1="66" x2="690" y2="530" class="vida"/>
+  <line x1="80" y1="96" x2="218" y2="104" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="90" y="90" class="t t-s">① Nombre y clave nuevos</text>
+  <line x1="220" y1="130" x2="368" y2="138" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="230" y="124" class="t t-s">② PUT /wifi</text>
+  <line x1="370" y1="164" x2="528" y2="172" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="380" y="158" class="t t-s">③ Tarea para la serie X</text>
+  <line x1="530" y1="206" x2="688" y2="214" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="540" y="200" class="t t-s">④ Connection Request</text>
+  <text x="540" y="228" class="t t-xs t-m">«conéctate conmigo»</text>
+  <line x1="690" y1="256" x2="532" y2="264" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="540" y="250" class="t t-s">⑤ Inform «6 CONNECTION REQUEST»</text>
+  <line x1="530" y1="292" x2="688" y2="300" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="540" y="286" class="t t-s">⑥ InformResponse</text>
+  <line x1="530" y1="330" x2="688" y2="338" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="540" y="324" class="t t-s">⑦ SetParameterValues</text>
+  <g class="t t-xs t-mono t-m"><text x="540" y="352">Device.WiFi.SSID.1.SSID</text><text x="540" y="366">…AccessPoint.1.Security.KeyPassphrase</text></g>
+  <rect x="700" y="372" width="90" height="32" rx="6" class="c-fis"/><text x="745" y="387" text-anchor="middle" class="t t-xs t-b">reinicia la</text><text x="745" y="400" text-anchor="middle" class="t t-xs t-b">radio Wi-Fi</text>
+  <line x1="690" y1="412" x2="532" y2="420" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="540" y="406" class="t t-s">⑧ Respuesta: Status 0</text>
+  <line x1="690" y1="440" x2="532" y2="448" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="540" y="434" class="t t-s t-m">⑨ Fin de la sesión</text>
+  <line x1="530" y1="474" x2="372" y2="482" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="380" y="468" class="t t-s">⑩ Tarea completa</text>
+  <line x1="370" y1="506" x2="82" y2="514" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="96" y="500" class="t t-s">⑪ «Listo, tu red cambió»</text>
+  <path d="M820 90V174" class="ln s-apl" style="stroke-width:3"/>
+  <text x="830" y="125" class="t t-xs t-b k-apl">PEDIDO</text>
+  <text x="830" y="139" class="t t-xs t-b t-m">① a ③</text>
+  <path d="M820 200V240" class="ln s-apl" style="stroke-width:3"/>
+  <text x="830" y="213" class="t t-xs t-b k-apl">DESPERTAR</text>
+  <text x="830" y="227" class="t t-xs t-b t-m">un toque</text>
+  <path d="M820 250V448" class="ln s-apl" style="stroke-width:3"/>
+  <text x="830" y="335" class="t t-xs t-b k-apl">SESIÓN</text>
+  <text x="830" y="349" class="t t-xs t-b t-m">TR-069</text>
+  <text x="830" y="363" class="t t-xs t-b t-m">⑤ a ⑨</text>
+  <path d="M820 468V516" class="ln s-apl" style="stroke-width:3"/>
+  <text x="830" y="485" class="t t-xs t-b k-apl">CONFIRMAR</text>
+  <text x="830" y="499" class="t t-xs t-b t-m">⑩ y ⑪</text>
+  <text x="14" y="300" class="t t-xs t-m" transform="rotate(-90 14 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Cambio de clave Wi-Fi con TR-069, paso a paso.</b> El pedido nace en la app (①), pasa por el orquestador (②) y llega al ACS como una tarea (③). El ACS no puede escribirle al equipo cuando quiere: primero lo despierta con un Connection Request (④), y es la ONT la que abre la sesión con un Inform (⑤). Dentro de esa sesión el ACS escribe los dos parámetros (⑦) y la ONT confirma (⑧). Todas las flechas son de capa de aplicación.</figcaption></figure></section>
+<section><h2>Control parental: pausas, horarios y bloqueo de dispositivos</h2><div class="prose"><p>La segunda función más pedida en las apps de los operadores es el <b>control parental</b>: que los padres decidan cuándo y cómo se conectan los dispositivos de la casa. Las opciones típicas son tres:</p><ul><li><b>Pausar</b> Internet a un dispositivo con un botón: «la tablet de Sofía, sin Internet hasta que termine la tarea».</li><li><b>Horarios</b>: «de lunes a viernes, los celulares de los chicos sin Internet de 22:00 a 6:00».</li><li><b>Bloquear</b> un dispositivo desconocido que apareció conectado a la red.</li></ul><p>Para ofrecer esto, la app primero tiene que mostrar <b>quién está conectado</b>. El ACS le pregunta a la ONT la lista de dispositivos (en TR-181 está en <code>Device.Hosts.Host</code>), con el nombre que cada uno anuncia, su dirección física, que se llama <b>MAC</b>, y desde cuándo está conectado. Después, cada pausa u horario se traduce en una regla que el ACS escribe en el equipo: «a esta MAC, no la dejes salir a Internet en este horario». Como en el cambio de clave, se trata de escribir parámetros, solo que otros.</p><p>Hay una trampa moderna que conviene conocer. Los celulares actuales, para proteger la privacidad, usan una <b>MAC aleatoria</b> distinta en cada red, y algunos la cambian cada cierto tiempo. Si el teléfono de un chico cambia de MAC, la regla deja de aplicarse y el control parental «no funciona». La solución está en el teléfono, no en la red: desactivar la dirección privada para la red de la casa. Saberlo ahorra muchas llamadas.</p><p>Otros operadores hacen el filtrado de contenido (bloquear categorías de sitios) en la red, a través del DNS, en lugar de hacerlo en el equipo. Las dos formas conviven: la pausa por dispositivo vive en la ONT; el filtro por tipo de sitio suele vivir en el DNS del operador o en un servicio aparte.</p></div></section>
+<section><h2>Por qué tarda unos segundos (y cómo USP lo hace instantáneo)</h2><div class="prose"><p>En TR-069 hay una regla que explica casi todos los tiempos de espera: <b>la sesión siempre la abre el equipo</b>, nunca el ACS. La ONT se reporta sola cada cierto tiempo (el <b>Inform periódico</b>, típicamente cada pocas horas) y en esa visita el ACS aprovecha para pedirle lo que tenga pendiente. Si el ACS quiere algo <i>ya</i>, tiene que tocarle la puerta con un <b>Connection Request</b>: un pequeño mensaje que le dice «conéctate conmigo ahora». La ONT verifica que el toque es legítimo, abre la sesión con un Inform y recién ahí el ACS le pide el cambio.</p><p>Eso funciona bien si el ACS puede llegar a la ONT. El problema aparece cuando la ONT está detrás de una traducción de direcciones, como el <b>CGNAT</b> que muchos operadores usan para compartir direcciones IP públicas (capítulo 19): desde afuera no hay forma directa de tocarle la puerta. Para eso existen salidas, como STUN (TR-111), que mantiene un pequeño canal abierto a través del NAT, o una red de gestión aparte donde cada ONT tiene una dirección alcanzable. Si nada de eso está configurado, el cambio queda en la cola del ACS hasta el próximo Inform periódico, y el cliente puede esperar horas a que su clave nueva aparezca.</p><p><b>USP</b> (<i>User Services Platform</i>, el estándar TR-369 del Broadband Forum) cambia la regla. El equipo mantiene una <b>conexión siempre abierta</b> hacia un intermediario de mensajes (por ejemplo, un servidor MQTT, el mismo tipo de mensajería que usan muchas aplicaciones de Internet de las cosas) y está suscrito a su propio buzón. Cuando el controlador USP quiere cambiar la clave, deja el mensaje en ese buzón y el equipo lo recibe al instante. No hay toque de puerta, no hay sesión que abrir y el NAT deja de ser un problema, porque la conexión la abrió el equipo desde adentro. Además, el equipo puede <b>avisar</b> por su cuenta: «se conectó un dispositivo nuevo», «la señal Wi-Fi bajó».</p></div><figure class="fig fig-flujo" id="41-diagrama-7"><div class="lienzo"><svg viewBox="0 0 900 400" style="min-width:700px" role="img" aria-label="Flujo del cambio de Wi-Fi con USP: la ONT mantiene una conexión abierta con el intermediario MQTT; el orquestador pide el cambio al controlador, el controlador publica un Set, el intermediario lo entrega a la ONT al instante, y la respuesta vuelve por el mismo camino">
+  <rect x="42" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-monitor" x="48" y="25" width="28" height="28" class="ico"/>
+  <text x="82" y="38" class="t t-s t-b">Orques-</text><text x="82" y="53" class="t t-s t-b">tador</text>
+  <line x1="100" y1="66" x2="100" y2="380" class="vida"/>
+  <rect x="222" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-servidor" x="228" y="25" width="28" height="28" class="ico"/>
+  <text x="262" y="38" class="t t-s t-b">Controlador</text><text x="262" y="53" class="t t-s t-b">USP</text>
+  <line x1="280" y1="66" x2="280" y2="380" class="vida"/>
+  <rect x="412" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-nube" x="418" y="25" width="28" height="28" class="ico"/>
+  <text x="452" y="38" class="t t-s t-b">Intermediario</text><text x="452" y="53" class="t t-s t-b">MQTT</text>
+  <line x1="470" y1="66" x2="470" y2="380" class="vida"/>
+  <rect x="602" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-ont" x="608" y="25" width="28" height="28" class="ico"/>
+  <text x="642" y="38" class="t t-s t-b">ONT</text><text x="642" y="53" class="t t-s t-b">agente USP</text>
+  <line x1="660" y1="66" x2="660" y2="380" class="vida"/>
+  <line x1="470" y1="94" x2="660" y2="94" class="ln s-tra" style="stroke-width:6;opacity:.45"/><text x="480" y="86" class="t t-xs t-b k-tra">CONEXIÓN SIEMPRE ABIERTA, DESDE LA ONT</text>
+  <line x1="100" y1="128" x2="278" y2="136" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="110" y="122" class="t t-s">① Cambiar SSID y clave</text>
+  <line x1="280" y1="164" x2="468" y2="172" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="290" y="158" class="t t-s">② PUBLISH: Set</text>
+  <line x1="470" y1="200" x2="658" y2="208" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="480" y="194" class="t t-s">③ Entrega el Set al instante</text>
+  <rect x="670" y="216" width="100" height="34" rx="6" class="c-fis"/><text x="720" y="231" text-anchor="middle" class="t t-xs t-b">aplica y reinicia</text><text x="720" y="244" text-anchor="middle" class="t t-xs t-b">la radio Wi-Fi</text>
+  <line x1="660" y1="270" x2="472" y2="278" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="480" y="264" class="t t-s">④ SetResp: aplicado</text>
+  <line x1="470" y1="304" x2="282" y2="312" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="290" y="298" class="t t-s">⑤ SetResp</text>
+  <line x1="280" y1="338" x2="102" y2="346" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="110" y="332" class="t t-s">⑥ Listo</text>
+  <line x1="660" y1="364" x2="282" y2="372" class="ln s-apl" style="stroke-width:2;stroke-dasharray:6 4" marker-end="url(#fl-apl)"/>
+  <text x="300" y="358" class="t t-s t-m">⑦ Notify: cambió un valor (opcional)</text>
+  <path d="M820 120V212" class="ln s-apl" style="stroke-width:3"/>
+  <text x="830" y="159" class="t t-xs t-b k-apl">PEDIDO</text>
+  <text x="830" y="173" class="t t-xs t-b t-m">① a ③</text>
+  <path d="M820 262V346" class="ln s-apl" style="stroke-width:3"/>
+  <text x="830" y="297" class="t t-xs t-b k-apl">RESPUESTA</text>
+  <text x="830" y="311" class="t t-xs t-b t-m">④ a ⑥</text>
+  <text x="790" y="66" class="t t-xs t-b t-m">SIN CONNECTION</text><text x="790" y="80" class="t t-xs t-b t-m">REQUEST NI SESIÓN</text>
+  <text x="14" y="240" class="t t-xs t-m" transform="rotate(-90 14 240)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El mismo cambio con USP.</b> La ONT ya tiene abierta una conexión con el intermediario de mensajes (línea gruesa arriba). El controlador publica un mensaje Set (②), el intermediario se lo entrega al equipo de inmediato (③) y la respuesta vuelve por el mismo camino (④ y ⑤). No hay Connection Request ni sesión que abrir: del controlador al equipo y de vuelta son cuatro mensajes, contra los seis de TR-069 (④ a ⑨ en la figura anterior). La flecha punteada ⑦ muestra que el equipo también puede avisar por su cuenta.</figcaption></figure><div class="prose"><p>En la práctica, buena parte del tiempo que el cliente espera es el propio equipo aplicando el cambio y reiniciando su radio Wi-Fi, y eso no lo acelera ningún protocolo. Lo que USP elimina es la espera para <i>llegar</i> al equipo. Pruébalo en el laboratorio.</p></div><div class="lab" id="41-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Cambia tu Wi-Fi</h3></div><p class="hint">Escribe un nombre y una clave nuevos, elige el protocolo y la situación de la ONT, y toca «Guardar». Mira el camino del pedido, cuánto tarda cada tramo y por qué con TR-069 detrás de un NAT la espera puede ser de horas.</p><style>
+#c41-wifi{display:grid;gap:14px;min-width:0}
+#c41-wifi select,#c41-wifi input[type=text]{width:100%;min-width:0;box-sizing:border-box}
+#c41-wifi input[type=text]{font:500 .92rem var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+#c41-wifi .opciones label{min-width:0}
+#c41-wifi .c41-camino{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+#c41-wifi .c41-camino li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:7px 10px;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:8px;background:var(--paper);font:500 .86rem var(--f-display)}
+#c41-wifi .c41-camino li.hecho{border-left-color:var(--accent)}
+#c41-wifi .c41-camino li.espera{border-left-color:var(--warm)}
+#c41-wifi .c41-camino li small{grid-column:1/-1;color:var(--muted);font-size:.78rem}
+#c41-wifi .c41-camino b{font-family:var(--f-mono);font-weight:600;white-space:nowrap}
+#c41-wifi .c41-camino li.pend{opacity:.45}
+</style>
+<div id="c41-wifi">
+  <div class="opciones">
+    <label>Nombre de la red (SSID)
+      <input type="text" id="c41-ssid" value="Casa-Rojas" maxlength="32" autocomplete="off"></label>
+    <label>Clave nueva
+      <input type="text" id="c41-clave" value="girasol-2026" maxlength="63" autocomplete="off"></label>
+    <label>Protocolo de gestión
+      <select id="c41-proto">
+        <option value="tr069" selected>TR-069 (ACS)</option>
+        <option value="usp">USP (controlador y MQTT)</option>
+      </select></label>
+    <label>Cómo llega el ACS a la ONT
+      <select id="c41-red">
+        <option value="directa" selected>IP de gestión alcanzable</option>
+        <option value="stun">Detrás de NAT, con STUN</option>
+        <option value="nada">Detrás de NAT, sin STUN</option>
+      </select></label>
+    <label>Inform periódico de la ONT
+      <select id="c41-inform">
+        <option value="300">cada 5 minutos</option>
+        <option value="3600">cada hora</option>
+        <option value="21600" selected>cada 6 horas</option>
+        <option value="86400">cada 24 horas</option>
+      </select></label>
+  </div>
+  <div class="btns"><button type="button" class="primary" id="c41-guardar">Guardar en la app</button></div>
+  <div class="crono-total" id="c41-total" aria-live="polite"></div>
+  <div class="crono-bar" id="c41-bar" role="img" aria-label="Tiempo de cada tramo del pedido"></div>
+  <ol class="c41-camino" id="c41-camino" aria-label="Camino del pedido"></ol>
+  <div class="readout" id="c41-param"></div>
+  <p class="hint" id="c41-nota" aria-live="polite"></p>
+</div></div></section>
+<section><h2>Campañas de firmware: piloto, lotes y ventanas</h2><div class="prose"><p>El <b>firmware</b> es el software interno de la ONT: su sistema operativo. Los fabricantes publican versiones nuevas para cerrar agujeros de seguridad, corregir fallas (el Wi-Fi que se cae cada tantos días, la llamada de voz que se corta) o agregar funciones (una banda nueva, compatibilidad con USP). Un operador con cien mil equipos no puede mandar un técnico a cada casa, así que actualiza a distancia, con el ACS, en lo que se llama una <b>campaña</b>.</p><p>Una campaña bien hecha se parece mucho a un lanzamiento de vacuna: primero se prueba en pocos, se mira con lupa, y solo después se extiende.</p><ol class="steps"><li><span><b>Laboratorio.</b> Ingeniería instala la versión nueva en equipos de prueba y verifica lo básico: navega, el Wi-Fi funciona, la voz funciona, el ACS lo sigue gestionando.</span></li><li><span><b>Piloto.</b> Se actualiza un grupo pequeño de clientes reales, a menudo casas de empleados o un 1 % del parque, elegidos con variedad de zonas y usos.</span></li><li><span><b>Lotes crecientes.</b> Si el piloto sale bien, se sigue con lotes cada vez más grandes: 5 %, 20 %, el resto. Entre lote y lote se miran los números.</span></li><li><span><b>Ventana nocturna.</b> Cada lote se ejecuta en la madrugada, por ejemplo entre la 1 y las 5, cuando casi nadie navega. El equipo se reinicia y el cliente se queda sin servicio unos minutos; mejor que sea mientras duerme.</span></li><li><span><b>Regla de parada.</b> Antes de empezar se fija un umbral: si en un lote fallan más de, digamos, el 2 % de los equipos, la campaña se <b>detiene sola</b> y nadie sigue hasta entender qué pasó.</span></li></ol><p>Dentro de la ventana, el ACS recorre el lote equipo por equipo. Le manda un pedido <b>Download</b> con la dirección de la imagen nueva; la ONT la descarga de un servidor de archivos, verifica que la imagen esté firmada por el fabricante, la graba y se reinicia. Al volver, se reporta con un Inform que avisa «arranqué de nuevo» y «terminé la transferencia», y un mensaje <b>TransferComplete</b> con el resultado. Un buen ACS además evita molestar: si el equipo tiene una llamada de voz en curso o mucho tráfico, lo deja para más tarde.</p></div><figure class="fig fig-flujo" id="41-diagrama-5"><div class="lienzo"><svg viewBox="0 0 920 560" style="min-width:720px" role="img" aria-label="Flujo de una campaña de firmware: ingeniería define la campaña en el ACS; para cada ONT del lote, dentro de la ventana nocturna, el ACS la despierta, le ordena descargar la imagen, la ONT la descarga del servidor de firmware, la graba en el banco inactivo, reinicia y reporta el resultado; al final el ACS entrega el reporte del lote y la regla de parada decide si sigue">
+  <rect x="32" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-persona" x="38" y="25" width="28" height="28" class="ico"/>
+  <text x="72" y="45" class="t t-s t-b">Ingeniería</text>
+  <line x1="90" y1="66" x2="90" y2="470" class="vida"/>
+  <rect x="212" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-servidor" x="218" y="25" width="28" height="28" class="ico"/>
+  <text x="252" y="45" class="t t-s t-b">ACS</text>
+  <line x1="270" y1="66" x2="270" y2="470" class="vida"/>
+  <rect x="412" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-ont" x="418" y="25" width="28" height="28" class="ico"/>
+  <text x="452" y="45" class="t t-s t-b">ONT</text>
+  <line x1="470" y1="66" x2="470" y2="470" class="vida"/>
+  <rect x="602" y="14" width="116" height="52" rx="10" class="caja"/><use href="#i-servidor" x="608" y="25" width="28" height="28" class="ico"/>
+  <text x="642" y="38" class="t t-s t-b">Servidor</text><text x="642" y="53" class="t t-s t-b">de firmware</text>
+  <line x1="660" y1="66" x2="660" y2="470" class="vida"/>
+  <line x1="90" y1="96" x2="268" y2="104" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="100" y="90" class="t t-s">① Campaña: modelo X</text>
+  <text x="100" y="124" class="t t-xs t-m">v1.2 → v1.3 · piloto 1 % · umbral 2 %</text>
+  <rect x="180" y="136" width="590" height="300" rx="8" class="caja" style="fill:none;stroke-dasharray:5 4"/><text x="190" y="152" class="t t-xs t-b t-m">POR CADA ONT DEL LOTE, DENTRO DE LA VENTANA 01:00 A 05:00</text>
+  <line x1="270" y1="176" x2="468" y2="184" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="280" y="170" class="t t-s">② Connection Request</text>
+  <line x1="470" y1="208" x2="272" y2="216" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="280" y="202" class="t t-s">③ Inform</text>
+  <line x1="270" y1="240" x2="468" y2="248" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="280" y="234" class="t t-s">④ Download: imagen v1.3 y su URL</text>
+  <line x1="470" y1="272" x2="658" y2="280" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="480" y="266" class="t t-s">⑤ GET de la imagen (HTTPS)</text>
+  <line x1="660" y1="304" x2="472" y2="312" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="480" y="298" class="t t-s">⑥ Imagen firmada</text>
+  <rect x="380" y="322" width="180" height="40" rx="6" class="c-fis"/><text x="470" y="338" text-anchor="middle" class="t t-xs t-b">verifica la firma, graba en el</text><text x="470" y="352" text-anchor="middle" class="t t-xs t-b">banco inactivo y reinicia</text>
+  <line x1="470" y1="388" x2="272" y2="396" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="280" y="382" class="t t-xs t-b">⑦ Inform «BOOT, TRANSFER COMPLETE»</text>
+  <line x1="470" y1="420" x2="272" y2="428" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="280" y="414" class="t t-s">⑧ TransferComplete: 0 = éxito</text>
+  <line x1="270" y1="464" x2="92" y2="472" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="100" y="458" class="t t-s">⑨ Reporte del lote</text>
+  <rect x="30" y="488" width="520" height="56" rx="8" class="d-sis"/><text x="44" y="510" class="t t-s t-b">¿Fallas por debajo del umbral?</text><text x="44" y="530" class="t t-s"><tspan class="t-b k-casa">Sí:</tspan> se programa el siguiente lote, más grande.  <tspan class="t-b k-sis">No:</tspan> la campaña se detiene.</text>
+  <path d="M800 90V128" class="ln s-apl" style="stroke-width:3"/>
+  <text x="810" y="102" class="t t-xs t-b k-apl">PLANEAR</text>
+  <text x="810" y="116" class="t t-xs t-b t-m">①</text>
+  <path d="M800 170V216" class="ln s-apl" style="stroke-width:3"/>
+  <text x="810" y="186" class="t t-xs t-b k-apl">DESPERTAR</text>
+  <text x="810" y="200" class="t t-xs t-b t-m">② y ③</text>
+  <path d="M800 234V312" class="ln s-apl" style="stroke-width:3"/>
+  <text x="810" y="266" class="t t-xs t-b k-apl">DESCARGAR</text>
+  <text x="810" y="280" class="t t-xs t-b t-m">④ a ⑥</text>
+  <path d="M800 322V428" class="ln s-apl" style="stroke-width:3"/>
+  <text x="810" y="361" class="t t-xs t-b k-apl">INSTALAR</text>
+  <text x="810" y="375" class="t t-xs t-b t-m">reinicio</text>
+  <text x="810" y="389" class="t t-xs t-b t-m">⑦ y ⑧</text>
+  <path d="M800 458V544" class="ln s-apl" style="stroke-width:3"/>
+  <text x="810" y="494" class="t t-xs t-b k-apl">DECIDIR</text>
+  <text x="810" y="508" class="t t-xs t-b t-m">⑨</text>
+</svg></div><figcaption><b>Una campaña de firmware por lotes.</b> Ingeniería define la campaña en el ACS (①). Dentro de la ventana nocturna, y para cada ONT del lote (recuadro), el ACS la despierta (②), le ordena descargar la imagen (④), la ONT la baja del servidor de firmware (⑤ y ⑥), la graba en su banco inactivo y reinicia, y al volver avisa cómo le fue (⑦ y ⑧). Al final del lote, el ACS entrega el reporte (⑨) y la regla de parada decide si sigue el próximo lote.</figcaption></figure></section>
+<section><h2>Dos bancos de memoria: el seguro contra fallas</h2><div class="prose"><p>¿Qué pasa si se corta la luz justo mientras la ONT está grabando el firmware nuevo? ¿O si la versión nueva tiene un error y el equipo no arranca? Si la ONT tuviera un solo lugar para su software, quedaría convertida en un ladrillo y alguien tendría que ir a cambiarla.</p><p>Por eso casi todas las ONT tienen <b>dos bancos de memoria</b> para el firmware, que suelen llamarse A y B. Uno es el <b>activo</b>, con el que el equipo está funcionando; el otro, el <b>inactivo</b>, guarda una versión de reserva. La actualización nunca toca el banco activo:</p><ol class="steps"><li><span>La imagen nueva se graba en el banco <b>inactivo</b>. Si algo se corta en ese momento, no pasa nada: el equipo sigue funcionando con el activo.</span></li><li><span>El equipo se reinicia <b>desde el banco nuevo</b>, como prueba.</span></li><li><span>Si arranca bien y se comunica con la red, la versión nueva queda <b>confirmada</b> como la predeterminada. En OMCI, el protocolo con que la OLT gestiona la ONT, este paso se llama literalmente <i>commit</i>.</span></li><li><span>Si no arranca, o arranca pero no logra volver a reportarse, un vigilante interno del equipo lo <b>reinicia desde el banco anterior</b>. El cliente vuelve a la versión vieja y sigue navegando; en el reporte de la campaña ese equipo figura como <b>revertido</b>.</span></li></ol></div><figure class="fig fig-esquema" id="41-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 340" style="min-width:680px" role="img" aria-label="Los dos bancos de memoria de la ONT: antes, el banco A activo con la versión 1.2; al actualizar, la versión 1.3 se graba en el banco B y el equipo arranca desde él; si arranca bien, B queda confirmado; si no, el equipo vuelve solo al banco A">
+  <text x="20" y="40" class="t t-xs t-b">1 · ANTES</text>
+  <rect x="20" y="56" width="240" height="170" rx="10" class="caja"/><use href="#i-ont" x="30" y="64" width="24" height="24" class="ico"/><text x="60" y="81" class="t t-xs t-b t-m">MEMORIA DE LA ONT</text>
+  <rect x="34" y="100" width="212" height="46" rx="7" class="c-enl"/><text x="46" y="119" class="t t-s t-b">Banco A · v1.2</text><text x="46" y="136" class="t t-xs t-b k-enl">ACTIVO: con este funciona</text>
+  <rect x="34" y="160" width="212" height="46" rx="7" class="caja"/><text x="46" y="179" class="t t-s t-b">Banco B · v1.1</text><text x="46" y="196" class="t t-xs t-b t-m">RESERVA: versión anterior</text>
+  <path d="M268 140H300" class="ln" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <text x="310" y="40" class="t t-xs t-b">2 · SE ACTUALIZA</text>
+  <rect x="310" y="56" width="250" height="170" rx="10" class="caja"/><use href="#i-ont" x="320" y="64" width="24" height="24" class="ico"/><text x="350" y="81" class="t t-xs t-b t-m">MEMORIA DE LA ONT</text>
+  <rect x="324" y="100" width="222" height="46" rx="7" class="c-enl"/><text x="336" y="119" class="t t-s t-b">Banco A · v1.2</text><text x="336" y="136" class="t t-xs t-b k-enl">ACTIVO: no se toca</text>
+  <rect x="324" y="160" width="222" height="46" rx="7" class="c-fis"/><text x="336" y="179" class="t t-s t-b">Banco B · v1.3</text><text x="336" y="196" class="t t-xs t-b k-fis">GRABADA AQUÍ · ARRANCA DESDE B</text>
+  <text x="310" y="250" class="t t-s t-m">Si se corta la luz mientras graba,</text><text x="310" y="266" class="t t-s t-m">el equipo sigue funcionando con A.</text>
+  <path d="M568 120C590 120 590 92 610 92" class="ln s-enl" style="stroke-width:1.8" marker-end="url(#fl-enl)"/>
+  <path d="M568 170C590 170 590 236 610 236" class="ln" style="stroke-width:1.8" marker-end="url(#fl)"/>
+  <text x="616" y="40" class="t t-xs t-b k-enl">3a · ARRANCA BIEN</text>
+  <rect x="616" y="50" width="270" height="130" rx="10" class="caja"/><use href="#i-ont" x="626" y="58" width="24" height="24" class="ico"/><text x="656" y="75" class="t t-xs t-b t-m"></text>
+  <rect x="628" y="82" width="246" height="46" rx="7" class="c-enl"/><text x="640" y="101" class="t t-s t-b">Banco B · v1.3</text><text x="640" y="118" class="t t-xs t-b k-enl">CONFIRMADA: queda como activa</text>
+  <text x="640" y="152" class="t t-s t-m">A pasa a ser la reserva (v1.2)</text>
+  <text x="616" y="206" class="t t-xs t-b k-sis">3b · NO ARRANCA O NO SE REPORTA</text>
+  <rect x="616" y="214" width="270" height="116" rx="10" class="caja"/><use href="#i-ont" x="626" y="222" width="24" height="24" class="ico"/><text x="656" y="239" class="t t-xs t-b t-m"></text>
+  <rect x="628" y="246" width="246" height="46" rx="7" class="c-enl"/><text x="640" y="265" class="t t-s t-b">Banco A · v1.2</text><text x="640" y="282" class="t t-xs t-b k-enl">EL VIGILANTE VUELVE A A</text>
+  <text x="640" y="316" class="t t-s t-m">Cliente con servicio · equipo «revertido»</text>
+</svg></div><figcaption><b>Los dos bancos de la ONT.</b> A la izquierda, el estado antes de actualizar: el banco A funciona con la versión 1.2 y el B guarda una versión vieja. En el centro, la versión 1.3 se graba en el banco B y el equipo arranca desde él. A la derecha, los dos finales posibles: si arranca bien, B queda confirmado; si no, el equipo vuelve solo al banco A y el cliente no pierde el servicio.</figcaption></figure><div class="prose"><p>Los dos bancos son el motivo por el que una campaña bien hecha casi nunca deja equipos inservibles. No hacen innecesario el piloto: una versión que arranca bien pero tiene un error sutil (el Wi-Fi de 5 GHz que se cae cada dos días) no se revierte sola. Para eso están los lotes y la regla de parada.</p></div></section>
+<section><h2>Medir el éxito de una campaña</h2><div class="prose"><p>«La campaña terminó» no quiere decir que salió bien. Al cierre de cada lote, y de la campaña completa, se miran varios números:</p><ul><li><b>Tasa de éxito</b>: equipos que quedaron con la versión nueva, sobre los que se intentó.</li><li><b>Revertidos</b>: equipos que probaron la versión nueva y volvieron solos a la anterior. Un número alto indica un problema serio con la versión o con un modelo de hardware.</li><li><b>No alcanzados</b>: equipos apagados, desconectados o sin gestión durante la ventana. No fallaron; quedan para la próxima noche.</li><li><b>Inservibles</b>: equipos que no volvieron a funcionar y necesitan visita. Con dos bancos debería ser casi cero.</li><li><b>Efecto en el cliente</b>: llamadas al centro de atención y reclamos del día siguiente en las zonas actualizadas, reinicios espontáneos y calidad del Wi-Fi en la semana posterior, comparados con la semana anterior.</li></ul><p>El último punto es el más importante y el que más se olvida. Una versión puede instalarse al 100 % y, aun así, empeorar la experiencia. Si las llamadas de una zona suben el día después de un lote, hay que mirar primero la campaña. Juega con estos números en el laboratorio.</p></div><div class="lab" id="41-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Campaña de firmware</h3></div><p class="hint">Ajusta el tamaño del piloto, cómo crecen los lotes, la tasa de fallas que de verdad tiene la versión nueva y el umbral de parada. Mira noche a noche cuántos equipos quedan actualizados, cuántos se revierten y en qué lote se detiene la campaña. Después quita los dos bancos de memoria y compara.</p><style>
+#c41-camp{display:grid;gap:14px;min-width:0}
+#c41-camp select{width:100%;min-width:0}
+#c41-camp .opciones label{min-width:0}
+#c41-camp table{width:100%;border-collapse:collapse;font:500 .84rem var(--f-display);font-variant-numeric:tabular-nums}
+#c41-camp td,#c41-camp th{padding:6px 8px;white-space:nowrap}
+#c41-camp td.n{text-align:right;font-family:var(--f-mono)}
+#c41-camp td.alto{color:var(--warm);font-weight:700}
+#c41-camp td.bien{color:var(--good);font-weight:700}
+</style>
+<div id="c41-camp">
+  <div class="ctls">
+    <label class="ctl">Piloto (del parque) <output id="c41-o-pil"></output><input type="range" id="c41-pil" min="0.5" max="5" step="0.5" value="1"></label>
+    <label class="ctl">Fallas reales de la versión nueva <output id="c41-o-fal"></output><input type="range" id="c41-fal" min="0" max="20" step="1" value="6"></label>
+    <label class="ctl">Umbral de parada por lote <output id="c41-o-umb"></output><input type="range" id="c41-umb" min="1" max="10" step="1" value="2"></label>
+  </div>
+  <div class="opciones">
+    <label>Después del piloto, cada lote
+      <select id="c41-crec">
+        <option value="2">duplica al anterior</option>
+        <option value="5" selected>es 5 veces el anterior</option>
+        <option value="0">va al resto del parque de una vez</option>
+      </select></label>
+  </div>
+  <div class="btns" role="group" aria-label="Memoria de la ONT">
+    <button type="button" id="c41-dual" aria-pressed="true">ONT con dos bancos de memoria</button>
+    <button type="button" id="c41-uno" aria-pressed="false">ONT con un solo banco</button>
+  </div>
+  <div class="crono-total" id="c41-res" aria-live="polite"></div>
+  <div class="crono-bar" id="c41-cbar" role="img" aria-label="Estado final del parque de equipos"></div>
+  <div class="crono-ley" id="c41-cley"></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Noche</th><th>Lote</th><th>Actualizados</th><th>Revertidos</th><th>Inservibles</th><th>Fallas</th><th>Decisión</th></tr></thead>
+    <tbody id="c41-tabla"></tbody>
+  </table></div>
+  <p class="hint" id="c41-cnota" aria-live="polite"></p>
+</div></div><div class="caso"><b>Así lo hace un operador</b><p>En un ACS de producción de un operador FTTH, la autogestión del cliente y la operación masiva conviven en la misma plataforma. Del lado del cliente, la app permite cambiar nombre y clave de la red en cada banda, ver los dispositivos conectados, pausar o programar horarios por dispositivo y reiniciar el equipo. Del lado del operador, el mismo ACS permite armar grupos de equipos por modelo, versión o zona, programar campañas de firmware en ventanas nocturnas con lotes y umbral de parada, y aplicar cambios de configuración masivos, como un ajuste de canales Wi-Fi para todo un modelo. Cada acción queda registrada con quién la pidió, a qué equipo y con qué resultado, lo que permite responder un reclamo con datos en lugar de suposiciones. En el mercado hay opciones comerciales de varios fabricantes y alternativas de código abierto, como GenieACS para TR-069.</p></div><div class="ml"><b>En la práctica</b><p>Cada cambio que el cliente hace solo desde la app es una llamada menos al centro de atención y, muchas veces, una visita menos. Si un cliente dice que cambió la clave y «no pasó nada», pregunta cuánto esperó y si su equipo está en línea: con TR-069 y sin forma de despertarlo, el cambio puede estar en cola hasta el próximo reporte del equipo. Si dice que «se le cayó todo», recuérdale que cada dispositivo debe reconectarse con la clave nueva. Y si al día siguiente de una madrugada tranquila llegan muchas llamadas de la misma zona, pregunta a ingeniería si hubo una campaña de firmware.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué, con TR-069, el ACS tiene que mandar un Connection Request antes de cambiar la clave?</summary><p>Porque en TR-069 la sesión siempre la abre el equipo. El Connection Request le pide a la ONT que abra una sesión ahora, sin esperar su próximo Inform periódico.</p></details><details><summary>¿Qué cambia USP para que el pedido llegue casi al instante?</summary><p>El equipo mantiene una conexión siempre abierta hacia un intermediario de mensajes, abierta desde adentro, así que el controlador le entrega el pedido de inmediato aunque esté detrás de un NAT.</p></details><details><summary>Un cliente activó el horario de control parental para el celular de su hijo y no funciona. ¿Qué es lo primero que revisarías?</summary><p>Si el celular usa una dirección MAC aleatoria o privada para esa red: si cambia de MAC, la regla deja de reconocerlo.</p></details><details><summary>¿Para qué sirve el lote piloto si la ONT tiene dos bancos de memoria?</summary><p>Los dos bancos protegen de una versión que no arranca, pero no de una que arranca con un error sutil. El piloto y la regla de parada detectan ese error antes de que llegue a todo el parque.</p></details><details><summary>¿Por qué las campañas de firmware se hacen de madrugada?</summary><p>Porque el equipo se reinicia y el cliente queda sin servicio unos minutos; de madrugada casi nadie lo nota.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/TR-069" target="_blank" rel="noopener">TR-069 (Wikipedia en español) <small>lectura</small></a><a class="vid" href="https://www.broadband-forum.org/pdfs/tr-069-1-6-0.pdf" target="_blank" rel="noopener">TR-069 Amendment 6, la norma completa (Broadband Forum, PDF) <small>lectura</small></a><a class="vid" href="https://usp.technology/" target="_blank" rel="noopener">USP, el protocolo TR-369 (sitio oficial) <small>lectura</small></a><a class="vid" href="https://docs.genieacs.com/en/latest/" target="_blank" rel="noopener">GenieACS, un ACS de código abierto (documentación) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const C={pedido:'var(--c-apl)',desp:'var(--warm)',sesion:'var(--c-tra)',aplica:'var(--c-fis)',vuelta:'var(--c-red)'};
+  const fmtT=s=>s<60?(s.toFixed(1).replace('.',',')+' s'):s<3600?(Math.round(s/60)+' min'):((s/3600).toFixed(1).replace('.',',')+' h');
+  const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let anim=null;
+  function pasos(){
+    const proto=q('#c41-proto').value, red=q('#c41-red').value, inf=+q('#c41-inform').value;
+    if(proto==='usp') return [
+      {n:'App → orquestador',d:'La app manda el pedido con la API del operador.',t:0.3,c:'pedido'},
+      {n:'Orquestador → controlador USP',d:'El orquestador busca la ONT del cliente y pide el cambio.',t:0.1,c:'pedido'},
+      {n:'Controlador → MQTT → ONT',d:'El mensaje Set llega por la conexión que la ONT ya tenía abierta. No hay que despertarla.',t:0.2,c:'sesion'},
+      {n:'La ONT aplica y reinicia su radio Wi-Fi',d:'Esto tarda lo mismo con cualquier protocolo.',t:1.5,c:'aplica'},
+      {n:'SetResp → controlador → app',d:'La respuesta vuelve por el mismo camino.',t:0.3,c:'vuelta'}];
+    const p=[{n:'App → orquestador → ACS',d:'La app manda el pedido; el orquestador crea una tarea en el ACS para la serie de la ONT.',t:0.5,c:'pedido'}];
+    if(red==='directa') p.push({n:'ACS → ONT: Connection Request',d:'El ACS le toca la puerta a la ONT por su IP de gestión.',t:0.5,c:'desp'});
+    else if(red==='stun') p.push({n:'ACS → ONT: Connection Request por STUN',d:'La ONT mantiene un canal abierto a través del NAT; el toque llega por ahí.',t:1.2,c:'desp'});
+    else p.push({n:'Espera del Inform periódico',d:'Nadie puede despertar a la ONT: la tarea espera en la cola del ACS hasta que la ONT se reporte sola. En promedio, la mitad del intervalo; en el peor caso, el intervalo entero ('+fmtT(inf)+').',t:inf/2,c:'desp',espera:true});
+    p.push({n:'ONT abre la sesión: Inform y respuesta',d:'Conexión cifrada, Inform con el motivo y respuesta del ACS.',t:1.5,c:'sesion'});
+    p.push({n:'SetParameterValues y la ONT aplica',d:'El ACS escribe el nombre y la clave; la ONT reinicia su radio Wi-Fi.',t:1.5,c:'aplica'});
+    p.push({n:'Fin de sesión → ACS → orquestador → app',d:'La ONT confirma con Status 0 y la confirmación sube hasta la app.',t:0.8,c:'vuelta'});
+    return p;
+  }
+  function validar(){
+    const ssid=q('#c41-ssid').value, clave=q('#c41-clave').value;
+    if(!ssid.trim()) return 'El nombre de la red no puede quedar vacío.';
+    if(clave.length<8) return 'La clave tiene '+clave.length+' caracteres y WPA2 exige al menos 8. La app lo rechaza aquí, sin molestar al ACS ni a la ONT.';
+    return null;
+  }
+  function pintar(hasta){
+    const p=pasos(), tot=p.reduce((s,x)=>s+x.t,0), err=validar();
+    q('#c41-param').innerHTML=q('#c41-proto').value==='usp'
+      ?'<span>Set Device.WiFi.SSID.1.</span><span>  SSID = "'+esc(q('#c41-ssid').value)+'"</span><span>Set Device.WiFi.AccessPoint.1.Security.</span><span>  KeyPassphrase = "'+esc(q('#c41-clave').value)+'"</span>'
+      :'<span>SetParameterValues</span><span>  Device.WiFi.SSID.1.SSID = "'+esc(q('#c41-ssid').value)+'"</span><span>  Device.WiFi.AccessPoint.1.Security.KeyPassphrase = "'+esc(q('#c41-clave').value)+'"</span>';
+    if(err){q('#c41-total').innerHTML='Pedido rechazado<small>en la app, antes de salir del teléfono</small>';q('#c41-bar').innerHTML='';q('#c41-camino').innerHTML='';q('#c41-nota').textContent=err;return;}
+    q('#c41-total').innerHTML=fmtT(tot)+'<small>desde «Guardar» hasta que la app dice «listo»</small>';
+    q('#c41-bar').innerHTML=p.map(x=>'<i style="width:'+(x.t/tot*100)+'%;background:'+C[x.c]+'" title="'+x.n+'"></i>').join('');
+    q('#c41-camino').innerHTML=p.map((x,i)=>'<li class="'+(i<hasta?(x.espera?'espera':'hecho'):'pend')+'"><span>'+x.n+'</span><b>'+fmtT(x.t)+'</b><small>'+x.d+'</small></li>').join('');
+    const proto=q('#c41-proto').value, red=q('#c41-red').value;
+    let nota;
+    if(proto==='usp') nota='Con USP casi todo el tiempo es la propia ONT aplicando el cambio. La ONT abrió la conexión desde adentro, así que el NAT no importa. Al terminar, todos los dispositivos de la casa deben reconectarse con la clave nueva.';
+    else if(red==='nada') nota='Sin forma de despertar a la ONT, el cliente espera en promedio '+fmtT(+q('#c41-inform').value/2)+'. Para él, «la app no funciona». Soluciones: una red de gestión alcanzable, STUN o pasar a USP.';
+    else nota='Con TR-069, cerca de la mitad del tiempo se va en despertar a la ONT y abrir la sesión. Cambia a USP para comparar, o pon la ONT detrás de un NAT sin STUN para ver el peor caso.';
+    q('#c41-nota').textContent=nota;
+  }
+  function guardar(){
+    clearInterval(anim);
+    if(validar()||window.matchMedia('(prefers-reduced-motion: reduce)').matches){pintar(99);return;}
+    let k=0;pintar(0);
+    anim=setInterval(()=>{k++;pintar(k);if(k>=pasos().length)clearInterval(anim);},500);
+  }
+  q('#c41-guardar').addEventListener('click',guardar);
+  ['#c41-proto','#c41-red','#c41-inform'].forEach(s=>q(s).addEventListener('change',()=>{q('#c41-red').disabled=q('#c41-inform').disabled=q('#c41-proto').value==='usp';guardar();}));
+  ['#c41-ssid','#c41-clave'].forEach(s=>q(s).addEventListener('input',()=>{clearInterval(anim);pintar(99);}));
+  pintar(99);
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const PARQUE=20000, ALCANCE=0.97, CAPACIDAD=6000;
+  const mil=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  const pct=n=>(Math.round(n*10)/10).toString().replace('.',',')+' %';
+  let dual=true;
+  function simular(){
+    const pil=+q('#c41-pil').value/100, fal=+q('#c41-fal').value/100, umb=+q('#c41-umb').value/100, crec=+q('#c41-crec').value;
+    let pend=PARQUE, lote=Math.round(PARQUE*pil), noches=[], ok=0, rev=0, ins=0, parada=false;
+    while(pend>0&&!parada){
+      lote=Math.min(lote,pend,CAPACIDAD);
+      const alc=Math.round(lote*ALCANCE), f=Math.round(alc*fal), bien=alc-f, tasa=alc?f/alc:0;
+      ok+=bien; if(dual) rev+=f; else ins+=f;
+      pend-=alc;
+      parada=tasa>umb;
+      noches.push({lote,bien,rev:dual?f:0,ins:dual?0:f,tasa,dec:parada?'Se detiene':(pend>0?'Sigue':'Fin')});
+      lote=crec?lote*crec:pend;
+    }
+    return {noches,ok,rev,ins,pend,parada,fal};
+  }
+  function dibujar(){
+    q('#c41-o-pil').textContent=pct(+q('#c41-pil').value)+' = '+mil(PARQUE*q('#c41-pil').value/100);
+    q('#c41-o-fal').textContent=pct(+q('#c41-fal').value);
+    q('#c41-o-umb').textContent=pct(+q('#c41-umb').value);
+    const r=simular(), sin=PARQUE-r.ok-r.rev-r.ins;
+    q('#c41-tabla').innerHTML=r.noches.map((n,i)=>'<tr><td>'+(i===0?'1 (piloto)':i+1)+'</td><td class="n">'+mil(n.lote)+'</td><td class="n">'+mil(n.bien)+'</td><td class="n">'+mil(n.rev)+'</td><td class="n">'+mil(n.ins)+'</td><td class="n '+(n.dec==='Se detiene'?'alto':'')+'">'+pct(n.tasa*100)+'</td><td class="'+(n.dec==='Se detiene'?'alto':n.dec==='Fin'?'bien':'')+'">'+n.dec+'</td></tr>').join('');
+    const seg=[['Con la versión nueva',r.ok,'var(--good)'],['Revertidos a la anterior',r.rev,'var(--accent)'],['Inservibles: visita técnica',r.ins,'var(--warm)'],['Sin actualizar todavía',sin,'var(--line)']];
+    q('#c41-cbar').innerHTML=seg.map(s=>'<i style="width:'+(s[1]/PARQUE*100)+'%;background:'+s[2]+'" title="'+s[0]+'"></i>').join('');
+    q('#c41-cley').innerHTML=seg.map(s=>'<span><i style="background:'+s[2]+'"></i>'+s[0]+'<b>'+mil(s[1])+'</b></span>').join('');
+    q('#c41-res').innerHTML=r.noches.length+(r.noches.length===1?' noche':' noches')+'<small>'+(r.parada?'la campaña se detuvo sola en el lote '+r.noches.length:'la campaña llegó a todo el parque que respondió')+' · parque de '+mil(PARQUE)+' ONT, hasta '+mil(CAPACIDAD)+' por noche</small>';
+    const todos=Math.round(PARQUE*ALCANCE*r.fal);
+    let nota;
+    if(r.parada&&r.noches.length===1) nota='El piloto encontró el problema: solo '+mil(r.rev+r.ins)+' equipos probaron la versión mala. Si se hubiera lanzado a todo el parque de una vez, habrían fallado unos '+mil(todos)+'.';
+    else if(r.parada) nota='El piloto no alcanzó a detectar la falla (estaba bajo el umbral o el piloto era muy chico) y la campaña se detuvo más tarde, con '+mil(r.rev+r.ins)+' equipos afectados. Baja el umbral o haz lotes más prudentes.';
+    else if(r.rev+r.ins>0) nota='La tasa de fallas quedó por debajo del umbral en todos los lotes, así que la campaña siguió hasta el final con '+mil(r.rev+r.ins)+' fallas. ¿Era aceptable? Eso se decide antes de empezar, al fijar el umbral.';
+    else nota='Sin fallas: la campaña avanza lote a lote. Los equipos que no respondieron (apagados o sin gestión) quedan para otra noche.';
+    if(!dual&&r.ins>0) nota+=' Con un solo banco, cada falla es un equipo inservible: '+mil(r.ins)+' visitas técnicas. Con dos bancos, esos equipos habrían vuelto solos a la versión anterior.';
+    q('#c41-cnota').textContent=nota;
+  }
+  function banco(v){dual=v;q('#c41-dual').setAttribute('aria-pressed',v);q('#c41-uno').setAttribute('aria-pressed',!v);dibujar();}
+  q('#c41-dual').addEventListener('click',()=>banco(true));
+  q('#c41-uno').addEventListener('click',()=>banco(false));
+  ['#c41-pil','#c41-fal','#c41-umb','#c41-crec'].forEach(s=>q(s).addEventListener('input',dibujar));
+  q('#c41-crec').addEventListener('change',dibujar);
+  dibujar();
+})();
+</script>
+</body>
+</html>

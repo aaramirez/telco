@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>«No tengo Internet» · Cómo funciona un telco</title>
+<meta name="description" content="Un buen diagnóstico pregunta en orden a cada capa (luz, sesión, servicio, Wi-Fi) y casi siempre encuentra la causa en segundos y sin visita.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="42-no-tengo-internet">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 42 DE 49</span><h1>«No tengo Internet»: el diagnóstico por capas</h1><p class="lede">Un buen diagnóstico pregunta en orden a cada capa (luz, sesión, servicio, Wi-Fi) y casi siempre encuentra la causa en segundos y sin visita.</p></header>
+<section><div class="prose"><p>«No tengo Internet» es la frase que más se repite en el centro de atención de un operador. Puede querer decir cosas muy distintas: que se cortó la fibra de todo el barrio, que se fue la luz en la casa, que la factura venció, que el router está lejos o que una sola página no abre. El cliente no tiene cómo saberlo, y no tiene por qué. El que tiene que saberlo es el operador.</p><p>La buena noticia es que la red guarda casi todas las pistas. Si se hacen las preguntas correctas, en el orden correcto, la causa aparece en segundos y muchas veces se resuelve sin mandar a nadie a la casa. Este capítulo recorre esas preguntas.</p></div><div class="analogia"><b>Imagínalo así</b><p>El médico que revisa signos vitales en orden antes de pedir exámenes caros. Primero el pulso y la respiración, después la presión, después la temperatura. Recién si todo eso está bien pide una resonancia. Nadie empieza por la resonancia: es cara, tarda y casi nunca hace falta.</p></div><figure class="fig fig-capas" id="42-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el soporte, de la llamada a la causa, preguntando a la red">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class=""><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class="apagado"><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class="apagado"><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class=""><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class=""><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: el soporte, de la llamada a la causa, preguntando a la red</text>
+</svg></div><figcaption><b>Dónde estamos.</b> El diagnóstico empieza en los canales de atención (la llamada, el chat, la app), pasa por la capa de integración que consulta a los sistemas y termina preguntándole a la propia red. En la cadena de valor, es el eslabón de soporte apoyado en la operación de la red.</figcaption></figure></section>
+<section><h2>Las preguntas en orden</h2><div class="prose"><p>El viaje de un clic del capítulo 1 tenía tramos: el Wi-Fi de la casa, la ONT, la fibra, la OLT, el BNG y la salida a Internet. Cada tramo depende del anterior. Si no llega luz a la ONT, no importa qué tan bien esté configurado el Wi-Fi: nada va a funcionar. Por eso el diagnóstico va <b>de abajo hacia arriba</b>, como el médico:</p><ol class="steps"><li><span><b>¿La ONT está en línea?</b> ¿Llega luz y el equipo está encendido?</span></li><li><span><b>¿La potencia de la luz está en rango?</b> ¿Llega suficiente, o llega débil?</span></li><li><span><b>¿Hay sesión?</b> ¿El BNG reconoce al cliente y le dejó navegar? ¿Está suspendido por falta de pago?</span></li><li><span><b>¿La velocidad medida desde el propio equipo está bien?</b> ¿La red entrega lo que el cliente contrató?</span></li><li><span><b>¿Es el Wi-Fi o el dispositivo?</b> Si todo lo anterior está bien, el problema vive dentro de la casa.</span></li></ol><p>Cada pregunta la responde un sistema distinto. La primera y la segunda, la <b>OLT</b>, a través del sistema que la gestiona. La tercera, <b>RADIUS</b>, el sistema que lleva la cuenta de quién está conectado (el capítulo 20 lo explica). La cuarta y la quinta, el <b>ACS</b>, el servidor que administra a distancia los equipos de la casa con el protocolo TR-069 (capítulo 28).</p><p>Antes, el agente de atención tenía que abrir tres pantallas y hacer las preguntas una por una. Hoy un <b>orquestador</b> (capítulo 38), un programa que sabe a quién preguntar qué, lanza las tres consultas a la vez y en 10 a 30 segundos devuelve un resumen con la causa probable y la acción sugerida.</p></div><figure class="fig fig-capas" id="42-diagrama-3"><div class="lienzo"><svg viewBox="0 0 820 330" style="min-width:640px" role="img" aria-label="El orquestador consulta en paralelo a la OLT (luz y potencia), a RADIUS y el BNG (sesión y suspensión) y al ACS (velocidad medida desde el equipo y Wi-Fi), y devuelve un solo resumen al agente">
+  
+  <rect x="20" y="20" width="170" height="56" rx="10" class="caja"/><use href="#i-persona" x="30" y="31" width="32" height="32" class="ico"/><text x="70" y="45" class="t t-b">Agente</text><text x="70" y="62" class="t t-s t-m">pide el diagnóstico</text>
+  <line x1="105" y1="76" x2="105" y2="132" class="ln" marker-end="url(#fl)"/>
+  <rect x="20" y="136" width="170" height="56" rx="10" class="d-inet"/><use href="#i-monitor" x="30" y="147" width="32" height="32" class="ico"/><text x="70" y="161" class="t t-b">Orquestador</text><text x="70" y="178" class="t t-s t-m">consulta a los tres</text>
+  <line x1="105" y1="192" x2="105" y2="248" class="ln" marker-end="url(#fl)"/>
+  <rect x="20" y="252" width="170" height="56" rx="10" class="caja"/><use href="#i-factura" x="30" y="263" width="32" height="32" class="ico"/><text x="70" y="277" class="t t-b">Resumen</text><text x="70" y="294" class="t t-s t-m">causa y acción</text>
+  
+  <line x1="190" y1="158" x2="236" y2="60" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <line x1="190" y1="164" x2="236" y2="164" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <line x1="190" y1="170" x2="236" y2="268" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  
+  
+  <rect x="240" y="18" width="560" height="86" rx="10" class="c-fis"/>
+  <use href="#i-olt" x="254" y="40" width="34" height="34" class="ico"/>
+  <text x="302" y="42" class="t t-b">OLT, a través de su gestor</text>
+  <text x="788" y="38" text-anchor="end" class="t t-xs t-b k-fis">FÍSICA Y ENLACE</text>
+  <text x="302" y="62" class="t t-s">¿Está en línea? ¿Cuánta luz recibe? ¿Por qué se cayó la última vez?</text>
+  <text x="302" y="86" class="t t-s t-mono">En línea · −21,4 dBm · última caída: último aliento</text>
+
+  <rect x="240" y="122" width="560" height="86" rx="10" class="c-red"/>
+  <use href="#i-router-core" x="254" y="144" width="34" height="34" class="ico"/>
+  <text x="302" y="146" class="t t-b">RADIUS y BNG</text>
+  <text x="788" y="142" text-anchor="end" class="t t-xs t-b k-red">RED</text>
+  <text x="302" y="166" class="t t-s">¿Hay sesión? ¿Desde cuándo? ¿Está suspendido?</text>
+  <text x="302" y="190" class="t t-s t-mono">Sesión activa desde 08:12 · 100.64.12.8 · perfil 300 Mbps</text>
+
+  <rect x="240" y="226" width="560" height="86" rx="10" class="c-apl"/>
+  <use href="#i-servidor" x="254" y="248" width="34" height="34" class="ico"/>
+  <text x="302" y="250" class="t t-b">ACS (equipo de la casa)</text>
+  <text x="788" y="246" text-anchor="end" class="t t-xs t-b k-apl">APLICACIÓN Y CASA</text>
+  <text x="302" y="270" class="t t-s">¿Qué velocidad mide el propio equipo? ¿Cómo está el Wi-Fi?</text>
+  <text x="302" y="294" class="t t-s t-mono">296 Mbps desde la ONT · 7 equipos · Wi-Fi −78 dBm</text>
+</svg></div><figcaption><b>Tres preguntas a la vez.</b> El agente pide el diagnóstico con el número del cliente. El orquestador consulta en paralelo a la OLT (capa física y de enlace: ¿hay luz, cuánta?), a RADIUS y el BNG (capa de red: ¿hay sesión, está suspendido?) y al ACS (capa de aplicación y la casa: ¿qué mide el propio equipo, cómo está el Wi-Fi?). Las tres respuestas vuelven juntas en un solo resumen.</figcaption></figure><div class="prose"><p>El orden de las preguntas se puede dibujar como un árbol: cada respuesta descarta una rama entera y lleva a la siguiente pregunta o a una conclusión.</p></div><figure class="fig fig-flujo" id="42-diagrama-4"><div class="lienzo"><svg viewBox="0 0 870 600" style="min-width:680px" role="img" aria-label="Árbol de decisión: ONT en línea, potencia en rango, sesión activa, velocidad desde la ONT; cada respuesta negativa lleva a una causa: fibra cortada, falta de electricidad, fibra degradada, suspensión, clave o perfil, congestión; si todo está bien, el problema es el Wi-Fi o el dispositivo">
+  
+  <rect x="20" y="40" width="330" height="46" rx="23" class="caja"/>
+  <text x="185" y="68" text-anchor="middle" class="t t-b">① ¿La ONT está en línea en la OLT?</text>
+  <line x1="350" y1="63" x2="406" y2="63" class="ln" marker-end="url(#fl)"/><text x="378" y="56" text-anchor="middle" class="t t-s t-b">No</text>
+  <rect x="410" y="40" width="200" height="46" rx="23" class="caja"/>
+  <text x="510" y="68" text-anchor="middle" class="t t-b">¿Causa de la caída?</text>
+  <line x1="610" y1="56" x2="636" y2="38" class="ln" marker-end="url(#fl)"/>
+  <line x1="610" y1="70" x2="636" y2="92" class="ln" marker-end="url(#fl)"/>
+  <rect x="640" y="10" width="215" height="48" rx="8" class="d-sis"/>
+  <text x="652" y="30" class="t t-s t-b">Pérdida de señal (LOS)</text><text x="652" y="47" class="t t-s">fibra cortada o suelta: visita</text>
+  <rect x="640" y="70" width="215" height="48" rx="8" class="c-enl"/>
+  <text x="652" y="90" class="t t-s t-b">Último aliento</text><text x="652" y="107" class="t t-s">sin electricidad: guiar al cliente</text>
+  <line x1="185" y1="86" x2="185" y2="146" class="ln" marker-end="url(#fl)"/><text x="195" y="122" class="t t-s t-b">Sí</text>
+
+  
+  <rect x="20" y="150" width="330" height="46" rx="23" class="caja"/>
+  <text x="185" y="178" text-anchor="middle" class="t t-b">② ¿Potencia entre −8 y −27 dBm?</text>
+  <line x1="350" y1="173" x2="406" y2="173" class="ln" marker-end="url(#fl)"/><text x="378" y="166" text-anchor="middle" class="t t-s t-b">No</text>
+  <rect x="410" y="149" width="300" height="48" rx="8" class="d-sis"/>
+  <text x="422" y="169" class="t t-s t-b">Fibra degradada</text><text x="422" y="186" class="t t-s">conector sucio, curva o empalme: visita</text>
+  <line x1="185" y1="196" x2="185" y2="256" class="ln" marker-end="url(#fl)"/><text x="195" y="232" class="t t-s t-b">Sí</text>
+
+  
+  <rect x="20" y="260" width="330" height="46" rx="23" class="caja"/>
+  <text x="185" y="288" text-anchor="middle" class="t t-b">③ ¿Hay sesión en el BNG?</text>
+  <line x1="350" y1="283" x2="406" y2="283" class="ln" marker-end="url(#fl)"/><text x="378" y="276" text-anchor="middle" class="t t-s t-b">No</text>
+  <rect x="410" y="260" width="200" height="46" rx="23" class="caja"/>
+  <text x="510" y="288" text-anchor="middle" class="t t-b">¿Está suspendido?</text>
+  <line x1="610" y1="276" x2="636" y2="256" class="ln" marker-end="url(#fl)"/>
+  <line x1="610" y1="290" x2="636" y2="312" class="ln" marker-end="url(#fl)"/>
+  <rect x="640" y="228" width="215" height="48" rx="8" class="c-enl"/>
+  <text x="652" y="248" class="t t-s t-b">Sí: cobranza</text><text x="652" y="265" class="t t-s">al pagar, reconexión automática</text>
+  <rect x="640" y="290" width="215" height="48" rx="8" class="c-enl"/>
+  <text x="652" y="310" class="t t-s t-b">No: clave o perfil</text><text x="652" y="327" class="t t-s">se corrige a distancia</text>
+  <line x1="185" y1="306" x2="185" y2="376" class="ln" marker-end="url(#fl)"/><text x="195" y="346" class="t t-s t-b">Sí</text>
+
+  
+  <rect x="20" y="380" width="330" height="46" rx="23" class="caja"/>
+  <text x="185" y="408" text-anchor="middle" class="t t-b">④ ¿La prueba desde la ONT da bien?</text>
+  <line x1="350" y1="403" x2="406" y2="403" class="ln" marker-end="url(#fl)"/><text x="378" y="396" text-anchor="middle" class="t t-s t-b">No</text>
+  <rect x="410" y="379" width="300" height="48" rx="8" class="d-sis"/>
+  <text x="422" y="399" class="t t-s t-b">Congestión o perfil equivocado</text><text x="422" y="416" class="t t-s">en la red del operador: NOC</text>
+  <line x1="185" y1="426" x2="185" y2="486" class="ln" marker-end="url(#fl)"/><text x="195" y="462" class="t t-s t-b">Sí</text>
+
+  
+  <rect x="20" y="490" width="330" height="52" rx="8" class="c-enl"/>
+  <text x="34" y="511" class="t t-s t-b">⑤ Wi-Fi o dispositivo</text><text x="34" y="529" class="t t-s">canal, banda, cobertura o el propio equipo</text>
+
+  
+  <rect x="410" y="500" width="16" height="16" rx="3" class="d-sis"/><text x="434" y="513" class="t t-s">Falla en la red del operador: técnico o NOC</text>
+  <rect x="410" y="528" width="16" height="16" rx="3" class="c-enl"/><text x="434" y="541" class="t t-s">Se resuelve sin visita</text>
+  <text x="20" y="580" class="t t-xs t-m">CUANTO MÁS ABAJO TERMINA EL RECORRIDO, MÁS CERCA DEL CLIENTE ESTÁ LA CAUSA</text>
+</svg></div><figcaption><b>El árbol de decisión del diagnóstico.</b> Se lee de arriba hacia abajo. Cada óvalo es una pregunta y cada flecha, una respuesta. Las cajas anaranjadas son problemas de la red del operador que suelen necesitar un técnico o al NOC; las verdes se resuelven casi siempre por teléfono, en la app o en cobranza. Cuanto más abajo termina el recorrido, más cerca del cliente está la causa.</figcaption></figure></section>
+<section><h2>¿La ONT está en línea? Luz y causa de la última caída</h2><div class="prose"><p>La primera pregunta es la más importante: <b>¿la OLT ve a la ONT del cliente?</b> La OLT conversa todo el tiempo con cada ONT de su zona. Si una deja de contestar, la OLT lo registra en el acto y anota <b>por qué</b> dejó de contestar. Esa causa es oro para el diagnóstico.</p><p>Las dos causas más comunes suenan técnicas, pero son fáciles de entender:</p><ul><li><b>Último aliento</b> (<i>dying gasp</i>). Cuando la ONT se queda sin electricidad, le alcanza la energía de sus condensadores para mandar un último mensaje: «me estoy apagando». Si la OLT recibió ese mensaje, el problema es <b>eléctrico</b>: se fue la luz en la casa, alguien desenchufó el equipo o el adaptador se dañó. No hace falta un técnico de fibra.</li><li><b>Pérdida de señal</b> (<i>LOS</i>, por <i>loss of signal</i>). La ONT dejó de recibir luz sin avisar. Eso apunta a la <b>fibra</b>: un cable cortado, un conector suelto o un problema en la caja del poste.</li></ul><p>Hay un tercer caso que conviene descartar rápido: que la ONT esté <b>deshabilitada a propósito</b>, porque alguien la desactivó en la OLT (por mora, por una baja o por error). El capítulo 44 cuenta por qué ese método de corte confunde tanto al diagnóstico.</p><p>Una pista más: <b>¿y los vecinos?</b> Si la OLT ve que otras 30 ONT del mismo puerto también perdieron la señal en el mismo minuto, no es un problema de este cliente: es un corte masivo. El agente no abre un caso individual, sino que asocia al cliente a la falla general ya abierta. El capítulo 45 cuenta cómo se detectan esos cortes.</p></div></section>
+<section><h2>¿La potencia está en rango?</h2><div class="prose"><p>Que la ONT esté en línea no garantiza que esté bien. La luz puede llegar <b>débil</b>, y una señal débil produce el síntoma más traicionero: Internet que va y viene, que se corta de noche o cuando llueve, que funciona «a ratos».</p><p>La potencia de la luz se mide en <b>dBm</b> (decibelios referidos a un milivatio). Es una escala rara para quien no es técnico, porque en fibra casi siempre da números <b>negativos</b>: −18 dBm es más luz que −25 dBm. La regla práctica es que cada 3 dB menos es la mitad de luz.</p><p>En una red GPON típica (clase óptica B+), la ONT funciona bien si recibe aproximadamente <b>entre −8 y −27 dBm</b>. Entre −24 y −27, la señal es marginal y cualquier problema extra la tumba. Por debajo de −27, la ONT enseguida deja de entender la luz. Y por encima de −8, aunque parezca raro, también falla: tanta luz encandila al receptor. Cada operador ajusta este rango a los equipos que usa.</p></div><figure class="fig fig-comparacion" id="42-diagrama-6"><div class="lienzo"><svg viewBox="0 0 840 220" style="min-width:620px" role="img" aria-label="Escala de potencia óptica recibida por la ONT: por encima de −8 dBm el receptor se satura; de −8 a −24 dBm es la zona normal; de −24 a −27 dBm es marginal; por debajo de −27 dBm la ONT deja de funcionar. Tres clientes de ejemplo: −18, −26 y −30 dBm">
+  <text x="40" y="24" class="t t-xs t-b t-m">← MÁS LUZ</text>
+  <text x="800" y="24" text-anchor="end" class="t t-xs t-b t-m">MENOS LUZ →</text>
+  
+  <rect x="40" y="60" width="108.6" height="46" class="d-sis"/>
+  <rect x="148.6" y="60" width="434.3" height="46" class="c-enl"/>
+  <rect x="582.9" y="60" width="81.4" height="46" class="c-fis"/>
+  <rect x="664.3" y="60" width="135.7" height="46" class="d-sis"/>
+  <g class="t t-s t-b" text-anchor="middle">
+    <text x="94" y="80">Satura</text><text x="94" y="96" class="t t-s">demasiada luz</text>
+    <text x="365" y="80">Normal</text><text x="365" y="96" class="t t-s">el servicio funciona bien</text>
+    <text x="623" y="80">Marginal</text><text x="623" y="96" class="t t-s">se corta</text>
+    <text x="732" y="80">Sin servicio</text><text x="732" y="96" class="t t-s">no entiende la luz</text>
+  </g>
+  
+  <line x1="40" y1="112" x2="800" y2="112" class="ln"/>
+  <g class="t t-s t-mono" text-anchor="middle">
+    <line x1="40" y1="108" x2="40" y2="118" class="ln"/><text x="40" y="132">−4</text>
+    <line x1="148.6" y1="108" x2="148.6" y2="118" class="ln"/><text x="148.6" y="132">−8</text>
+    <line x1="257.1" y1="108" x2="257.1" y2="118" class="ln"/><text x="257.1" y="132">−12</text>
+    <line x1="365.7" y1="108" x2="365.7" y2="118" class="ln"/><text x="365.7" y="132">−16</text>
+    <line x1="474.3" y1="108" x2="474.3" y2="118" class="ln"/><text x="474.3" y="132">−20</text>
+    <line x1="582.9" y1="108" x2="582.9" y2="118" class="ln"/><text x="582.9" y="132">−24</text>
+    <line x1="664.3" y1="108" x2="664.3" y2="118" class="ln"/><text x="664.3" y="132">−27</text>
+    <line x1="800" y1="108" x2="800" y2="118" class="ln"/><text x="800" y="132">−32</text>
+  </g>
+  <text x="420" y="150" text-anchor="middle" class="t t-xs t-m">POTENCIA RECIBIDA EN LA ONT (dBm) · VALORES DE EJEMPLO, GPON CLASE B+</text>
+  
+  <g class="t t-s">
+    <path d="M420 58 l-6 -10 h12 z" class="c-enl"/><text x="420" y="44" text-anchor="middle" class="t t-s t-b">Cliente A · −18</text>
+    <use href="#i-ont" x="403" y="160" width="34" height="34" class="ico"/><text x="420" y="210" text-anchor="middle" class="t t-s">navega sin problemas</text>
+    <path d="M637 58 l-6 -10 h12 z" class="c-fis"/><text x="637" y="44" text-anchor="middle" class="t t-s t-b">Cliente B · −26</text>
+    <use href="#i-ont" x="620" y="160" width="34" height="34" class="ico"/><text x="637" y="210" text-anchor="middle" class="t t-s">«se me corta a ratos»</text>
+    <path d="M745 58 l-6 -10 h12 z" class="d-sis"/><text x="746" y="44" text-anchor="middle" class="t t-s t-b">Cliente C · −30</text>
+    <use href="#i-ont" x="729" y="160" width="34" height="34" class="ico"/><text x="746" y="210" text-anchor="middle" class="t t-s">sin servicio</text>
+  </g>
+</svg></div><figcaption><b>La escala de potencia óptica.</b> La barra va de mucha luz (izquierda) a nada de luz (derecha). La zona verde es la normal; la ámbar, la marginal, donde el servicio funciona pero se corta con facilidad; las rojizas de los extremos, donde la ONT no puede trabajar. Los valores son de ejemplo para GPON clase B+; cada operador fija los suyos.</figcaption></figure><div class="prose"><p>Si la potencia está fuera de rango, la causa casi siempre es física y está cerca del cliente: un <b>conector sucio</b> (una mota de polvo en la punta de una fibra bloquea mucha luz), una <b>curva demasiado cerrada</b> en el cable dentro de la casa, un <b>empalme mal hecho</b> o un splitter dañado. Aquí sí suele hacer falta un técnico, pero ya sabe qué buscar y lleva lo necesario.</p></div></section>
+<section><h2>¿Hay sesión? ¿Está suspendido?</h2><div class="prose"><p>La luz está bien. La siguiente pregunta sube a la capa de red: <b>¿el cliente tiene sesión?</b> Para navegar, el equipo de la casa tiene que identificarse ante el <b>BNG</b>, el portero de la red, que le pregunta a <b>RADIUS</b> si ese cliente existe, si está al día y a qué velocidad puede ir. Si todo está en orden, el BNG le da una dirección IP y abre la <b>sesión</b>. RADIUS lleva la contabilidad de cada sesión: cuándo empezó, qué dirección tiene y con qué perfil de velocidad.</p><p>Si no hay sesión, hay dos caminos:</p><ul><li><b>Está suspendido.</b> La cuenta tiene una deuda y el sistema de cobro pidió suspenderla. No es una avería: es un asunto de cobranza. El agente lo dice con claridad, ofrece las formas de pago y, en cuanto el pago se registra, la reconexión es automática (capítulo 44).</li><li><b>No está suspendido, pero igual no entra.</b> Entonces algo falla en la identificación: una clave mal escrita en el equipo, un perfil que no existe en el BNG, un equipo que no logra presentarse. Los registros de RADIUS cuentan qué pasó en cada intento («clave incorrecta», «usuario desconocido») y casi siempre se corrige a distancia.</li></ul><p>Una sesión que existe pero que <b>se reinicia cada pocos minutos</b> también es una pista: suele delatar un problema eléctrico (el equipo se reinicia) o una luz marginal que va y viene.</p></div></section>
+<section><h2>¿La prueba de velocidad desde el equipo está bien?</h2><div class="prose"><p>Hay sesión y el cliente navega, pero dice que «va lento». Aquí aparece la prueba más útil de todas: <b>medir la velocidad desde la propia ONT</b>, no desde el celular del cliente.</p><p>El ACS puede pedirle al equipo de la casa que haga una prueba de velocidad y un ping contra un servidor del operador, con un procedimiento estándar llamado <b>TR-143</b>. El equipo descarga y sube un archivo de prueba, mide cuánto tardó y le manda el resultado al ACS. Todo sin que el cliente toque nada.</p><p>¿Por qué es tan útil? Porque esa medición <b>parte el problema en dos</b>. La prueba desde la ONT recorre solo la red del operador; la prueba desde el celular suma, además, el Wi-Fi de la casa.</p></div><figure class="fig fig-esquema" id="42-diagrama-7"><div class="lienzo"><svg viewBox="0 0 840 270" style="min-width:640px" role="img" aria-label="La prueba de velocidad desde la ONT recorre solo la red del operador; la prueba desde el celular suma además el Wi-Fi de la casa">
+  <rect x="20" y="70" width="290" height="110" rx="10" class="d-casa"/>
+  <rect x="320" y="70" width="500" height="110" rx="10" class="d-oper"/>
+  <text x="165" y="90" text-anchor="middle" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+  <text x="570" y="90" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  
+  <use href="#i-celular" x="40" y="104" width="34" height="34" class="ico"/><text x="57" y="160" text-anchor="middle" class="t t-s">Celular</text>
+  <use href="#i-router" x="140" y="104" width="34" height="34" class="ico"/><text x="157" y="160" text-anchor="middle" class="t t-s">Wi-Fi</text>
+  <use href="#i-ont" x="240" y="104" width="34" height="34" class="ico"/><text x="257" y="160" text-anchor="middle" class="t t-s">ONT</text>
+  <use href="#i-olt" x="390" y="104" width="34" height="34" class="ico"/><text x="407" y="160" text-anchor="middle" class="t t-s">OLT</text>
+  <use href="#i-router-core" x="540" y="104" width="34" height="34" class="ico"/><text x="557" y="160" text-anchor="middle" class="t t-s">BNG</text>
+  <use href="#i-servidor" x="700" y="104" width="34" height="34" class="ico"/><text x="717" y="160" text-anchor="middle" class="t t-s">Servidor de prueba</text>
+  <line x1="78" y1="121" x2="136" y2="121" class="ln ln-d"/>
+  <line x1="178" y1="121" x2="236" y2="121" class="ln"/>
+  <line x1="278" y1="121" x2="386" y2="121" class="ln s-fis" style="stroke-width:3"/>
+  <line x1="428" y1="121" x2="536" y2="121" class="ln"/>
+  <line x1="578" y1="121" x2="696" y2="121" class="ln"/>
+  
+  <path d="M257 60 V44 H717 V60" class="ln s-red" style="stroke-width:2.4"/>
+  <text x="487" y="34" text-anchor="middle" class="t t-s t-b k-red">Prueba desde la ONT (TR-143): solo la red del operador</text>
+  
+  <path d="M57 190 V214 H717 V190" class="ln s-apl" style="stroke-width:2.4"/>
+  <text x="387" y="236" text-anchor="middle" class="t t-s t-b k-apl">Prueba desde el celular: Wi-Fi de la casa + red del operador</text>
+  <text x="387" y="258" text-anchor="middle" class="t t-s t-m">Si la de arriba da bien y la de abajo mal, el problema está en la casa</text>
+</svg></div><figcaption><b>Medir desde la ONT parte el problema en dos.</b> La prueba que hace el celular (abajo) recorre el Wi-Fi y la red del operador, así que no dice cuál de los dos falla. La prueba que el ACS le pide a la ONT (arriba) recorre solo la red del operador. Si la de arriba está bien y la de abajo mal, el problema está en la casa.</figcaption></figure><div class="prose"><ul><li>Si la prueba desde la ONT da <b>mucho menos</b> de lo contratado, el problema está del lado del operador: un enlace saturado entre la OLT y el BNG, un BNG sobrecargado en la hora pico o un perfil de velocidad equivocado (el capítulo 43 cuenta el caso clásico del perfil configurado en dos lugares).</li><li>Si la prueba desde la ONT da lo contratado, la red del operador <b>cumple</b>, y el problema está más arriba en el árbol: dentro de la casa.</li></ul></div></section>
+<section><h2>Es el Wi-Fi o el dispositivo</h2><div class="prose"><p>Cuando la red entrega lo que debe, el «no tengo Internet» o el «va lento» casi siempre vive en los últimos metros. El ACS sabe mucho de esos metros, porque el equipo de la casa le informa:</p><ul><li><b>Cuántos dispositivos</b> hay conectados y en qué banda (2,4 o 5 GHz).</li><li><b>Con qué intensidad</b> recibe cada uno la señal Wi-Fi (se llama <b>RSSI</b>: cuanto más negativo, más débil).</li><li><b>Qué canal</b> usa el Wi-Fi y cuántas redes vecinas compiten en ese mismo canal.</li></ul><p>Con esos datos el agente puede actuar en el momento: cambiar el canal Wi-Fi a uno menos congestionado, separar las bandas, sugerir mover el router de un rincón o recomendar un equipo <b>mesh</b> si la casa es grande. Y si un solo dispositivo falla mientras los demás andan bien, el problema es ese dispositivo, no la red.</p><p>Queda un último sospechoso que se descarta rápido: que el problema no sea del cliente ni del operador, sino del <b>sitio</b> al que quiere entrar. Si una aplicación de video no carga para nadie en todo el país, el problema está en esa aplicación. Un ping o una prueba de DNS desde la ONT lo confirma en segundos.</p></div><div class="lab" id="42-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Árbol de diagnóstico</h3></div><p class="hint">Elige un caso. Mira lo que responden la OLT, RADIUS y el ACS, recorre el árbol paso a paso y decide la causa y la acción. El laboratorio te dice si acertaste y por qué.</p><style>
+[id="42-lab-2"] .c42-datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+[id="42-lab-2"] .c42-panel{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--paper);display:grid;gap:4px;font-size:.9rem;align-content:start}
+[id="42-lab-2"] .c42-panel b{font:700 .72rem var(--f-display);letter-spacing:.1em;text-transform:uppercase}
+[id="42-lab-2"] .c42-panel span{font-family:var(--f-mono);font-size:.82rem}
+[id="42-lab-2"] .c42-olt b{color:var(--c-fis)} [id="42-lab-2"] .c42-rad b{color:var(--c-red)} [id="42-lab-2"] .c42-acs b{color:var(--c-apl)}
+[id="42-lab-2"] .c42-cliente{font-size:.95rem;border-left:3px solid var(--accent);padding-left:10px}
+[id="42-lab-2"] .c42-sub{font:600 .82rem var(--f-display);color:var(--muted)}
+[id="42-lab-2"] .c42-camino li span{font-size:.92rem}
+[id="42-lab-2"] .c42-camino .si{color:var(--good);font-weight:700}
+[id="42-lab-2"] .c42-camino .no{color:var(--warm);font-weight:700}
+[id="42-lab-2"] .readout{font-family:var(--f-body);font-size:.95rem}
+[id="42-lab-2"] [hidden]{display:none}
+</style>
+<p class="c42-sub">1. Elige un caso</p>
+<div class="btns" id="c42-casos" role="group" aria-label="Casos de clientes"></div>
+<p class="c42-cliente" id="c42-relato"></p>
+<div class="c42-datos">
+  <div class="c42-panel c42-olt"><b>OLT</b><div id="c42-olt"></div></div>
+  <div class="c42-panel c42-rad"><b>RADIUS y BNG</b><div id="c42-rad"></div></div>
+  <div class="c42-panel c42-acs"><b>ACS</b><div id="c42-acs"></div></div>
+</div>
+<p class="c42-sub">2. ¿Cuál es la causa?</p>
+<div class="btns" id="c42-causas" role="group" aria-label="Causas posibles"></div>
+<div class="readout" id="c42-res" aria-live="polite"><span>Elige una causa para ver si acertaste.</span></div>
+<ol class="steps c42-camino" id="c42-camino" hidden></ol></div></section>
+<section><h2>Resolver a distancia o enviar una visita</h2><div class="prose"><p>El objetivo del diagnóstico no es solo encontrar la causa: es <b>elegir la acción más barata que de verdad resuelve</b>. Una visita técnica cuesta tiempo de un técnico, un vehículo, una cita que el cliente tiene que esperar y, muchas veces, un día sin servicio. Una solución remota toma minutos.</p><p>Mirando el árbol, la mayoría de las ramas terminan sin visita:</p><ul><li><b>Sin electricidad</b> (último aliento): se guía al cliente para revisar el enchufe o el adaptador.</li><li><b>Suspendido</b>: se lo pasa a cobranza o se le explica cómo pagar.</li><li><b>Problema de clave o de perfil</b>: se corrige desde los sistemas.</li><li><b>Wi-Fi o dispositivo</b>: se cambia el canal, se reinicia a distancia o se orienta al cliente.</li><li><b>Corte masivo</b>: se asocia al cliente al incidente ya abierto y se le dice cuándo se espera la reparación.</li></ul><p>Solo dos ramas necesitan, casi siempre, a alguien en la calle: la <b>pérdida de señal individual</b> (fibra cortada o conector suelto de ese cliente) y la <b>potencia fuera de rango</b>. Y aun en esos casos el diagnóstico ahorra: el técnico llega sabiendo si debe revisar la casa, la acometida o la caja del poste.</p></div><figure class="fig fig-flujo" id="42-diagrama-5"><div class="lienzo"><svg viewBox="0 0 880 640" style="min-width:700px" role="img" aria-label="Flujo de la atención: el cliente llama, el agente pide el diagnóstico, el orquestador consulta en paralelo a la OLT, a RADIUS y al ACS, el ACS pide al equipo una prueba de velocidad, y el agente recibe la causa y resuelve en línea o agenda una visita">
+  
+  <g class="t t-s t-b">
+    <rect x="10" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-persona" x="16" y="26" width="26" height="26" class="ico"/><text x="46" y="44">Cliente</text>
+    <rect x="125" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-persona" x="131" y="26" width="26" height="26" class="ico"/><text x="161" y="37">Agente</text><text x="161" y="53" class="t t-s t-m">atención</text>
+    <rect x="240" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-monitor" x="246" y="26" width="26" height="26" class="ico"/><text x="276" y="44">Orquestador</text>
+    <rect x="355" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-olt" x="361" y="26" width="26" height="26" class="ico"/><text x="391" y="44">OLT</text>
+    <rect x="470" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-router-core" x="476" y="26" width="26" height="26" class="ico"/><text x="506" y="37">RADIUS</text><text x="506" y="53" class="t t-s t-m">y BNG</text>
+    <rect x="585" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-servidor" x="591" y="26" width="26" height="26" class="ico"/><text x="621" y="44">ACS</text>
+    <rect x="700" y="14" width="108" height="52" rx="10" class="caja"/><use href="#i-ont" x="706" y="26" width="26" height="26" class="ico"/><text x="736" y="44">ONT</text>
+  </g>
+  <line x1="64" y1="66" x2="64" y2="620" class="vida"/>
+  <line x1="179" y1="66" x2="179" y2="620" class="vida"/>
+  <line x1="294" y1="66" x2="294" y2="620" class="vida"/>
+  <line x1="409" y1="66" x2="409" y2="620" class="vida"/>
+  <line x1="524" y1="66" x2="524" y2="620" class="vida"/>
+  <line x1="639" y1="66" x2="639" y2="620" class="vida"/>
+  <line x1="754" y1="66" x2="754" y2="620" class="vida"/>
+
+  
+  <line x1="64" y1="110" x2="177" y2="110" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="72" y="102" class="t t-s">① «No tengo Internet»</text>
+  <line x1="179" y1="150" x2="292" y2="150" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="187" y="142" class="t t-s">② Diagnóstico, por favor</text>
+
+  
+  <rect x="250" y="170" width="560" height="330" rx="10" class="caja ln-d" style="fill:none"/>
+  <text x="258" y="186" class="t t-xs t-b t-m">EN PARALELO</text>
+  <line x1="294" y1="210" x2="407" y2="210" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="302" y="202" class="t t-s">③ ¿Estado de la ONT?</text>
+  <line x1="409" y1="240" x2="296" y2="240" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="302" y="258" class="t t-s">④ En línea · −21,4 dBm</text>
+  <line x1="294" y1="290" x2="522" y2="290" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="302" y="282" class="t t-s">⑤ ¿Hay sesión? ¿Suspendido?</text>
+  <line x1="524" y1="320" x2="296" y2="320" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="340" y="338" class="t t-s">⑥ Sesión activa · 300 Mbps</text>
+  <line x1="294" y1="370" x2="637" y2="370" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="302" y="362" class="t t-s">⑦ ¿Cómo está el equipo?</text>
+  <line x1="639" y1="400" x2="752" y2="400" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="647" y="392" class="t t-s">⑧ Mide (TR-143)</text>
+  <line x1="754" y1="430" x2="641" y2="430" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="647" y="448" class="t t-s">⑨ 296 Mbps · 9 ms</text>
+  <line x1="639" y1="476" x2="296" y2="476" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="340" y="468" class="t t-s">⑩ Wi-Fi: canal saturado, señal −78 dBm</text>
+
+  
+  <line x1="294" y1="540" x2="181" y2="540" class="ln" style="stroke-width:2.6" marker-end="url(#fl)"/>
+  <text x="187" y="532" class="t t-s">⑪ Causa: Wi-Fi</text>
+  <text x="187" y="558" class="t t-s t-m">acción: cambiar el canal</text>
+  <line x1="179" y1="590" x2="66" y2="590" class="ln" style="stroke-width:2.6" marker-end="url(#fl)"/>
+  <text x="72" y="582" class="t t-s">⑫ Resuelto en línea</text>
+  <text x="72" y="610" class="t t-s t-m">(o visita con la causa escrita en la orden)</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M820 96v62" class="ln" style="stroke-width:3"/><text x="826" y="122" class="t-m">LLAMADA</text>
+    <path d="M820 196v290" class="ln s-red" style="stroke-width:3"/><text x="826" y="330" class="k-red">10 A</text><text x="826" y="344" class="k-red">30 S</text>
+    <path d="M820 524v86" class="ln s-apl" style="stroke-width:3"/><text x="826" y="562" class="k-apl">ACCIÓN</text>
+  </g>
+</svg></div><figcaption><b>De la llamada a la solución o a la visita.</b> El tiempo corre hacia abajo. El cliente llama; el agente pide el diagnóstico; el orquestador consulta a la vez a la OLT, a RADIUS y al ACS, y este le pide al equipo una prueba de velocidad. Con el resumen en pantalla, el agente resuelve en línea o agenda una visita con la causa ya escrita en la orden.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región, antes de mandar a un técnico, hace siempre la misma batería de pruebas remotas desde su centro de operaciones: revisa en la OLT si la ONT está en línea, la causa de la última caída y la potencia que recibe; consulta en RADIUS si hay sesión y desde cuándo; le pide al equipo de la casa, a través del ACS, un ping y una prueba de velocidad contra un servidor propio, y, si el cliente se queja de un sitio en particular, un traceroute para ver en qué salto se pierde el camino. Con esas cuatro respuestas, la mayoría de los reclamos se cierran en la primera llamada, y las visitas que quedan salen con la causa probable escrita en la orden de trabajo.</p></div><div class="ml"><b>En la práctica</b><p>Este es el capítulo más útil para atención al cliente: convierte una queja vaga en una causa y una acción. Un agente que entiende el orden de las preguntas no promete una visita para un problema de Wi-Fi, no manda a un técnico a una casa sin electricidad y no abre cincuenta casos para un mismo corte de fibra. Y quien diseña los procesos sabe que cada pregunta que se responde sola, sin intervención humana, es una llamada más corta y una visita menos.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué el diagnóstico empieza por la luz y no por el Wi-Fi?</summary><p>Porque cada capa depende de la de abajo: si no llega luz a la ONT, nada de lo que está arriba puede funcionar, así que revisar primero lo de abajo descarta ramas enteras.</p></details><details><summary>La OLT dice que la ONT se desconectó con un «último aliento» (dying gasp). ¿Hay que mandar un técnico de fibra?</summary><p>No. El último aliento es el aviso de que el equipo se quedó sin electricidad; hay que revisar el enchufe o el adaptador con el cliente.</p></details><details><summary>Una ONT recibe −29 dBm. ¿Qué pasa y qué se hace?</summary><p>La luz llega demasiado débil, por debajo del rango de trabajo; hay que buscar un conector sucio, una curva cerrada o un empalme dañado, normalmente con una visita.</p></details><details><summary>La ONT está en línea con buena potencia, pero no hay sesión y la cuenta está suspendida. ¿Quién lo resuelve?</summary><p>Cobranza: no es una avería. Al registrarse el pago, la reconexión es automática.</p></details><details><summary>La prueba de velocidad desde la ONT da lo contratado, pero el celular del cliente mide la mitad. ¿Dónde está el problema?</summary><p>Dentro de la casa: el Wi-Fi (distancia, paredes, canal congestionado) o el propio dispositivo. La red del operador está cumpliendo.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.broadband-forum.org/pdfs/tr-143-1-1-0.pdf" target="_blank" rel="noopener">TR-143: pruebas de rendimiento desde el equipo del cliente (Broadband Forum) <small>lectura</small></a><a class="vid" href="https://www.itu.int/rec/T-REC-G.984.2" target="_blank" rel="noopener">G.984.2: capa física de GPON y clases ópticas (UIT-T) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Traceroute" target="_blank" rel="noopener">Traceroute: cómo se sigue el camino de un paquete (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const CAUSAS=[
+    {k:'luz',n:'Sin electricidad en la casa'},
+    {k:'fibra',n:'Fibra cortada de este cliente'},
+    {k:'masivo',n:'Corte masivo'},
+    {k:'potencia',n:'Fibra degradada'},
+    {k:'mora',n:'Suspendido por mora'},
+    {k:'clave',n:'Clave o perfil'},
+    {k:'red',n:'Congestión en la red del operador'},
+    {k:'wifi',n:'Wi-Fi o dispositivo'}
+  ];
+  // Camino: [pregunta, respuesta, ¿sigue por el «sí»?]
+  const P1='¿La ONT está en línea?', P2='¿Potencia en rango?', P3='¿Hay sesión?', P4='¿La prueba desde la ONT da bien?';
+  const CASOS=[
+    {n:'Marta',r:'«No tengo Internet desde temprano. Las luces del equipo están apagadas.»',
+     olt:['Fuera de línea desde 07:42','Última caída: último aliento','Vecinos del puerto caídos: 0 de 32'],
+     rad:['Sin sesión desde 07:42','Cuenta al día'],
+     acs:['Último contacto: 07:41','Sin respuesta ahora'],
+     c:'luz',acc:'Guiarla para revisar el enchufe, el adaptador o el interruptor. Sin visita.',
+     cam:[[P1,'No',0],['Causa de la caída','Último aliento: el equipo avisó que se quedaba sin energía',1]]},
+    {n:'Restaurante',r:'«Se cayó Internet de golpe al mediodía y no vuelve. Hay obras en la vereda.»',
+     olt:['Fuera de línea desde 12:05','Última caída: pérdida de señal (LOS)','Vecinos del puerto caídos: 1 de 32 (solo este)'],
+     rad:['Sin sesión desde 12:05','Cuenta al día'],
+     acs:['Último contacto: 12:04'],
+     c:'fibra',acc:'Visita técnica a la acometida de este cliente: la obra probablemente cortó su cable.',
+     cam:[[P1,'No',0],['Causa de la caída','Pérdida de señal: dejó de llegar luz sin aviso',0],['¿Los vecinos también?','No, solo este cliente: es su tramo propio',0]]},
+    {n:'Familia Ruiz',r:'«No tenemos Internet. Los vecinos dicen que ellos tampoco.»',
+     olt:['Fuera de línea desde 14:05','Última caída: pérdida de señal (LOS)','Vecinos del puerto caídos: 29 de 32, mismo minuto'],
+     rad:['Sin sesión desde 14:05','Cuenta al día'],
+     acs:['Último contacto: 14:04'],
+     c:'masivo',acc:'Asociar al cliente al incidente masivo ya abierto e informarle el tiempo estimado. No abrir un caso nuevo.',
+     cam:[[P1,'No',0],['Causa de la caída','Pérdida de señal',0],['¿Los vecinos también?','Sí, 29 del mismo puerto a la vez: falla en un tramo común',1]]},
+    {n:'Andrés',r:'«Internet se me corta muchas veces al día, unos segundos, y vuelve.»',
+     olt:['En línea','Potencia recibida: −27,6 dBm','Caídas hoy: 6, todas pérdida de señal breve'],
+     rad:['Sesión activa desde 15:10','Reinicios de sesión hoy: 6','Cuenta al día'],
+     acs:['Prueba desde la ONT: 281 Mbps de 300','Wi-Fi: señal buena en todos los equipos'],
+     c:'potencia',acc:'Visita para limpiar conectores y revisar curvas y empalmes: la luz llega al límite.',
+     cam:[[P1,'Sí, pero se cae y vuelve',1],[P2,'No: −27,6 dBm está en el borde, la luz llega débil',0]]},
+    {n:'Lucía',r:'«Ayer andaba bien y hoy no carga nada. Trabajo desde casa y lo necesito ya.»',
+     olt:['En línea','Potencia recibida: −19,2 dBm','Sin caídas recientes'],
+     rad:['Sin sesión de navegación','Cuenta suspendida por mora desde ayer'],
+     acs:['Equipo visible y respondiendo'],
+     c:'mora',acc:'Explicar el motivo con claridad y ofrecer formas de pago. Al registrarse el pago, la reconexión es automática.',
+     cam:[[P1,'Sí',1],[P2,'Sí',1],[P3,'No',0],['¿Está suspendido?','Sí, por mora: es cobranza, no una avería',1]]},
+    {n:'Don Jorge',r:'«Mi nieto “reseteó” el aparato y desde entonces no hay Internet.»',
+     olt:['En línea','Potencia recibida: −20,1 dBm','Sin caídas recientes'],
+     rad:['Sin sesión','Intentos rechazados cada 30 s: «clave incorrecta»','Cuenta al día'],
+     acs:['Equipo con configuración de fábrica desde ayer'],
+     c:'clave',acc:'Volver a cargar la configuración del cliente desde el ACS. Sin visita.',
+     cam:[[P1,'Sí',1],[P2,'Sí',1],[P3,'No',0],['¿Está suspendido?','No: RADIUS rechaza la clave porque el equipo volvió a fábrica',0]]},
+    {n:'Mateo',r:'«De noche todo va lentísimo: los juegos se traban y los videos se pixelan.»',
+     olt:['En línea','Potencia recibida: −18,0 dBm','Sin caídas recientes'],
+     rad:['Sesión activa · perfil 300 Mbps','Cuenta al día'],
+     acs:['Prueba desde la ONT a las 21:00: 95 Mbps','Prueba desde la ONT a las 10:00: 292 Mbps'],
+     c:'red',acc:'Escalar al NOC: el enlace o el BNG de esa zona se satura en la hora pico.',
+     cam:[[P1,'Sí',1],[P2,'Sí',1],[P3,'Sí',1],[P4,'No: de noche la propia ONT mide un tercio de lo contratado',0]]},
+    {n:'Carolina',r:'«En mi cuarto Internet es lentísimo; en la sala va bien.»',
+     olt:['En línea','Potencia recibida: −21,4 dBm','Sin caídas recientes'],
+     rad:['Sesión activa · perfil 300 Mbps','Cuenta al día'],
+     acs:['Prueba desde la ONT: 296 Mbps','Celular del cuarto: señal −78 dBm, banda 2,4 GHz','Canal 6, con 14 redes vecinas'],
+     c:'wifi',acc:'Cambiar el canal a distancia, pasar el celular a 5 GHz y sugerir un punto de acceso mesh para el cuarto.',
+     cam:[[P1,'Sí',1],[P2,'Sí',1],[P3,'Sí',1],[P4,'Sí: la red del operador cumple',1],['Wi-Fi o dispositivo','Señal débil y canal saturado en el cuarto',1]]}
+  ];
+  let actual=0;
+  const lista=a=>a.map(x=>'<span>'+x+'</span>').join('<br>');
+  function pintar(){
+    const c=CASOS[actual];
+    q('#c42-relato').textContent=c.n+': '+c.r;
+    q('#c42-olt').innerHTML=lista(c.olt);
+    q('#c42-rad').innerHTML=lista(c.rad);
+    q('#c42-acs').innerHTML=lista(c.acs);
+    q('#c42-casos').querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-pressed',i===actual?'true':'false'));
+    q('#c42-causas').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','false'));
+    q('#c42-res').innerHTML='<span>Elige una causa para ver si acertaste.</span>';
+    q('#c42-camino').hidden=true;
+  }
+  function responder(k,btn){
+    const c=CASOS[actual], ok=k===c.c, nombre=CAUSAS.find(x=>x.k===c.c).n;
+    q('#c42-causas').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===btn?'true':'false'));
+    q('#c42-res').innerHTML=(ok?'<span class="ok">¡Correcto! '+nombre+'.</span>':'<span class="warn">No es eso. La causa es: '+nombre+'.</span>')+
+      '<span>Acción: '+c.acc+'</span>';
+    const cam=q('#c42-camino');
+    cam.innerHTML=c.cam.map(p=>'<li><span><b>'+p[0]+'</b> <span class="'+(p[2]?'si':'no')+'">'+p[1]+'</span></span></li>').join('');
+    cam.hidden=false;
+  }
+  q('#c42-casos').innerHTML=CASOS.map((c,i)=>'<button type="button" data-i="'+i+'">'+c.n+'</button>').join('');
+  q('#c42-causas').innerHTML=CAUSAS.map(c=>'<button type="button" data-k="'+c.k+'">'+c.n+'</button>').join('');
+  q('#c42-casos').addEventListener('click',e=>{const b=e.target.closest('button');if(b){actual=+b.dataset.i;pintar();}});
+  q('#c42-causas').addEventListener('click',e=>{const b=e.target.closest('button');if(b)responder(b.dataset.k,b);});
+  pintar();
+})();
+</script>
+</body>
+</html>

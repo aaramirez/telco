@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>El core del operador · Cómo funciona un telco</title>
+<meta name="description" content="En el corazón de la red los paquetes no se enrutan uno por uno mirando la dirección completa: viajan con etiquetas por caminos preparados (MPLS), y sobre esa misma red el operador arma redes privadas para empresas (VPN), que compiten con las VPN cifradas que cualquiera monta sobre Internet (IPsec).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="21-el-core-del-operador">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 21 DE 49</span><h1>El core del operador: MPLS, VPN de empresa e IPsec</h1><p class="lede">En el corazón de la red los paquetes no se enrutan uno por uno mirando la dirección completa: viajan con etiquetas por caminos preparados (MPLS), y sobre esa misma red el operador arma redes privadas para empresas (VPN), que compiten con las VPN cifradas que cualquiera monta sobre Internet (IPsec).</p></header>
+<section><div class="prose"><p>Pasado el BNG, el tráfico de cientos de miles de clientes entra al <b>core</b>: el corazón de la red del operador. Ahí no hay ONT ni sesiones ni planes. Hay pocos routers, muy potentes, unidos por fibras de 100 o 400 Gbps, que mueven el tráfico de ciudades enteras entre centrales, hacia los centros de datos y hacia la salida a Internet.</p><p>El core también es el lugar donde el operador hace uno de sus negocios más rentables: las <b>redes privadas para empresas</b>. Un banco con cien sucursales o una cadena con trescientas tiendas necesita que todas se hablen entre sí, rápido y en privado. Este capítulo explica cómo se construye eso sobre la misma red que lleva el Internet de las casas, y cómo compite con la alternativa que cualquiera puede montar sobre Internet.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un sistema de autopistas con carriles exclusivos y peajes que leen una calcomanía en el parabrisas sin detener el auto (MPLS); y la diferencia entre alquilar un carril privado en esa autopista (VPN MPLS) y viajar por la vía pública dentro de un camión blindado (IPsec).</p></div><figure class="fig fig-capas" id="21-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el core del operador y las redes privadas de empresa">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class="apagado"><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: el core del operador y las redes privadas de empresa</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo entra al core del operador y a su borde con Internet. Trabaja en la capa de red, donde se deciden los caminos, y justo debajo, en la capa de enlace, porque MPLS pone su etiqueta entre las dos.</figcaption></figure></section>
+<section><h2>Qué hace el core y por qué es distinto del acceso</h2><div class="prose"><p>La red de acceso, la de los capítulos 17 a 19, es ancha y ramificada: miles de fibras, decenas de miles de ONT, un equipo por casa. El core es lo contrario: <b>pocos equipos, enlaces enormes y caminos repetidos</b>. Si el acceso son las calles de barrio, el core son las autopistas.</p><p>Esa diferencia cambia las prioridades. En el acceso, una falla deja sin servicio a una cuadra o a un edificio. En el core, una falla puede dejar sin servicio a una ciudad. Por eso el core se diseña con tres obsesiones:</p><ul><li><b>Velocidad</b>: cada router mueve billones de bits por segundo y no puede perder tiempo pensando cada paquete.</li><li><b>Redundancia</b>: siempre hay al menos dos caminos entre dos puntos, y el tráfico se pasa al otro en milisegundos si uno falla (capítulo 14).</li><li><b>Separación</b>: por los mismos routers pasan el Internet residencial, la voz, la televisión y las redes privadas de cientos de empresas, y ninguno puede mezclarse con otro.</li></ul><p>La tecnología que resuelve las tres a la vez, en casi todos los operadores del mundo, se llama MPLS.</p></div></section>
+<section><h2>MPLS: etiquetas en lugar de direcciones</h2><div class="prose"><p>En el capítulo 6 vimos cómo trabaja un router normal: recibe un paquete, mira la dirección IP de destino y la busca en su tabla de rutas, que en un router del core puede tener cerca de un millón de entradas. Esa búsqueda se hace en cada router del camino, para cada paquete.</p><p><b>MPLS</b> (<i>Multiprotocol Label Switching</i>, conmutación de etiquetas multiprotocolo) propone algo más simple. El primer router del core, el de entrada, mira la dirección <b>una sola vez</b>, decide por qué camino debe ir el paquete y le pega una <b>etiqueta</b>: un número corto. Los routers del medio ya no miran la dirección; miran la etiqueta, la buscan en una tabla pequeña («si llega con 17, sale por la interfaz 3 con 22»), la cambian por otra y lo pasan. El último router quita la etiqueta y entrega el paquete IP tal como entró.</p><p>Es el peaje que lee la calcomanía del parabrisas sin detener el auto. El auto no tiene que bajarse a explicar a dónde va en cada caseta: la calcomanía ya lo dice.</p><p>En la jerga, los routers de entrada y salida se llaman <b>PE</b> (<i>provider edge</i>, borde del proveedor) y los del medio, <b>P</b> (<i>provider</i>). Al camino que sigue un paquete con etiquetas se le llama <b>LSP</b> (camino conmutado por etiquetas).</p></div><figure class="fig fig-flujo" id="21-diagrama-2"><div class="lienzo"><svg viewBox="0 0 990 380" style="min-width:760px" role="img" aria-label="Flujo de un paquete por MPLS: la sede manda un paquete IP; el PE de entrada le pone la etiqueta 17; el primer router P la cambia por 22; el segundo por 30; el PE de salida la quita y entrega el paquete IP al destino">
+  
+  <rect x="32" y="14" width="126" height="56" rx="10" class="caja"/><use href="#i-router" x="42" y="26" width="32" height="32" class="ico"/><text x="82" y="40" class="t t-b">Sede A</text><text x="82" y="57" class="t t-s t-m">del cliente</text>
+  <rect x="167" y="14" width="126" height="56" rx="10" class="caja"/><use href="#i-router-core" x="177" y="26" width="32" height="32" class="ico"/><text x="217" y="40" class="t t-b">PE entrada</text><text x="217" y="57" class="t t-s t-m">borde</text>
+  <rect x="302" y="14" width="126" height="56" rx="10" class="caja"/><use href="#i-router-core" x="312" y="26" width="32" height="32" class="ico"/><text x="352" y="40" class="t t-b">P1</text><text x="352" y="57" class="t t-s t-m">núcleo</text>
+  <rect x="437" y="14" width="126" height="56" rx="10" class="caja"/><use href="#i-router-core" x="447" y="26" width="32" height="32" class="ico"/><text x="487" y="40" class="t t-b">P2</text><text x="487" y="57" class="t t-s t-m">núcleo</text>
+  <rect x="572" y="14" width="126" height="56" rx="10" class="caja"/><use href="#i-router-core" x="582" y="26" width="32" height="32" class="ico"/><text x="622" y="40" class="t t-b">PE salida</text><text x="622" y="57" class="t t-s t-m">borde</text>
+  <rect x="707" y="14" width="126" height="56" rx="10" class="caja"/><use href="#i-servidor" x="717" y="26" width="32" height="32" class="ico"/><text x="757" y="40" class="t t-b">Destino</text><text x="757" y="57" class="t t-s t-m">198.51.100.7</text>
+  <line x1="95" y1="70" x2="95" y2="366" class="vida"/>
+  <line x1="230" y1="70" x2="230" y2="366" class="vida"/>
+  <line x1="365" y1="70" x2="365" y2="366" class="vida"/>
+  <line x1="500" y1="70" x2="500" y2="366" class="vida"/>
+  <line x1="635" y1="70" x2="635" y2="366" class="vida"/>
+  <line x1="770" y1="70" x2="770" y2="366" class="vida"/>
+  <line x1="95" y1="104" x2="228" y2="116" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="105" y="98" class="t t-s"><tspan class="t-mono t-b">IP</tspan> ① Para 198.51.100.7</text>
+  <line x1="230" y1="150" x2="363" y2="162" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="240" y="144" class="t t-s"><tspan class="t-mono t-b">17 | IP</tspan> ② Mira la IP y pone la 17</text>
+  <line x1="365" y1="196" x2="498" y2="208" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="375" y="190" class="t t-s"><tspan class="t-mono t-b">22 | IP</tspan> ③ Llega 17, sale 22</text>
+  <line x1="500" y1="242" x2="633" y2="254" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="510" y="236" class="t t-s"><tspan class="t-mono t-b">30 | IP</tspan> ④ Llega 22, sale 30</text>
+  <line x1="635" y1="288" x2="768" y2="300" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="645" y="282" class="t t-s"><tspan class="t-mono t-b">IP</tspan> ⑤ Quita la etiqueta y entrega</text>
+  <text x="40" y="340" class="t t-s t-b">Solo el PE de entrada buscó la dirección IP en su tabla grande; los P solo leyeron un número.</text>
+  
+  <g class="t t-xs t-b">
+    <path d="M860 96v70" class="ln s-red" style="stroke-width:3"/>
+    <text x="870" y="127" class="k-red">ENTRADA</text>
+    <text x="870" y="141" class="t-m">MIRA LA IP</text>
+    <path d="M860 188v70" class="ln s-enl" style="stroke-width:3"/>
+    <text x="870" y="219" class="k-enl">NÚCLEO</text>
+    <text x="870" y="233" class="t-m">SOLO ETIQUETAS</text>
+    <path d="M860 280v24" class="ln s-red" style="stroke-width:3"/>
+    <text x="870" y="288" class="k-red">SALIDA</text>
+    <text x="870" y="302" class="t-m">QUITA LA ETIQUETA</text>
+  </g>
+  <text x="20" y="190" class="t t-xs t-m" transform="rotate(-90 20 190)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Un paquete atraviesa el core con MPLS.</b> El paquete IP sale de la sede del cliente hacia un destino. El PE de entrada mira la dirección y le pone la etiqueta 17. Cada router P cambia la etiqueta por la que corresponde al siguiente tramo (17 por 22, 22 por 30). El PE de salida la quita y entrega el paquete IP intacto. En azul, los tramos donde se mira la dirección IP; en verde, los tramos donde solo se lee la etiqueta.</figcaption></figure><div class="prose"><p>Que la etiqueta se cambie en cada salto no es un capricho: cada número solo tiene sentido entre dos routers vecinos, como el número de andén de una estación. Así cada router maneja su propia numeración sin coordinarse con toda la red.</p><p>¿Dónde va la etiqueta? Entre el sobre de la capa de enlace y el paquete IP. Por eso se dice que MPLS es «capa 2,5». Y como es solo un número que viaja delante del paquete, lo que va detrás puede ser cualquier cosa: un paquete IPv4, uno IPv6 o incluso una trama Ethernet completa de un cliente. De ahí lo de «multiprotocolo».</p></div><figure class="fig fig-capas" id="21-diagrama-6"><div class="lienzo"><svg viewBox="0 0 800 380" style="min-width:640px" role="img" aria-label="Dónde va la etiqueta MPLS: entre el encabezado Ethernet y el paquete IP; en una VPN de capa 3 van dos etiquetas, la de transporte y la de VPN; una etiqueta tiene 32 bits: 20 de número, 3 de prioridad, 1 de última etiqueta y 8 de contador de saltos">
+  
+  <text x="20" y="28" class="t t-xs t-b t-m">UN PAQUETE IP NORMAL</text>
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="20" y="38" width="150" height="34" rx="6" class="c-enl"/><text x="95" y="60">Ethernet</text>
+    <rect x="170" y="38" width="150" height="34" rx="6" class="c-red"/><text x="245" y="60">IP</text>
+    <rect x="320" y="38" width="110" height="34" rx="6" class="c-tra"/><text x="375" y="60">TCP</text>
+    <rect x="430" y="38" width="340" height="34" rx="6" class="c-apl"/><text x="600" y="60">datos</text>
+  </g>
+
+  
+  <text x="20" y="108" class="t t-xs t-b t-m">EL MISMO PAQUETE DENTRO DEL CORE</text>
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="20" y="118" width="150" height="34" rx="6" class="c-enl"/><text x="95" y="140">Ethernet</text>
+    <rect x="170" y="118" width="100" height="34" rx="6" class="caja s-enl" style="stroke-width:2.5"/><text x="220" y="140" class="k-enl t-mono">17</text>
+    <rect x="270" y="118" width="150" height="34" rx="6" class="c-red"/><text x="345" y="140">IP</text>
+    <rect x="420" y="118" width="110" height="34" rx="6" class="c-tra"/><text x="475" y="140">TCP</text>
+    <rect x="530" y="118" width="240" height="34" rx="6" class="c-apl"/><text x="650" y="140">datos</text>
+  </g>
+  <text x="220" y="168" text-anchor="middle" class="t t-xs t-b k-enl">MPLS · «CAPA 2,5»</text>
+
+  
+  <text x="20" y="200" class="t t-xs t-b t-m">EN UNA VPN DE CAPA 3: DOS ETIQUETAS</text>
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="20" y="210" width="150" height="34" rx="6" class="c-enl"/><text x="95" y="232">Ethernet</text>
+    <rect x="170" y="210" width="100" height="34" rx="6" class="caja s-enl" style="stroke-width:2.5"/><text x="220" y="232" class="k-enl t-mono">17</text>
+    <rect x="270" y="210" width="100" height="34" rx="6" class="caja s-enl" style="stroke-width:2.5"/><text x="320" y="232" class="k-enl t-mono">101</text>
+    <rect x="370" y="210" width="150" height="34" rx="6" class="c-red"/><text x="445" y="232">IP</text>
+    <rect x="520" y="210" width="90" height="34" rx="6" class="c-tra"/><text x="565" y="232">TCP</text>
+    <rect x="610" y="210" width="160" height="34" rx="6" class="c-apl"/><text x="690" y="232">datos</text>
+  </g>
+  <g class="t t-s t-m" text-anchor="middle">
+    <text x="220" y="260">por dónde cruzar</text><text x="320" y="260">de qué cliente</text>
+  </g>
+
+  
+  <text x="20" y="296" class="t t-xs t-b t-m">UNA ETIQUETA POR DENTRO · 32 BITS</text>
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="20" y="306" width="400" height="34" rx="6" class="caja s-enl" style="stroke-width:2"/><text x="220" y="328">Número de etiqueta · 20 bits</text>
+    <rect x="420" y="306" width="90" height="34" rx="6" class="caja s-enl" style="stroke-width:2"/><text x="465" y="328">TC · 3</text>
+    <rect x="510" y="306" width="60" height="34" rx="6" class="caja s-enl" style="stroke-width:2"/><text x="540" y="328">S · 1</text>
+    <rect x="570" y="306" width="200" height="34" rx="6" class="caja s-enl" style="stroke-width:2"/><text x="670" y="328">TTL · 8 bits</text>
+  </g>
+  <g class="t t-s t-m" text-anchor="middle">
+    <text x="220" y="358">el número que lee cada router</text>
+    <text x="465" y="358">prioridad</text>
+    <text x="540" y="358">¿última?</text>
+    <text x="670" y="358">saltos que le quedan</text>
+  </g>
+</svg></div><figcaption><b>Dónde va la etiqueta.</b> Arriba, un paquete normal: el sobre de enlace (Ethernet), el de red (IP), el de transporte (TCP) y los datos. En el medio, el mismo paquete dentro del core, con la etiqueta MPLS entre Ethernet e IP. Más abajo, un paquete de una VPN de empresa, que lleva dos etiquetas: la de fuera dice por dónde cruzar el core y la de dentro, a qué cliente pertenece. Al final, la etiqueta por dentro: 32 bits con el número, la prioridad, la marca de «última etiqueta» y el contador de saltos.</figcaption></figure></section>
+<section><h2>Caminos preparados y rutas de respaldo</h2><div class="prose"><p>Antes de que pase el primer paquete, los routers del core ya acordaron las etiquetas. Lo hacen con protocolos que conversan entre vecinos: el más simple, <b>LDP</b>, reparte etiquetas siguiendo los caminos más cortos que calculó el routing normal (OSPF o IS-IS, del capítulo 6). Así, cuando llega el paquete, el camino ya está preparado.</p><p>Con MPLS el operador también puede <b>elegir caminos a mano</b>, que no siempre son los más cortos. A eso se le llama <b>ingeniería de tráfico</b>: si la ruta directa entre dos ciudades está llena, se puede mandar parte del tráfico por un camino más largo pero desocupado. Es el carril exclusivo de la autopista.</p><p>Y puede preparar <b>caminos de respaldo</b>. Para cada enlace importante, el router calcula de antemano por dónde desviaría el tráfico si ese enlace se cortara. Cuando una máquina rompe una fibra, el router no tiene que pensar: activa el desvío ya preparado en menos de 50 milisegundos, menos de lo que dura un parpadeo. Una llamada en curso apenas nota un corte breve. A esa técnica se le llama <b>reenrutamiento rápido</b> (FRR).</p></div></section>
+<section><h2>VPN de capa 2 y de capa 3: la red privada de una empresa sobre la red del operador</h2><div class="prose"><p>Una <b>VPN</b> (red privada virtual) es una red que se comporta como si fuera de una sola empresa, aunque viaje por equipos compartidos. Con MPLS, el operador puede armar cientos de VPN sobre el mismo core, cada una aislada de las demás. Hay dos sabores:</p><ul><li><b>VPN de capa 2.</b> El operador le entrega a la empresa algo que se comporta como un <b>cable Ethernet larguísimo</b> entre sus sedes. Si son dos sedes, es un enlace punto a punto (en la jerga, VPWS o <i>pseudowire</i>). Si son varias, es como un switch gigante que las une a todas (VPLS, o su versión moderna, EVPN). La empresa maneja sus propias direcciones y su propio routing; el operador solo transporta tramas.</li><li><b>VPN de capa 3.</b> El operador <b>enruta</b> el tráfico de la empresa. Cada sede conecta un router propio, llamado <b>CE</b> (<i>customer edge</i>, borde del cliente), al PE del operador, y el operador aprende qué redes hay en cada sede y lleva los paquetes de una a otra. Es lo más común para bancos y cadenas, porque la empresa no tiene que administrar el routing entre sus cien sucursales.</li></ul><p>El truco de la VPN de capa 3 se llama <b>VRF</b> (<i>virtual routing and forwarding</i>): dentro de cada PE hay una <b>tabla de rutas separada para cada cliente</b>. El puerto donde se conecta la tienda de la empresa A pertenece a la VRF de A, y el de la sucursal de la empresa B, a la VRF de B. Por eso dos empresas pueden usar exactamente las mismas direcciones privadas, por ejemplo <code>10.1.0.0/16</code>, sin mezclarse: cada una busca sus destinos solo en su propia tabla.</p></div><figure class="fig fig-arquitectura" id="21-diagrama-7"><div class="lienzo"><svg viewBox="0 0 960 360" style="min-width:760px" role="img" aria-label="VPN de capa 3: las sedes de la empresa A y de la empresa B usan las mismas direcciones 10.1.1.0/24 y 10.1.2.0/24; cada sede conecta su router CE a un PE, donde entra a la VRF de su empresa; los routers P del core llevan el tráfico con etiquetas; los PE se reparten las rutas con BGP">
+  <rect x="10" y="40" width="190" height="300" rx="12" class="d-casa"/>
+  <rect x="210" y="40" width="540" height="300" rx="12" class="d-oper"/>
+  <rect x="760" y="40" width="190" height="300" rx="12" class="d-casa"/>
+  <text x="105" y="62" text-anchor="middle" class="t t-xs t-b k-casa">SEDES DEL CLIENTE</text>
+  <text x="480" y="330" text-anchor="middle" class="t t-xs t-b k-oper">CORE DEL OPERADOR (MPLS)</text>
+  <text x="855" y="62" text-anchor="middle" class="t t-xs t-b k-casa">SEDES DEL CLIENTE</text>
+
+  
+  <path d="M305 92 V22 H655 V92" class="ln ln-d"/>
+  <rect x="380" y="12" width="200" height="20" rx="6" class="caja"/>
+  <text x="480" y="26" text-anchor="middle" class="t t-xs t-b">BGP: RUTAS DE CADA VRF</text>
+
+  
+  <g class="t t-s">
+    <rect x="22" y="84" width="150" height="62" rx="8" class="caja"/><use href="#i-router" x="28" y="92" width="26" height="26" class="ico"/>
+    <text x="60" y="104" class="t-b">Empresa A</text><text x="60" y="119">tienda norte</text><text x="30" y="138" class="t-mono t-m">10.1.1.0/24</text>
+    <rect x="22" y="224" width="150" height="62" rx="8" class="caja"/><use href="#i-router" x="28" y="232" width="26" height="26" class="ico"/>
+    <text x="60" y="244" class="t-b">Empresa B</text><text x="60" y="259">sucursal centro</text><text x="30" y="278" class="t-mono t-m">10.1.1.0/24</text>
+  </g>
+  
+  <g class="t t-s">
+    <rect x="788" y="84" width="150" height="62" rx="8" class="caja"/><use href="#i-router" x="794" y="92" width="26" height="26" class="ico"/>
+    <text x="826" y="104" class="t-b">Empresa A</text><text x="826" y="119">tienda sur</text><text x="796" y="138" class="t-mono t-m">10.1.2.0/24</text>
+    <rect x="788" y="224" width="150" height="62" rx="8" class="caja"/><use href="#i-router" x="794" y="232" width="26" height="26" class="ico"/>
+    <text x="826" y="244" class="t-b">Empresa B</text><text x="826" y="259">sucursal norte</text><text x="796" y="278" class="t-mono t-m">10.1.2.0/24</text>
+  </g>
+  <text x="105" y="166" text-anchor="middle" class="t t-xs t-m">ROUTER CE</text>
+  <text x="855" y="166" text-anchor="middle" class="t t-xs t-m">ROUTER CE</text>
+
+  
+  <rect x="236" y="92" width="138" height="200" rx="12" class="caja"/>
+  <use href="#i-router-core" x="290" y="98" width="30" height="30" class="ico"/>
+  <text x="305" y="142" text-anchor="middle" class="t t-b">PE 1</text>
+  <rect x="250" y="152" width="110" height="36" rx="6" class="c-red"/><text x="305" y="175" text-anchor="middle" class="t t-s t-b">VRF A</text>
+  <rect x="250" y="238" width="110" height="36" rx="6" class="c-red"/><text x="305" y="261" text-anchor="middle" class="t t-s t-b">VRF B</text>
+  <rect x="586" y="92" width="138" height="200" rx="12" class="caja"/>
+  <use href="#i-router-core" x="640" y="98" width="30" height="30" class="ico"/>
+  <text x="655" y="142" text-anchor="middle" class="t t-b">PE 2</text>
+  <rect x="600" y="152" width="110" height="36" rx="6" class="c-red"/><text x="655" y="175" text-anchor="middle" class="t t-s t-b">VRF A</text>
+  <rect x="600" y="238" width="110" height="36" rx="6" class="c-red"/><text x="655" y="261" text-anchor="middle" class="t t-s t-b">VRF B</text>
+
+  
+  <path d="M172 115 H210 V170 H250" class="ln"/>
+  <path d="M172 255 H250" class="ln"/>
+  <path d="M710 170 H750 V115 H788" class="ln"/>
+  <path d="M710 255 H788" class="ln"/>
+
+  
+  <rect x="430" y="110" width="100" height="50" rx="10" class="caja"/><use href="#i-router-core" x="440" y="119" width="30" height="30" class="ico"/><text x="478" y="140" class="t t-b">P 1</text>
+  <rect x="430" y="222" width="100" height="50" rx="10" class="caja"/><use href="#i-router-core" x="440" y="231" width="30" height="30" class="ico"/><text x="478" y="252" class="t t-b">P 2</text>
+  <path d="M374 135 H430 M530 135 H586 M374 247 H430 M530 247 H586 M448 160 V222" class="ln s-enl" style="stroke-width:2.5"/>
+  <text x="458" y="190" class="t t-s k-enl">A viaja con 17|101</text>
+  <text x="458" y="206" class="t t-s k-enl">B viaja con 17|202</text>
+</svg></div><figcaption><b>Una VPN de capa 3 por dentro.</b> A los lados, las sedes de dos empresas que usan las mismas direcciones privadas. Cada sede conecta su router (CE) a un PE del operador, donde entra a la tabla separada de su empresa (VRF A o VRF B). En el medio, los routers P del core llevan el tráfico de las dos con etiquetas distintas, sin mirar sus direcciones. Arriba, la línea punteada es la conversación BGP con la que los PE se cuentan qué redes hay en cada sede.</figcaption></figure><div class="lab" id="21-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Dos empresas, la misma red</h3></div><p class="hint">Elige desde qué sede sale el paquete y a qué dirección va. Después apaga las VRF, como si el operador usara una sola tabla para todos, y mira qué pasa con dos empresas que usan las mismas direcciones.</p><style>
+[id="21-lab-3"] .c21v-tablas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+[id="21-lab-3"] .c21v-t{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);transition:opacity .2s}
+[id="21-lab-3"] .c21v-t.off{opacity:.4}
+[id="21-lab-3"] .c21v-t h4{margin:0 0 4px;font:700 .85rem var(--f-display)}
+[id="21-lab-3"] .c21v-t table{font-size:.8rem}
+[id="21-lab-3"] .c21v-t td,[id="21-lab-3"] .c21v-t th{padding:4px 6px}
+[id="21-lab-3"] .c21v-t td:first-child{font-family:var(--f-mono);white-space:nowrap}
+[id="21-lab-3"] tr.hit td{background:var(--accent-soft);font-weight:700}
+[id="21-lab-3"] tr.pisada td{text-decoration:line-through;color:var(--muted)}
+</style>
+<div class="opciones">
+  <label>El paquete sale de
+    <select id="c21v-o">
+      <option value="A" selected>A · tienda norte (10.1.1.0/24)</option>
+      <option value="B">B · sucursal centro (10.1.1.0/24)</option>
+    </select></label>
+  <label>y va a la dirección
+    <select id="c21v-d">
+      <option value="10.1.2.20" selected>10.1.2.20</option>
+      <option value="10.1.3.5">10.1.3.5</option>
+    </select></label>
+</div>
+<div class="btns" role="group" aria-label="Cómo guarda las rutas el PE">
+  <button type="button" id="c21v-vrf" aria-pressed="true">Con VRF: una tabla por empresa</button>
+  <button type="button" id="c21v-glob" aria-pressed="false">Sin VRF: una sola tabla</button>
+</div>
+<div class="c21v-tablas" id="c21v-tablas"></div>
+<div class="readout" id="c21v-out" aria-live="polite"></div></div></section>
+<section><h2>BGP dentro del operador: cómo se reparten las rutas de cada cliente empresa</h2><div class="prose"><p>Queda una pregunta: ¿cómo sabe el PE de una ciudad qué redes de la empresa A hay detrás del PE de otra ciudad? Se lo cuentan entre ellos con <b>BGP</b>, el mismo protocolo que usan los operadores para intercambiar rutas en Internet (capítulo 6), en una versión ampliada que lleva rutas de muchos clientes a la vez.</p><p>Para que las rutas de dos clientes con direcciones iguales no se confundan, cada ruta viaja con dos marcas:</p><ul><li>Un <b>distinguidor de ruta</b> (RD), que vuelve única a cada dirección: «<code>10.1.2.0/24</code> de la empresa A» es distinto de «<code>10.1.2.0/24</code> de la empresa B».</li><li>Uno o varios <b>destinos de ruta</b> (RT), que funcionan como etiquetas de reparto: dicen a qué VRF debe entrar la ruta en cada PE. Con ellos se arman topologías a medida, por ejemplo que todas las tiendas hablen con la casa matriz pero no entre sí.</li></ul><p>Junto con la ruta, el PE anuncia la <b>etiqueta de VPN</b> que los demás deben ponerle a los paquetes de ese cliente. Por eso el paquete de una VPN cruza el core con dos etiquetas: la de fuera lo lleva hasta el PE correcto y la de dentro le dice a ese PE a qué VRF entregarlo.</p><p>En un operador con decenas de PE, que todos conversaran con todos sería inmanejable. Se usan <b>reflectores de rutas</b>: unos pocos routers que reciben las rutas de todos los PE y se las reenvían a los demás, como una central telefónica de rutas.</p></div></section>
+<section><h2>IPsec: túneles cifrados sobre Internet</h2><div class="prose"><p>La VPN del operador tiene un límite: solo llega a donde llega su red. Una empresa con sedes en varias ciudades o países, o que quiere ahorrar, tiene otra opción: conectar cada sede a Internet, con el proveedor que sea, y unirlas con <b>túneles cifrados</b>. El estándar más usado para eso es <b>IPsec</b> (seguridad IP).</p><p>La idea es el camión blindado: los paquetes viajan por la vía pública, Internet, pero dentro de una caja que nadie puede abrir ni alterar. El equipo de una sede toma cada paquete interno, lo cifra, lo mete dentro de un paquete nuevo dirigido al equipo de la otra sede y lo manda por Internet. Del otro lado, el equipo lo saca, lo descifra, comprueba que nadie lo tocó y lo entrega.</p><p>Antes de cifrar, los dos equipos tienen que ponerse de acuerdo en cómo y con qué clave. Esa negociación la hace <b>IKE</b> (intercambio de claves por Internet), hoy en su versión 2, y tiene dos momentos de una ida y vuelta cada uno:</p><ol class="steps"><li><span><b>Saludo</b> (<code>IKE_SA_INIT</code>): cada lado propone algoritmos de cifrado y manda su mitad de un cálculo matemático llamado Diffie-Hellman. Con las dos mitades, cada uno calcula la misma clave secreta sin que esa clave viaje nunca por la red.</span></li><li><span><b>Autenticación</b> (<code>IKE_AUTH</code>): ya con la conversación cifrada, cada lado demuestra quién es, con un certificado digital o una clave compartida, y los dos acuerdan qué tráfico irá por el túnel.</span></li></ol><p>A partir de ahí, los datos viajan en paquetes <b>ESP</b> (carga de seguridad encapsulada), cifrados y firmados. Cada cierto tiempo los equipos renuevan las claves, y se mandan pequeños mensajes para comprobar que el otro sigue vivo.</p></div><figure class="fig fig-flujo" id="21-diagrama-4"><div class="lienzo"><svg viewBox="0 0 940 560" style="min-width:740px" role="img" aria-label="Flujo IPsec: el equipo de la sucursal y el de la casa matriz hacen el saludo IKE_SA_INIT con propuestas y Diffie-Hellman, luego IKE_AUTH con identidades y el tráfico del túnel, después intercambian datos cifrados ESP y mensajes para renovar claves y comprobar que el túnel sigue vivo">
+  
+  <rect x="60" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-candado" x="70" y="26" width="32" height="32" class="ico"/><text x="110" y="40" class="t t-b">Sucursal</text><text x="110" y="57" class="t t-s t-m">equipo VPN</text>
+  <rect x="340" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-nube" x="350" y="26" width="32" height="32" class="ico"/><text x="390" y="40" class="t t-b">Internet</text><text x="390" y="57" class="t t-s t-m">vía pública</text>
+  <rect x="600" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-candado" x="610" y="26" width="32" height="32" class="ico"/><text x="650" y="40" class="t t-b">Casa matriz</text><text x="650" y="57" class="t t-s t-m">equipo VPN</text>
+  <line x1="140" y1="70" x2="140" y2="546" class="vida"/>
+  <line x1="420" y1="70" x2="420" y2="546" class="vida"/>
+  <line x1="680" y1="70" x2="680" y2="546" class="vida"/>
+  <line x1="140" y1="104" x2="678" y2="116" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="150" y="98" class="t t-s"><tspan class="t-mono t-b">IKE_SA_INIT</tspan> ① Propongo cifrados + mi mitad DH</text>
+  <line x1="680" y1="150" x2="142" y2="162" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="240" y="144" class="t t-s"><tspan class="t-mono t-b">IKE_SA_INIT</tspan> ② Acepto este + mi mitad DH</text>
+  <text x="150" y="196" class="t t-s t-m">Los dos calculan la misma clave secreta; la clave nunca viajó</text>
+  <line x1="140" y1="224" x2="678" y2="236" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="150" y="218" class="t t-s"><tspan class="t-mono t-b">IKE_AUTH</tspan> ③ Soy la sucursal (certificado); túnel para 10.1.0.0/16</text>
+  <line x1="680" y1="270" x2="142" y2="282" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="240" y="264" class="t t-s"><tspan class="t-mono t-b">IKE_AUTH</tspan> ④ Soy la casa matriz; túnel acordado</text>
+  <line x1="140" y1="330" x2="678" y2="342" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="150" y="324" class="t t-s"><tspan class="t-mono t-b">ESP</tspan> ⑤ Datos de la sucursal, cifrados</text>
+  <line x1="680" y1="376" x2="142" y2="388" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="240" y="370" class="t t-s"><tspan class="t-mono t-b">ESP</tspan> ⑥ Respuesta cifrada</text>
+  <text x="150" y="422" class="t t-s t-m">… cada cierto tiempo …</text>
+  <line x1="140" y1="446" x2="678" y2="458" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="150" y="440" class="t t-s"><tspan class="t-mono t-b">CREATE_CHILD_SA</tspan> ⑦ Renovemos las claves</text>
+  <line x1="680" y1="492" x2="142" y2="504" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="240" y="486" class="t t-s"><tspan class="t-mono t-b">INFORMATIONAL</tspan> ⑧ ¿Sigues ahí? Sí</text>
+  
+  <g class="t t-xs t-b">
+    <path d="M800 96v70" class="ln s-apl" style="stroke-width:3"/>
+    <text x="810" y="127" class="k-apl">SALUDO</text>
+    <text x="810" y="141" class="t-m">UDP 500</text>
+    <path d="M800 216v70" class="ln s-apl" style="stroke-width:3"/>
+    <text x="810" y="247" class="k-apl">AUTENTICACIÓN</text>
+    <text x="810" y="261" class="t-m">YA CIFRADO</text>
+    <path d="M800 322v70" class="ln s-red" style="stroke-width:3"/>
+    <text x="810" y="353" class="k-red">TÚNEL</text>
+    <text x="810" y="367" class="t-m">ESP</text>
+    <path d="M800 438v70" class="ln s-apl" style="stroke-width:3"/>
+    <text x="810" y="469" class="k-apl">MANTENIMIENTO</text>
+    <text x="810" y="483" class="t-m">CLAVES Y VIDA</text>
+  </g>
+  <text x="20" y="280" class="t t-xs t-m" transform="rotate(-90 20 280)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Un túnel IPsec, paso a paso.</b> Dos equipos, uno en la sucursal y otro en la casa matriz, conversan a través de Internet. Primero el saludo IKE (propuestas y Diffie-Hellman), después la autenticación (quién es cada uno y qué tráfico va por el túnel), luego los datos cifrados en paquetes ESP y, de vez en cuando, mensajes para renovar claves y comprobar que el túnel sigue vivo. En rosa, la negociación IKE, que viaja sobre UDP; en azul, los paquetes cifrados ESP, en la capa de red.</figcaption></figure><div class="prose"><p>IPsec da <b>privacidad</b>, pero no <b>calidad</b>. El camión blindado va por la vía pública y se queda en el mismo embotellamiento que todos: si Internet está congestionada entre las dos sedes, el túnel va lento, y nadie le garantiza a la empresa un tiempo de respuesta. La VPN MPLS del operador, en cambio, no cifra por defecto (la separación es lógica, con VRF y etiquetas), pero viaja por una red controlada, con prioridades y con un contrato que garantiza disponibilidad y latencia.</p></div></section>
+<section><h2>VPN de acceso remoto para teletrabajo</h2><div class="prose"><p>Hay un tercer uso de los túneles: conectar <b>personas</b>, no sedes. Un empleado que trabaja desde su casa abre en su computador un programa de VPN, que arma un túnel cifrado desde el computador hasta la red de la empresa. Mientras está conectado, es como si estuviera sentado en la oficina.</p><p>Para esto se usa IPsec con IKEv2, VPN basadas en TLS (el mismo candado de las páginas web, que pasa más fácilmente por redes de hoteles y aeropuertos) o protocolos más nuevos y livianos como WireGuard. La tendencia actual va un paso más allá: en lugar de meter al empleado «dentro» de la red, se le da acceso solo a las aplicaciones que necesita, verificando en cada conexión quién es y desde qué equipo se conecta. A ese enfoque se le llama <b>confianza cero</b> (capítulo 12).</p><p>Para el operador, el teletrabajo importa por dos lados: su Internet residencial es el que lleva esos túneles, y muchas empresas le compran el servicio de VPN administrada completo.</p></div></section>
+<section><h2>SD-WAN: mezclar enlaces y decidir por software</h2><div class="prose"><p><b>SD-WAN</b> (red de área amplia definida por software) es la respuesta del mercado a la pregunta «¿y si uso las dos cosas?». En cada sede se instala un equipo que tiene varios enlaces a la vez, por ejemplo una VPN MPLS, una conexión de fibra a Internet y un respaldo celular 4G o 5G, y arma túneles cifrados sobre todos.</p><p>La gracia está en que un controlador central decide, <b>aplicación por aplicación</b>, por cuál enlace va cada tráfico. El equipo mide todo el tiempo la latencia, la pérdida y el ancho de banda de cada enlace: las llamadas y las transacciones de caja van por el enlace con mejor calidad en ese momento; los respaldos y las actualizaciones, por el más barato. Si un enlace se degrada, el tráfico importante se mueve solo al otro. Todo se configura desde una consola, para cientos de sedes a la vez.</p><p>Para el operador, SD-WAN es a la vez una amenaza, porque permite reemplazar parte de las VPN MPLS por Internet más barato, y una oportunidad, porque puede vender el servicio completo: los enlaces, los equipos y la administración.</p></div><div class="lab" id="21-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿VPN del operador, IPsec o SD-WAN?</h3></div><p class="hint">Describe a la empresa cliente: cuántas sedes tiene, qué tráfico mueve entre ellas, si todas están en la cobertura del operador y cuánto puede pagar. Las barras comparan las tres opciones en costo, calidad garantizada, seguridad y cobertura.</p><style>
+[id="21-lab-5"] .c21c-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+[id="21-lab-5"] .c21c-o{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--card);display:grid;gap:6px}
+[id="21-lab-5"] .c21c-o.mejor{border-color:var(--good);box-shadow:0 0 0 1px var(--good)}
+[id="21-lab-5"] .c21c-o h4{margin:0;font:700 .92rem var(--f-display);display:flex;justify-content:space-between;gap:6px}
+[id="21-lab-5"] .c21c-o h4 span{font-family:var(--f-mono);color:var(--accent)}
+[id="21-lab-5"] .c21c-f{display:grid;grid-template-columns:110px 1fr 34px;gap:6px;align-items:center;font:500 .78rem var(--f-display);color:var(--muted)}
+[id="21-lab-5"] .c21c-f b{font:600 .76rem var(--f-mono);color:var(--ink);text-align:right}
+[id="21-lab-5"] .c21c-bar{height:10px;border-radius:5px;background:var(--paper);overflow:hidden}
+[id="21-lab-5"] .c21c-bar i{display:block;height:100%;border-radius:5px;transition:width .3s}
+@media (prefers-reduced-motion: reduce){[id="21-lab-5"] .c21c-bar i{transition:none}}
+</style>
+<div class="ctls">
+  <label class="ctl">Sedes de la empresa <output id="c21c-n-o"></output><input type="range" id="c21c-n" min="2" max="100" step="1" value="20"></label>
+</div>
+<div class="opciones">
+  <label>Qué mueve entre sedes
+    <select id="c21c-t">
+      <option value="1">Correo y sistemas en la nube</option>
+      <option value="2" selected>Voz y video entre sedes</option>
+      <option value="3">Transacciones en tiempo real (cajas)</option>
+    </select></label>
+  <label>Dónde están las sedes
+    <select id="c21c-c">
+      <option value="0.5" selected>Todas en la cobertura del operador</option>
+      <option value="2">Algunas fuera de la cobertura</option>
+      <option value="3">En varios países</option>
+    </select></label>
+  <label>Presupuesto
+    <select id="c21c-p">
+      <option value="3">Ajustado</option>
+      <option value="2" selected>Medio</option>
+      <option value="1">Holgado</option>
+    </select></label>
+</div>
+<div class="c21c-g" id="c21c-g"></div>
+<div class="readout" id="c21c-out" aria-live="polite"></div></div></section>
+<section><h2>Segment routing: hacia dónde va el core</h2><div class="prose"><p>MPLS tiene más de veinte años y, para preparar sus caminos, necesita varios protocolos funcionando a la vez en cada router. La evolución que están adoptando los operadores se llama <b>segment routing</b> (enrutamiento por segmentos).</p><p>La idea es que el router de entrada escriba <b>en el propio paquete la lista de pasos</b> del camino: «ve al router de la ciudad A, después al de la ciudad B, después sal por tal enlace». Cada router del medio lee el primer paso, lo cumple y lo tacha. Ya no hace falta que todos los routers recuerden cada camino preparado: el camino viaja con el paquete, como un itinerario impreso en el boleto.</p><p>Hay dos versiones: una reutiliza las etiquetas de MPLS (SR-MPLS) y otra escribe los pasos como direcciones IPv6 (SRv6). Las dos simplifican la red, facilitan que un software central calcule caminos a medida y abren la puerta a la automatización de la red (capítulo 30). El paquete del cliente, mientras tanto, no nota la diferencia.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Una cadena de tiendas de la región con decenas de locales, una casa matriz y un centro de datos contrata a un operador una VPN de capa 3. Cada tienda recibe un enlace de fibra y un router administrado por el operador; todas quedan en la misma VRF, con rutas para hablar con la casa matriz y el centro de datos, pero no entre ellas. El contrato garantiza por escrito la disponibilidad mensual de cada enlace, la latencia máxima entre tienda y centro de datos, la prioridad para el tráfico de las cajas y la voz, y el tiempo máximo de reparación ante una falla; si no se cumplen, el operador descuenta parte de la factura. Las tiendas más alejadas, fuera de la red propia, se unen con un túnel IPsec sobre Internet de otro proveedor, que el mismo equipo de la tienda conecta a la VPN.</p></div><div class="ml"><b>En la práctica</b><p>Una VPN corporativa no se cobra como el Internet de una casa porque no se vende lo mismo: se vende una red privada, aislada, con prioridades, con un contrato de calidad y con alguien vigilándola. Para vender y dar soporte a clientes empresa hay que saber qué compró cada uno (VPN de capa 2 o 3, IPsec, SD-WAN), qué le garantiza el contrato y dónde termina la responsabilidad del operador: normalmente en el router de la sede, no en la red interna del cliente.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué ventaja tiene que los routers del core lean una etiqueta en lugar de la dirección IP?</summary><p>Que la búsqueda es más simple y rápida, y que el camino se decide una sola vez a la entrada. Además permite preparar caminos a medida y de respaldo, y separar el tráfico de distintos clientes.</p></details><details><summary>¿Cómo pueden dos empresas usar las mismas direcciones privadas en la red del operador sin mezclarse?</summary><p>Porque en cada PE cada empresa tiene su propia tabla de rutas (VRF), y su tráfico cruza el core con una etiqueta de VPN distinta.</p></details><details><summary>¿Qué diferencia hay entre una VPN de capa 2 y una de capa 3?</summary><p>En la de capa 2 el operador transporta tramas Ethernet, como un cable largo entre sedes, y la empresa maneja su routing; en la de capa 3 el operador enruta los paquetes de la empresa entre sus sedes.</p></details><details><summary>En IPsec, ¿cómo acuerdan los dos equipos una clave secreta si la red puede estar espiada?</summary><p>Con el intercambio Diffie-Hellman del saludo IKE: cada uno manda solo una mitad del cálculo y los dos llegan a la misma clave sin que ella viaje por la red.</p></details><details><summary>Si IPsec cifra y la VPN MPLS no, ¿por qué un banco pagaría más por la VPN MPLS?</summary><p>Porque la VPN del operador viaja por una red controlada, con prioridades y un contrato que garantiza disponibilidad, latencia y tiempo de reparación; IPsec sobre Internet es privado, pero sin garantía de calidad. Muchos combinan las dos cosas.</p></details><details><summary>¿Qué decide un equipo SD-WAN?</summary><p>Por cuál de sus varios enlaces mandar cada aplicación, según la calidad que mide en cada momento y las reglas fijadas en un controlador central.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Multiprotocol_Label_Switching" target="_blank" rel="noopener">MPLS (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Red_privada_virtual" target="_blank" rel="noopener">Red privada virtual (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/IPsec" target="_blank" rel="noopener">IPsec (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.rfc-editor.org/rfc/rfc7296" target="_blank" rel="noopener">RFC 7296: IKEv2 <small>norma</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const R={
+    A:[['10.1.1.0/24','A · tienda norte','aquí (PE 1)'],['10.1.2.0/24','A · tienda sur','PE 2, etiqueta 101'],['10.1.3.0/24','A · almacén','PE 2, etiqueta 101']],
+    B:[['10.1.1.0/24','B · sucursal centro','aquí (PE 1)'],['10.1.2.0/24','B · sucursal norte','PE 2, etiqueta 202']]
+  };
+  // una sola tabla: la ruta aprendida después pisa a la anterior con el mismo prefijo
+  const G=[['10.1.1.0/24','A · tienda norte','aquí',true],['10.1.2.0/24','A · tienda sur','PE 2',true],['10.1.3.0/24','A · almacén','PE 2',false],['10.1.1.0/24','B · sucursal centro','aquí',false],['10.1.2.0/24','B · sucursal norte','PE 2',false]];
+  let vrf=true;
+  const red=ip=>ip.split('.').slice(0,3).join('.')+'.0/24';
+  function tabla(tit,filas,hit,off){
+    return '<div class="c21v-t'+(off?' off':'')+'"><h4>'+tit+'</h4><div class="tbl"><table><thead><tr><th>Red</th><th>Sede</th><th>Siguiente paso</th></tr></thead><tbody>'+
+      filas.map((f,i)=>'<tr class="'+(i===hit?'hit':'')+(f[3]?' pisada':'')+'"><td>'+f[0]+'</td><td>'+f[1]+'</td><td>'+f[2]+'</td></tr>').join('')+'</tbody></table></div></div>';
+  }
+  function dibujar(){
+    const o=$('#c21v-o').value,d=$('#c21v-d').value,n=red(d);
+    let html,m;
+    if(vrf){
+      const i=R[o].findIndex(f=>f[0]===n);
+      html=tabla('PE 1 · VRF de la empresa A',R.A,o==='A'?i:-1,o!=='A')+tabla('PE 1 · VRF de la empresa B',R.B,o==='B'?i:-1,o!=='B');
+      m='<span>1. El paquete entra a PE 1 por el puerto de la empresa '+o+', así que se busca solo en la <b>VRF '+o+'</b>.</span>';
+      if(i<0)m+='<span>2. La VRF '+o+' no tiene la red '+n+'.</span><span class="ok">El paquete se descarta: la empresa '+o+' no puede entrar a la red de la otra, aunque esa dirección exista allá.</span>';
+      else{const f=R[o][i];m+='<span>2. Encuentra '+n+' → '+f[1]+'.</span><span>3. Cruza el core con dos etiquetas: 17 (hasta PE 2) y '+(o==='A'?'101':'202')+' (VRF '+o+').</span><span class="ok">4. PE 2 ve la etiqueta '+(o==='A'?'101':'202')+', lo pasa a la VRF '+o+' y lo entrega en '+f[1]+'. Cada empresa en lo suyo.</span>';}
+    }else{
+      const vivas=G.map((f,i)=>[f,i]).filter(([f])=>!f[3]);
+      const hit=vivas.find(([f])=>f[0]===n);
+      html=tabla('PE 1 · una sola tabla para todos',G,hit?hit[1]:-1,false);
+      m='<span>1. Sin VRF, las rutas de las dos empresas van a la misma tabla. Como usan las mismas redes, la ruta que se aprendió después <b>pisó</b> a la anterior (tachadas).</span>';
+      const f=hit[0],dueño=f[1][0];
+      m+='<span>2. Para '+n+' la tabla dice: '+f[1]+'.</span>';
+      const perdio=G.some(g=>g[0]===n&&g[3]&&g[1][0]===o);
+      if(dueño!==o)m+='<span class="warn">3. ¡Se mezclaron! Un paquete de la empresa '+o+' termina en una sede de la empresa '+dueño+'. '+(perdio?'Además, la empresa '+o+' perdió el camino hacia su propia sede.':'La empresa '+o+' entró a una red que no es suya.')+'</span>';
+      else m+='<span class="warn">3. Esta vez llega bien, pero por suerte: en una tabla única las rutas repetidas se pisan, y cualquier cambio puede desviar el tráfico de una empresa a la otra.</span>';
+    }
+    $('#c21v-tablas').innerHTML=html;$('#c21v-out').innerHTML=m;
+  }
+  function modo(v){vrf=v;$('#c21v-vrf').setAttribute('aria-pressed',v);$('#c21v-glob').setAttribute('aria-pressed',!v);dibujar();}
+  $('#c21v-vrf').addEventListener('click',()=>modo(true));
+  $('#c21v-glob').addEventListener('click',()=>modo(false));
+  ['#c21v-o','#c21v-d'].forEach(s=>$(s).addEventListener('change',dibujar));
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const O=[
+    {k:'mpls',n:'VPN MPLS del operador',costo:3,cal:9,seg:7,cob:{'0.5':10,'2':4,'3':2}},
+    {k:'ipsec',n:'IPsec sobre Internet',costo:1,cal:3,seg:8,cob:{'0.5':10,'2':10,'3':10}},
+    {k:'sdwan',n:'SD-WAN',costo:1.8,cal:7,seg:8,cob:{'0.5':9,'2':9,'3':9}}
+  ];
+  function dibujar(){
+    const n=+$('#c21c-n').value,wt=+$('#c21c-t').value,c=$('#c21c-c').value,wc=+c,wp=+$('#c21c-p').value;
+    $('#c21c-n-o').textContent=n;
+    const res=O.map(o=>{
+      let cal=o.cal,seg=o.seg;
+      const precio=10-(o.costo-1)*4;
+      let gest=o.k==='sdwan'?(n>30?9:7):o.k==='ipsec'?(n>30?3:6):8;
+      const fit=(wp*precio+wt*cal+1.5*seg+wc*o.cob[c]+gest)/(wp+wt+1.5+wc+1);
+      return {o,precio,cal,seg,cob:o.cob[c],gest,fit,mes:Math.round(o.costo*n)};
+    });
+    const mejor=res.reduce((a,b)=>b.fit>a.fit?b:a);
+    const fila=(t,v,col)=>'<div class="c21c-f">'+t+'<span class="c21c-bar"><i style="width:'+v*10+'%;background:'+col+'"></i></span><b>'+v.toFixed(0)+'</b></div>';
+    $('#c21c-g').innerHTML=res.map(r=>'<div class="c21c-o'+(r===mejor?' mejor':'')+'"><h4>'+r.o.n+'<span>'+r.fit.toFixed(1).replace('.',',')+'</span></h4>'+
+      fila('Precio (10 = barato)',r.precio,'var(--c-fis)')+fila('Calidad garantizada',r.cal,'var(--c-red)')+fila('Seguridad',r.seg,'var(--c-tra)')+
+      fila('Cobertura',r.cob,'var(--c-enl)')+fila('Fácil de gestionar',r.gest,'var(--c-apl)')+
+      '<div class="c21c-f">Costo mensual<span></span><b>'+r.mes+'</b></div></div>').join('');
+    let m='<span class="ok">Con estas condiciones conviene: '+mejor.o.n+' (puntaje '+mejor.fit.toFixed(1).replace('.',',')+' de 10).</span>';
+    if(mejor.o.k==='mpls')m+='<span>La calidad garantizada pesa más que el precio, y el operador llega a todas las sedes: una red privada con contrato de latencia y disponibilidad.</span>';
+    if(mejor.o.k==='ipsec')m+='<span>Para tráfico que tolera demoras y un presupuesto ajustado, Internet con túneles cifrados alcanza. Nadie garantiza la calidad entre sedes.</span>';
+    if(mejor.o.k==='sdwan')m+='<span>Mezcla enlaces y elige el mejor para cada aplicación; con muchas sedes, su consola central ahorra trabajo. El operador puede venderlo completo, incluso con una VPN MPLS como uno de los enlaces.</span>';
+    if(wc>=2)m+='<span>Las sedes fuera de la red del operador solo se alcanzan por Internet: ahí la VPN MPLS necesita un complemento IPsec o SD-WAN.</span>';
+    m+='<span>Costo mensual en unidades relativas (una conexión a Internet de empresa = 1 por sede). Los puntajes son una guía didáctica, no una cotización.</span>';
+    $('#c21c-out').innerHTML=m;
+  }
+  ['#c21c-t','#c21c-c','#c21c-p'].forEach(s=>$(s).addEventListener('change',dibujar));
+  $('#c21c-n').addEventListener('input',dibujar);
+  dibujar();
+})();
+</script>
+</body>
+</html>

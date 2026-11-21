@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Correo, archivos y acceso remoto · Cómo funciona un telco</title>
+<meta name="description" content="El correo, la transferencia de archivos y la administración remota de equipos son servicios cliente-servidor más antiguos que la web, cada uno con su propio protocolo y su propio flujo, y entenderlos explica muchas fallas del día a día y muchos riesgos de seguridad.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="10-correo-archivos-y-acceso-remoto">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 10 DE 49</span><h1>Correo, archivos y acceso remoto: SMTP, POP, IMAP, FTP y SSH</h1><p class="lede">El correo, la transferencia de archivos y la administración remota de equipos son servicios cliente-servidor más antiguos que la web, cada uno con su propio protocolo y su propio flujo, y entenderlos explica muchas fallas del día a día y muchos riesgos de seguridad.</p></header>
+<section><div class="prose"><p>Antes de que existiera la web, Internet ya servía para tres cosas: mandar mensajes, mover archivos y manejar computadores a distancia. Esas tres necesidades siguen ahí, con protocolos que nacieron en los años setenta y ochenta y que, con remiendos y candados agregados, todavía usamos todos los días.</p><p>Para un telco no son historia antigua. Las facturas y los avisos de corte salen por correo, y si caen en la carpeta de spam el cliente no paga a tiempo. Los respaldos de configuración de miles de equipos se mueven como archivos. Y cada router, OLT y servidor de la red se administra a distancia, por una conexión que, si está mal protegida, es la puerta de entrada perfecta para un atacante.</p></div><div class="analogia"><b>Imagínalo así</b><p>El correo electrónico funciona como el <b>correo postal</b>: dejas la carta en tu oficina de correos, y las oficinas se la pasan entre sí hasta la del destinatario (eso es <b>SMTP</b>). Para leer, puedes tener un <b>apartado postal</b>, del que retiras las cartas y te las llevas (<b>POP</b>), o un <b>buzón compartido</b> que ves igual desde cualquier lugar, con todo lo que ya abriste y archivaste (<b>IMAP</b>). Para mover muchas cosas de una vez está el <b>camión de mudanzas</b> (<b>FTP</b>). Y para entrar a la sala de máquinas sin ir hasta allá, una <b>llave maestra</b> que solo abre a quien debe (<b>SSH</b>).</p></div><figure class="fig fig-capas" id="10-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: correo, archivos y acceso remoto entre programas en los extremos">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class="apagado"><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class="apagado"><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: correo, archivos y acceso remoto entre programas en los extremos</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Todos los protocolos de este capítulo son de la capa de aplicación y viajan sobre TCP. Funcionan entre programas en los extremos: tu programa de correo y los servidores de correo, un cliente de archivos y su servidor, la computadora de un técnico y el equipo de red que administra.</figcaption></figure></section>
+<section><h2>Cómo viaja un correo: de tu programa al servidor y de servidor a servidor (SMTP)</h2><div class="prose"><p>Cuando le escribes a alguien a <code>bea@ejemplo.org</code> desde tu cuenta <code>ana@ejemplo.com</code>, el mensaje no va directo a la computadora de Bea. Hace tres saltos:</p><ol class="steps"><li><span><b>De tu programa a tu servidor.</b> Tu programa de correo (o la app, o el correo web) le entrega el mensaje al servidor de correo de <code>ejemplo.com</code>, identificándose con tu usuario y clave. A esto se le llama <b>envío</b> y usa el puerto 587, con cifrado.</span></li><li><span><b>De servidor a servidor.</b> El servidor de <code>ejemplo.com</code> busca quién recibe el correo de <code>ejemplo.org</code> y le entrega el mensaje, por el puerto 25. Este salto es la parte central de <b>SMTP</b> (protocolo simple de transferencia de correo).</span></li><li><span><b>Del servidor de Bea a su buzón</b>, donde queda guardado hasta que ella lo lea con POP o con IMAP.</span></li></ol><p>SMTP es una conversación en texto, casi legible para una persona. El servidor que entrega dice quién es (<code>EHLO</code>), quién manda (<code>MAIL FROM</code>) y para quién es (<code>RCPT TO</code>); el que recibe contesta con códigos de tres cifras parecidos a los de HTTP, donde 2xx es «bien», 4xx es «ahora no, intenta más tarde» y 5xx es «no, y no insistas». Después viene el mensaje (<code>DATA</code>), que termina con una línea que tiene solo un punto.</p></div><figure class="fig fig-flujo" id="10-diagrama-2"><div class="lienzo"><svg viewBox="0 0 920 630" style="min-width:720px" role="img" aria-label="Flujo SMTP: el programa de Ana entrega el mensaje a su servidor por el puerto 587; el servidor pregunta al DNS por el MX de ejemplo.org y recibe mx1.ejemplo.org; luego conversa con ese servidor por el puerto 25: saludo 220, EHLO, MAIL FROM, RCPT TO y DATA, cada uno con su respuesta 250; el servidor de destino revisa SPF, DKIM y DMARC y lo deja en el buzón de Bea">
+<rect x="30" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-persona" x="40" y="26" width="30" height="30" class="ico"/>
+<text x="78" y="40" class="t t-b">Programa</text><text x="78" y="57" class="t t-s t-m">de Ana</text>
+<line x1="100" y1="70" x2="100" y2="618" class="vida"/>
+<rect x="215" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-servidor" x="225" y="26" width="30" height="30" class="ico"/>
+<text x="263" y="40" class="t t-b">Servidor de</text><text x="263" y="57" class="t t-s t-m">ejemplo.com</text>
+<line x1="300" y1="70" x2="300" y2="618" class="vida"/>
+<rect x="430" y="14" width="120" height="56" rx="10" class="caja"/><use href="#i-guia" x="440" y="26" width="30" height="30" class="ico"/>
+<text x="478" y="47" class="t t-b">DNS</text>
+<line x1="490" y1="70" x2="490" y2="618" class="vida"/>
+<rect x="605" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-servidor" x="615" y="26" width="30" height="30" class="ico"/>
+<text x="653" y="40" class="t t-b">Servidor de</text><text x="653" y="57" class="t t-s t-m">ejemplo.org (MX)</text>
+<line x1="690" y1="70" x2="690" y2="618" class="vida"/>
+<line x1="100" y1="110" x2="298" y2="124" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="110" y="104" class="t t-s"><tspan class="t-mono t-b">587</tspan> ① clave + mensaje</text>
+<line x1="300" y1="156" x2="488" y2="170" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="310" y="150" class="t t-s">② ¿MX de ejemplo.org?</text>
+<line x1="490" y1="194" x2="302" y2="208" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="474" y="188" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">mx1.ejemplo.org</tspan> ③</text>
+<line x1="690" y1="250" x2="302" y2="264" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="674" y="244" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">220</tspan> ④ mx1.ejemplo.org listo</text>
+<line x1="300" y1="288" x2="688" y2="302" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="310" y="282" class="t t-s"><tspan class="t-mono t-b">EHLO correo.ejemplo.com</tspan> ⑤</text>
+<line x1="690" y1="326" x2="302" y2="340" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="674" y="320" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">250</tspan> ⑥ Hola, adelante</text>
+<line x1="300" y1="364" x2="688" y2="378" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="310" y="358" class="t t-s"><tspan class="t-mono t-b">MAIL FROM:&lt;ana@ejemplo.com&gt;</tspan> ⑦</text>
+<line x1="690" y1="402" x2="302" y2="416" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="674" y="396" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">250 OK</tspan> ⑧</text>
+<line x1="300" y1="440" x2="688" y2="454" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="310" y="434" class="t t-s"><tspan class="t-mono t-b">RCPT TO:&lt;bea@ejemplo.org&gt;</tspan> ⑨</text>
+<line x1="690" y1="478" x2="302" y2="492" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="674" y="472" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">250 OK</tspan> ⑩</text>
+<line x1="300" y1="516" x2="688" y2="530" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="310" y="510" class="t t-s"><tspan class="t-mono t-b">DATA</tspan> ⑪ el mensaje… y una línea con «.»</text>
+<line x1="690" y1="554" x2="302" y2="568" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="674" y="548" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">250</tspan> ⑫ Recibido</text>
+<g class="t t-xs t-b">
+<path d="M800 102v26" class="ln s-apl" style="stroke-width:3"/>
+<text x="810" y="119" class="k-apl">ENVÍO</text>
+<path d="M800 148v62" class="ln s-apl" style="stroke-width:3"/>
+<text x="810" y="176" class="k-apl">DNS</text>
+<text x="810" y="190" class="t-m">registro MX</text>
+<path d="M800 242v326" class="ln s-apl" style="stroke-width:3"/>
+<text x="810" y="395" class="k-apl">SMTP</text>
+<text x="810" y="409" class="t-m">entre servidores</text>
+<text x="810" y="423" class="t-m">puerto 25</text>
+</g>
+<text x="20" y="315" class="t t-xs t-m" transform="rotate(-90 20 315)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+<text x="690" y="598" text-anchor="middle" class="t t-s t-b">Revisa SPF, DKIM y DMARC</text>
+<text x="690" y="614" text-anchor="middle" class="t t-s">y lo deja en el buzón de Bea</text>
+<text x="300" y="598" text-anchor="middle" class="t t-s t-m">Si no responde: lo guarda</text>
+<text x="300" y="614" text-anchor="middle" class="t t-s t-m">en cola y reintenta</text>
+</svg></div><figcaption><b>Un correo de Ana a Bea, paso a paso.</b> El programa de Ana entrega el mensaje a su servidor ①. El servidor pregunta al DNS quién recibe el correo de <code>ejemplo.org</code> ② ③. Después conversa con ese servidor en SMTP: se presenta, dice quién manda y para quién es, y entrega el mensaje ④ a ⑫. El servidor de Bea revisa que el remitente sea legítimo y lo deja en el buzón. Bea lo leerá cuando abra su programa.</figcaption></figure><div class="prose"><p>Si el servidor de destino no responde o contesta con un 4xx («ahora no»), el servidor de Ana no se rinde: guarda el mensaje en una <b>cola</b> y vuelve a intentar cada cierto tiempo, durante horas o días. Solo si se agota el plazo, o si la respuesta es un 5xx («ese buzón no existe»), devuelve a Ana un mensaje de error: el famoso correo de «no se pudo entregar». Por eso un correo puede tardar en llegar sin haberse perdido.</p></div></section>
+<section><h2>El registro MX: cómo sabe un servidor a quién entregar</h2><div class="prose"><p>¿Cómo sabe el servidor de Ana a qué máquina entregarle el correo de <code>ejemplo.org</code>? Le pregunta al DNS (capítulo 8), pero no por una dirección común, sino por un registro especial: el <b>MX</b> (intercambiador de correo). El registro MX de un dominio dice qué servidores reciben su correo, cada uno con una <b>prioridad</b>:</p><div class="tbl"><table><thead><tr><th>Dominio</th><th>Prioridad</th><th>Servidor de correo</th></tr></thead><tbody><tr><td><code>ejemplo.org</code></td><td>10</td><td><code>mx1.ejemplo.org</code></td></tr><tr><td><code>ejemplo.org</code></td><td>20</td><td><code>mx2.ejemplo.org</code></td></tr></tbody></table></div><p>El número más bajo va primero. Si <code>mx1</code> no responde, el servidor que entrega prueba con <code>mx2</code>. Así una empresa puede tener un servidor de respaldo para no perder correo cuando el principal está en mantenimiento.</p><p>Esto tiene una consecuencia práctica: el sitio web de una empresa y su correo pueden estar en lugares totalmente distintos. <code>www.ejemplo.org</code> puede apuntar a un servidor en una CDN y el MX de <code>ejemplo.org</code> a un servicio de correo en la nube. Cuando una empresa cambia de proveedor de correo, lo que cambia es su registro MX, y como todo registro DNS, tarda lo que diga su TTL en verse en todas partes.</p></div></section>
+<section><h2>POP3 frente a IMAP: descargar o sincronizar</h2><div class="prose"><p>El correo ya está en el buzón de Bea, en el servidor. Para leerlo, el programa de Bea tiene dos formas de hacerlo, con dos protocolos distintos.</p><p><b>POP3</b> (protocolo de oficina de correos, versión 3) es el apartado postal. El programa se conecta, <b>descarga</b> los mensajes a la computadora y, normalmente, los borra del servidor. Desde ese momento el correo vive en ese equipo. Fue pensado para una época en que la gente tenía una sola computadora y conexiones caras: bajar todo y desconectarse. Si Bea lee su correo con POP en la computadora de la oficina, cuando abra el celular ese mensaje no estará. Muchos programas ofrecen «dejar una copia en el servidor», pero aun así cada equipo tiene su propia versión: lo que leas, borres o archives en uno no se refleja en el otro.</p><p><b>IMAP</b> (protocolo de acceso a mensajes de Internet) es el buzón compartido. Los mensajes <b>se quedan en el servidor</b>, y cada programa muestra lo que hay allá. Si Bea lee un mensaje en el celular, aparece como leído en la computadora. Si lo mueve a la carpeta «Facturas», se mueve en todos lados. Los programas guardan una copia para trabajar sin conexión, pero la versión que manda es la del servidor.</p><div class="tbl"><table><thead><tr><th></th><th>POP3</th><th>IMAP</th></tr></thead><tbody><tr><td>Dónde viven los mensajes</td><td>En el equipo que los descargó</td><td>En el servidor</td></tr><tr><td>Varios equipos</td><td>Cada uno ve lo suyo</td><td>Todos ven lo mismo</td></tr><tr><td>Carpetas y marcas de leído</td><td>Solo locales</td><td>Sincronizadas</td></tr><tr><td>Si se pierde el equipo</td><td>Se pierde el correo descargado</td><td>El correo sigue en el servidor</td></tr><tr><td>Puertos con cifrado</td><td>995</td><td>993</td></tr></tbody></table></div><p>Hoy casi todo el mundo usa IMAP o un sistema equivalente, como el de los servicios de correo web, que sincronizan igual. Pero en muchas pequeñas empresas y en cuentas antiguas todavía se encuentra POP, y explica muchos reclamos de «se me borraron los correos».</p></div><div class="lab" id="10-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>El mismo correo en dos equipos</h3></div><p class="hint">Elige POP3 o IMAP, haz llegar correos y léelos, bórralos o archívalos desde el celular o desde la computadora. Mira qué queda en el servidor y qué ve cada equipo.</p><style>
+[id="10-lab-3"]>*{min-width:0}
+[id="10-lab-3"] select{width:100%}
+[id="10-lab-3"] .c10m-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
+[id="10-lab-3"] .c10m-col{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:8px;align-content:start;background:var(--paper);min-width:0}
+[id="10-lab-3"] .c10m-col h4{margin:0;font:700 .9rem var(--f-display)}
+[id="10-lab-3"] .c10m-col ul{list-style:none;margin:0;padding:0;display:grid;gap:4px;min-height:40px}
+[id="10-lab-3"] .c10m-col li{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font:500 .82rem/1.3 var(--f-display)}
+[id="10-lab-3"] .c10m-col li.nuevo{border-left:4px solid var(--c-apl);font-weight:700}
+[id="10-lab-3"] .c10m-col li small{display:block;color:var(--muted);font-weight:500}
+[id="10-lab-3"] .c10m-vacio{color:var(--muted);font:italic .82rem var(--f-body)}
+[id="10-lab-3"] .c10m-col .btns button{font-size:.78rem;padding:5px 8px}
+</style>
+<div class="opciones">
+  <label>Cómo lee Bea su correo
+    <select id="c10m-proto">
+      <option value="imap" selected>IMAP (sincroniza con el servidor)</option>
+      <option value="pop">POP3 (descarga y borra del servidor)</option>
+      <option value="popc">POP3 dejando una copia en el servidor</option>
+    </select></label>
+</div>
+<div class="btns"><button type="button" class="primary" id="c10m-llega">Llega un correo nuevo</button><button type="button" id="c10m-reset">Empezar de nuevo</button></div>
+<div class="c10m-cols">
+  <div class="c10m-col"><h4>Servidor de correo</h4><ul id="c10m-l0"></ul></div>
+  <div class="c10m-col"><h4>Celular de Bea</h4><div class="btns" data-eq="1"><button type="button" data-a="revisar">Revisar</button><button type="button" data-a="leer">Leer</button><button type="button" data-a="archivar">Archivar</button><button type="button" data-a="borrar">Borrar</button></div><ul id="c10m-l1"></ul></div>
+  <div class="c10m-col"><h4>Computador de Bea</h4><div class="btns" data-eq="2"><button type="button" data-a="revisar">Revisar</button><button type="button" data-a="leer">Leer</button><button type="button" data-a="archivar">Archivar</button><button type="button" data-a="borrar">Borrar</button></div><ul id="c10m-l2"></ul></div>
+</div>
+<div class="readout" id="c10m-out" aria-live="polite"></div>
+<p class="hint">«Leer» abre el correo más reciente sin leer; «Archivar» lo mueve a la carpeta «Facturas»; «Borrar» elimina el primero de la lista.</p></div></section>
+<section><h2>Correo falso y cómo se detecta: SPF, DKIM y DMARC</h2><div class="prose"><p>SMTP nació en una Internet pequeña, de universidades que se conocían, y tiene un defecto de origen: <b>cualquiera puede escribir lo que quiera en el remitente</b>. Igual que en el correo postal, nada impide poner en el sobre una dirección de remitente que no es la tuya. Por eso existen los correos que parecen venir del banco o del operador pidiendo «actualiza tus datos». Para ponerle freno se agregaron, décadas después, tres mecanismos que se publican en el DNS del dominio que envía y que el servidor que recibe consulta antes de aceptar un mensaje:</p><ul><li><b>SPF</b> (marco de política del remitente) es una <b>lista de quiénes pueden enviar</b>: «el correo de <code>ejemplo.com</code> solo sale de estos servidores». Si un mensaje que dice venir de <code>ejemplo.com</code> llega desde otra máquina, no pasa la prueba.</li><li><b>DKIM</b> (correo identificado con llaves de dominio) es una <b>firma</b>: el servidor que envía firma cada mensaje con una llave privada, y publica en el DNS la llave pública para verificarla. Si alguien cambia el mensaje por el camino o lo fabrica de cero, la firma no coincide.</li><li><b>DMARC</b> (autenticación, informes y conformidad de mensajes basada en el dominio) es la <b>instrucción final</b>: le dice al servidor que recibe qué hacer con los mensajes que no pasan SPF ni DKIM (dejarlos pasar, mandarlos a spam o rechazarlos) y a quién mandarle un informe de lo que vio. Además exige que el dominio que ve el lector en el remitente coincida con el verificado.</li></ul><p>Ninguno de los tres es nuevo para la computadora; los tres son registros de texto (TXT) en el DNS. Lo difícil es mantenerlos al día: cada vez que una empresa contrata un servicio nuevo que envía correos en su nombre (una plataforma de facturación, una herramienta de campañas), hay que agregarlo al SPF y configurar su firma DKIM. Si no, esos correos legítimos fallan las pruebas y terminan en spam.</p></div></section>
+<section><h2>FTP: dos canales, modo activo y pasivo, y por qué viaja en texto plano</h2><div class="prose"><p><b>FTP</b> (protocolo de transferencia de archivos) es de 1971 y tiene una particularidad que lo hace único: usa <b>dos conexiones separadas</b>. Por la primera, el <b>canal de control</b> (puerto 21), el cliente y el servidor conversan en texto: el cliente se identifica, pide la lista de archivos, pide bajar uno. Por la segunda, el <b>canal de datos</b>, viaja el archivo en sí, y se abre una nueva para cada archivo o listado.</p></div><figure class="fig fig-flujo" id="10-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 630" style="min-width:660px" role="img" aria-label="Flujo FTP en modo pasivo: por el canal de control del puerto 21 el servidor saluda, el cliente manda usuario y clave en texto plano y pide el modo pasivo; el servidor indica el puerto 50069; el cliente abre ahí el canal de datos, pide el archivo por el control y el archivo viaja por el canal de datos; el servidor confirma y el cliente sale">
+<rect x="55" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-monitor" x="65" y="26" width="30" height="30" class="ico"/>
+<text x="103" y="40" class="t t-b">Cliente</text><text x="103" y="57" class="t t-s t-m">de archivos</text>
+<line x1="130" y1="70" x2="130" y2="618" class="vida"/>
+<rect x="515" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-servidor" x="525" y="26" width="30" height="30" class="ico"/>
+<text x="563" y="40" class="t t-b">Servidor</text><text x="563" y="57" class="t t-s t-m">FTP</text>
+<line x1="600" y1="70" x2="600" y2="618" class="vida"/>
+<line x1="600" y1="110" x2="132" y2="124" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="104" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">220</tspan> ① Bienvenido</text>
+<line x1="130" y1="148" x2="598" y2="162" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="142" class="t t-s"><tspan class="t-mono t-b">USER ana</tspan> ②</text>
+<line x1="600" y1="186" x2="132" y2="200" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="180" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">331</tspan> ③ Ahora la clave</text>
+<line x1="130" y1="224" x2="598" y2="238" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="218" class="t t-s"><tspan class="t-mono t-b">PASS Secreta123</tspan> ④ ¡en texto plano!</text>
+<line x1="600" y1="262" x2="132" y2="276" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="256" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">230</tspan> ⑤ Adentro</text>
+<line x1="130" y1="300" x2="598" y2="314" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="294" class="t t-s"><tspan class="t-mono t-b">PASV</tspan> ⑥ ¿Dónde te llamo para los datos?</text>
+<line x1="600" y1="338" x2="132" y2="352" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="332" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">227 (…,195,149)</tspan> ⑦ En mi puerto 50069</text>
+<line x1="130" y1="388" x2="598" y2="402" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="140" y="382" class="t t-s"><tspan class="t-mono t-b">SYN → :50069</tspan> ⑧ Abro el canal de datos</text>
+<line x1="130" y1="426" x2="598" y2="440" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="420" class="t t-s"><tspan class="t-mono t-b">RETR factura.pdf</tspan> ⑨ Mándame este archivo</text>
+<line x1="600" y1="464" x2="132" y2="478" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="458" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">150</tspan> ⑩ Ahí va, por el canal de datos</text>
+<line x1="600" y1="504" x2="132" y2="518" class="ln s-tra" style="stroke-width:3.5" marker-end="url(#fl-tra)"/>
+<text x="584" y="498" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">%PDF-1.7 …</tspan> ⑪ los bytes del archivo</text>
+<line x1="600" y1="554" x2="132" y2="568" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="548" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">226</tspan> ⑫ Transferencia completa</text>
+<line x1="130" y1="592" x2="598" y2="606" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="586" class="t t-s"><tspan class="t-mono t-b">QUIT</tspan> ⑬</text>
+<g class="t t-xs t-b">
+<path d="M730 102v250" class="ln s-apl" style="stroke-width:3"/>
+<text x="740" y="210" class="k-apl">CONTROL</text>
+<text x="740" y="224" class="t-m">puerto 21</text>
+<text x="740" y="238" class="t-m">usuario, clave,</text>
+<text x="740" y="252" class="t-m">modo pasivo</text>
+<path d="M730 380v140" class="ln s-tra" style="stroke-width:3"/>
+<text x="740" y="433" class="k-tra">DATOS</text>
+<text x="740" y="447" class="t-m">puerto 50069</text>
+<text x="740" y="461" class="t-m">(el control sigue</text>
+<text x="740" y="475" class="t-m">abierto)</text>
+<path d="M730 546v60" class="ln s-apl" style="stroke-width:3"/>
+<text x="740" y="573" class="k-apl">CONTROL</text>
+<text x="740" y="587" class="t-m">cierre</text>
+</g>
+<text x="20" y="315" class="t t-xs t-m" transform="rotate(-90 20 315)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+<text x="140" y="250" class="t t-s t-b k-apl">Cualquiera en el camino lee usuario y clave</text>
+</svg></div><figcaption><b>Bajar un archivo por FTP.</b> Arriba, el canal de control en el puerto 21: el servidor saluda ①, el cliente manda su usuario y su clave, ambos legibles por cualquiera ② a ⑤, y pide el modo pasivo ⑥. El servidor responde en qué puerto lo espera ⑦. Abajo, el cliente abre ahí el canal de datos ⑧, pide el archivo por el control ⑨ y el archivo viaja por el canal de datos ⑩ ⑪. Al final, el servidor confirma por el control y la sesión se cierra ⑫ ⑬.</figcaption></figure><div class="prose"><p>La pregunta es quién abre ese segundo canal. En el <b>modo activo</b>, el original, el cliente dice «conéctate a mí en este puerto» y es el <b>servidor</b> el que llama al cliente. Eso choca de frente con el NAT de la casa y con los cortafuegos (capítulo 7): una conexión que llega desde afuera sin que nadie la haya pedido se descarta. En el <b>modo pasivo</b>, el cliente pide «dime dónde te llamo» y es el cliente el que abre las dos conexiones. Por eso casi todo el FTP de hoy es pasivo.</p></div><figure class="fig fig-esquema" id="10-diagrama-7"><div class="lienzo"><svg viewBox="0 0 880 370" style="min-width:700px" role="img" aria-label="Modo activo frente a modo pasivo de FTP: en los dos el cliente abre el control hacia el puerto 21; en el activo el servidor intenta abrir el canal de datos hacia la casa y el router lo descarta; en el pasivo el cliente abre también el canal de datos hacia el puerto que el servidor le indicó y pasa">
+<text x="20" y="18" class="t t-b">Modo activo: el servidor abre el canal de datos</text>
+<rect x="20" y="30" width="320" height="130" rx="12" class="d-casa"/>
+<text x="180" y="50" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+<rect x="520" y="30" width="340" height="130" rx="12" class="d-inet"/>
+<text x="690" y="50" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+<use href="#i-monitor" x="48" y="68" width="34" height="34" class="ico"/><text x="65" y="120" text-anchor="middle" class="t t-s">Cliente</text>
+<use href="#i-router" x="248" y="68" width="34" height="34" class="ico"/><text x="265" y="120" text-anchor="middle" class="t t-s">Router (NAT)</text>
+<use href="#i-servidor" x="674" y="68" width="34" height="34" class="ico"/><text x="691" y="120" text-anchor="middle" class="t t-s">Servidor FTP</text>
+<path d="M86 80H244M286 80H668" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="300" y="73" class="t t-s"><tspan class="t-b k-apl">Control</tspan> → puerto 21 ✓</text>
+<path d="M668 100H292" class="ln s-tra ln-d" style="stroke-width:2"/>
+<text x="288" y="106" text-anchor="middle" class="t t-b k-tra" style="font-size:18px">✕</text>
+<text x="306" y="146" class="t t-s"><tspan class="t-b k-tra">Datos:</tspan> el servidor llama a la casa; el router lo descarta</text>
+<text x="20" y="208" class="t t-b">Modo pasivo: el cliente abre los dos canales</text>
+<rect x="20" y="220" width="320" height="130" rx="12" class="d-casa"/>
+<text x="180" y="240" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+<rect x="520" y="220" width="340" height="130" rx="12" class="d-inet"/>
+<text x="690" y="240" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+<use href="#i-monitor" x="48" y="258" width="34" height="34" class="ico"/><text x="65" y="310" text-anchor="middle" class="t t-s">Cliente</text>
+<use href="#i-router" x="248" y="258" width="34" height="34" class="ico"/><text x="265" y="310" text-anchor="middle" class="t t-s">Router (NAT)</text>
+<use href="#i-servidor" x="674" y="258" width="34" height="34" class="ico"/><text x="691" y="310" text-anchor="middle" class="t t-s">Servidor FTP</text>
+<path d="M86 270H244M286 270H668" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="300" y="263" class="t t-s"><tspan class="t-b k-apl">Control</tspan> → puerto 21 ✓</text>
+<path d="M86 290H244M286 290H668" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="306" y="336" class="t t-s"><tspan class="t-b k-tra">Datos:</tspan> también los abre el cliente → puerto 50069 ✓</text>
+</svg></div><figcaption><b>Modo activo frente a modo pasivo.</b> En los dos, el cliente abre el canal de control hacia el puerto 21. En el activo (arriba), el servidor intenta abrir el canal de datos hacia la casa y el router lo bloquea, porque nadie de adentro pidió esa conexión. En el pasivo (abajo), el cliente abre también el canal de datos, hacia un puerto que el servidor le indicó, y el router lo deja pasar como cualquier conexión que sale.</figcaption></figure><div class="prose"><p>El problema grave de FTP es otro: <b>todo viaja en texto plano</b>, incluido el usuario y la clave. Cualquiera que pueda mirar el tráfico (en el Wi-Fi de un hotel, en un equipo comprometido de la red) lee la clave tal cual y la puede usar. Por eso FTP, en su forma original, ya no debería usarse fuera de una red completamente controlada.</p></div></section>
+<section><h2>SFTP y FTPS: mover archivos con candado</h2><div class="prose"><p>Hay dos formas de mover archivos con cifrado, y sus nombres se confunden a menudo:</p><ul><li><b>FTPS</b> es FTP de siempre dentro de un túnel TLS, el mismo candado de HTTPS (capítulo 9). Mantiene los dos canales y los mismos comandos, ahora cifrados. Hereda también las complicaciones de los dos canales con el NAT y los cortafuegos.</li><li><b>SFTP</b> no tiene nada que ver con FTP salvo el nombre: es una función de <b>SSH</b>, el protocolo de la sección siguiente. Usa una sola conexión cifrada en el puerto 22 para todo, la autenticación de SSH (clave o llave) y es mucho más sencillo de pasar por cortafuegos. Es la opción preferida para mover archivos entre servidores.</li></ul><p>Además, buena parte del intercambio de archivos ya ni siquiera usa estos protocolos: se hace con HTTPS, subiendo y bajando archivos a un almacenamiento en la nube por medio de una API (capítulo 9).</p><p>En una red de telecomunicaciones, mover archivos es parte del trabajo diario: los equipos guardan respaldos de su configuración en un servidor, descargan su nuevo firmware desde otro, y los sistemas de medición dejan sus archivos de estadísticas para que otro sistema los procese. Algunos equipos antiguos solo entienden FTP o TFTP (una versión mínima, sin usuario ni clave); en esos casos, el servidor de archivos se coloca en una red de gestión aislada, a la que no se llega desde Internet.</p></div></section>
+<section><h2>Telnet frente a SSH: administrar equipos a distancia</h2><div class="prose"><p>Un router del core puede estar en un edificio a cientos de kilómetros, y un ingeniero necesita entrar a ver su estado o cambiar una configuración de madrugada. Para eso se abre una <b>sesión remota</b>: una pantalla de texto en la computadora del ingeniero donde lo que escribe se ejecuta en el equipo lejano, como si estuviera conectado con un cable a su consola.</p><p>El protocolo original para eso es <b>Telnet</b> (1969, puerto 23). Funciona, pero como FTP, viaja en texto plano: el usuario, la clave y cada comando que se escribe van legibles por la red. En una red de operador, donde una sola clave abre un equipo por el que pasa el tráfico de miles de clientes, eso es inaceptable.</p><p><b>SSH</b> (intérprete de comandos seguro, puerto 22) lo reemplazó desde fines de los noventa. Hace lo mismo que Telnet, pero dentro de un canal cifrado, y agrega dos cosas importantes: el cliente <b>verifica que el servidor sea el que dice ser</b>, para no entregarle la clave a un impostor, y el usuario puede identificarse con una <b>llave</b> en lugar de una clave.</p></div><figure class="fig fig-flujo" id="10-diagrama-6"><div class="lienzo"><svg viewBox="0 0 860 630" style="min-width:660px" role="img" aria-label="Flujo SSH: tras el saludo TCP al puerto 22, cliente y router intercambian versiones y listas de algoritmos; luego partes públicas temporales para calcular un secreto común, y el router envía su llave de equipo firmada, que el cliente compara con la anotada; desde NEWKEYS todo va cifrado; el técnico se autentica con su llave, el router la acepta y se abre la consola">
+<rect x="50" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-monitor" x="60" y="26" width="30" height="30" class="ico"/>
+<text x="98" y="40" class="t t-b">Laptop</text><text x="98" y="57" class="t t-s t-m">del técnico</text>
+<line x1="130" y1="70" x2="130" y2="618" class="vida"/>
+<rect x="515" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-router-core" x="525" y="26" width="30" height="30" class="ico"/>
+<text x="563" y="40" class="t t-b">Router</text><text x="563" y="57" class="t t-s t-m">del core</text>
+<line x1="600" y1="70" x2="600" y2="618" class="vida"/>
+<line x1="600" y1="118" x2="132" y2="132" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="112" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">SSH-2.0</tspan> ① Hablo SSH versión 2</text>
+<line x1="130" y1="156" x2="598" y2="170" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="150" class="t t-s"><tspan class="t-mono t-b">SSH-2.0</tspan> ② Yo también</text>
+<line x1="130" y1="206" x2="598" y2="220" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="200" class="t t-s"><tspan class="t-mono t-b">KEXINIT</tspan> ③ Conozco estos algoritmos</text>
+<line x1="600" y1="244" x2="132" y2="258" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="238" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">KEXINIT</tspan> ④ Usemos curve25519 y AES</text>
+<line x1="130" y1="294" x2="598" y2="308" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="288" class="t t-s"><tspan class="t-mono t-b">ECDH_INIT</tspan> ⑤ Mi parte pública temporal</text>
+<line x1="600" y1="332" x2="132" y2="346" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="584" y="326" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">ECDH_REPLY</tspan> ⑥ Mi parte + llave del equipo + firma</text>
+<line x1="130" y1="420" x2="598" y2="434" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="414" class="t t-s"><tspan class="t-mono t-b">NEWKEYS</tspan> ⑦ Desde aquí, todo cifrado</text>
+<line x1="130" y1="470" x2="598" y2="484" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="140" y="464" class="t t-s"><tspan class="t-mono t-b">USERAUTH</tspan> ⑧ Soy tecnico1: firmo con mi llave</text>
+<line x1="600" y1="508" x2="132" y2="522" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="584" y="502" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">SUCCESS</tspan> ⑨ Tu llave está autorizada</text>
+<line x1="130" y1="558" x2="598" y2="572" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="140" y="552" class="t t-s"><tspan class="t-mono t-b">CHANNEL_OPEN</tspan> ⑩ Abre una consola</text>
+<line x1="600" y1="596" x2="132" y2="610" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="584" y="590" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">router#</tspan> ⑪ Lista: escribe tus comandos</text>
+<g class="t t-xs t-b">
+<path d="M730 110v60" class="ln s-tra" style="stroke-width:3"/>
+<text x="740" y="144" class="k-tra">VERSIÓN</text>
+<path d="M730 198v60" class="ln s-apl" style="stroke-width:3"/>
+<text x="740" y="232" class="k-apl">ALGORITMOS</text>
+<path d="M730 286v148" class="ln s-apl" style="stroke-width:3"/>
+<text x="740" y="343" class="k-apl">LLAVES</text>
+<text x="740" y="357" class="t-m">secreto común</text>
+<text x="740" y="371" class="t-m">y verificación</text>
+<text x="740" y="385" class="t-m">del equipo</text>
+<path d="M730 462v60" class="ln s-apl" style="stroke-width:3"/>
+<text x="740" y="489" class="k-apl">IDENTIDAD</text>
+<text x="740" y="503" class="t-m">del técnico</text>
+<path d="M730 550v60" class="ln s-apl" style="stroke-width:3"/>
+<text x="740" y="584" class="k-apl">CONSOLA</text>
+</g>
+<text x="20" y="315" class="t t-xs t-m" transform="rotate(-90 20 315)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+<text x="365" y="98" text-anchor="middle" class="t t-xs t-m">ANTES: SALUDO TCP AL PUERTO 22</text>
+<use href="#i-candado" x="138" y="362" width="20" height="20" class="ico"/>
+<text x="164" y="372" class="t t-s t-b k-apl">El cliente compara la huella del router</text>
+<text x="164" y="387" class="t t-s">con la que anotó la primera vez. Si cambió: ¡alerta!</text>
+</svg></div><figcaption><b>Abrir una sesión SSH.</b> Después del saludo TCP al puerto 22, el cliente y el router se dicen qué versión hablan ① ② y qué algoritmos conocen ③ ④. Luego intercambian partes públicas para calcular un secreto común ⑤ ⑥; con la respuesta, el router manda su <b>llave de equipo</b> firmada, que el cliente compara con la que tiene anotada. Desde ⑦ todo va cifrado. Recién entonces el técnico se identifica con su llave ⑧ ⑨ y se abre la consola ⑩ ⑪.</figcaption></figure><div class="prose"><p>La verificación del servidor merece atención. La primera vez que te conectas a un equipo, SSH te muestra su <b>huella</b> (un resumen de su llave) y pregunta si confías en ella. Si dices que sí, la anota. Las veces siguientes la compara sola, y si un día cambia, muestra una advertencia muy llamativa: puede ser que el equipo se reinstaló, o puede ser que alguien en el medio se está haciendo pasar por él. Esa advertencia nunca se debe ignorar sin averiguar la causa.</p></div><div class="lab" id="10-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Lo que ve un tercero en la red</h3></div><p class="hint">Elige Telnet, FTP o SSH e inicia sesión en un router de ejemplo. A la izquierda, lo que escribe el técnico; a la derecha, lo que vería alguien que copia el tráfico en el camino.</p><style>
+[id="10-lab-5"]>*{min-width:0}
+[id="10-lab-5"] .c10t-par{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
+[id="10-lab-5"] .c10t-par>div{display:grid;gap:4px;min-width:0;align-content:start}
+[id="10-lab-5"] .c10t-par b{font:600 .78rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+[id="10-lab-5"] pre{margin:0;min-height:190px;white-space:pre-wrap;overflow-wrap:anywhere;font:.8rem/1.55 var(--f-mono);border-radius:8px;padding:10px 12px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+[id="10-lab-5"] .c10t-mal{color:var(--warm);font-weight:700}
+[id="10-lab-5"] .c10t-gris{color:var(--muted)}
+</style>
+<div class="btns" role="group" aria-label="Protocolo de la sesión">
+  <button type="button" data-p="telnet" aria-pressed="true">Telnet (puerto 23)</button>
+  <button type="button" data-p="ftp" aria-pressed="false">FTP (puerto 21)</button>
+  <button type="button" data-p="ssh" aria-pressed="false">SSH (puerto 22)</button>
+</div>
+<div class="btns"><button type="button" class="primary" id="c10t-sig">Escribir la siguiente línea</button><button type="button" id="c10t-todo">Toda la sesión</button><button type="button" id="c10t-reset">Empezar de nuevo</button></div>
+<div class="c10t-par">
+  <div><b>La pantalla del técnico</b><pre id="c10t-pant"></pre></div>
+  <div><b>Lo que copia un tercero en el camino</b><pre id="c10t-cap" aria-live="polite"></pre></div>
+</div>
+<div class="readout" id="c10t-out" aria-live="polite"></div></div></section>
+<section><h2>Llaves SSH y buenas prácticas</h2><div class="prose"><p>Una <b>llave SSH</b> es un par de archivos. La <b>llave privada</b> se queda en la computadora del técnico y nunca se comparte, como la llave de tu casa. La <b>llave pública</b> se copia a cada equipo que el técnico necesita administrar, como una cerradura que solo esa llave abre. Al conectarse, el equipo le plantea al cliente un desafío que solo puede resolver quien tiene la llave privada; la llave privada no viaja nunca, así que no hay clave que robar en el camino.</p><p>Las buenas prácticas para el acceso remoto en una red de operador se repiten en cualquier manual serio:</p><ul><li><b>Nunca Telnet ni FTP sin cifrar</b>, salvo en equipos antiguos aislados en una red de gestión, y con un plan para reemplazarlos.</li><li><b>Llaves en lugar de claves</b>, protegidas a su vez con una frase de paso, y desactivar el ingreso con clave donde se pueda.</li><li><b>Cada persona con su propia cuenta</b>, nunca una cuenta compartida «admin», para que los registros digan quién hizo cada cambio. En las redes grandes, las cuentas se validan contra un servidor central (con protocolos como TACACS+ o RADIUS, capítulo 20) que además registra cada comando.</li><li><b>Acceso solo desde la red de gestión</b>, o pasando por un servidor de salto (<i>bastión</i>) que concentra y registra las conexiones; el puerto 22 de un router nunca debe estar abierto a todo Internet.</li><li><b>Revisar las huellas</b> de los equipos y no aceptar a ciegas una huella que cambió.</li><li><b>Retirar las llaves</b> de quien deja la empresa o cambia de puesto, el mismo día.</li></ul></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región empezó a recibir reclamos de clientes que no encontraban su factura del mes. Los correos se enviaban, pero un porcentaje grande caía en la carpeta de spam de los grandes servicios de correo gratuito. La causa estaba en el DNS: hacía un tiempo la empresa había contratado una plataforma externa para enviar las facturas y los avisos de corte en su nombre, pero nadie había agregado esa plataforma al registro SPF del dominio ni configurado su firma DKIM. Para los servidores que recibían, un correo que decía venir del operador llegaba desde una máquina no autorizada y sin firma válida: exactamente lo que hace un correo falso. Al corregir el SPF, publicar la llave DKIM de la plataforma y activar DMARC primero en modo de observación (solo informes) y luego en modo de rechazo, las facturas volvieron a la bandeja de entrada, y además los correos falsos que usaban el nombre del operador para estafar a sus clientes empezaron a ser rechazados.</p></div><div class="ml"><b>En la práctica</b><p>Esto ayuda a atender reclamos que parecen misteriosos. «No me llega la factura» puede ser un SPF o un DKIM mal configurado, un buzón lleno o una dirección mal escrita. «Se me borraron los correos» suele ser POP en un equipo que los descargó y los quitó del servidor. Explica también por qué muchos operadores <b>bloquean la salida al puerto 25</b> desde las conexiones residenciales: un equipo infectado en una casa podría usarlo para mandar spam directamente a otros servidores, y la reputación de todas las direcciones del operador se arruinaría; los clientes legítimos envían por el puerto 587, autenticados en su proveedor de correo. Y explica por qué los equipos de red solo se administran por SSH, desde la red de gestión y con cuentas personales.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué consulta el servidor de correo de Ana en el DNS para saber a dónde entregar un mensaje para <code>bea@ejemplo.org</code>?</summary><p>El registro MX de <code>ejemplo.org</code>, que dice qué servidores reciben su correo y en qué orden de prioridad.</p></details><details><summary>Bea lee su correo con POP en la oficina y después no lo encuentra en el celular. ¿Por qué?</summary><p>Porque POP descargó los mensajes a la computadora de la oficina y los quitó del servidor; con IMAP los mensajes se quedan en el servidor y todos los equipos ven lo mismo.</p></details><details><summary>Un correo dice venir de <code>ejemplo.com</code> pero salió de un servidor que no figura en su SPF y no tiene firma DKIM válida. ¿Qué decide qué hacer con él?</summary><p>La política DMARC publicada por <code>ejemplo.com</code>: puede indicar que se deje pasar, que se mande a spam o que se rechace.</p></details><details><summary>¿Por qué el modo activo de FTP falla detrás del router de una casa?</summary><p>Porque en el modo activo es el servidor el que abre el canal de datos hacia el cliente, y el NAT o el cortafuegos del router descarta esa conexión entrante que nadie de adentro pidió.</p></details><details><summary>¿Qué diferencia hay entre SFTP y FTPS?</summary><p>FTPS es FTP con cifrado TLS, con sus dos canales; SFTP es una función de SSH que usa una sola conexión cifrada en el puerto 22.</p></details><details><summary>¿Por qué un operador no administra sus routers por Telnet?</summary><p>Porque Telnet manda el usuario, la clave y los comandos en texto plano; cualquiera que vea el tráfico puede robar la clave. SSH cifra todo y además verifica la identidad del equipo.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Protocolo_para_transferencia_simple_de_correo" target="_blank" rel="noopener">Protocolo para transferencia simple de correo (Wikipedia) <small>lectura</small></a><a class="vid" href="https://support.google.com/a/answer/2466580?hl=es" target="_blank" rel="noopener">Configurar DMARC, con SPF y DKIM (ayuda de Google Workspace) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Secure_Shell" target="_blank" rel="noopener">Secure Shell (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.rfc-editor.org/rfc/rfc5321" target="_blank" rel="noopener">RFC 5321: el estándar de SMTP (IETF) <small>lectura técnica</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const ASUNTOS=['Tu factura de noviembre','Aviso de mantenimiento','Fotos de la playa','Confirmación de pago','Boletín del mes','Reunión del lunes'];
+  let srv=[], loc={1:[],2:[]}, n=0, bajados={1:new Set(),2:new Set()};
+  const EQ={1:'el celular',2:'el computador'};
+  const proto=()=>$('#c10m-proto').value;
+  function reset(){srv=[];loc={1:[],2:[]};bajados={1:new Set(),2:new Set()};n=0;
+    $('#c10m-out').innerHTML='<span>'+(proto()==='imap'?'Con IMAP, los equipos muestran lo que hay en el servidor.':'Con POP3, cada equipo baja su propia copia cuando pulsas «Revisar».')+' Empieza haciendo llegar un correo.</span>';pintar();}
+  function lista(eq){return proto()==='imap'?srv:loc[eq];}
+  function item(m){return '<li class="'+(m.leido?'':'nuevo')+'">'+m.asunto+'<small>'+(m.leido?'leído':'sin leer')+' · '+m.carpeta+'</small></li>';}
+  function pintar(){
+    const v=l=>l.length?l.map(item).join(''):'<li class="c10m-vacio" style="border:0;background:none">(vacío)</li>';
+    $('#c10m-l0').innerHTML=v(srv);$('#c10m-l1').innerHTML=v(lista(1));$('#c10m-l2').innerHTML=v(lista(2));
+  }
+  function decir(t,cls){$('#c10m-out').innerHTML='<span'+(cls?' class="'+cls+'"':'')+'>'+t+'</span>';}
+  $('#c10m-llega').addEventListener('click',()=>{
+    const m={id:++n,asunto:ASUNTOS[(n-1)%ASUNTOS.length],leido:false,carpeta:'Entrada'};srv.push(m);
+    decir('Llegó «'+m.asunto+'». Por ahora solo está en el servidor'+(proto()==='imap'?', y los dos equipos lo ven porque muestran el servidor.':'; los equipos lo verán cuando lo descarguen con «Revisar».'));pintar();
+  });
+  function accion(eq,a){
+    const p=proto(), l=lista(eq);
+    if(a==='revisar'){
+      if(p==='imap'){decir('Con IMAP no hay nada que descargar: '+EQ[eq]+' ya muestra lo que hay en el servidor, con las mismas marcas y carpetas.');return;}
+      const nuevos=srv.filter(m=>!bajados[eq].has(m.id));
+      nuevos.forEach(m=>{bajados[eq].add(m.id);loc[eq].push({...m,leido:false,carpeta:'Entrada'});});
+      if(p==='pop'){const k=srv.length;srv=[];decir(nuevos.length?EQ[eq][0].toUpperCase()+EQ[eq].slice(1)+' descargó '+nuevos.length+' correo(s) y los borró del servidor. El otro equipo ya no podrá verlos.':'No había correos nuevos en el servidor.',nuevos.length?'warn':'');}
+      else decir(nuevos.length?EQ[eq][0].toUpperCase()+EQ[eq].slice(1)+' descargó '+nuevos.length+' correo(s) y dejó la copia en el servidor. El otro equipo los bajará por su cuenta, también como «sin leer».':'No había correos nuevos para este equipo.');
+      pintar();return;
+    }
+    if(!l.length){decir('No hay correos en '+EQ[eq]+'.'+(p!=='imap'?' Prueba «Revisar» para descargar.':''));return;}
+    if(a==='leer'){
+      const m=[...l].reverse().find(x=>!x.leido);
+      if(!m){decir('Todos los correos de '+EQ[eq]+' ya están leídos.');return;}
+      m.leido=true;
+      decir(p==='imap'?'Bea leyó «'+m.asunto+'» en '+EQ[eq]+'. La marca de leído se guardó en el servidor, así que también aparece leído en el otro equipo.':'Bea leyó «'+m.asunto+'» en '+EQ[eq]+'. La marca es solo local: en el otro equipo (y en el servidor) sigue igual.',p==='imap'?'ok':'');
+    } else if(a==='archivar'){
+      const m=l.find(x=>x.carpeta==='Entrada');
+      if(!m){decir('No quedan correos en la bandeja de entrada de '+EQ[eq]+'.');return;}
+      m.carpeta='Facturas';
+      decir(p==='imap'?'«'+m.asunto+'» se movió a «Facturas» en el servidor: Bea la encontrará ahí desde cualquier equipo.':'«'+m.asunto+'» se movió a una carpeta local de '+EQ[eq]+'. El otro equipo no se entera.',p==='imap'?'ok':'');
+    } else if(a==='borrar'){
+      const m=l.shift();
+      decir(p==='imap'?'«'+m.asunto+'» se borró del servidor, así que desapareció de los dos equipos.':'«'+m.asunto+'» se borró solo de '+EQ[eq]+'.'+(p==='popc'?' La copia del servidor sigue ahí.':''),p==='imap'?'warn':'');
+    }
+    pintar();
+  }
+  document.querySelectorAll('[id="10-lab-3"] .c10m-col .btns').forEach(g=>g.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>accion(+g.dataset.eq,b.dataset.a))));
+  $('#c10m-reset').addEventListener('click',reset);
+  $('#c10m-proto').addEventListener('change',reset);
+  reset();
+})();
+</script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  let semilla=11;
+  const hex=n=>{let s='';for(let i=0;i<n;i++){semilla=(semilla*1103515245+12345)&0x7fffffff;s+=(semilla>>16&255).toString(16).padStart(2,'0')+' ';}return s.trim();};
+  const IPC='192.0.2.50', IPS='198.51.100.7';
+  const cl=(t,p)=>'→ '+IPS+':'+p+'  «'+t+'»';
+  const sv=(t,p)=>'← '+IPS+':'+p+'  «'+t+'»';
+  const GUION={
+    telnet:{p:23,pasos:[
+      {pa:'Usuario: tecnico1',ca:[sv('Usuario:',23),cl('tecnico1',23)],mal:'usuario'},
+      {pa:'Clave: ',ca:[sv('Clave:',23),cl('Ruta$2026',23)],mal:'clave'},
+      {pa:'router> enable\nrouter# show running-config',ca:[cl('enable',23),cl('show running-config',23)],mal:'comandos'},
+      {pa:'hostname router-borde\nsnmp-server community gestion123 RO\n…',ca:[sv('hostname router-borde',23),sv('snmp-server community gestion123 RO',23)],mal:'configuración'}]},
+    ftp:{p:21,pasos:[
+      {pa:'220 Servidor de respaldos\nNombre: ana',ca:[sv('220 Servidor de respaldos',21),cl('USER ana',21)],mal:'usuario'},
+      {pa:'Clave: ',ca:[sv('331 Password required',21),cl('PASS Secreta123',21)],mal:'clave'},
+      {pa:'ftp> get respaldo-router.txt',ca:[cl('RETR respaldo-router.txt',21)],mal:'comandos'},
+      {pa:'226 Transfer complete (4 KB)',ca:['← '+IPS+':50069  «hostname router-borde»','← '+IPS+':50069  «username admin secret …»'],mal:'el archivo'}]},
+    ssh:{p:22,pasos:[
+      {pa:'$ ssh tecnico1@router\nFingerprint: SHA256:q7Xh…a9 ✓',ca:[sv('SSH-2.0-ServidorSSH_8.0',22),cl('SSH-2.0-OpenSSH_9.6',22),'⇄ intercambio de llaves (partes públicas)']},
+      {pa:'Autenticado con llave ✓',ca:['→ '+IPS+':22  [cifrado, 96 bytes] '+hex(8)+' …','← '+IPS+':22  [cifrado, 48 bytes] '+hex(8)+' …']},
+      {pa:'router# show running-config',ca:['→ '+IPS+':22  [cifrado, 64 bytes] '+hex(8)+' …']},
+      {pa:'hostname router-borde\n…',ca:['← '+IPS+':22  [cifrado, 4.120 bytes] '+hex(8)+' …']}]}
+  };
+  let p='telnet', i=0;
+  function pintar(){
+    const g=GUION[p], hechos=g.pasos.slice(0,i);
+    $('#c10t-pant').textContent=hechos.length?hechos.map(s=>s.pa).join('\n'):'(la sesión todavía no empieza)';
+    const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    $('#c10t-cap').innerHTML=hechos.length?'<span class="c10t-gris">'+IPC+' ⇄ '+IPS+' · puerto '+g.p+'</span>\n'+hechos.map(s=>s.ca.map(c=>'<span class="'+(s.mal?'c10t-mal':'')+'">'+esc(c)+'</span>').join('\n')).join('\n'):'(nada todavía)';
+    const robado=hechos.filter(s=>s.mal).map(s=>s.mal);
+    let t='<span class="big">'+(i===0?'Pulsa «Escribir la siguiente línea»':'Paso '+i+' de '+g.pasos.length)+'</span>';
+    if(i>0){
+      if(p==='ssh')t+='<span class="ok">El tercero solo sabe que '+IPC+' habló con '+IPS+' por el puerto 22, cuándo y cuántos bytes. Lo único legible son los nombres de versión del saludo; la clave, los comandos y la configuración van cifrados.</span>';
+      else t+='<span class="warn">El tercero ya tiene: '+robado.join(', ')+'.</span><span>'+(p==='telnet'?'La clave no aparece en la pantalla del técnico, pero viaja letra por letra en texto plano. Con ella, cualquiera puede entrar al router.':'FTP manda usuario y clave en texto plano por el canal de control, y el archivo, también legible, por el canal de datos.')+'</span>';
+    }
+    $('#c10t-out').innerHTML=t;
+    $('#c10t-sig').disabled=$('#c10t-todo').disabled=i>=g.pasos.length;
+  }
+  document.querySelectorAll('[id="10-lab-5"] [data-p]').forEach(b=>b.addEventListener('click',()=>{
+    p=b.dataset.p;i=0;document.querySelectorAll('[id="10-lab-5"] [data-p]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));pintar();}));
+  $('#c10t-sig').addEventListener('click',()=>{i++;pintar();});
+  $('#c10t-todo').addEventListener('click',()=>{i=GUION[p].pasos.length;pintar();});
+  $('#c10t-reset').addEventListener('click',()=>{i=0;pintar();});
+  pintar();
+})();
+</script>
+</body>
+</html>

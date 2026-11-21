@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OSS y BSS · Cómo funciona un telco</title>
+<meta name="description" content="Un telco usa dos familias de sistemas: los de negocio (BSS), que se ocupan del cliente, el producto y el dinero, y los de operación (OSS), que se ocupan de la red y el servicio; la industria tiene mapas comunes para ordenarlos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="33-oss-y-bss">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 33 DE 49</span><h1>OSS y BSS: el mapa de los sistemas de un telco</h1><p class="lede">Un telco usa dos familias de sistemas: los de negocio (BSS), que se ocupan del cliente, el producto y el dinero, y los de operación (OSS), que se ocupan de la red y el servicio; la industria tiene mapas comunes para ordenarlos.</p></header>
+<section><div class="prose"><p>Hasta aquí el libro habló de cables, luz, protocolos y equipos. Pero una red, por buena que sea, no es un negocio. Alguien tiene que decidir qué se vende y a qué precio, registrar a cada cliente, pedirle a la red que lo conecte, cobrarle cada mes y atenderlo cuando algo falla. Todo eso lo hacen <b>sistemas</b>: programas, bases de datos y pantallas que usan cientos de personas.</p><p>Con este capítulo empieza la Parte 4, dedicada a esos sistemas. Aquí está el mapa general; los capítulos siguientes recorren cada región con detalle.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un restaurante: el salón, la caja y el menú (BSS) frente a la cocina, la despensa y los proveedores (OSS). El mozo toma el pedido y la caja cobra, pero el plato lo cocina otra gente con otros instrumentos. Si la comanda no llega bien a la cocina, o la caja cobra un plato que nunca salió, el restaurante pierde, aunque cada parte haga bien su trabajo.</p></div><figure class="fig fig-capas" id="33-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el mapa completo de sistemas, del canal a la red">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class=""><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class=""><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class=""><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class=""><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class=""><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class=""><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class=""><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class=""><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: el mapa completo de sistemas, del canal a la red</text>
+</svg></div><figcaption><b>Dónde estamos.</b> A la izquierda, las cinco capas de sistemas de un telco, de los canales por donde llega el cliente hasta la red. A la derecha, los eslabones de la cadena de valor. Este capítulo enciende todas las capas de sistemas, porque dibuja el mapa completo, y los eslabones donde esos sistemas trabajan todos los días: vender, ordenar, activar, operar, atender, facturar y cobrar.</figcaption></figure></section>
+<section><h2>BSS y OSS: dos mundos que deben hablarse</h2><div class="prose"><p>La industria agrupa los sistemas de un telco en dos grandes familias, con dos siglas que conviene aprender porque aparecen en todas partes:</p><ul><li><b>BSS</b> (sistemas de soporte al negocio): los que se ocupan del <b>cliente, el producto y el dinero</b>. El catálogo de planes y precios, el <b>CRM</b> (la ficha de cada cliente y su historia con la empresa), la gestión de órdenes de venta, la facturación, la cobranza y los canales de venta y atención.</li><li><b>OSS</b> (sistemas de soporte a la operación): los que se ocupan de <b>la red y el servicio</b>. El inventario de red (qué equipos y fibras hay y dónde), el aprovisionamiento (configurar el servicio en la red), la gestión de fallas y de rendimiento (el monitoreo del NOC) y la gestión del trabajo de campo.</li></ul><p>Una forma simple de distinguirlos: el BSS habla de <b>clientes y planes</b> («Ana tiene 300 Mbps y paga el día 5»); el OSS habla de <b>puertos y equipos</b> («la ONT con este número de serie cuelga del puerto 1/1/3 de la OLT norte y tiene el perfil de 300 Mbps»).</p><p>Ninguno sirve sin el otro. El BSS vende un plan que solo existe si el OSS lo configura en la red, y el OSS configura un servicio que solo se cobra si el BSS se entera de que está activo. Por eso la palabra clave de este capítulo es <b>integración</b>: cómo se pasan la información, en qué orden y quién tiene la última palabra sobre cada dato.</p><p>Entre las dos familias suele haber una capa intermedia: el <b>orquestador</b> o la <b>capa de integración</b>, que traduce el lenguaje comercial al técnico. Cuando el BSS dice «activar plan de 300 Mbps para Ana», el orquestador sabe qué hay que hacer en la OLT, en RADIUS y en el ACS para que eso ocurra (capítulo 38).</p></div><div class="lab" id="33-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Esto es BSS u OSS?</h3></div><p class="hint">Clasifica cada sistema o tarea. Piensa si habla del cliente, el producto y el dinero, o de la red y el servicio. Algunos tienen un pie en cada lado: la explicación te dirá por qué.</p><style>
+.c33-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:8px}
+.c33-it{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--paper);display:grid;gap:6px;align-content:start}
+.c33-it b{font:700 .95rem var(--f-display)}
+.c33-it small{color:var(--muted);font-size:.84rem}
+.c33-it .btns button{padding:5px 10px;font-size:.8rem}
+.c33-it .fb{font-size:.84rem;line-height:1.4}
+.c33-it .fb:empty{display:none}
+.c33-it.bien{border-color:var(--good)} .c33-it.bien .fb b{color:var(--good)}
+.c33-it.mal{border-color:var(--warm)} .c33-it.mal .fb b{color:var(--warm)}
+.c33-marcador{font:700 1.1rem var(--f-display)}
+</style>
+<div class="c33-marcador" id="c33-score" aria-live="polite"></div>
+<div class="c33-lista" id="c33-lista"></div>
+<div class="btns"><button type="button" id="c33-reset">Volver a empezar</button></div></div></section>
+<section><h2>El viaje del cliente frente al viaje del servicio</h2><div class="prose"><p>Hay dos historias que ocurren al mismo tiempo cada vez que alguien contrata Internet, y cada familia de sistemas sigue una:</p><ul><li><b>El viaje del cliente</b> es lo que la persona vive: ve la publicidad, consulta si hay cobertura en su dirección, elige un plan, firma, recibe al técnico, empieza a navegar, paga su factura, llama si algo falla y, algún día, cambia de plan o se va. Lo acompañan los BSS y los canales.</li><li><b>El viaje del servicio</b> es lo que la red vive: se reserva un puerto libre en una caja cercana, se asigna una ONT, se registra la fibra que llega a la casa, se autoriza la ONT en la OLT, se crea el perfil en RADIUS, se configura el Wi-Fi, se vigila y, si el cliente se va, se libera el puerto. Lo acompañan los OSS.</li></ul><p>Los dos viajes se cruzan en momentos precisos: la orden de venta dispara el viaje del servicio; la activación en la red dispara el inicio de la facturación; una falla en la red se convierte en un reclamo del cliente. Esos cruces son los lugares donde más cosas salen mal, y los que más cuidan los arquitectos de sistemas.</p></div><figure class="fig fig-flujo" id="33-diagrama-4"><div class="lienzo"><svg viewBox="0 0 990 640" style="min-width:780px" role="img" aria-label="Flujo de una orden por todos los sistemas: el cliente compra en la app; el CRM consulta al inventario un puerto libre y lo reserva; crea la orden en el orquestador; el orquestador agenda al técnico; el técnico instala y registra la ONT; el orquestador configura la OLT, RADIUS y el ACS; la red confirma; el inventario marca el puerto ocupado; el orquestador avisa al CRM que el servicio está activo; el CRM inicia la facturación y le confirma al cliente">
+  <rect x="14" y="14" width="112" height="60" rx="10" class="caja"/><use href="#i-celular" x="56" y="18" width="28" height="28" class="ico"/><text x="70" y="58" text-anchor="middle" class="t t-s t-b">Cliente</text><text x="70" y="70" text-anchor="middle" class="t t-xs t-m">EN LA APP</text>
+  <line x1="70" y1="74" x2="70" y2="625" class="vida"/>
+  <rect x="134" y="14" width="112" height="60" rx="10" class="caja"/><use href="#i-monitor" x="176" y="18" width="28" height="28" class="ico"/><text x="190" y="58" text-anchor="middle" class="t t-s t-b">CRM</text><text x="190" y="70" text-anchor="middle" class="t t-xs t-m">Y ÓRDENES</text>
+  <line x1="190" y1="74" x2="190" y2="625" class="vida"/>
+  <rect x="254" y="14" width="112" height="60" rx="10" class="caja"/><use href="#i-servidor" x="296" y="18" width="28" height="28" class="ico"/><text x="310" y="58" text-anchor="middle" class="t t-s t-b">Inventario</text><text x="310" y="70" text-anchor="middle" class="t t-xs t-m">DE RED</text>
+  <line x1="310" y1="74" x2="310" y2="625" class="vida"/>
+  <rect x="374" y="14" width="112" height="60" rx="10" class="caja"/><use href="#i-servidor" x="416" y="18" width="28" height="28" class="ico"/><text x="430" y="62" text-anchor="middle" class="t t-s t-b">Orquestador</text>
+  <line x1="430" y1="74" x2="430" y2="625" class="vida"/>
+  <rect x="494" y="14" width="112" height="60" rx="10" class="caja"/><use href="#i-persona" x="536" y="18" width="28" height="28" class="ico"/><text x="550" y="62" text-anchor="middle" class="t t-s t-b">Técnico</text>
+  <line x1="550" y1="74" x2="550" y2="625" class="vida"/>
+  <rect x="614" y="14" width="112" height="60" rx="10" class="caja"/><use href="#i-olt" x="656" y="18" width="28" height="28" class="ico"/><text x="670" y="58" text-anchor="middle" class="t t-s t-b">Red</text><text x="670" y="70" text-anchor="middle" class="t t-xs t-m">OLT, RADIUS, ACS</text>
+  <line x1="670" y1="74" x2="670" y2="625" class="vida"/>
+  <rect x="734" y="14" width="112" height="60" rx="10" class="caja"/><use href="#i-factura" x="776" y="18" width="28" height="28" class="ico"/><text x="790" y="62" text-anchor="middle" class="t t-s t-b">Facturación</text>
+  <line x1="790" y1="74" x2="790" y2="625" class="vida"/>
+  <line x1="70" y1="104" x2="188" y2="112" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="78" y="98" class="t t-s">① Compra 300 Mbps</text>
+  <line x1="190" y1="144" x2="308" y2="152" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="198" y="138" class="t t-s">② ¿Puerto libre cerca?</text>
+  <line x1="310" y1="176" x2="192" y2="184" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="198" y="200" class="t t-s">③ Caja C-12, puerto 5: reservado</text>
+  <line x1="190" y1="234" x2="428" y2="242" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="198" y="228" class="t t-s">④ Orden de instalación</text>
+  <line x1="430" y1="262" x2="548" y2="270" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="438" y="256" class="t t-s">⑤ Visita agendada</text>
+  <line x1="550" y1="304" x2="432" y2="312" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="438" y="328" class="t t-s">⑥ Instalada: ONT serie ABCD1234</text>
+  <line x1="430" y1="350" x2="668" y2="358" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="438" y="344" class="t t-s">⑦ Autorizar ONT, perfil, Wi-Fi</text>
+  <line x1="670" y1="382" x2="432" y2="390" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="438" y="406" class="t t-s">⑧ En línea</text>
+  <line x1="430" y1="420" x2="312" y2="428" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="318" y="444" class="t t-s">⑨ Puerto 5 ocupado</text>
+  <line x1="430" y1="470" x2="192" y2="478" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="198" y="494" class="t t-s">⑩ Servicio activo</text>
+  <line x1="190" y1="528" x2="788" y2="536" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="198" y="522" class="t t-s">⑪ Iniciar ciclo de cobro</text>
+  <line x1="190" y1="572" x2="72" y2="580" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="78" y="596" class="t t-s">⑫ «Ya puedes navegar»</text>
+  <g class="t t-xs t-b">
+    <path d="M880 94v96" class="ln s-apl" style="stroke-width:3"/><text x="890" y="146">VENDER</text>
+    <path d="M880 220v34" class="ln s-apl" style="stroke-width:3"/><text x="890" y="233">ORDENAR</text>
+    <path d="M880 254v72" class="ln s-apl" style="stroke-width:3"/><text x="890" y="294">INSTALAR</text>
+    <path d="M880 340v110" class="ln s-apl" style="stroke-width:3"/><text x="890" y="399">ACTIVAR</text>
+    <path d="M880 462v140" class="ln s-apl" style="stroke-width:3"/><text x="890" y="536">FACTURAR</text>
+  </g>
+  <text x="20" y="610" class="t t-xs t-m" transform="rotate(-90 20 610)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Una orden que pasa por todos los sistemas.</b> El tiempo corre hacia abajo. El cliente compra en la app; el CRM consulta en el inventario si hay un puerto libre y crea la orden; el orquestador agenda la instalación; el técnico instala y registra la ONT; el orquestador configura la OLT, RADIUS y el ACS; con el servicio activo, avisa al BSS, que empieza a facturar y le confirma al cliente que ya puede navegar.</figcaption></figure></section>
+<section><h2>Los mapas de la industria (TM Forum: eTOM, SID, TAM) explicados simple</h2><div class="prose"><p>Como todos los telcos del mundo resuelven problemas parecidos, la industria se organizó para escribir <b>mapas comunes</b>. El más conocido lo mantiene el <b>TM Forum</b>, una asociación internacional de operadores y proveedores. Sus tres mapas principales responden a tres preguntas distintas:</p><ul><li><b>eTOM</b> (mapa de procesos): <b>¿qué hace un telco?</b> Es una lista ordenada de todos los procesos, como un índice gigante: estrategia, construcción de la red, venta, instalación, aseguramiento, facturación, relación con proveedores. Su parte más usada divide la operación diaria en tres grandes flujos: <b>cumplimiento</b> (<i>fulfillment</i>, de la venta al servicio funcionando), <b>aseguramiento</b> (<i>assurance</i>, que siga funcionando) y <b>facturación</b> (<i>billing</i>, que se cobre bien).</li><li><b>SID</b> (modelo de información): <b>¿con qué datos trabaja?</b> Define las entidades y cómo se relacionan: el <b>cliente</b> compra un <b>producto</b>; el producto se implementa con uno o más <b>servicios</b>; el servicio usa <b>recursos</b> de la red (un puerto, una ONT, una dirección IP). Esa cadena cliente, producto, servicio y recurso es quizá la idea más útil de todo el capítulo.</li><li><b>TAM</b> (mapa de aplicaciones): <b>¿qué sistemas existen?</b> Ordena los tipos de aplicaciones que un telco suele tener, como el CRM, la facturación o el inventario, y qué procesos y datos atiende cada una.</li></ul><p>Más recientemente el TM Forum agregó <b>ODA</b> (arquitectura digital abierta) y un catálogo de <b>APIs abiertas</b> estándar, para que los sistemas de distintos proveedores se conecten como piezas de un juego de construcción.</p><p>Nadie implementa estos mapas al pie de la letra. Sirven como <b>idioma común</b>: cuando un proveedor dice que su sistema «cubre el aseguramiento de servicio», o un consultor pregunta «¿cuál es su fuente de verdad del recurso?», ambos están usando estos mapas.</p></div><figure class="fig fig-esquema" id="33-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 400" style="min-width:720px" role="img" aria-label="Los tres mapas del TM Forum: eTOM ordena los procesos en cumplimiento, aseguramiento y facturación, para el cliente, el servicio, el recurso y el proveedor; SID ordena los datos en la cadena cliente, producto, servicio y recurso, con un ejemplo; TAM ordena los tipos de sistemas en BSS y OSS">
+  
+  <rect x="14" y="14" width="300" height="372" rx="12" class="caja"/>
+  <text x="28" y="40" class="t t-b">eTOM · procesos</text><text x="28" y="57" class="t t-s t-m">¿Qué hace un telco?</text>
+  <g class="t t-xs t-b" text-anchor="middle"><text x="138" y="96">CUMPLIR</text><text x="212" y="96">ASEGURAR</text><text x="280" y="96">FACTURAR</text></g>
+  <g class="t t-s t-b"><text x="24" y="134">Cliente</text><text x="24" y="196">Servicio</text><text x="24" y="258">Recurso</text><text x="24" y="320">Proveedor</text></g>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="104" y="108" width="68" height="54" rx="6" class="d-sis"/><text x="138" y="131">tomar la</text><text x="138" y="145">orden</text>
+    <rect x="178" y="108" width="68" height="54" rx="6" class="d-sis"/><text x="212" y="131">atender</text><text x="212" y="145">reclamo</text>
+    <rect x="252" y="108" width="56" height="54" rx="6" class="d-sis"/><text x="280" y="131">emitir</text><text x="280" y="145">factura</text>
+    <rect x="104" y="170" width="68" height="54" rx="6" class="d-oper"/><text x="138" y="193">activar</text><text x="138" y="207">plan</text>
+    <rect x="178" y="170" width="68" height="54" rx="6" class="d-oper"/><text x="212" y="193">resolver</text><text x="212" y="207">falla</text>
+    <rect x="252" y="170" width="56" height="54" rx="6" class="d-oper"/><text x="280" y="193">medir</text><text x="280" y="207">uso</text>
+    <rect x="104" y="232" width="68" height="54" rx="6" class="d-oper"/><text x="138" y="255">configurar</text><text x="138" y="269">ONT</text>
+    <rect x="178" y="232" width="68" height="54" rx="6" class="d-oper"/><text x="212" y="255">alarma</text><text x="212" y="269">de fibra</text>
+    <rect x="252" y="232" width="56" height="54" rx="6" class="caja ln-d"/>
+    <rect x="104" y="294" width="68" height="54" rx="6" class="d-inet"/><text x="138" y="317">pedir</text><text x="138" y="331">equipos</text>
+    <rect x="178" y="294" width="68" height="54" rx="6" class="d-inet"/><text x="212" y="317">garantía</text><text x="212" y="331">fabricante</text>
+    <rect x="252" y="294" width="56" height="54" rx="6" class="d-inet"/><text x="280" y="317">pagar</text><text x="280" y="331">proveedor</text>
+  </g>
+  <text x="24" y="374" class="t t-xs t-m">SOLO LA PARTE DE OPERACIÓN DIARIA</text>
+
+  
+  <rect x="330" y="14" width="260" height="372" rx="12" class="caja"/>
+  <text x="344" y="40" class="t t-b">SID · datos</text><text x="344" y="57" class="t t-s t-m">¿Con qué información?</text>
+  <g class="t t-s">
+    <rect x="346" y="76" width="228" height="58" rx="8" class="d-sis"/><text x="358" y="98" class="t-b k-sis">Cliente</text><text x="358" y="118">Ana, documento, dirección</text>
+    <rect x="346" y="152" width="228" height="58" rx="8" class="d-sis"/><text x="358" y="174" class="t-b k-sis">Producto</text><text x="358" y="194">«Plan Hogar 300», precio</text>
+    <rect x="346" y="228" width="228" height="58" rx="8" class="d-oper"/><text x="358" y="250" class="t-b k-oper">Servicio</text><text x="358" y="270">Internet a 300 Mbps, Wi-Fi</text>
+    <rect x="346" y="304" width="228" height="58" rx="8" class="d-oper"/><text x="358" y="326" class="t-b k-oper">Recurso</text><text x="358" y="346">Puerto 1/1/3, ONT, IP</text>
+  </g>
+  <g class="t t-xs t-m"><text x="470" y="146" text-anchor="middle">COMPRA ↓</text><text x="470" y="222" text-anchor="middle">SE IMPLEMENTA CON ↓</text><text x="470" y="298" text-anchor="middle">USA ↓</text></g>
+
+  
+  <rect x="606" y="14" width="280" height="372" rx="12" class="caja"/>
+  <text x="620" y="40" class="t t-b">TAM · sistemas</text><text x="620" y="57" class="t t-s t-m">¿Qué aplicaciones existen?</text>
+  <rect x="620" y="76" width="252" height="138" rx="8" class="d-sis"/><text x="632" y="96" class="t t-xs t-b k-sis">BSS</text>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="632" y="106" width="110" height="30" rx="6" class="caja"/><text x="687" y="125">CRM</text>
+    <rect x="750" y="106" width="110" height="30" rx="6" class="caja"/><text x="805" y="125">Catálogo</text>
+    <rect x="632" y="142" width="110" height="30" rx="6" class="caja"/><text x="687" y="161">Órdenes</text>
+    <rect x="750" y="142" width="110" height="30" rx="6" class="caja"/><text x="805" y="161">Facturación</text>
+    <rect x="632" y="178" width="228" height="30" rx="6" class="caja"/><text x="746" y="197">Cobranza</text>
+  </g>
+  <rect x="620" y="226" width="252" height="138" rx="8" class="d-oper"/><text x="632" y="246" class="t t-xs t-b k-oper">OSS</text>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="632" y="256" width="110" height="30" rx="6" class="caja"/><text x="687" y="275">Inventario</text>
+    <rect x="750" y="256" width="110" height="30" rx="6" class="caja"/><text x="805" y="275">Activación</text>
+    <rect x="632" y="292" width="110" height="30" rx="6" class="caja"/><text x="687" y="311">Fallas</text>
+    <rect x="750" y="292" width="110" height="30" rx="6" class="caja"/><text x="805" y="311">Rendimiento</text>
+    <rect x="632" y="328" width="228" height="30" rx="6" class="caja"/><text x="746" y="347">Trabajo de campo</text>
+  </g>
+</svg></div><figcaption><b>Los tres mapas del TM Forum, en una figura.</b> A la izquierda, eTOM: los procesos de la operación diaria en tres columnas (cumplimiento, aseguramiento y facturación). En el centro, SID: la cadena de datos que conecta al cliente con la red (cliente, producto, servicio y recurso). A la derecha, TAM: los tipos de sistemas que implementan esos procesos con esos datos.</figcaption></figure></section>
+<section><h2>Capas de la arquitectura: canales, negocio, integración, red, datos</h2><div class="prose"><p>Otra forma de ordenar los sistemas, más práctica que la de los mapas de la industria, es dibujarlos en <b>capas</b>, de la persona a la red:</p><ol class="steps"><li><span><b>Canales</b>: por donde entra el cliente o el empleado. La app y la web de autogestión, el centro de llamadas, las tiendas, la fuerza de ventas y los mensajeros instantáneos.</span></li><li><span><b>Negocio (BSS)</b>: el catálogo, el CRM, las órdenes, la facturación y la cobranza.</span></li><li><span><b>Integración y orquestación</b>: el pegamento. Las APIs, los buses de mensajes y el orquestador que traduce una orden comercial en tareas técnicas.</span></li><li><span><b>Operación (OSS)</b>: el inventario y el mapa de la planta, el aprovisionamiento, el monitoreo y la gestión del trabajo de campo.</span></li><li><span><b>Red</b>: los equipos y las plataformas que los gestionan, como el gestor de OLT, el ACS y RADIUS.</span></li></ol><p>Atravesando todas, una capa vertical de <b>datos</b>: el almacén donde se juntan los datos de todos los sistemas para hacer reportes, tableros y análisis, sin cargar a los sistemas que atienden a los clientes.</p><p>La regla de oro de esta arquitectura es que las capas se hablan <b>con la de al lado</b>, por interfaces conocidas. La app no le habla directo a la OLT; le pide al BSS, que le pide al orquestador, que le pide a la plataforma de la OLT. Parece más largo, pero cada capa puede cambiar sin romper a las demás.</p></div><figure class="fig fig-capas" id="33-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 420" style="min-width:720px" role="img" aria-label="Capas de los sistemas de un telco: canales (app, web, call center, tiendas, mensajería); BSS (catálogo, CRM, órdenes, facturación, cobranza); integración (APIs, bus de mensajes, orquestador); OSS (inventario, aprovisionamiento, monitoreo, trabajo de campo); red (gestor de OLT, RADIUS, ACS y equipos); y una columna de datos que recibe copias de todas las capas">
+  <text x="14" y="26" class="t t-xs t-b t-m">DE LA PERSONA A LA RED</text><text x="746" y="26" class="t t-xs t-b t-m">DATOS</text>
+  <rect x="14" y="40" width="706" height="60" rx="10" class="d-casa"/><text x="28" y="66" class="t t-b k-casa">Canales</text><text x="28" y="84" class="t t-xs t-m">POR DONDE LLEGA EL CLIENTE</text>
+  <rect x="200" y="52" width="96" height="36" rx="7" class="caja"/><text x="248" y="75" text-anchor="middle" class="t t-s">App</text>
+  <rect x="304" y="52" width="96" height="36" rx="7" class="caja"/><text x="352" y="75" text-anchor="middle" class="t t-s">Web</text>
+  <rect x="408" y="52" width="96" height="36" rx="7" class="caja"/><text x="456" y="75" text-anchor="middle" class="t t-s">Call center</text>
+  <rect x="512" y="52" width="96" height="36" rx="7" class="caja"/><text x="560" y="75" text-anchor="middle" class="t t-s">Tiendas</text>
+  <rect x="616" y="52" width="96" height="36" rx="7" class="caja"/><text x="664" y="75" text-anchor="middle" class="t t-s">Mensajería</text>
+  <line x1="110" y1="100" x2="110" y2="113" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <line x1="720" y1="70" x2="744" y2="70" class="ln ln-d" marker-end="url(#fl)"/>
+  <rect x="14" y="114" width="706" height="60" rx="10" class="d-sis"/><text x="28" y="140" class="t t-b k-sis">BSS</text><text x="28" y="158" class="t t-xs t-m">CLIENTE, PRODUCTO Y DINERO</text>
+  <rect x="200" y="126" width="96" height="36" rx="7" class="caja"/><text x="248" y="149" text-anchor="middle" class="t t-s">Catálogo</text>
+  <rect x="304" y="126" width="96" height="36" rx="7" class="caja"/><text x="352" y="149" text-anchor="middle" class="t t-s">CRM</text>
+  <rect x="408" y="126" width="96" height="36" rx="7" class="caja"/><text x="456" y="149" text-anchor="middle" class="t t-s">Órdenes</text>
+  <rect x="512" y="126" width="96" height="36" rx="7" class="caja"/><text x="560" y="149" text-anchor="middle" class="t t-s">Facturación</text>
+  <rect x="616" y="126" width="96" height="36" rx="7" class="caja"/><text x="664" y="149" text-anchor="middle" class="t t-s">Cobranza</text>
+  <line x1="110" y1="174" x2="110" y2="187" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <line x1="720" y1="144" x2="744" y2="144" class="ln ln-d" marker-end="url(#fl)"/>
+  <rect x="14" y="188" width="706" height="60" rx="10" class="d-inet"/><text x="28" y="214" class="t t-b k-inet">Integración</text><text x="28" y="232" class="t t-xs t-m">EL PEGAMENTO</text>
+  <rect x="200" y="200" width="165" height="36" rx="7" class="caja"/><text x="283" y="223" text-anchor="middle" class="t t-s">APIs</text>
+  <rect x="373" y="200" width="165" height="36" rx="7" class="caja"/><text x="456" y="223" text-anchor="middle" class="t t-s">Bus de mensajes</text>
+  <rect x="547" y="200" width="165" height="36" rx="7" class="caja"/><text x="629" y="223" text-anchor="middle" class="t t-s">Orquestador</text>
+  <line x1="110" y1="248" x2="110" y2="261" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <line x1="720" y1="218" x2="744" y2="218" class="ln ln-d" marker-end="url(#fl)"/>
+  <rect x="14" y="262" width="706" height="60" rx="10" class="d-oper"/><text x="28" y="288" class="t t-b k-oper">OSS</text><text x="28" y="306" class="t t-xs t-m">RED Y SERVICIO</text>
+  <rect x="200" y="274" width="122" height="36" rx="7" class="caja"/><text x="261" y="297" text-anchor="middle" class="t t-s">Inventario y GIS</text>
+  <rect x="330" y="274" width="122" height="36" rx="7" class="caja"/><text x="391" y="297" text-anchor="middle" class="t t-s">Aprovisionamiento</text>
+  <rect x="460" y="274" width="122" height="36" rx="7" class="caja"/><text x="521" y="297" text-anchor="middle" class="t t-s">Monitoreo</text>
+  <rect x="590" y="274" width="122" height="36" rx="7" class="caja"/><text x="651" y="297" text-anchor="middle" class="t t-s">Trabajo de campo</text>
+  <line x1="110" y1="322" x2="110" y2="335" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <line x1="720" y1="292" x2="744" y2="292" class="ln ln-d" marker-end="url(#fl)"/>
+  <rect x="14" y="336" width="706" height="60" rx="10" class="d-casa"/><text x="28" y="362" class="t t-b k-casa">Red</text><text x="28" y="380" class="t t-xs t-m">EQUIPOS Y SUS PLATAFORMAS</text>
+  <rect x="200" y="348" width="122" height="36" rx="7" class="caja"/><text x="261" y="371" text-anchor="middle" class="t t-s">Gestor de OLT</text>
+  <rect x="330" y="348" width="122" height="36" rx="7" class="caja"/><text x="391" y="371" text-anchor="middle" class="t t-s">RADIUS</text>
+  <rect x="460" y="348" width="122" height="36" rx="7" class="caja"/><text x="521" y="371" text-anchor="middle" class="t t-s">ACS</text>
+  <rect x="590" y="348" width="122" height="36" rx="7" class="caja"/><text x="651" y="371" text-anchor="middle" class="t t-s">OLT, BNG y core</text>
+  <line x1="720" y1="366" x2="744" y2="366" class="ln ln-d" marker-end="url(#fl)"/>
+  <rect x="746" y="40" width="140" height="356" rx="10" class="caja"/>
+  <rect x="760" y="66" width="112" height="56" rx="8" class="d-sis"/><text x="816" y="90" text-anchor="middle" class="t t-s t-b">Almacén</text><text x="816" y="106" text-anchor="middle" class="t t-s">de datos</text>
+  <rect x="760" y="166" width="112" height="56" rx="8" class="d-sis"/><text x="816" y="190" text-anchor="middle" class="t t-s t-b">Reportes</text><text x="816" y="206" text-anchor="middle" class="t t-s">y tableros</text>
+  <rect x="760" y="266" width="112" height="56" rx="8" class="d-sis"/><text x="816" y="290" text-anchor="middle" class="t t-s t-b">Análisis</text><text x="816" y="306" text-anchor="middle" class="t t-s">e IA</text>
+  <text x="14" y="412" class="t t-s t-m">Cada capa le pide cosas a la de abajo, por interfaces conocidas; todas mandan copias de sus datos a la columna de la derecha.</text>
+</svg></div><figcaption><b>Las capas de los sistemas.</b> Cada franja es una capa, con sus sistemas típicos adentro. Las flechas muestran que cada capa le pide cosas a la de abajo. La columna de la derecha es la capa de datos, que recibe copias de todas para analizarlas.</figcaption></figure><div class="prose"><h3>La fuente de verdad</h3><p>Con tantos sistemas, el mismo dato aparece en varios lugares: la dirección del cliente está en el CRM, en el inventario y en la orden del técnico. ¿Cuál vale cuando no coinciden? La respuesta debe estar decidida de antemano: cada dato tiene <b>una sola fuente de verdad</b>, el sistema dueño de ese dato, y los demás lo copian de él. El plan contratado manda el BSS; qué puerto ocupa el cliente, el inventario; si la ONT está en línea, la plataforma de la OLT.</p><p>Cuando esto no está claro aparecen problemas conocidos: clientes que navegan pero no se facturan, puertos que figuran ocupados por clientes que se fueron hace un año, técnicos que llegan a una dirección vieja.</p></div><figure class="fig fig-mapa" id="33-diagrama-2"><div class="lienzo"><svg viewBox="0 0 920 390" style="min-width:740px" role="img" aria-label="Mapa de sistemas: columnas con los siete pasos de la vida de un cliente (vender, ordenar, instalar, activar, operar, facturar y atender) y filas con las capas de sistemas (canales, BSS, integración, OSS y red); cada cruce muestra qué sistema participa en ese paso">
+  <g class="t t-s t-b" text-anchor="middle"><text x="176.0" y="32">1 · Vender</text><text x="288.0" y="32">2 · Ordenar</text><text x="400.0" y="32">3 · Instalar</text><text x="512.0" y="32">4 · Activar</text><text x="624.0" y="32">5 · Operar</text><text x="736.0" y="32">6 · Facturar</text><text x="848.0" y="32">7 · Atender</text></g>
+  <rect x="14" y="52" width="890" height="54" rx="8" class="d-casa"/>
+  <text x="24" y="78" class="t t-s t-b k-casa">Canales</text><text x="24" y="94" class="t t-xs t-m">CAP. 35</text>
+  <a href="index.html#parte-4"><title>App, web y tiendas: capítulo 35</title><rect x="125" y="58" width="102" height="42" rx="7" class="caja"/><text x="176.0" y="76" text-anchor="middle" class="t t-s">App, web</text><text x="176.0" y="91" text-anchor="middle" class="t t-s">y tiendas</text></a>
+  <a href="index.html#parte-4"><title>App del técnico: capítulo 35</title><rect x="349" y="58" width="102" height="42" rx="7" class="caja"/><text x="400.0" y="76" text-anchor="middle" class="t t-s">App del</text><text x="400.0" y="91" text-anchor="middle" class="t t-s">técnico</text></a>
+  <a href="index.html#parte-4"><title>Factura en la app: capítulo 35</title><rect x="685" y="58" width="102" height="42" rx="7" class="caja"/><text x="736.0" y="76" text-anchor="middle" class="t t-s">Factura en</text><text x="736.0" y="91" text-anchor="middle" class="t t-s">la app</text></a>
+  <a href="index.html#parte-4"><title>Call center y app: capítulo 35</title><rect x="797" y="58" width="102" height="42" rx="7" class="caja"/><text x="848.0" y="76" text-anchor="middle" class="t t-s">Call center</text><text x="848.0" y="91" text-anchor="middle" class="t t-s">y app</text></a>
+  <rect x="14" y="114" width="890" height="54" rx="8" class="d-sis"/>
+  <text x="24" y="140" class="t t-s t-b k-sis">BSS</text><text x="24" y="156" class="t t-xs t-m">CAP. 34</text>
+  <a href="index.html#parte-4"><title>Catálogo y CRM: capítulo 34</title><rect x="125" y="120" width="102" height="42" rx="7" class="caja"/><text x="176.0" y="138" text-anchor="middle" class="t t-s">Catálogo</text><text x="176.0" y="153" text-anchor="middle" class="t t-s">y CRM</text></a>
+  <a href="index.html#parte-4"><title>Gestión de órdenes: capítulo 34</title><rect x="237" y="120" width="102" height="42" rx="7" class="caja"/><text x="288.0" y="138" text-anchor="middle" class="t t-s">Gestión de</text><text x="288.0" y="153" text-anchor="middle" class="t t-s">órdenes</text></a>
+  <a href="index.html#parte-4"><title>Facturación y cobranza: capítulo 34</title><rect x="685" y="120" width="102" height="42" rx="7" class="caja"/><text x="736.0" y="138" text-anchor="middle" class="t t-s">Facturación</text><text x="736.0" y="153" text-anchor="middle" class="t t-s">y cobranza</text></a>
+  <a href="index.html#parte-4"><title>CRM y tickets: capítulo 34</title><rect x="797" y="120" width="102" height="42" rx="7" class="caja"/><text x="848.0" y="138" text-anchor="middle" class="t t-s">CRM y</text><text x="848.0" y="153" text-anchor="middle" class="t t-s">tickets</text></a>
+  <rect x="14" y="176" width="890" height="54" rx="8" class="d-inet"/>
+  <text x="24" y="202" class="t t-s t-b k-inet">Integración</text><text x="24" y="218" class="t t-xs t-m">CAP. 38</text>
+  <a href="index.html#parte-4"><title>Orquestador: capítulo 38</title><rect x="237" y="182" width="102" height="42" rx="7" class="caja"/><text x="288.0" y="208" text-anchor="middle" class="t t-s">Orquestador</text></a>
+  <a href="index.html#parte-4"><title>Orquestador: capítulo 38</title><rect x="349" y="182" width="102" height="42" rx="7" class="caja"/><text x="400.0" y="208" text-anchor="middle" class="t t-s">Orquestador</text></a>
+  <a href="index.html#parte-4"><title>Orquestador: capítulo 38</title><rect x="461" y="182" width="102" height="42" rx="7" class="caja"/><text x="512.0" y="208" text-anchor="middle" class="t t-s">Orquestador</text></a>
+  <a href="index.html#parte-4"><title>Corte y reconexión: capítulo 38</title><rect x="685" y="182" width="102" height="42" rx="7" class="caja"/><text x="736.0" y="200" text-anchor="middle" class="t t-s">Corte y</text><text x="736.0" y="215" text-anchor="middle" class="t t-s">reconexión</text></a>
+  <rect x="14" y="238" width="890" height="54" rx="8" class="d-oper"/>
+  <text x="24" y="264" class="t t-s t-b k-oper">OSS</text><text x="24" y="280" class="t t-xs t-m">CAP. 36</text>
+  <a href="index.html#parte-4"><title>Cobertura (inventario): capítulo 36</title><rect x="125" y="244" width="102" height="42" rx="7" class="caja"/><text x="176.0" y="262" text-anchor="middle" class="t t-s">Cobertura</text><text x="176.0" y="277" text-anchor="middle" class="t t-s">(inventario)</text></a>
+  <a href="index.html#parte-4"><title>Reserva de puerto: capítulo 36</title><rect x="237" y="244" width="102" height="42" rx="7" class="caja"/><text x="288.0" y="262" text-anchor="middle" class="t t-s">Reserva</text><text x="288.0" y="277" text-anchor="middle" class="t t-s">de puerto</text></a>
+  <a href="index.html#parte-4"><title>Agenda y campo: capítulo 36</title><rect x="349" y="244" width="102" height="42" rx="7" class="caja"/><text x="400.0" y="262" text-anchor="middle" class="t t-s">Agenda y</text><text x="400.0" y="277" text-anchor="middle" class="t t-s">campo</text></a>
+  <a href="index.html#parte-4"><title>Aprovisio- namiento: capítulo 36</title><rect x="461" y="244" width="102" height="42" rx="7" class="caja"/><text x="512.0" y="262" text-anchor="middle" class="t t-s">Aprovisio-</text><text x="512.0" y="277" text-anchor="middle" class="t t-s">namiento</text></a>
+  <a href="index.html#parte-4"><title>Monitoreo (NOC): capítulo 36</title><rect x="573" y="244" width="102" height="42" rx="7" class="caja"/><text x="624.0" y="262" text-anchor="middle" class="t t-s">Monitoreo</text><text x="624.0" y="277" text-anchor="middle" class="t t-s">(NOC)</text></a>
+  <a href="index.html#parte-4"><title>Diagnóstico: capítulo 36</title><rect x="797" y="244" width="102" height="42" rx="7" class="caja"/><text x="848.0" y="270" text-anchor="middle" class="t t-s">Diagnóstico</text></a>
+  <rect x="14" y="300" width="890" height="54" rx="8" class="d-casa"/>
+  <text x="24" y="326" class="t t-s t-b k-casa">Red</text><text x="24" y="342" class="t t-xs t-m">CAP. 19</text>
+  <a href="index.html#parte-2"><title>ONT y fibra: partes 2 y 3</title><rect x="349" y="306" width="102" height="42" rx="7" class="caja"/><text x="400.0" y="324" text-anchor="middle" class="t t-s">ONT y</text><text x="400.0" y="339" text-anchor="middle" class="t t-s">fibra</text></a>
+  <a href="index.html#parte-2"><title>OLT, RADIUS y ACS: partes 2 y 3</title><rect x="461" y="306" width="102" height="42" rx="7" class="caja"/><text x="512.0" y="324" text-anchor="middle" class="t t-s">OLT, RADIUS</text><text x="512.0" y="339" text-anchor="middle" class="t t-s">y ACS</text></a>
+  <a href="index.html#parte-2"><title>OLT, BNG y core: partes 2 y 3</title><rect x="573" y="306" width="102" height="42" rx="7" class="caja"/><text x="624.0" y="324" text-anchor="middle" class="t t-s">OLT, BNG</text><text x="624.0" y="339" text-anchor="middle" class="t t-s">y core</text></a>
+  <a href="index.html#parte-2"><title>RADIUS: partes 2 y 3</title><rect x="685" y="306" width="102" height="42" rx="7" class="caja"/><text x="736.0" y="332" text-anchor="middle" class="t t-s">RADIUS</text></a>
+  <a href="index.html#parte-2"><title>ACS y gestor OLT: partes 2 y 3</title><rect x="797" y="306" width="102" height="42" rx="7" class="caja"/><text x="848.0" y="324" text-anchor="middle" class="t t-s">ACS y</text><text x="848.0" y="339" text-anchor="middle" class="t t-s">gestor OLT</text></a>
+  <text x="14" y="380" class="t t-s t-m">Cada columna es un paso; cada fila, una capa. Un paso como «activar» necesita a varios sistemas coordinados.</text>
+</svg></div><figcaption><b>El mapa de sistemas, del canal a la red.</b> Las columnas son los pasos de la vida de un cliente, de la venta a la atención; las filas, las capas de sistemas. En cada cruce está el sistema que trabaja en ese paso. Recorre una columna de arriba abajo para ver cuántos sistemas participan en un solo paso, o una fila de izquierda a derecha para ver en cuántos pasos trabaja cada sistema. Toca un sistema para ir a la parte del libro que lo explica.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región tiene un mapa de sistemas típico de su tamaño. En los canales, una app de autogestión, una web, un centro de llamadas y oficinas comerciales. En el negocio, una plataforma de gestión para proveedores de Internet que junta CRM, facturación y cobranza en un solo producto. En el medio, un orquestador propio que recibe las órdenes y llama, por API, a la plataforma de gestión de OLT, al ACS y al servidor RADIUS. En la operación, un sistema de mapas de la planta y un monitoreo de código abierto que vigila la red. Cuando un cliente compra por la app, cinco o seis de estos sistemas participan antes de que el técnico toque su puerta, y ninguna persona tiene que copiar datos de una pantalla a otra.</p></div></section>
+<section><h2>Sistemas comprados, construidos o en la nube</h2><div class="prose"><p>Cada caja del mapa se puede resolver de tres maneras, y casi todos los telcos mezclan las tres:</p><ul><li><b>Comprar</b> un producto de un proveedor especializado. Es rápido de poner en marcha y trae las buenas prácticas de la industria, pero obliga a adaptarse a cómo el producto hace las cosas, y salir de él después es caro.</li><li><b>Construir</b> un sistema propio. Se adapta exactamente al negocio y puede ser una ventaja competitiva, pero exige un equipo de desarrollo que lo mantenga para siempre.</li><li><b>Usar en la nube</b> como servicio (lo que se llama <b>SaaS</b>): se paga una suscripción y el proveedor se ocupa de los servidores y las actualizaciones. Es lo más común hoy para CRM, mesa de ayuda y algunas plataformas de gestión de OLT. A cambio, los datos viven fuera de la empresa y se depende de la continuidad del proveedor.</li></ul><p>Una regla práctica bastante extendida: <b>comprar o suscribir lo que es igual en todos los telcos</b> (facturación, contabilidad, mesa de ayuda) y <b>construir lo que diferencia</b> (la experiencia de la app, la orquestación que hace única la instalación). Y, sea cual sea la opción, exigir siempre <b>APIs abiertas y documentadas</b>: un sistema que no se deja integrar termina obligando a alguien a copiar datos a mano.</p></div><div class="ml"><b>En la práctica</b><p>Antes de pedir un dato, pregunta cuál es su fuente de verdad: el plan y el precio están en el BSS; el puerto, la fibra y la caja, en el inventario; si el equipo está en línea, en la plataforma de la red. Pedirle a quien maneja ese sistema ahorra idas y vueltas, y evita decisiones tomadas con una copia vieja. Y si ves que tu área copia datos a mano de un sistema a otro, ese es un punto de integración pendiente: vale la pena señalarlo.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué distingue a un BSS de un OSS?</summary><p>El BSS se ocupa del cliente, el producto y el dinero (catálogo, CRM, órdenes, facturación, cobranza); el OSS, de la red y el servicio (inventario, aprovisionamiento, monitoreo, trabajo de campo).</p></details><details><summary>¿Qué hace el orquestador entre los dos?</summary><p>Traduce una orden comercial («activar este plan para este cliente») en las tareas técnicas que la red necesita, en el orden correcto, y avisa al BSS cuando el servicio queda activo.</p></details><details><summary>¿Cuál es la cadena de datos del modelo SID?</summary><p>Cliente, producto, servicio y recurso: el cliente compra un producto, que se implementa con servicios, que usan recursos de la red.</p></details><details><summary>¿En qué tres grandes flujos divide eTOM la operación diaria?</summary><p>Cumplimiento (de la venta al servicio funcionando), aseguramiento (que siga funcionando) y facturación (que se cobre bien).</p></details><details><summary>¿Qué es la fuente de verdad de un dato?</summary><p>El único sistema dueño de ese dato; los demás lo copian de él, y cuando hay diferencias, manda la fuente de verdad.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/OSS/BSS" target="_blank" rel="noopener">OSS/BSS (Wikipedia) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Business_support_system" target="_blank" rel="noopener">Business support system (Wikipedia, en inglés) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Operations_support_system" target="_blank" rel="noopener">Operations support system (Wikipedia, en inglés) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Enhanced_Telecom_Operations_Map" target="_blank" rel="noopener">Enhanced Telecom Operations Map, eTOM (Wikipedia, en inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const OPC=[['bss','BSS'],['oss','OSS'],['frontera','En la frontera']];
+  const IT=[
+    ['CRM','La ficha de cada cliente y su historia con la empresa.','bss','Es el corazón del BSS: conoce a la persona, no al puerto.'],
+    ['Catálogo de planes','Qué se vende, a qué precio y con qué condiciones.','bss','Define productos y precios: negocio puro.'],
+    ['Facturación','Calcula y emite la factura de cada mes.','bss','Se ocupa del dinero: BSS.'],
+    ['Mediación','Recoge registros de uso de la red para poder cobrarlos.','bss','Toma datos de la red, pero existe para facturar: la industria la ubica en el BSS.'],
+    ['Reclamo de un cliente','«Me cobraron dos veces» o «mi Internet anda lento».','bss','El reclamo es la relación con el cliente y vive en el BSS (CRM o mesa de ayuda). Si la causa es técnica, genera trabajo en el OSS.'],
+    ['App de autogestión','Donde el cliente ve su factura, paga y cambia la clave del Wi-Fi.','bss','Es un canal: la puerta de entrada al BSS. Cuando el cliente cambia el Wi-Fi, la app le pide al BSS, que le pide al OSS.'],
+    ['Inventario de red','Qué cajas, puertos y fibras hay, y qué cliente ocupa cada uno.','oss','Habla de recursos de la red: OSS. Es la fuente de verdad de qué puerto usa cada cliente.'],
+    ['Gestor de OLT','Autoriza las ONT y les asigna su perfil.','oss','Gestiona equipos de red: OSS, pegado a la red.'],
+    ['ACS','Configura a distancia el router de la casa (TR-069).','oss','Gestiona los equipos del cliente: OSS.'],
+    ['Monitoreo del NOC','Alarmas, umbrales y tableros de la red.','oss','Gestión de fallas y rendimiento: OSS clásico.'],
+    ['Agenda de técnicos','Órdenes de trabajo y visitas de campo.','oss','Gestiona el trabajo sobre la red: OSS (gestión de la fuerza de campo).'],
+    ['Ticket de falla de red','Un incidente masivo por un corte de fibra.','oss','Es sobre la red y su servicio, no sobre un cliente: lo maneja el OSS. Los reclamos de los clientes se cuelgan de él.'],
+    ['RADIUS','Dice al BNG quién es el cliente, a qué velocidad navega y si está suspendido.','frontera','Vive en la red, pero sus decisiones vienen del negocio (el plan, la suspensión por mora) y sus registros de uso pueden ir a facturación. Tiene un pie en cada lado.'],
+    ['Orquestador','Traduce «activar este plan» en tareas para la OLT, RADIUS y el ACS.','frontera','Su trabajo es justamente unir los dos mundos: recibe órdenes del BSS y las ejecuta en el OSS y la red.']
+  ];
+  let resp={};
+  function armar(){
+    resp={};
+    $('#c33-lista').innerHTML=IT.map((it,i)=>'<div class="c33-it" id="c33-i'+i+'"><b>'+it[0]+'</b><small>'+it[1]+'</small>'+
+      '<div class="btns" role="group" aria-label="Clasificar '+it[0]+'">'+OPC.map(o=>'<button type="button" data-i="'+i+'" data-v="'+o[0]+'" aria-pressed="false">'+o[1]+'</button>').join('')+'</div>'+
+      '<div class="fb" id="c33-f'+i+'"></div></div>').join('');
+    document.querySelectorAll('#c33-lista button').forEach(b=>b.addEventListener('click',elegir));
+    marcador();
+  }
+  function elegir(e){
+    const b=e.currentTarget,i=+b.dataset.i,it=IT[i],bien=b.dataset.v===it[2];
+    resp[i]=bien;
+    b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+    const card=$('#c33-i'+i);card.className='c33-it '+(bien?'bien':'mal');
+    const nombre=OPC.find(o=>o[0]===it[2])[1];
+    $('#c33-f'+i).innerHTML='<b>'+(bien?'✓ Correcto.':(it[2]==='frontera'?'✗ Está en la frontera.':'✗ Es '+nombre+'.'))+'</b> '+it[3];
+    marcador();
+  }
+  function marcador(){
+    const n=Object.keys(resp).length, ok=Object.values(resp).filter(Boolean).length;
+    $('#c33-score').textContent=n?ok+' de '+n+' bien clasificados'+(n===IT.length?' · ¡terminaste!':' · faltan '+(IT.length-n)):'Clasifica los '+IT.length+' sistemas';
+  }
+  $('#c33-reset').addEventListener('click',armar);
+  armar();
+})();
+</script>
+</body>
+</html>

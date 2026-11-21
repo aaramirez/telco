@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gestionar el equipo en casa del cliente · Cómo funciona un telco</title>
+<meta name="description" content="El equipo de la casa se gestiona por dos caminos complementarios: la OLT configura la parte óptica (OMCI) y un servidor de autoconfiguración (ACS) configura el Wi-Fi, la sesión, el firmware y los diagnósticos (TR-069), sin que nadie vaya a la casa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="28-gestionar-el-equipo-en-casa-del-cliente">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 28 DE 49</span><h1>Gestionar el equipo en casa del cliente: OMCI, TR-069 y el ACS</h1><p class="lede">El equipo de la casa se gestiona por dos caminos complementarios: la OLT configura la parte óptica (OMCI) y un servidor de autoconfiguración (ACS) configura el Wi-Fi, la sesión, el firmware y los diagnósticos (TR-069), sin que nadie vaya a la casa.</p></header>
+<section><div class="prose"><p>Un cliente llama porque olvidó la clave del Wi-Fi. Hace quince años eso significaba una visita técnica o una larga explicación para entrar a la configuración del router. Hoy el agente de atención cambia la clave desde su pantalla, o el cliente lo hace desde la aplicación del operador, y diez segundos después el equipo de la casa ya tiene la clave nueva. Nadie fue a la casa.</p><p>Detrás de ese gesto hay dos sistemas que hablan con el equipo del cliente por caminos distintos, y una familia de normas que hacen posible que un operador gestione decenas de miles de equipos de varias marcas desde un solo lugar. De eso trata este capítulo.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un auto con dos talleres. Uno se ocupa de la carrocería y el motor: lo que hace que el auto ande. El otro, del sistema de entretenimiento, la navegación y los ajustes del conductor. En el equipo de la casa pasa lo mismo: la OLT, por OMCI, se ocupa de la parte óptica, la que hace que la fibra funcione; el ACS, por TR-069, se ocupa del Wi-Fi, la conexión a Internet, el software y los diagnósticos.</p></div><figure class="fig fig-capas" id="28-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el equipo de la casa, gestionado desde la OLT y desde el ACS">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class="apagado"><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: el equipo de la casa, gestionado desde la OLT y desde el ACS</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo se ocupa del equipo de la casa: la ONT y su Wi-Fi. Lo gestionan dos sistemas del operador por dos caminos: la OLT por dentro de la fibra, en la capa de enlace, y un servidor de gestión (el ACS) que le habla como cualquier aplicación por IP.</figcaption></figure></section>
+<section><h2>Quién configura qué: OLT, ACS y RADIUS</h2><div class="prose"><p>El equipo que el operador deja en la casa suele ser una sola caja que hace varias cosas: termina la fibra (la parte <b>ONT</b>), hace de router y da Wi-Fi. Cada parte la configura un sistema distinto, y conocer el reparto ahorra muchas llamadas mal derivadas:</p><ul><li><b>La OLT</b>, por un canal llamado <b>OMCI</b>, configura todo lo que tiene que ver con la PON: autoriza a la ONT a usar la fibra, le asigna sus turnos para transmitir, le dice qué servicio va en qué VLAN y lee su potencia óptica y sus alarmas.</li><li><b>El ACS</b> (<i>Auto Configuration Server</i>, servidor de autoconfiguración), por el protocolo <b>TR-069</b>, configura lo que el cliente usa: el nombre y la clave del Wi-Fi, el usuario de la conexión a Internet, la línea de voz, el firmware, y corre diagnósticos a pedido.</li><li><b>RADIUS y el BNG</b> (capítulo 20) no tocan el equipo: deciden qué pasa con la sesión del cliente cuando sale a Internet. Validan su usuario, le dan una dirección IP, le aplican la velocidad del plan y lo suspenden si no pagó.</li></ul></div><figure class="fig fig-esquema" id="28-diagrama-4"><div class="lienzo"><svg viewBox="0 0 900 470" style="min-width:740px" role="img" aria-label="Quién configura qué: la OLT por OMCI autoriza la ONT, crea contenedores y VLAN y lee potencia y alarmas; el ACS por TR-069 configura Wi-Fi, usuario de Internet, voz, firmware, diagnósticos y reinicios; RADIUS y el BNG validan al cliente, dan la IP, aplican la velocidad y suspenden; los tres llegan al equipo de la casa por caminos distintos">
+  <rect x="10" y="10" width="880" height="330" rx="12" class="d-oper"/>
+  <text x="24" y="30" class="t t-xs t-b k-oper">RED Y SISTEMAS DEL OPERADOR</text>
+  
+  <rect x="24" y="42" width="276" height="284" rx="10" class="caja"/>
+  <use href="#i-olt" x="36" y="52" width="34" height="34" class="ico"/><text x="78" y="68" class="t t-b">OLT</text><text x="78" y="84" class="t t-s k-enl t-b">por OMCI</text>
+  <g class="t t-s">
+    <rect x="36" y="100" width="252" height="32" rx="6" class="c-enl"/><text x="48" y="121">Autorizar la ONT en la PON</text>
+    <rect x="36" y="138" width="252" height="32" rx="6" class="c-enl"/><text x="48" y="159">Contenedores y turnos de subida</text>
+    <rect x="36" y="176" width="252" height="32" rx="6" class="c-enl"/><text x="48" y="197">VLAN de cada servicio</text>
+    <rect x="36" y="214" width="252" height="32" rx="6" class="c-enl"/><text x="48" y="235">Potencia óptica y alarmas</text>
+    <rect x="36" y="252" width="252" height="32" rx="6" class="caja ln-d"/><text x="48" y="273" class="t-m">Dirección del ACS (TR-142)</text>
+    <rect x="36" y="290" width="252" height="26" rx="6" class="caja ln-d"/><text x="48" y="308" class="t-m">Firmware, en algunas marcas</text>
+  </g>
+  
+  <rect x="312" y="42" width="276" height="284" rx="10" class="caja"/>
+  <use href="#i-servidor" x="324" y="52" width="34" height="34" class="ico"/><text x="366" y="68" class="t t-b">ACS</text><text x="366" y="84" class="t t-s k-apl t-b">por TR-069</text>
+  <g class="t t-s">
+    <rect x="324" y="100" width="252" height="32" rx="6" class="c-apl"/><text x="336" y="121">Wi-Fi: nombre, clave y canal</text>
+    <rect x="324" y="138" width="252" height="32" rx="6" class="c-apl"/><text x="336" y="159">Usuario de la conexión (PPPoE)</text>
+    <rect x="324" y="176" width="252" height="32" rx="6" class="c-apl"/><text x="336" y="197">Línea de voz (cuenta SIP)</text>
+    <rect x="324" y="214" width="252" height="32" rx="6" class="c-apl"/><text x="336" y="235">Firmware del equipo</text>
+    <rect x="324" y="252" width="252" height="32" rx="6" class="c-apl"/><text x="336" y="273">Diagnósticos: ping, velocidad</text>
+    <rect x="324" y="290" width="252" height="26" rx="6" class="c-apl"/><text x="336" y="308">Reinicio y valores de fábrica</text>
+  </g>
+  
+  <rect x="600" y="42" width="276" height="284" rx="10" class="caja"/>
+  <use href="#i-llave" x="612" y="52" width="34" height="34" class="ico"/><text x="654" y="68" class="t t-b">RADIUS y BNG</text><text x="654" y="84" class="t t-s k-red t-b">por la sesión del cliente</text>
+  <g class="t t-s">
+    <rect x="612" y="100" width="252" height="32" rx="6" class="c-red"/><text x="624" y="121">¿Quién es? Usuario y clave</text>
+    <rect x="612" y="138" width="252" height="32" rx="6" class="c-red"/><text x="624" y="159">Dirección IP</text>
+    <rect x="612" y="176" width="252" height="32" rx="6" class="c-red"/><text x="624" y="197">Velocidad del plan</text>
+    <rect x="612" y="214" width="252" height="32" rx="6" class="c-red"/><text x="624" y="235">Suspender y reconectar</text>
+    <text x="624" y="274" class="t-m">No toca el equipo: decide qué</text>
+    <text x="624" y="290" class="t-m">pasa con su tráfico al salir</text>
+    <text x="624" y="306" class="t-m">a Internet.</text>
+  </g>
+  
+  <rect x="10" y="360" width="880" height="100" rx="12" class="d-casa"/>
+  <text x="24" y="380" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+  <rect x="300" y="384" width="300" height="66" rx="10" class="caja"/>
+  <use href="#i-ont" x="314" y="398" width="38" height="38" class="ico"/>
+  <rect x="362" y="392" width="100" height="22" rx="5" class="c-enl"/><text x="412" y="407" text-anchor="middle" class="t t-xs t-b">PARTE ÓPTICA</text>
+  <rect x="362" y="420" width="226" height="22" rx="5" class="c-apl"/><text x="475" y="435" text-anchor="middle" class="t t-xs t-b">ROUTER, WI-FI Y VOZ</text>
+  
+  <path d="M162 326V403H300" class="ln s-enl" style="stroke-width:2.4" marker-end="url(#fl-enl)"/>
+  <text x="172" y="396" class="t t-s k-enl t-b">dentro de la fibra</text>
+  <line x1="450" y1="326" x2="450" y2="388" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="458" y="352" class="t t-s k-apl t-b">por IP, en una VLAN de gestión</text>
+  <path d="M738 326V431H600" class="ln s-red ln-d" style="stroke-width:2"/>
+  <text x="620" y="422" class="t t-s k-red t-b">solo ve su tráfico</text>
+</svg></div><figcaption><b>Quién configura qué.</b> Tres columnas, tres sistemas. Cada recuadro es algo que ese sistema decide sobre el servicio del cliente; los punteados son tareas que a veces hace, según el fabricante o el diseño de la red. Abajo, por dónde llega cada uno al equipo de la casa.</figcaption></figure><div class="prose"><p>Las zonas grises existen. Algunos fabricantes permiten configurar el Wi-Fi por OMCI, y algunos operadores cargan el usuario de Internet desde la OLT. Pero el reparto de arriba es el más común en una red FTTH moderna, y responde a una lógica: lo óptico es asunto de la OLT; lo que se parece a un router, del ACS; y lo comercial, de RADIUS.</p></div></section>
+<section><h2>OMCI: gestión dentro de la fibra, sin IP</h2><div class="prose"><p><b>OMCI</b> (<i>ONU Management and Control Interface</i>) es el idioma con que la OLT administra a cada ONT. Lo define la norma G.988 de la UIT. Su rasgo más importante es que <b>no usa IP</b>: viaja por un canal reservado dentro de la propia PON, uno por cada ONT, que existe desde el momento en que la ONT se conecta a la fibra. No necesita dirección, ni router, ni que la conexión a Internet esté funcionando.</p><p>Eso lo hace ideal para el arranque. La secuencia típica es así: la ONT se enciende y se presenta a la OLT con su número de serie; si el operador la autorizó, la OLT le abre el canal OMCI y, por ahí, le crea sus contenedores de subida, sus puertos lógicos y sus VLAN (las piezas del capítulo 18). Recién entonces pasa tráfico.</p><p>OMCI describe el equipo como un conjunto de <b>entidades administradas</b>: una para cada puerto, cada contenedor, cada VLAN, cada sensor. La OLT las crea, las modifica y las consulta con mensajes cortos. También por ahí la ONT avisa sus alarmas: «perdí la señal», «me quedé sin energía» (el famoso <i>dying gasp</i>, el último aviso antes de apagarse).</p></div><figure class="fig fig-arquitectura" id="28-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 400" style="min-width:740px" role="img" aria-label="Los dos caminos de gestión: el gestor de la OLT ordena a la OLT y esta configura la parte óptica de la ONT por OMCI dentro de la fibra; el ACS habla por TR-069 sobre IP, en una VLAN de gestión, con la parte de router de la misma ONT; OMCI le entrega a la ONT la dirección del ACS">
+  <rect x="10" y="10" width="230" height="380" rx="12" class="d-casa"/>
+  <rect x="250" y="10" width="640" height="380" rx="12" class="d-oper"/>
+  <text x="125" y="34" text-anchor="middle" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+  <text x="570" y="34" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+
+  
+  <rect x="30" y="110" width="190" height="210" rx="12" class="caja"/>
+  <use href="#i-ont" x="104" y="118" width="40" height="40" class="ico"/>
+  <text x="125" y="172" text-anchor="middle" class="t t-b">ONT con router</text>
+  <rect x="44" y="184" width="162" height="50" rx="8" class="c-enl"/>
+  <text x="125" y="204" text-anchor="middle" class="t t-s t-b">Parte óptica</text><text x="125" y="222" text-anchor="middle" class="t t-xs">CONTENEDORES Y VLAN</text>
+  <rect x="44" y="246" width="162" height="62" rx="8" class="c-apl"/>
+  <text x="125" y="266" text-anchor="middle" class="t t-s t-b">Router</text><text x="125" y="284" text-anchor="middle" class="t t-xs">WI-FI, PPPOE, VOZ,</text><text x="125" y="298" text-anchor="middle" class="t t-xs">FIRMWARE</text>
+
+  
+  <rect x="330" y="150" width="130" height="90" rx="10" class="caja"/>
+  <use href="#i-olt" x="378" y="160" width="34" height="34" class="ico"/>
+  <text x="395" y="212" text-anchor="middle" class="t t-b">OLT</text><text x="395" y="228" text-anchor="middle" class="t t-xs t-m">PUERTO PON</text>
+  <line x1="220" y1="195" x2="330" y2="195" class="ln s-fis" style="stroke-width:3"/>
+  <text x="275" y="186" text-anchor="middle" class="t t-xs t-b k-fis">FIBRA</text>
+
+  
+  <rect x="560" y="56" width="200" height="66" rx="10" class="caja"/>
+  <use href="#i-monitor" x="572" y="72" width="34" height="34" class="ico"/>
+  <text x="614" y="84" class="t t-b">Gestor de la OLT</text><text x="614" y="102" class="t t-s t-m">o NMS del fabricante</text>
+  <path d="M560 89H395V150" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="404" y="80" class="t t-s">① órdenes a la OLT</text>
+  <text x="404" y="96" class="t t-s t-m">(consola, NETCONF o API)</text>
+
+  
+  <path d="M330 210H220" class="ln s-enl" style="stroke-width:2.6" marker-end="url(#fl-enl)"/>
+  <text x="262" y="228" text-anchor="middle" class="t t-s t-b k-enl">② OMCI</text>
+  <text x="262" y="244" text-anchor="middle" class="t t-xs k-enl">SIN IP,</text>
+  <text x="262" y="256" text-anchor="middle" class="t t-xs k-enl">DENTRO DE</text>
+  <text x="262" y="268" text-anchor="middle" class="t t-xs k-enl">LA PON</text>
+
+  
+  <rect x="700" y="270" width="170" height="70" rx="10" class="caja"/>
+  <use href="#i-servidor" x="712" y="288" width="34" height="34" class="ico"/>
+  <text x="754" y="300" class="t t-b">ACS</text><text x="754" y="318" class="t t-s t-m">acs.ejemplo.com</text>
+  <rect x="520" y="270" width="140" height="70" rx="10" class="caja"/>
+  <use href="#i-router-core" x="530" y="288" width="32" height="32" class="ico"/>
+  <text x="568" y="300" class="t t-s t-b">Agregación</text><text x="568" y="316" class="t t-s t-m">red IP de</text><text x="568" y="330" class="t t-s t-m">gestión</text>
+  <path d="M700 305H662" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <path d="M520 305H430V240" class="ln s-apl" style="stroke-width:2.6"/>
+  <path d="M330 232H312V290H222" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="440" y="296" class="t t-s t-b k-apl">③ TR-069</text>
+  <text x="440" y="362" class="t t-s k-apl">sobre HTTPS, en una VLAN de gestión:</text>
+  <text x="440" y="378" class="t t-s k-apl">la OLT lo deja pasar sin leerlo</text>
+
+  
+  <path d="M125 234V242" class="ln ln-d s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="30" y="350" class="t t-s t-b">La parte óptica le pasa al router</text>
+  <text x="30" y="366" class="t t-s">la dirección del ACS que recibió</text>
+  <text x="30" y="382" class="t t-s">por OMCI (TR-142).</text>
+</svg></div><figcaption><b>Los dos caminos de gestión.</b> Arriba, el gestor de la OLT le da órdenes a la OLT y esta configura la parte óptica de la ONT por OMCI, dentro de la fibra. Abajo, el ACS habla con la parte de router de la misma ONT por TR-069, sobre IP, en una VLAN de gestión separada de la navegación del cliente. La flecha punteada muestra el enlace entre los dos: OMCI le entrega a la ONT la dirección del ACS.</figcaption></figure><div class="prose"><p>Los dos caminos no compiten: se encadenan. Una norma del Broadband Forum, la TR-142, describe cómo: por OMCI, la OLT le crea a la ONT una conexión IP de gestión y le dice la dirección del ACS. Con eso, la ONT ya puede llamar al ACS por su cuenta.</p></div></section>
+<section><h2>TR-069: el equipo llama al servidor</h2><div class="prose"><p><b>TR-069</b> es una norma del Broadband Forum, un consorcio de la industria de banda ancha. Su nombre oficial es CWMP (<i>CPE WAN Management Protocol</i>, protocolo de gestión del equipo del cliente desde la red). Hoy lo habla la gran mayoría de los routers y ONT residenciales del mundo.</p><p>Su idea central es contraintuitiva: <b>la conversación siempre la empieza el equipo</b>, no el servidor. El equipo de la casa conoce la dirección del ACS y lo llama: cuando arranca, cuando cambia algo importante y cada cierto tiempo, por ejemplo una vez por hora, solo para reportarse. El ACS aprovecha esas llamadas para darle las órdenes que tenga pendientes.</p><p>¿Por qué al revés? Porque el equipo del cliente suele estar detrás de NAT o de un cortafuegos, y no tiene una dirección fija a la que el servidor pueda llamar. En cambio, el equipo siempre puede salir hacia el ACS, igual que un navegador sale hacia una página web. De hecho, TR-069 usa la misma tecnología que la web: mensajes <b>HTTPS</b> que llevan adentro un texto estructurado en XML (el formato SOAP).</p><p>Lo que se puede hacer por TR-069 se organiza en unas pocas órdenes, llamadas RPC (<i>Remote Procedure Call</i>, llamada a procedimiento remoto):</p><div class="tbl"><table><thead><tr><th>Orden</th><th>Para qué</th></tr></thead><tbody><tr><td><code>GetParameterValues</code></td><td>Leer valores: versión de firmware, clientes conectados, potencia del Wi-Fi</td></tr><tr><td><code>SetParameterValues</code></td><td>Cambiar valores: nombre del Wi-Fi, clave, canal</td></tr><tr><td><code>AddObject</code> / <code>DeleteObject</code></td><td>Crear o borrar instancias: una red Wi-Fi de invitados, una regla de puertos</td></tr><tr><td><code>Download</code></td><td>Descargar un archivo: firmware nuevo o una configuración completa</td></tr><tr><td><code>Reboot</code> / <code>FactoryReset</code></td><td>Reiniciar o volver a valores de fábrica</td></tr></tbody></table></div></div></section>
+<section><h2>Inform, órdenes y el «despertador» (Connection Request)</h2><div class="prose"><p>Cada sesión TR-069 sigue el mismo guion:</p><ol class="steps"><li><span><b>El aviso (Inform).</b> El equipo abre una conexión HTTPS al ACS y le manda un <b>Inform</b>: quién es (fabricante, modelo y número de serie), por qué llama (el evento) y algunos valores clave (versión de firmware, dirección IP).</span></li><li><span><b>La respuesta.</b> El ACS contesta <i>InformResponse</i>: «te escuché».</span></li><li><span><b>«¿Tienes órdenes?»</b> El equipo manda un mensaje vacío, que quiere decir «no tengo más que contarte; ¿qué necesitas?».</span></li><li><span><b>Las órdenes.</b> El ACS manda una orden, el equipo la ejecuta y responde con el resultado; y así, una tras otra.</span></li><li><span><b>El cierre.</b> Cuando el ACS no tiene más órdenes, contesta con una respuesta vacía y la sesión termina.</span></li></ol><p>El <b>evento</b> del Inform dice mucho. Los más comunes son <code>0 BOOTSTRAP</code> (primera vez que este equipo habla con este ACS: hay que darle su configuración inicial), <code>1 BOOT</code> (se reinició), <code>2 PERIODIC</code> (el aviso de rutina), <code>4 VALUE CHANGE</code> (cambió algo que el ACS pidió vigilar, por ejemplo la dirección IP) y <code>7 TRANSFER COMPLETE</code> (terminó de bajar el firmware que le mandaron).</p><p>Queda un problema: si el agente de atención quiere cambiar la clave <b>ahora</b>, no puede esperar al próximo aviso de rutina, que podría llegar dentro de una hora. Para eso existe el <b>Connection Request</b>, el «despertador»: el ACS hace un pedido HTTP muy corto a una dirección especial del equipo, con usuario y clave, que significa «llámame». El equipo no recibe ninguna orden por ahí: solo abre, como siempre, una sesión hacia el ACS, con el evento <code>6 CONNECTION REQUEST</code>. Así se mantiene la regla de que es el equipo el que llama.</p></div><figure class="fig fig-flujo" id="28-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 600" style="min-width:720px" role="img" aria-label="Flujo de una sesión TR-069: un agente pide cambiar el Wi-Fi; el ACS despierta al equipo con un Connection Request; el equipo manda un Inform y el ACS responde; el equipo pide órdenes con un mensaje vacío; el ACS manda SetParameterValues con el nombre nuevo y el equipo confirma; el ACS verifica con GetParameterValues y cierra la sesión con una respuesta vacía">
+  
+  <rect x="30" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-persona" x="42" y="26" width="32" height="32" class="ico"/><text x="82" y="40" class="t t-b">Agente o app</text><text x="82" y="57" class="t t-s t-m">del cliente</text>
+  <rect x="290" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-servidor" x="302" y="26" width="32" height="32" class="ico"/><text x="342" y="40" class="t t-b">ACS</text><text x="342" y="57" class="t t-s t-m">del operador</text>
+  <rect x="580" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-ont" x="592" y="26" width="32" height="32" class="ico"/><text x="632" y="40" class="t t-b">Equipo</text><text x="632" y="57" class="t t-s t-m">ONT con Wi-Fi</text>
+  <line x1="115" y1="70" x2="115" y2="585" class="vida"/>
+  <line x1="375" y1="70" x2="375" y2="585" class="vida"/>
+  <line x1="665" y1="70" x2="665" y2="585" class="vida"/>
+
+  
+  <line x1="115" y1="104" x2="373" y2="112" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="122" y="98" class="t t-s">① Cambiar el Wi-Fi a "MiCasa"</text>
+  
+  <line x1="375" y1="146" x2="663" y2="154" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="385" y="140" class="t t-s"><tspan class="t-mono t-b">Connection Request</tspan> ② «llámame»</text>
+
+  
+  <line x1="665" y1="190" x2="377" y2="198" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="400" y="186" class="t t-s"><tspan class="t-mono t-b">Inform</tspan> ③ soy la serie ABCD…, evento</text>
+  <text x="400" y="214" class="t t-s t-mono t-m">6 CONNECTION REQUEST</text>
+  <line x1="375" y1="248" x2="663" y2="256" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="385" y="242" class="t t-s"><tspan class="t-mono t-b">InformResponse</tspan> ④ te escuché</text>
+
+  
+  <line x1="665" y1="282" x2="377" y2="290" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="430" y="278" class="t t-s"><tspan class="t-mono t-b">POST vacío</tspan> ⑤ ¿tienes órdenes?</text>
+  <line x1="375" y1="324" x2="663" y2="332" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="385" y="318" class="t t-s"><tspan class="t-mono t-b">SetParameterValues</tspan> ⑥</text>
+  <text x="385" y="350" class="t t-s t-mono t-m">Device.WiFi.SSID.1.SSID = "MiCasa"</text>
+  <line x1="665" y1="372" x2="377" y2="380" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="430" y="368" class="t t-s"><tspan class="t-mono t-b">…Response</tspan> ⑦ aplicado (estado 0)</text>
+  <line x1="375" y1="412" x2="663" y2="420" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="385" y="406" class="t t-s"><tspan class="t-mono t-b">GetParameterValues</tspan> ⑧ ¿cómo quedó?</text>
+  <line x1="665" y1="452" x2="377" y2="460" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="430" y="448" class="t t-s"><tspan class="t-mono t-b">…Response</tspan> ⑨ "MiCasa"</text>
+
+  
+  <line x1="375" y1="500" x2="663" y2="508" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="385" y="494" class="t t-s"><tspan class="t-mono t-b">HTTP 204 vacío</tspan> ⑩ no hay más: fin</text>
+  <line x1="375" y1="540" x2="117" y2="548" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="130" y="536" class="t t-s">⑪ Listo: el Wi-Fi ya se llama "MiCasa"</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M790 96v66" class="ln s-apl ln-d" style="stroke-width:3"/><text x="800" y="124" class="k-apl">DESPERTAR</text><text x="800" y="138" class="t-m">opcional</text>
+    <path d="M790 180v84" class="ln s-apl" style="stroke-width:3"/><text x="800" y="210" class="k-apl">AVISO</text><text x="800" y="224" class="t-m">Inform</text>
+    <path d="M790 270v198" class="ln s-apl" style="stroke-width:3"/><text x="800" y="360" class="k-apl">ÓRDENES</text><text x="800" y="374" class="t-m">una por vuelta</text>
+    <path d="M790 486v30" class="ln s-apl" style="stroke-width:3"/><text x="800" y="500" class="k-apl">CIERRE</text>
+  </g>
+  <text x="14" y="330" class="t t-xs t-m" transform="rotate(-90 14 330)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Una sesión TR-069 completa.</b> Tres participantes: quien pide el cambio (un agente o la aplicación del cliente), el ACS y el equipo de la casa; el tiempo corre hacia abajo. El ACS despierta al equipo, el equipo se presenta con un Inform, pide órdenes con un mensaje vacío, recibe el cambio de Wi-Fi, lo confirma y el ACS cierra la sesión. Sin despertador, la sesión empieza directamente en el paso 3.</figcaption></figure><div class="prose"><p>El despertador necesita que el ACS pueda llegar al equipo. Por eso los operadores ponen la gestión en una VLAN y un rango de direcciones propios, separados de la navegación del cliente: así el ACS alcanza a todos los equipos aunque el cliente esté detrás de NAT compartida. Cuando eso no es posible, hay extensiones de la norma para atravesar el NAT.</p></div><div class="lab" id="28-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Sesión TR-069 paso a paso</h3></div><p class="hint">Elige cómo empieza la sesión y escribe un nombre nuevo para el Wi-Fi. Avanza mensaje por mensaje: el Inform, el pedido de órdenes, el cambio de nombre y el cierre. Prueba también con un nombre de más de 32 caracteres.</p><style>
+.c28-ses{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.c28-ses select{width:100%;min-width:0}
+.c28-ses input[type=text]{font:500 .95rem var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);width:100%;min-width:0;box-sizing:border-box}
+.c28-ses .carriles{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font:700 .78rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.c28-ses .carriles span:last-child{text-align:right}
+.c28-ses ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.c28-ses li{min-width:0;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:500 .88rem var(--f-display);background:var(--paper);max-width:88%}
+.c28-ses li.eq{justify-self:end;border-right:4px solid var(--c-apl)}
+.c28-ses li.acs{justify-self:start;border-left:4px solid var(--accent)}
+.c28-ses li.err{border-color:var(--warm)}
+.c28-ses li b{display:block}
+.c28-ses li code{display:block;white-space:normal;font-size:.78rem;word-break:break-word;overflow-wrap:anywhere;color:var(--muted)}
+.c28-ses .wifi{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font:600 .9rem var(--f-display)}
+.c28-ses .wifi span{font-family:var(--f-mono);color:var(--accent)}
+</style>
+<div class="c28-ses">
+  <div class="opciones">
+    <label>La sesión empieza porque
+      <select id="c28-ev">
+        <option value="6">El ACS lo despierta (Connection Request)</option>
+        <option value="2">Le toca su aviso periódico</option>
+        <option value="1">El equipo se reinició</option>
+      </select></label>
+    <label>Nombre nuevo para el Wi-Fi
+      <input type="text" id="c28-ssid" value="MiCasa" maxlength="60" spellcheck="false"></label>
+  </div>
+  <div class="btns">
+    <button type="button" class="primary" id="c28-paso">Siguiente mensaje</button>
+    <button type="button" id="c28-rei">Empezar de nuevo</button>
+  </div>
+  <div class="wifi">El Wi-Fi del equipo se llama: <span id="c28-actual">Familia-Perez</span></div>
+  <div class="carriles"><span>ACS</span><span>Equipo de la casa</span></div>
+  <ol id="c28-msgs" aria-live="polite"></ol>
+  <p class="hint" id="c28-exp" aria-live="polite"></p>
+</div></div></section>
+<section><h2>TR-181: el árbol de parámetros del equipo</h2><div class="prose"><p>TR-069 dice <b>cómo</b> se hablan el ACS y el equipo. Falta decir <b>de qué</b> hablan: cómo se llama el dato «nombre del Wi-Fi» para que cualquier ACS lo encuentre en cualquier equipo. Esa es la tarea del <b>modelo de datos</b>, y el actual se llama <b>TR-181</b> (o <i>Device:2</i>).</p><p>TR-181 organiza todo lo que se puede leer o cambiar en un equipo como un <b>árbol de nombres</b> separados por puntos, parecido al árbol de la MIB del capítulo 27 pero con palabras en lugar de números:</p><p><code>Device.WiFi.SSID.1.SSID</code> → el nombre de la primera red Wi-Fi</p><p>Cada hoja del árbol es un <b>parámetro</b>, con un tipo (texto, número, sí o no), un permiso (solo lectura o lectura y escritura) y un significado definido en la norma. Los números del medio (<code>SSID.1</code>, <code>SSID.2</code>) son <b>instancias</b>: un equipo con dos bandas tiene dos redes. Algunas ramas típicas son <code>Device.DeviceInfo</code> (modelo, número de serie, firmware), <code>Device.WiFi</code>, <code>Device.PPP</code> (la conexión a Internet), <code>Device.IP</code>, <code>Device.Optical</code> (la potencia de la fibra) y <code>Device.Hosts</code> (los dispositivos conectados en la casa).</p><p>Antes de TR-181 existía otro modelo, el TR-098, con la raíz <code>InternetGatewayDevice.</code> y pensado para los módems de cobre de una sola conexión. Muchos equipos todavía lo usan, y por eso un ACS tiene que saber qué modelo habla cada uno: el mismo nombre del Wi-Fi vive en rutas distintas. Y casi todos los fabricantes agregan ramas propias, que empiezan con <code>X_</code> y el nombre de la marca, para lo que la norma no cubre.</p></div><div class="lab" id="28-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Explorador del árbol TR-181</h3></div><p class="hint">Abre las ramas del árbol de un equipo de ejemplo y toca cualquier parámetro para ver su tipo, si se puede cambiar, un valor de ejemplo y cómo se llamaba el mismo dato en el modelo antiguo TR-098.</p><style>
+.c28-arbol{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:640px){.c28-arbol{grid-template-columns:minmax(0,1fr)}}
+.c28-arbol .tree{font:500 .86rem var(--f-mono);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.c28-arbol details{margin-left:12px;border:0;padding:0;background:none;border-radius:0}
+.c28-arbol .tree>details{margin-left:0}
+.c28-arbol summary{cursor:pointer;padding:2px 0;color:var(--ink);font-weight:600}
+.c28-arbol .hoja{display:block;margin:2px 0 2px 14px;padding:2px 6px;border:0;background:none;font:500 .84rem var(--f-mono);color:var(--accent);text-align:left;border-radius:4px;cursor:pointer}
+.c28-arbol .hoja:hover,.c28-arbol .hoja[aria-pressed="true"]{background:var(--accent-soft);border-color:transparent}
+.c28-arbol .hoja[aria-pressed="true"]{color:var(--ink)}
+.c28-arbol .ficha{display:grid;gap:8px;border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--card);font:500 .88rem var(--f-display)}
+.c28-arbol .ficha code{word-break:break-all;font-size:.82rem}
+.c28-arbol .ficha .k{font:700 .72rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block}
+.c28-arbol .pill{display:inline-block;padding:1px 8px;border-radius:10px;font:700 .75rem var(--f-display);background:var(--accent-soft);color:var(--accent)}
+.c28-arbol .pill.rw{background:var(--warm-soft);color:var(--warm)}
+</style>
+<div class="c28-arbol">
+  <div class="tree" id="c28-tree" aria-label="Árbol de parámetros TR-181"></div>
+  <div class="ficha" id="c28-ficha" aria-live="polite"></div>
+</div></div></section>
+<section><h2>TR-369 (USP): lo que viene</h2><div class="prose"><p>TR-069 nació en 2004, cuando un operador quería configurar un módem de vez en cuando. Hoy se le pide mucho más: ver en tiempo real cómo anda el Wi-Fi, que la aplicación del cliente cambie cosas al instante, gestionar los equipos de malla y los aparatos inteligentes de la casa. Para eso, el Broadband Forum publicó en 2018 su sucesor: <b>TR-369</b>, llamado <b>USP</b> (<i>User Services Platform</i>).</p><p>Las diferencias principales:</p><ul><li><b>Conversación en las dos direcciones, siempre abierta.</b> En lugar de sesiones que se abren y se cierran, el equipo mantiene una conexión permanente sobre protocolos de mensajería como MQTT o WebSocket. El servidor no necesita despertador.</li><li><b>Varios controladores.</b> El ACS del operador, la aplicación del cliente y un servicio de un tercero pueden hablar con el mismo equipo, cada uno con sus permisos.</li><li><b>Avisos en tiempo real.</b> El equipo puede notificar al instante cuando un dispositivo se conecta o cuando la señal del Wi-Fi cae.</li><li><b>El mismo árbol.</b> USP usa el modelo TR-181. Un operador con equipos que ya hablan TR-181 tiene la mitad del camino recorrido; uno con equipos TR-098 tiene que migrar primero.</li></ul><p>La transición es lenta: hay cientos de millones de equipos con TR-069 funcionando, y por años convivirán los dos protocolos. Muchos equipos nuevos ya traen ambos.</p></div></section>
+<section><h2>El catálogo de normas TR que importan</h2><div class="prose"><p>Las normas del Broadband Forum se llaman <i>Technical Reports</i> y se identifican con un número. Estas son las que más aparecen en una red FTTH con gestión remota del equipo de la casa:</p><div class="tbl"><table><thead><tr><th>Norma</th><th>Qué define</th><th>Para qué importa</th></tr></thead><tbody><tr><td>TR-069</td><td>El protocolo de gestión (CWMP)</td><td>Es el idioma entre el ACS y el equipo</td></tr><tr><td>TR-181</td><td>El modelo de datos actual (<code>Device.</code>)</td><td>Qué se puede leer y cambiar, con nombres comunes</td></tr><tr><td>TR-098</td><td>El modelo de datos antiguo</td><td>Equipos viejos; el ACS tiene que traducir</td></tr><tr><td>TR-369</td><td>USP, el sucesor de TR-069</td><td>Gestión en tiempo real y con varios controladores</td></tr><tr><td>TR-142</td><td>Cómo se reparten OMCI y TR-069 en una ONT</td><td>Que la OLT le entregue a la ONT la dirección del ACS</td></tr><tr><td>TR-104</td><td>Modelo de datos de la voz</td><td>Configurar la línea telefónica del equipo</td></tr><tr><td>TR-143</td><td>Pruebas de rendimiento desde el equipo</td><td>Pruebas de velocidad sin el Wi-Fi de por medio (capítulo 26)</td></tr><tr><td>TR-111</td><td>Llegar a equipos detrás de NAT</td><td>Que el despertador funcione aunque haya NAT</td></tr></tbody></table></div><p>Para quien compra equipos, el catálogo tiene una consecuencia práctica: no basta con pedir «soporte TR-069». Hay que pedir TR-069 <b>con modelo TR-181</b>, la lista de parámetros que el equipo realmente soporta y, de preferencia, un plan para USP.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región gestiona con un ACS a gran escala decenas de miles de equipos de varias marcas. Para el cliente, el ACS está detrás de la aplicación: cambiar el nombre y la clave del Wi-Fi, ver qué dispositivos están conectados, reiniciar el equipo o pausar Internet a un dispositivo. Para atención y el NOC, el ACS es una ventana a la casa: ven el firmware, la potencia óptica, los clientes del Wi-Fi y la intensidad de su señal, lanzan un ping o una prueba de velocidad desde el propio equipo y actualizan el firmware por lotes, de madrugada, empezando por un grupo piloto. Cada equipo nuevo, al llamar por primera vez con el evento BOOTSTRAP, recibe sola su configuración inicial. El resultado se nota en las visitas técnicas que no hace falta hacer.</p></div><div class="ml"><b>En la práctica</b><p>Antes de mandar a un técnico, conviene preguntar qué se puede resolver a distancia. Por el ACS: el nombre y la clave del Wi-Fi, el canal, un reinicio, volver a valores de fábrica, actualizar el firmware, ver qué dispositivos están conectados y medir la velocidad desde el equipo. Por el gestor de la OLT: ver si la ONT está en línea, su potencia óptica y si avisó que se quedó sin energía. Exigen visita: una fibra cortada o doblada, una potencia óptica fuera de rango, un equipo que no enciende o que no responde por ningún camino, y mover el equipo o cablear otra habitación.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué configura la OLT por OMCI y qué configura el ACS por TR-069?</summary><p>La OLT configura la parte óptica: autorización en la PON, contenedores, puertos y VLAN, y lee alarmas y potencia. El ACS configura lo que usa el cliente: Wi-Fi, conexión a Internet, voz, firmware y diagnósticos.</p></details><details><summary>¿Por qué OMCI funciona aunque la ONT no tenga dirección IP?</summary><p>Porque viaja por un canal propio dentro de la PON, entre la OLT y cada ONT, sin usar IP.</p></details><details><summary>En TR-069, ¿quién empieza siempre la conversación?</summary><p>El equipo de la casa. El ACS solo puede pedirle que llame, con el Connection Request.</p></details><details><summary>¿Qué significa un Inform con el evento 0 BOOTSTRAP?</summary><p>Que el equipo habla por primera vez con ese ACS, así que hay que darle su configuración inicial.</p></details><details><summary>¿Qué diferencia hay entre TR-069 y TR-181?</summary><p>TR-069 es el protocolo, cómo se hablan el ACS y el equipo; TR-181 es el modelo de datos, el árbol de parámetros del que hablan.</p></details><details><summary>¿Qué ventaja principal trae TR-369 (USP)?</summary><p>Una conexión permanente en las dos direcciones, en tiempo real y con varios controladores, como el ACS y la aplicación del cliente.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/TR-069" target="_blank" rel="noopener">TR-069 (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.broadband-forum.org/pdfs/tr-069-1-6-1.pdf" target="_blank" rel="noopener">TR-069: CPE WAN Management Protocol (Broadband Forum, inglés) <small>norma</small></a><a class="vid" href="https://usp-data-models.broadband-forum.org/tr-181-2-17-0-usp.html" target="_blank" rel="noopener">Modelo de datos TR-181 Device:2 (Broadband Forum, inglés) <small>referencia</small></a><a class="vid" href="https://usp.technology/" target="_blank" rel="noopener">USP, TR-369 (Broadband Forum, inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const EV={6:'6 CONNECTION REQUEST',2:'2 PERIODIC',1:'1 BOOT'};
+  let paso=0,ssid='Familia-Perez',pasos=[];
+  function guion(){
+    const ev=$('#c28-ev').value,nuevo=$('#c28-ssid').value,ok=nuevo.length>=1&&nuevo.length<=32;
+    const p=[];
+    if(ev==='6') p.push({d:'acs',t:'Connection Request',c:'GET http://100.64.12.34:7547/cr (con usuario y clave)',e:'El ACS no puede darle órdenes al equipo directamente: solo le toca el timbre. El equipo responde «ok» y llama él.'});
+    p.push({d:'eq',t:'Inform',c:'Serie ABCD12345678 · evento '+EV[ev]+' · firmware V5.2.1',e:ev==='6'?'El equipo abre una conexión HTTPS hacia el ACS y se presenta. El evento dice que llama porque lo despertaron.':ev==='2'?'Es el aviso de rutina: el equipo llama solo cada cierto tiempo, por ejemplo una vez por hora. El cambio tuvo que esperar hasta ahora.':'El equipo se reinició y lo avisa. El ACS aprovecha para ver si su configuración sigue en orden.'});
+    p.push({d:'acs',t:'InformResponse',c:'',e:'El ACS confirma que recibió el aviso.'});
+    p.push({d:'eq',t:'POST vacío',c:'',e:'El equipo ya no tiene nada que contar y le pregunta al ACS si tiene órdenes.'});
+    p.push({d:'acs',t:'SetParameterValues',c:'Device.WiFi.SSID.1.SSID = "'+nuevo+'"',e:'El ACS manda la orden pendiente: cambiar el nombre de la red.'});
+    if(ok) p.push({d:'eq',t:'SetParameterValuesResponse',c:'Status = 0 (aplicado)',e:'El equipo cambió el nombre. Los dispositivos de la casa tendrán que volver a conectarse a la red nueva.',fx:()=>{ssid=nuevo;}});
+    else p.push({d:'eq',t:'Fault 9007',c:'Valor no válido: un nombre de Wi-Fi tiene de 1 a 32 caracteres',e:'El equipo rechaza la orden con un código de error y no cambia nada. El ACS lo registra y avisa a quien pidió el cambio.',err:true});
+    p.push({d:'acs',t:'HTTP 204 vacío',c:'',e:'El ACS no tiene más órdenes: responde vacío y la sesión termina. El equipo volverá a llamar en su próximo aviso.'});
+    return p;
+  }
+  function pintar(){
+    $('#c28-actual').textContent=ssid;
+    $('#c28-msgs').innerHTML=pasos.slice(0,paso).map(m=>'<li class="'+m.d+(m.err?' err':'')+'"><b>'+(m.d==='eq'?'← ':'→ ')+m.t+'</b>'+(m.c?'<code>'+m.c.replace(/</g,'&lt;')+'</code>':'')+'</li>').join('');
+    $('#c28-exp').textContent=paso===0?'Pulsa «Siguiente mensaje» para empezar la sesión.':pasos[paso-1].e;
+    $('#c28-paso').disabled=paso>=pasos.length;
+    $('#c28-paso').textContent=paso>=pasos.length?'Sesión cerrada':'Siguiente mensaje';
+  }
+  function reiniciar(){paso=0;pasos=guion();pintar();}
+  $('#c28-paso').addEventListener('click',()=>{if(paso<pasos.length){const m=pasos[paso];paso++;if(m.fx)m.fx();pintar();}});
+  $('#c28-rei').addEventListener('click',reiniciar);
+  $('#c28-ev').addEventListener('change',reiniciar);
+  $('#c28-ssid').addEventListener('input',()=>{if(paso===0)pasos=guion();});
+  $('#c28-ssid').addEventListener('change',reiniciar);
+  reiniciar();
+})();
+</script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const P=[
+    ['Device.DeviceInfo.Manufacturer','texto','R','"Fabricante Ejemplo"','Marca del equipo. El ACS la usa para saber qué perfil aplicarle.','InternetGatewayDevice.DeviceInfo.Manufacturer'],
+    ['Device.DeviceInfo.SerialNumber','texto','R','"ABCD12345678"','Número de serie: identifica al equipo en el ACS y en el inventario.','InternetGatewayDevice.DeviceInfo.SerialNumber'],
+    ['Device.DeviceInfo.SoftwareVersion','texto','R','"V5.2.1"','Versión de firmware. Se consulta antes de una actualización masiva.','InternetGatewayDevice.DeviceInfo.SoftwareVersion'],
+    ['Device.DeviceInfo.UpTime','número','R','86400 (segundos)','Tiempo desde el último encendido. Si es muy bajo, el equipo se reinició hace poco.','InternetGatewayDevice.DeviceInfo.UpTime'],
+    ['Device.ManagementServer.URL','texto','RW','"https://acs.ejemplo.com/cwmp"','Dirección del ACS al que el equipo llama.','InternetGatewayDevice.ManagementServer.URL'],
+    ['Device.ManagementServer.PeriodicInformInterval','número','RW','3600 (segundos)','Cada cuánto el equipo hace su aviso de rutina.','InternetGatewayDevice.ManagementServer.PeriodicInformInterval'],
+    ['Device.ManagementServer.ConnectionRequestURL','texto','R','"http://100.64.12.34:7547/cr"','La dirección del «despertador»: a dónde el ACS le toca el timbre.','InternetGatewayDevice.ManagementServer.ConnectionRequestURL'],
+    ['Device.WiFi.Radio.1.OperatingFrequencyBand','texto','R','"2.4GHz"','Banda de la primera radio. Un equipo de doble banda tiene Radio.1 y Radio.2.','No existe igual: estaba mezclado en WLANConfiguration'],
+    ['Device.WiFi.Radio.1.Channel','número','RW','6','Canal de la radio. Cambiarlo ayuda cuando los vecinos usan el mismo.','InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Channel'],
+    ['Device.WiFi.SSID.1.SSID','texto','RW','"MiCasa"','Nombre de la red de 2,4 GHz. Es lo que cambia la app del cliente.','InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID'],
+    ['Device.WiFi.SSID.2.SSID','texto','RW','"MiCasa-5G"','Nombre de la red de 5 GHz: otra instancia del mismo objeto.','InternetGatewayDevice.LANDevice.1.WLANConfiguration.2.SSID'],
+    ['Device.WiFi.AccessPoint.1.Security.ModeEnabled','texto','RW','"WPA2-Personal"','Tipo de seguridad de la red.','InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.BeaconType'],
+    ['Device.WiFi.AccessPoint.1.Security.KeyPassphrase','texto','RW','(se escribe, pero al leerlo devuelve vacío)','La clave del Wi-Fi. Por seguridad, el equipo no la devuelve cuando el ACS la lee.','InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey.1.KeyPassphrase'],
+    ['Device.PPP.Interface.1.Username','texto','RW','"cliente123@ejemplo.com"','Usuario con que el equipo se identifica ante el BNG y RADIUS.','InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Username'],
+    ['Device.PPP.Interface.1.ConnectionStatus','texto','R','"Connected"','Si la conexión a Internet está levantada.','InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.ConnectionStatus'],
+    ['Device.IP.Interface.1.IPv4Address.1.IPAddress','texto','R','"100.64.12.34"','Dirección IP que recibió el equipo.','InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.ExternalIPAddress'],
+    ['Device.IP.Diagnostics.IPPing.Host','texto','RW','"www.ejemplo.com"','A quién hacerle ping desde el propio equipo. Se escribe el destino y se lanza la prueba.','InternetGatewayDevice.IPPingDiagnostics.Host'],
+    ['Device.Optical.Interface.1.OpticalSignalLevel','número','R','-19500 (milésimas de dBm: −19,5 dBm)','Potencia de luz que recibe la ONT. Fuera de rango, hay que revisar la fibra.','No es estándar: cada fabricante la pone en su rama X_…'],
+    ['Device.Optical.Interface.1.TransmitOpticalLevel','número','R','2100 (2,1 dBm)','Potencia de luz que transmite la ONT hacia la OLT.','No es estándar: cada fabricante la pone en su rama X_…'],
+    ['Device.Hosts.HostNumberOfEntries','número','R','7','Cuántos dispositivos ve el equipo en la casa.','InternetGatewayDevice.LANDevice.1.Hosts.HostNumberOfEntries'],
+    ['Device.Hosts.Host.1.HostName','texto','R','"telefono-1"','Nombre de uno de los dispositivos conectados.','InternetGatewayDevice.LANDevice.1.Hosts.Host.1.HostName'],
+    ['Device.Hosts.Host.1.IPAddress','texto','R','"192.168.1.23"','Dirección dentro de la casa de ese dispositivo.','InternetGatewayDevice.LANDevice.1.Hosts.Host.1.IPAddress']];
+  const raiz={};
+  P.forEach((p,i)=>{const partes=p[0].split('.');let n=raiz;partes.slice(0,-1).forEach(k=>{n[k]=n[k]||{};n=n[k];});n['§'+partes[partes.length-1]]=i;});
+  let uid=0;
+  function html(n,ruta,abierto){
+    return Object.keys(n).map(k=>{
+      if(k[0]==='§'){const i=n[k];return '<button type="button" class="hoja" aria-pressed="false" data-i="'+i+'">'+k.slice(1)+'</button>';}
+      const nr=ruta?ruta+'.'+k:k;
+      return '<details'+(abierto||nr==='Device'||nr==='Device.WiFi'||nr==='Device.WiFi.SSID'||nr==='Device.WiFi.SSID.1'?' open':'')+'><summary>'+k+(/^\d+$/.test(k)?' <small style="color:var(--muted);font-weight:400">(instancia)</small>':'')+'</summary>'+html(n[k],nr,false)+'</details>';
+    }).join('');
+  }
+  $('#c28-tree').innerHTML=html(raiz,'',false);
+  function ficha(i){
+    const p=P[i];
+    document.querySelectorAll('.c28-arbol .hoja').forEach(b=>b.setAttribute('aria-pressed',b.dataset.i==i));
+    $('#c28-ficha').innerHTML='<div><span class="k">Ruta completa</span><code>'+p[0]+'</code></div>'+
+      '<div><span class="k">Tipo y permiso</span>'+p[1]+' · <span class="pill'+(p[2]==='RW'?' rw':'')+'">'+(p[2]==='RW'?'lectura y escritura':'solo lectura')+'</span></div>'+
+      '<div><span class="k">Valor de ejemplo</span><code>'+p[3]+'</code></div>'+
+      '<div><span class="k">Para qué sirve</span>'+p[4]+'</div>'+
+      '<div><span class="k">En el modelo antiguo TR-098</span><code>'+p[5]+'</code></div>';
+  }
+  $('#c28-tree').addEventListener('click',e=>{const b=e.target.closest('.hoja');if(b)ficha(+b.dataset.i);});
+  ficha(P.findIndex(p=>p[0]==='Device.WiFi.SSID.1.SSID'));
+})();
+</script>
+</body>
+</html>

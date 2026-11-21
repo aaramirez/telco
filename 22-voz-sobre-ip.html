@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Voz sobre IP · Cómo funciona un telco</title>
+<meta name="description" content="La telefonía de hoy es una aplicación más sobre la red IP: un protocolo (SIP) prepara, controla y termina la llamada, otro (RTP) lleva la voz en paquetes pequeños, y el operador agrega lo que hace que siga siendo un servicio telefónico (números, interconexión con otras redes, emergencias y portabilidad).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="22-voz-sobre-ip">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 22 DE 49</span><h1>Voz sobre IP: SIP, RTP y la telefonía del operador</h1><p class="lede">La telefonía de hoy es una aplicación más sobre la red IP: un protocolo (SIP) prepara, controla y termina la llamada, otro (RTP) lleva la voz en paquetes pequeños, y el operador agrega lo que hace que siga siendo un servicio telefónico (números, interconexión con otras redes, emergencias y portabilidad).</p></header>
+<section><div class="analogia"><b>Imagínalo así</b><p>Organizar una reunión: primero las invitaciones, confirmaciones y el acuerdo de en qué idioma se va a hablar (SIP y SDP); después la conversación en sí (RTP); y una central de recepción que sabe en qué oficina está cada persona hoy (el registro).</p></div></section>
+<section><h2>De la central telefónica a la voz por IP</h2><div class="prose"><p>Durante cien años, una llamada telefónica fue un <b>circuito</b>: al marcar, las centrales unían cables y conmutadores hasta formar un camino exclusivo entre los dos teléfonos, y ese camino quedaba reservado mientras durara la conversación, aunque nadie hablara. Cada llamada ocupaba un canal fijo de 64 kilobits por segundo (kbit/s), hablaran o callaran.</p><p>La <b>voz sobre IP</b> (VoIP) cambia esa idea de raíz. La voz se corta en pedacitos de 20 milisegundos, cada pedacito viaja en un paquete IP como cualquier otro dato, y del otro lado se vuelven a juntar. No hay camino reservado: los paquetes de voz comparten la red con el video, el correo y las páginas web. Es más barato y flexible, pero obliga a cuidar algo que el circuito daba gratis: que los paquetes lleguen a tiempo y en orden.</p><p>Hoy casi toda la telefonía es IP por dentro, incluso cuando el cliente usa un teléfono de los de siempre. En una red de fibra, el teléfono se enchufa a la ONT y la ONT convierte la voz en paquetes. Para el operador, la voz es una aplicación más que viaja por su red, como muestra el mapa de abajo.</p></div><figure class="fig fig-capas" id="22-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la voz como aplicación, de la ONT al núcleo de voz y a otras redes">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la voz como aplicación, de la ONT al núcleo de voz y a otras redes</text>
+</svg></div><figcaption><b>Dónde estamos.</b> La voz sobre IP vive en las capas de aplicación (SIP, que organiza la llamada) y de transporte (RTP sobre UDP, que lleva la voz). Recorre el tramo que va de la ONT del cliente al núcleo de voz del operador y, desde ahí, a otras redes telefónicas.</figcaption></figure></section>
+<section><h2>SIP: el protocolo que arma la llamada</h2><div class="prose"><p>Una llamada tiene dos partes muy distintas. Una es la <b>organización</b>: avisar que alguien llama, hacer sonar el otro teléfono, saber si contestó y avisar cuando cuelga. La otra es la <b>conversación</b>: la voz misma. En VoIP cada parte tiene su protocolo.</p><p>La organización la hace <b>SIP</b> (protocolo de inicio de sesión). SIP se parece mucho a HTTP, el protocolo de la web: son mensajes de texto que se pueden leer, con un pedido de un lado y una respuesta numerada del otro. Los pedidos se llaman <b>métodos</b> y los principales son pocos:</p><ul><li><code>REGISTER</code>: «estoy aquí, este es mi número».</li><li><code>INVITE</code>: «quiero llamarte».</li><li><code>ACK</code>: «recibí tu respuesta, empecemos».</li><li><code>BYE</code>: «cuelgo».</li><li><code>CANCEL</code>: «me arrepentí antes de que contestaras».</li></ul><p>Las respuestas usan códigos de tres cifras, igual que la web. Los que empiezan con 1 son avisos de que algo está en curso (<code>100 Trying</code>, «lo estoy intentando»; <code>180 Ringing</code>, «está sonando»). Los que empiezan con 2 son éxitos (<code>200 OK</code>). Los 4xx son errores del que llama (<code>404 Not Found</code>, número inexistente; <code>486 Busy Here</code>, ocupado; <code>401 Unauthorized</code>, falta identificarse) y los 5xx, fallas de la red.</p><p>En SIP cada teléfono es un <b>agente de usuario</b> y tiene una dirección parecida a un correo: <code>sip:+525555550123@voz.ejemplo.com</code>. Entre los teléfonos trabajan servidores que reciben y reenvían los mensajes: el <b>registrador</b>, que lleva la lista de quién está conectado y dónde, y el <b>proxy</b>, que encamina cada llamada hacia su destino. En la red de un operador, esos servidores forman el <b>núcleo de voz</b>.</p></div></section>
+<section><h2>Registrarse: cómo la red sabe dónde está tu teléfono (REGISTER)</h2><div class="prose"><p>Antes de poder recibir llamadas, el teléfono tiene que avisar dónde está. Es como llegar a una oficina y pasar por recepción: «soy Ana, hoy estoy en la sala 3». Así, cuando alguien pregunte por Ana, la recepcionista sabe a dónde mandarlo.</p><p>El teléfono manda un <code>REGISTER</code> al registrador con su número y su dirección IP actual. Pero la red no le cree a cualquiera: responde con un <b>desafío</b> (<code>401 Unauthorized</code>) que trae un número al azar, llamado <i>nonce</i>. El teléfono mezcla ese número con su contraseña mediante una función matemática de un solo sentido (un <i>hash</i>) y devuelve el resultado. El registrador hace la misma cuenta con la contraseña que tiene guardada; si coinciden, contesta <code>200 OK</code>. La contraseña nunca viaja por la red, y como el nonce cambia cada vez, copiar la respuesta no sirve para entrar después.</p><p>El registro no es para siempre: dura un tiempo pactado (por ejemplo, una hora) y el teléfono lo renueva antes de que venza. Si deja de renovarlo, porque se cortó la fibra o se reinició la ONT, la red lo da por desconectado y las llamadas entrantes no lo encuentran.</p></div><figure class="fig fig-flujo" id="22-diagrama-2"><div class="lienzo"><svg viewBox="0 0 860 500" style="min-width:660px" role="img" aria-label="Flujo del registro SIP: el teléfono envía REGISTER, el registrador responde 401 con un número al azar, el teléfono repite REGISTER con la prueba de la contraseña, el registrador responde 200 OK por una hora y antes de que venza el teléfono renueva el registro">
+  <defs>
+    <symbol id="i22-2-telefono" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.8 4.6-2.4 1.6a11.5 11.5 0 0 0 6.7 6.7l1.6-2.4 4.6 1.8v3.2a2 2 0 0 1-2.2 2A17 17 0 0 1 3 5.7a2 2 0 0 1 2-2.2z"/></g></symbol>
+  </defs>
+  
+  <rect x="60" y="14" width="180" height="56" rx="10" class="caja"/><use href="#i22-2-telefono" x="72" y="26" width="32" height="32" class="ico"/><text x="112" y="40" class="t t-b">Teléfono</text><text x="112" y="57" class="t t-s t-m">en la ONT · línea 5555-0123</text>
+  <rect x="470" y="14" width="180" height="56" rx="10" class="caja"/><use href="#i-servidor" x="482" y="26" width="32" height="32" class="ico"/><text x="522" y="40" class="t t-b">Registrador</text><text x="522" y="57" class="t t-s t-m">núcleo de voz</text>
+  <line x1="150" y1="70" x2="150" y2="485" class="vida"/>
+  <line x1="560" y1="70" x2="560" y2="485" class="vida"/>
+
+  
+  <line x1="150" y1="110" x2="558" y2="124" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="160" y="104" class="t t-s"><tspan class="t-mono t-b">REGISTER</tspan> ① Soy 5555-0123 y estoy en 192.0.2.20</text>
+  <line x1="560" y1="150" x2="152" y2="164" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="270" y="146" class="t t-s"><tspan class="t-mono t-b">401 Unauthorized</tspan> ② Demuéstralo:</text>
+  <text x="270" y="182" class="t t-s t-mono">nonce="8f3a1c…"</text>
+
+  <rect x="30" y="196" width="240" height="38" rx="8" class="c-apl"/>
+  <text x="150" y="212" text-anchor="middle" class="t t-s">mezcla la contraseña con el nonce</text>
+  <text x="150" y="227" text-anchor="middle" class="t t-s t-mono">hash(contraseña + nonce)</text>
+
+  
+  <line x1="150" y1="256" x2="558" y2="270" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="160" y="250" class="t t-s"><tspan class="t-mono t-b">REGISTER</tspan> ③ Aquí va la prueba:</text>
+  <text x="300" y="288" class="t t-s t-mono">response="c41e…"</text>
+
+  <rect x="440" y="298" width="240" height="38" rx="8" class="c-apl"/>
+  <text x="560" y="314" text-anchor="middle" class="t t-s">hace la misma cuenta con la</text>
+  <text x="560" y="329" text-anchor="middle" class="t t-s">contraseña guardada: coincide</text>
+
+  <line x1="560" y1="356" x2="152" y2="370" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="250" y="352" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> ④ Registrado por <tspan class="t-mono">Expires: 3600</tspan></text>
+  <text x="160" y="392" class="t t-s t-b">Ya puede recibir llamadas</text>
+
+  
+  <line x1="40" y1="410" x2="680" y2="410" class="ln ln-d"/>
+  <text x="430" y="403" text-anchor="middle" class="t t-xs t-m">UNOS 55 MINUTOS DESPUÉS</text>
+  <line x1="150" y1="432" x2="558" y2="446" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="160" y="428" class="t t-s"><tspan class="t-mono t-b">REGISTER</tspan> ⑤ Sigo aquí (con su prueba)</text>
+  <line x1="560" y1="462" x2="152" y2="476" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="300" y="460" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> ⑥ Renovado</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M720 98v76" class="ln s-apl" style="stroke-width:3"/><text x="730" y="130" class="k-apl">DESAFÍO</text><text x="730" y="144" class="t-m">1 ida y vuelta</text>
+    <path d="M720 244v134" class="ln s-apl" style="stroke-width:3"/><text x="730" y="306" class="k-apl">PRUEBA</text><text x="730" y="320" class="t-m">1 ida y vuelta</text>
+    <path d="M720 422v60" class="ln s-apl" style="stroke-width:3"/><text x="730" y="448" class="k-apl">RENOVACIÓN</text><text x="730" y="462" class="t-m">antes de vencer</text>
+  </g>
+  <text x="14" y="300" class="t t-xs t-m" transform="rotate(-90 14 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El registro SIP.</b> El teléfono pide registrarse, la red lo desafía con un número al azar, el teléfono responde con la prueba de que conoce la contraseña y la red confirma el registro por un tiempo limitado. Antes de que venza, el teléfono lo renueva. Las flechas son mensajes SIP (capa de aplicación) y el tiempo corre hacia abajo.</figcaption></figure></section>
+<section><h2>Una llamada de punta a punta: INVITE, «sonando», contestar, confirmar y colgar</h2><div class="prose"><p>Ana llama a Beto. Los dos están registrados, así que el núcleo de voz sabe dónde encontrar a cada uno. La llamada se arma con una secuencia de mensajes que conviene conocer de memoria, porque es la que se mira cuando algo falla:</p><ol class="steps"><li><span>El teléfono de Ana manda un <code>INVITE</code> al proxy con el número de Beto y una propuesta de cómo hablar (los códecs que sabe usar).</span></li><li><span>El proxy contesta de inmediato <code>100 Trying</code> para que el teléfono de Ana no repita el pedido.</span></li><li><span>El proxy busca dónde está registrado Beto y le reenvía el <code>INVITE</code>.</span></li><li><span>El teléfono de Beto empieza a sonar y avisa con <code>180 Ringing</code>; Ana escucha el tono de llamada.</span></li><li><span>Beto contesta. Su teléfono manda <code>200 OK</code> con su respuesta sobre cómo hablar.</span></li><li><span>El teléfono de Ana confirma con <code>ACK</code>. Este paso de tres mensajes (<code>INVITE</code>, <code>200 OK</code>, <code>ACK</code>) es el saludo que deja la llamada armada.</span></li><li><span>Empieza la conversación: la voz viaja en paquetes RTP en los dos sentidos, normalmente por un camino distinto del de SIP.</span></li><li><span>Cuando uno cuelga, su teléfono manda <code>BYE</code> y el otro responde <code>200 OK</code>. El núcleo de voz anota la duración para la factura.</span></li></ol></div><figure class="fig fig-flujo" id="22-diagrama-3"><div class="lienzo"><svg viewBox="0 0 930 640" style="min-width:720px" role="img" aria-label="Flujo de una llamada SIP: INVITE con oferta SDP, 100 Trying, INVITE reenviado, 180 Ringing, 200 OK con respuesta SDP, ACK, voz RTP en ambos sentidos, BYE y 200 OK">
+  <defs>
+    <symbol id="i22-3-telefono" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.8 4.6-2.4 1.6a11.5 11.5 0 0 0 6.7 6.7l1.6-2.4 4.6 1.8v3.2a2 2 0 0 1-2.2 2A17 17 0 0 1 3 5.7a2 2 0 0 1 2-2.2z"/></g></symbol>
+  </defs>
+  
+  <rect x="40" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i22-3-telefono" x="52" y="26" width="32" height="32" class="ico"/><text x="92" y="40" class="t t-b">Ana</text><text x="92" y="57" class="t t-s t-m">5555-0123</text>
+  <rect x="320" y="14" width="180" height="56" rx="10" class="caja"/><use href="#i-servidor" x="332" y="26" width="32" height="32" class="ico"/><text x="372" y="40" class="t t-b">Proxy</text><text x="372" y="57" class="t t-s t-m">núcleo de voz</text>
+  <rect x="620" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i22-3-telefono" x="632" y="26" width="32" height="32" class="ico"/><text x="672" y="40" class="t t-b">Beto</text><text x="672" y="57" class="t t-s t-m">5555-0199</text>
+  <line x1="120" y1="70" x2="120" y2="625" class="vida"/>
+  <line x1="410" y1="70" x2="410" y2="625" class="vida"/>
+  <line x1="700" y1="70" x2="700" y2="625" class="vida"/>
+
+  
+  <line x1="120" y1="104" x2="408" y2="116" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="128" y="98" class="t t-s"><tspan class="t-mono t-b">INVITE</tspan> ① Llamo al 5555-0199</text>
+  <text x="128" y="132" class="t t-s t-m">+ oferta SDP: G.711, G.729</text>
+  <line x1="410" y1="142" x2="122" y2="154" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="250" y="168" class="t t-s"><tspan class="t-mono t-b">100 Trying</tspan> ②</text>
+  <line x1="410" y1="182" x2="698" y2="194" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="418" y="176" class="t t-s"><tspan class="t-mono t-b">INVITE</tspan> ③ Te llama 5555-0123</text>
+  <line x1="700" y1="216" x2="412" y2="228" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="520" y="212" class="t t-s"><tspan class="t-mono t-b">180 Ringing</tspan> ④</text>
+  <text x="710" y="222" class="t t-s t-b">suena</text>
+  <line x1="410" y1="244" x2="122" y2="256" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="200" y="240" class="t t-s"><tspan class="t-mono t-b">180 Ringing</tspan> ⑤</text>
+  <text x="130" y="274" class="t t-s t-m">Ana oye el tono de llamada</text>
+
+  <line x1="700" y1="296" x2="412" y2="308" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="470" y="290" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> ⑥ Contestó</text>
+  <text x="440" y="326" class="t t-s t-m">+ respuesta SDP: G.711</text>
+  <line x1="410" y1="324" x2="122" y2="336" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="220" y="320" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> ⑦</text>
+  <line x1="120" y1="362" x2="698" y2="376" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="128" y="356" class="t t-s"><tspan class="t-mono t-b">ACK</tspan> ⑧ Confirmado: empecemos</text>
+  <text x="430" y="394" class="t t-s t-m">sin ACK, Beto repite el 200 OK y corta a los 32 s</text>
+
+  
+  <rect x="100" y="410" width="620" height="94" rx="10" class="c-tra" style="fill-opacity:.35"/>
+  <line x1="120" y1="440" x2="696" y2="440" class="ln s-tra" style="stroke-width:3.4" marker-end="url(#fl-tra)"/>
+  <text x="130" y="432" class="t t-s"><tspan class="t-mono t-b">RTP</tspan> ⑨ voz de Ana → Beto · 50 paquetes por segundo</text>
+  <line x1="700" y1="476" x2="124" y2="476" class="ln s-tra" style="stroke-width:3.4" marker-end="url(#fl-tra)"/>
+  <text x="300" y="496" class="t t-s"><tspan class="t-mono t-b">RTP</tspan> ⑩ voz de Beto → Ana · RTCP informa la calidad</text>
+
+  
+  <line x1="700" y1="534" x2="122" y2="548" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="470" y="530" class="t t-s"><tspan class="t-mono t-b">BYE</tspan> ⑪ Beto colgó</text>
+  <line x1="120" y1="572" x2="698" y2="586" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="128" y="566" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> ⑫ Listo</text>
+  <text x="418" y="612" class="t t-s t-m">el núcleo anota la duración para la factura</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M800 98v280" class="ln s-apl" style="stroke-width:3"/><text x="810" y="220" class="k-apl">ARMAR</text><text x="810" y="234" class="t-m">SIP + SDP</text><text x="810" y="248" class="t-m">1,5 idas y vueltas</text><text x="810" y="262" class="t-m">+ lo que tarde</text><text x="810" y="276" class="t-m">en contestar</text>
+    <path d="M800 414v86" class="ln s-tra" style="stroke-width:3"/><text x="810" y="452" class="k-tra">HABLAR</text><text x="810" y="466" class="t-m">RTP sobre UDP</text>
+    <path d="M800 528v62" class="ln s-apl" style="stroke-width:3"/><text x="810" y="556" class="k-apl">COLGAR</text><text x="810" y="570" class="t-m">SIP</text>
+  </g>
+  <text x="14" y="330" class="t t-xs t-m" transform="rotate(-90 14 330)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Una llamada completa.</b> Arriba, la señalización SIP que arma la llamada: invitación, «lo intento», «está sonando», contestación y confirmación. En el medio, la voz en paquetes RTP en ambos sentidos. Abajo, el <code>BYE</code> que la termina. Las flechas rosadas son SIP (aplicación) y las moradas, la voz sobre UDP (transporte).</figcaption></figure><div class="prose"><p>Ese <code>ACK</code> parece un detalle, pero no lo es. Si el <code>200 OK</code> de Beto no recibe su <code>ACK</code>, su teléfono lo repite una y otra vez y, a los 32 segundos, se rinde y corta. De ahí sale uno de los reclamos más típicos de la voz: «la llamada se corta a los 30 segundos». Casi siempre es un <code>ACK</code> que se perdió en un equipo intermedio, como un router con NAT que no sabe dónde entregarlo.</p></div></section>
+<section><h2>SDP: ponerse de acuerdo en el códec</h2><div class="prose"><p>Dentro del <code>INVITE</code> y del <code>200 OK</code> viaja un segundo lenguaje, <b>SDP</b> (protocolo de descripción de sesión). Es la parte de la invitación que dice «hablemos en español o en inglés»: qué códecs acepta cada lado, a qué dirección IP y a qué puerto hay que mandarle la voz.</p><p>El mecanismo se llama <b>oferta y respuesta</b>. Ana ofrece una lista ordenada por preferencia; Beto elige de esa lista lo que también sabe usar y responde. Una oferta real se ve así:</p><div class="tbl"><table><thead><tr><th>Línea SDP</th><th>Qué dice</th></tr></thead><tbody><tr><td><code>c=IN IP4 192.0.2.20</code></td><td>Mándame la voz a esta dirección IP</td></tr><tr><td><code>m=audio 40000 RTP/AVP 8 0 18</code></td><td>Recibo audio en el puerto 40000 y acepto los códecs 8, 0 y 18</td></tr><tr><td><code>a=rtpmap:8 PCMA/8000</code></td><td>El 8 es G.711 (ley A), muestreado 8.000 veces por segundo</td></tr><tr><td><code>a=rtpmap:18 G729/8000</code></td><td>El 18 es G.729</td></tr></tbody></table></div><p>Si las listas no tienen nada en común, la llamada falla con un error <code>488 Not Acceptable Here</code>. Y si la dirección de la línea <code>c=</code> está equivocada, la llamada se arma, suena y se contesta, pero la voz va a parar a otro lado. Ese detalle explica casi todos los problemas de audio en un solo sentido, como veremos con el NAT.</p></div></section>
+<section><h2>RTP y RTCP: la voz en paquetes y su informe de calidad</h2><div class="prose"><p>Con la llamada armada, la voz viaja en <b>RTP</b> (protocolo de transporte en tiempo real), que va encima de UDP. Se usa UDP y no TCP porque en una conversación no sirve reenviar lo que se perdió: un pedacito de voz que llega medio segundo tarde ya no se puede reproducir. Es mejor un pequeño hueco que una pausa.</p><p>Cada paquete RTP lleva tres datos que hacen posible la magia:</p><ul><li>Un <b>número de secuencia</b>, para detectar paquetes perdidos o desordenados.</li><li>Una <b>marca de tiempo</b>, para reproducir cada pedacito en su momento exacto.</li><li>El <b>tipo de contenido</b>, que dice con qué códec está codificada la voz.</li></ul><p>Los paquetes no llegan con un ritmo perfecto: uno tarda 30 milisegundos, el siguiente 45, el otro 28. Esa variación se llama <b>jitter</b>. Para disimularla, el teléfono que recibe guarda los paquetes unos milisegundos en un pequeño depósito, el <i>jitter buffer</i>, y los reproduce a ritmo parejo. Cuanto más jitter, más grande el depósito y más retardo suma.</p><p>A RTP lo acompaña <b>RTCP</b>, su protocolo de control. Cada pocos segundos, cada lado le cuenta al otro cuántos paquetes perdió, cuánto jitter midió y cuánto tarda la ida y vuelta. Es el informe de calidad de la llamada, y es lo que miran los sistemas de monitoreo de voz para saber, sin escuchar a nadie, si una llamada sonó bien.</p></div><figure class="fig fig-capas" id="22-diagrama-7"><div class="lienzo"><svg viewBox="0 0 860 312" style="min-width:680px" role="img" aria-label="Lo que pesa un paquete de voz de 20 milisegundos: 40 bytes de cabeceras IP, UDP y RTP más la voz; G.711 lleva 160 bytes de voz y ocupa 80 kbit/s, Opus a 24 kbit/s lleva 60 bytes y ocupa 40 kbit/s, G.729 lleva 20 bytes y ocupa 24 kbit/s">
+  <rect x="20" y="16" width="16" height="16" rx="3" class="c-red"/><text x="42" y="29" class="t t-s">IP · 20 bytes</text>
+  <rect x="160" y="16" width="16" height="16" rx="3" class="c-tra"/><text x="182" y="29" class="t t-s">UDP · 8 bytes</text>
+  <rect x="304" y="16" width="16" height="16" rx="3" class="c-tra"/><text x="326" y="29" class="t t-s">RTP · 12 bytes</text>
+  <rect x="454" y="16" width="16" height="16" rx="3" class="c-apl"/><text x="476" y="29" class="t t-s">Voz: depende del códec</text>
+  <text x="680" y="76" class="t t-xs t-b t-m">ANCHO DE BANDA</text><text x="680" y="90" class="t t-xs t-m">POR SENTIDO, EN IP</text>
+  <text x="20" y="130" class="t t-b">G.711</text><text x="20" y="146" class="t t-s t-m">códec a 64 kbit/s</text>
+  <rect x="160.0" y="110" width="48.0" height="40" rx="3" class="c-red"/>
+  <text x="184.0" y="135" text-anchor="middle" class="t t-xs">IP</text>
+  <rect x="208.0" y="110" width="19.2" height="40" rx="3" class="c-tra"/>
+  <rect x="227.2" y="110" width="28.8" height="40" rx="3" class="c-tra"/>
+  <text x="241.6" y="135" text-anchor="middle" class="t t-xs">RTP</text>
+  <rect x="256.0" y="110" width="384.0" height="40" rx="3" class="c-apl"/>
+  <text x="448.0" y="135" text-anchor="middle" class="t t-s t-b">160 bytes de voz</text>
+  <text x="680" y="136" class="t t-b" style="font-size:20px">80 kbit/s</text>
+  <text x="20" y="190" class="t t-b">Opus</text><text x="20" y="206" class="t t-s t-m">códec a 24 kbit/s</text>
+  <rect x="160.0" y="170" width="48.0" height="40" rx="3" class="c-red"/>
+  <text x="184.0" y="195" text-anchor="middle" class="t t-xs">IP</text>
+  <rect x="208.0" y="170" width="19.2" height="40" rx="3" class="c-tra"/>
+  <rect x="227.2" y="170" width="28.8" height="40" rx="3" class="c-tra"/>
+  <text x="241.6" y="195" text-anchor="middle" class="t t-xs">RTP</text>
+  <rect x="256.0" y="170" width="144.0" height="40" rx="3" class="c-apl"/>
+  <text x="328.0" y="195" text-anchor="middle" class="t t-s t-b">60 bytes de voz</text>
+  <text x="680" y="196" class="t t-b" style="font-size:20px">40 kbit/s</text>
+  <text x="20" y="250" class="t t-b">G.729</text><text x="20" y="266" class="t t-s t-m">códec a 8 kbit/s</text>
+  <rect x="160.0" y="230" width="48.0" height="40" rx="3" class="c-red"/>
+  <text x="184.0" y="255" text-anchor="middle" class="t t-xs">IP</text>
+  <rect x="208.0" y="230" width="19.2" height="40" rx="3" class="c-tra"/>
+  <rect x="227.2" y="230" width="28.8" height="40" rx="3" class="c-tra"/>
+  <text x="241.6" y="255" text-anchor="middle" class="t t-xs">RTP</text>
+  <rect x="256.0" y="230" width="48.0" height="40" rx="3" class="c-apl"/>
+  <text x="312.0" y="255" class="t t-s t-b">20 bytes de voz</text>
+  <text x="680" y="256" class="t t-b" style="font-size:20px">24 kbit/s</text>
+  <text x="20" y="298" class="t t-s t-m">Un paquete cada 20 ms = 50 paquetes por segundo, cada uno con 40 bytes de cabeceras. En el cable Ethernet se suman unos 38 bytes más por paquete.</text>
+</svg></div><figcaption><b>Lo que pesa un paquete de voz.</b> Cada barra es un paquete con 20 milisegundos de voz. A la izquierda van las cabeceras que agrega cada capa (IP, UDP y RTP, siempre 40 bytes) y a la derecha, la voz. Con G.711 la voz ocupa casi todo el paquete; con G.729 las cabeceras pesan el doble que la voz. A la derecha, el ancho de banda de una llamada en cada sentido.</figcaption></figure></section>
+<section><h2>Códecs: G.711, G.729, Opus y cuánto ancho de banda usa una llamada</h2><div class="prose"><p>Un <b>códec</b> (codificador y decodificador) es la receta para convertir la voz en bits y de vuelta en sonido. Hay recetas que guardan todo y ocupan mucho, y otras que comprimen y ocupan poco, a costa de algo de calidad o de más cálculo:</p><ul><li><b>G.711</b> es el códec de la telefonía de siempre: 64 kbit/s, sin compresión, calidad de teléfono fijo. Es el idioma común de las interconexiones entre operadores.</li><li><b>G.729</b> comprime la misma voz en 8 kbit/s. Se usó mucho cuando el ancho de banda era caro, pero sufre más con la pérdida de paquetes.</li><li><b>Opus</b> es moderno y flexible: ajusta su tasa entre 6 y 510 kbit/s según la red y puede transmitir voz de banda ancha, con más agudos y graves que el teléfono clásico. Lo usan muchas aplicaciones de videollamada.</li><li><b>AMR-WB</b> y <b>EVS</b> son los códecs de la voz «HD» en las redes móviles.</li></ul><p>El ancho de banda real no es solo el del códec: hay que sumar las cabeceras. Con paquetes de 20 milisegundos se mandan 50 paquetes por segundo, y cada uno arrastra 40 bytes de IP, UDP y RTP. Por eso una llamada G.711 ocupa unos 80 kbit/s por sentido a nivel IP, y una G.729, unos 24. Frente a un plan de fibra de cientos de megabits es nada; el desafío de la voz no es la cantidad, sino la <b>puntualidad</b>.</p><p>La calidad percibida se resume en una nota de 1 a 5, el <b>MOS</b> (puntuación media de opinión). Una llamada de teléfono fijo ronda 4,2; por debajo de 3,6 la gente empieza a quejarse. Las enemigas de esa nota son tres: el retardo (más de 150 milisegundos en un sentido y las personas empiezan a pisarse al hablar), el jitter y la pérdida de paquetes. Pruébalo.</p></div><div class="lab" id="22-lab-4"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Qué se siente: la misma llamada en redes distintas</h3></div><p class="hint">Elige un códec y mueve el retardo, el jitter y la pérdida, o prueba los escenarios. Las tres filas muestran cuándo sale cada paquete (uno cada 20 ms), cuándo llega y cuándo suena. La nota MOS y la descripción cambian según lo que elijas.</p><style>
+[id="22-lab-4"] .c22-mos{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+[id="22-lab-4"] .c22-mos b{font:700 1.9rem var(--f-display)}
+[id="22-lab-4"] .c22-mos span{font:500 .95rem var(--f-body);color:var(--muted)}
+[id="22-lab-4"] .c22-escala{position:relative;height:12px;border-radius:6px;background:linear-gradient(90deg,var(--warm) 0%,var(--c-fis) 45%,var(--good) 80%,var(--good) 100%);opacity:.85}
+[id="22-lab-4"] .c22-escala i{position:absolute;top:-4px;width:4px;height:20px;border-radius:2px;background:var(--ink);transform:translateX(-2px);transition:left .2s}
+[id="22-lab-4"] .c22-escala b{position:absolute;top:0;bottom:0;left:74.3%;width:2px;background:var(--card)}
+[id="22-lab-4"] .c22-escala-ley{position:relative;height:1.1rem;font:500 .75rem var(--f-mono);color:var(--muted)}
+[id="22-lab-4"] .c22-escala-ley span{position:absolute;transform:translateX(-50%)}
+[id="22-lab-4"] .c22-escala-ley span:first-child{transform:none}
+@media (prefers-reduced-motion: reduce){[id="22-lab-4"] .c22-escala i{transition:none}}
+</style>
+<div class="opciones">
+  <label>Códec
+    <select id="c22-codec">
+      <option value="g711" selected>G.711 (64 kbit/s)</option>
+      <option value="g729">G.729 (8 kbit/s)</option>
+      <option value="opus">Opus (24 kbit/s)</option>
+    </select></label>
+</div>
+<div class="btns" role="group" aria-label="Escenarios">
+  <button type="button" data-esc="20,2,0" aria-pressed="true">Fibra en casa</button>
+  <button type="button" data-esc="35,40,3" aria-pressed="false">Wi-Fi saturado</button>
+  <button type="button" data-esc="190,6,0.5" aria-pressed="false">Llamada a otro continente</button>
+  <button type="button" data-esc="90,60,8" aria-pressed="false">Señal móvil débil</button>
+</div>
+<div class="ctls">
+  <label class="ctl">Retardo de la red (un sentido) <output id="c22-ret-o"></output><input type="range" id="c22-ret" min="5" max="400" step="5" value="20"></label>
+  <label class="ctl">Jitter (variación) <output id="c22-jit-o"></output><input type="range" id="c22-jit" min="0" max="100" step="1" value="2"></label>
+  <label class="ctl">Paquetes perdidos <output id="c22-per-o"></output><input type="range" id="c22-per" min="0" max="15" step="0.5" value="0"></label>
+</div>
+<canvas id="c22-lin" aria-label="Línea de tiempo de los paquetes de voz: cuándo salen, cuándo llegan y cuándo se reproducen"></canvas>
+<div class="legend"><span><i style="background:var(--c-tra)"></i>llega a tiempo</span><span><i style="background:var(--warm)"></i>llega tarde (se descarta)</span><span><i style="background:var(--muted)"></i>se perdió en la red</span></div>
+<div aria-live="polite">
+  <div class="c22-mos"><b id="c22-mos"></b><span id="c22-sens"></span></div>
+  <div class="c22-escala" aria-hidden="true"><b></b><i id="c22-aguja"></i></div>
+  <div class="c22-escala-ley" aria-hidden="true"><span style="left:0">1</span><span style="left:28.6%">2</span><span style="left:57.1%">3</span><span style="left:74.3%">3,6</span><span style="left:85.7%">4</span></div>
+  <p class="hint" style="margin:0">Escala MOS: 1 es imposible de entender, por debajo de 3,6 la gente se queja y 4,4 es lo mejor que da un teléfono clásico.</p>
+  <div class="readout" id="c22-out"></div>
+</div>
+<p class="hint" id="c22-nota"></p></div></section>
+<section><h2>Por qué la voz sufre con el NAT y qué hace un SBC</h2><div class="prose"><p>En el capítulo 5 vimos el <b>NAT</b>: el router de la casa reemplaza las direcciones privadas de los equipos (como <code>192.168.1.20</code>) por una sola dirección pública. Para la web funciona de maravilla, porque el router recuerda quién pidió qué y entrega la respuesta. Con la voz hay un problema: la dirección IP no solo va en la cabecera del paquete, también va escrita <b>dentro</b> del mensaje SIP, en la línea <code>c=</code> del SDP.</p><p>El teléfono de la casa escribe en su SDP «mándame la voz a <code>192.168.1.20</code>». El router cambia la cabecera, pero no el texto de adentro. Del otro lado, el teléfono de Beto obedece y manda la voz a una dirección privada que en Internet no lleva a ningún lado. Resultado: la llamada se arma, Beto escucha a Ana (porque los paquetes de Ana salen sin problema), pero Ana no escucha a Beto. Es el famoso <b>audio en un solo sentido</b>.</p><p>Algunos routers traen una función llamada <b>SIP ALG</b> que intenta reescribir el SDP. A veces acierta y a veces rompe más de lo que arregla, por eso en muchos operadores la primera receta ante problemas de voz es desactivarla.</p><p>La solución profesional es un <b>SBC</b> (controlador de frontera de sesión), un equipo que el operador pone en el borde de su red de voz. El SBC hace de intermediario para todo: reescribe el SDP con su propia dirección, recibe la voz de los dos lados y, en vez de creerle a la dirección escrita en el mensaje, aprende la dirección real del primer paquete que le llega (a esto se le llama <i>latching</i>). Además, esconde la red interna, filtra ataques, limita la cantidad de llamadas y traduce entre códecs cuando hace falta. Míralo funcionar.</p></div><div class="lab" id="22-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>La llamada que no se oye</h3></div><p class="hint">Ana llama desde su casa, detrás del NAT del router. Elige cómo está armada la red y observa qué dirección viaja en el SDP, por dónde va la voz de ida y la de vuelta, y si cada uno escucha al otro.</p><style>
+[id="22-lab-5"] .c22n-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:640px){[id="22-lab-5"] .c22n-grid{grid-template-columns:minmax(0,1fr)}}
+[id="22-lab-5"] svg{width:100%;max-width:420px;height:auto;display:block;margin:0 auto;font-family:var(--f-display)}
+[id="22-lab-5"] .nd{fill:var(--card);stroke:var(--line);stroke-width:1.4}
+[id="22-lab-5"] .nd.off{opacity:.35}
+[id="22-lab-5"] .tx{fill:var(--ink);font-size:14px;font-weight:700}
+[id="22-lab-5"] .ip{fill:var(--muted);font-size:12px;font-family:var(--f-mono)}
+[id="22-lab-5"] .lb{fill:var(--muted);font-size:12px;font-weight:600}
+[id="22-lab-5"] .ok{stroke:var(--good);fill:var(--good)}
+[id="22-lab-5"] .ko{stroke:var(--warm);fill:var(--warm)}
+[id="22-lab-5"] .sdp{font-family:var(--f-mono);font-size:.86rem;background:var(--paper);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre;line-height:1.5}
+[id="22-lab-5"] .sdp mark{background:var(--warm-soft);color:var(--warm);font-weight:700;padding:0 2px;border-radius:3px}
+[id="22-lab-5"] .sdp mark.bien{background:var(--good-soft);color:var(--good)}
+[id="22-lab-5"] .c22n-res{display:grid;gap:6px;font:600 .95rem var(--f-display)}
+[id="22-lab-5"] .c22n-res span b{font-family:var(--f-mono)}
+</style>
+<div class="btns" role="group" aria-label="Cómo está armada la red">
+  <button type="button" data-c22n="nat" aria-pressed="true">Teléfono detrás del NAT, sin ayuda</button>
+  <button type="button" data-c22n="sbc" aria-pressed="false">Con el SBC del operador</button>
+  <button type="button" data-c22n="ont" aria-pressed="false">Teléfono en la ONT, VLAN de voz</button>
+</div>
+<div class="c22n-grid">
+  <div id="c22n-dib" role="img" aria-label="Camino de la voz entre Ana y Beto"></div>
+  <div style="display:grid;gap:12px;min-width:0">
+    <div><b style="font:600 .82rem var(--f-display);color:var(--muted)">SDP que recibe Beto dentro del INVITE</b>
+      <div class="sdp" id="c22n-sdp"></div></div>
+    <div class="c22n-res" id="c22n-res" aria-live="polite"></div>
+  </div>
+</div>
+<p class="hint" id="c22n-exp" aria-live="polite"></p></div></section>
+<section><h2>La telefonía del operador: numeración E.164, interconexión, portabilidad y llamadas de emergencia</h2><div class="prose"><p>Hablar por IP lo puede hacer cualquier aplicación. Lo que convierte a la voz en un <b>servicio telefónico</b> es todo lo que el operador agrega alrededor: números que todo el mundo puede marcar, conexión con todas las demás redes y obligaciones que pone la ley.</p><p><b>Numeración E.164.</b> Es el plan mundial de números telefónicos de la UIT. Un número completo tiene hasta 15 dígitos: un código de país de una a tres cifras (<code>+1</code> para Norteamérica, <code>+52</code> para México, <code>+34</code> para España) y el número nacional, que el regulador de cada país reparte entre los operadores en bloques. El operador no es dueño de los números: los recibe en asignación y debe usarlos según las reglas.</p><p><b>Interconexión.</b> Un cliente de un operador tiene que poder llamar a cualquier otro número del país y del mundo. Para eso los operadores conectan sus núcleos de voz entre sí, hoy casi siempre con troncales SIP y, con las redes más antiguas, mediante pasarelas que traducen a la telefonía de circuitos. Cada llamada que termina en la red de otro operador genera un <b>cargo de interconexión</b> que se liquida entre ellos; el regulador fija o supervisa esos precios.</p><p><b>Portabilidad numérica.</b> El cliente puede cambiarse de operador y llevarse su número. Entonces el número ya no dice a qué red pertenece. Antes de encaminar una llamada, el núcleo de voz consulta una <b>base de datos de portabilidad</b> que responde «este número ahora está en tal operador» y la llamada sale hacia la red correcta.</p><p><b>Emergencias.</b> Una llamada al número de emergencia (911, 112 u otro según el país) debe llegar siempre, rápido y al centro de atención que corresponde a la zona. En telefonía fija el operador sabe dónde está la línea por la dirección de instalación, y envía la llamada al centro de esa zona con la ubicación. Las reglas de cada país suelen exigir que funcione incluso en situaciones especiales, como cuando la línea tiene restricciones.</p></div><figure class="fig fig-arquitectura" id="22-diagrama-6"><div class="lienzo"><svg viewBox="0 0 980 400" style="min-width:740px" role="img" aria-label="Arquitectura de voz de un operador: en la casa, el teléfono conectado a la ONT y un celular con app de voz por el Wi-Fi; en la red del operador, la OLT, la VLAN de voz, el SBC de acceso, el núcleo de voz con las bases de abonados, portabilidad y facturación, y el SBC de interconexión; hacia afuera, otros operadores, larga distancia internacional y el centro de emergencias">
+  <defs>
+    <symbol id="i22-6-telefono" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.8 4.6-2.4 1.6a11.5 11.5 0 0 0 6.7 6.7l1.6-2.4 4.6 1.8v3.2a2 2 0 0 1-2.2 2A17 17 0 0 1 3 5.7a2 2 0 0 1 2-2.2z"/></g></symbol>
+    <symbol id="i22-6-emergencia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v9M7.5 12h9"/></g></symbol>
+  </defs>
+  <rect x="10" y="14" width="240" height="340" rx="12" class="d-casa"/>
+  <rect x="260" y="14" width="500" height="340" rx="12" class="d-oper"/>
+  <rect x="770" y="14" width="200" height="340" rx="12" class="d-inet"/>
+  <text x="130" y="34" text-anchor="middle" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+  <text x="510" y="34" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  <text x="870" y="34" text-anchor="middle" class="t t-xs t-b k-inet">OTRAS REDES</text>
+
+  
+  <rect x="24" y="70" width="96" height="80" rx="10" class="caja"/><use href="#i22-6-telefono" x="58" y="78" width="28" height="28" class="ico"/>
+  <text x="72" y="126" text-anchor="middle" class="t t-s t-b">Teléfono</text><text x="72" y="141" text-anchor="middle" class="t t-xs t-m">de siempre</text>
+  <rect x="144" y="70" width="92" height="80" rx="10" class="caja"/><use href="#i-ont" x="176" y="78" width="28" height="28" class="ico"/>
+  <text x="190" y="126" text-anchor="middle" class="t t-s t-b">ONT</text><text x="190" y="141" text-anchor="middle" class="t t-xs t-m">cliente SIP</text>
+  <rect x="24" y="230" width="96" height="80" rx="10" class="caja"/><use href="#i-celular" x="58" y="238" width="28" height="28" class="ico"/>
+  <text x="72" y="286" text-anchor="middle" class="t t-s t-b">Celular</text><text x="72" y="301" text-anchor="middle" class="t t-xs t-m">app de voz</text>
+  <rect x="144" y="230" width="92" height="80" rx="10" class="caja"/><use href="#i-router" x="176" y="238" width="28" height="28" class="ico"/>
+  <text x="190" y="286" text-anchor="middle" class="t t-s t-b">Router</text><text x="190" y="301" text-anchor="middle" class="t t-xs t-m">Wi-Fi</text>
+  <line x1="120" y1="110" x2="144" y2="110" class="ln"/>
+  <line x1="120" y1="270" x2="144" y2="270" class="ln ln-d"/>
+  <line x1="190" y1="230" x2="190" y2="150" class="ln"/>
+
+  
+  <line x1="236" y1="110" x2="276" y2="110" class="ln s-fis" style="stroke-width:3"/>
+  <rect x="276" y="70" width="84" height="80" rx="10" class="caja"/><use href="#i-olt" x="304" y="78" width="28" height="28" class="ico"/>
+  <text x="318" y="126" text-anchor="middle" class="t t-s t-b">OLT</text>
+  <path d="M318 150V190H390" class="ln"/>
+  <text x="322" y="206" class="t t-xs t-m">VLAN de voz</text>
+
+  <rect x="390" y="150" width="100" height="80" rx="10" class="caja"/><use href="#i-candado" x="426" y="158" width="28" height="28" class="ico"/>
+  <text x="440" y="206" text-anchor="middle" class="t t-s t-b">SBC</text><text x="440" y="221" text-anchor="middle" class="t t-xs t-m">de acceso</text>
+
+  <rect x="520" y="150" width="110" height="80" rx="10" class="c-apl"/><use href="#i-servidor" x="561" y="158" width="28" height="28" class="ico"/>
+  <text x="575" y="206" text-anchor="middle" class="t t-s t-b">Núcleo de voz</text><text x="575" y="221" text-anchor="middle" class="t t-xs t-m">registrador y proxy</text>
+
+  <rect x="440" y="48" width="90" height="66" rx="10" class="caja"/><use href="#i-persona" x="473" y="54" width="24" height="24" class="ico"/>
+  <text x="485" y="94" text-anchor="middle" class="t t-s t-b">Abonados</text><text x="485" y="107" text-anchor="middle" class="t t-xs t-m">quién es quién</text>
+  <rect x="545" y="48" width="100" height="66" rx="10" class="caja"/><use href="#i-guia" x="583" y="54" width="24" height="24" class="ico"/>
+  <text x="595" y="94" text-anchor="middle" class="t t-s t-b">Portabilidad</text><text x="595" y="107" text-anchor="middle" class="t t-xs t-m">a qué red va</text>
+  <rect x="660" y="48" width="90" height="66" rx="10" class="caja"/><use href="#i-factura" x="693" y="54" width="24" height="24" class="ico"/>
+  <text x="705" y="94" text-anchor="middle" class="t t-s t-b">Facturación</text><text x="705" y="107" text-anchor="middle" class="t t-xs t-m">cada llamada</text>
+  <path d="M560 150 485 114M590 150 595 114M610 150 690 114" class="ln ln-d"/>
+
+  <rect x="660" y="150" width="90" height="80" rx="10" class="caja"/><use href="#i-candado" x="691" y="158" width="28" height="28" class="ico"/>
+  <text x="705" y="206" text-anchor="middle" class="t t-s t-b">SBC de</text><text x="705" y="221" text-anchor="middle" class="t t-xs t-m">interconexión</text>
+
+  <line x1="490" y1="190" x2="516" y2="190" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <line x1="630" y1="190" x2="656" y2="190" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <path d="M440 230V310H705V234" class="ln s-tra" style="stroke-width:3" marker-end="url(#fl-tra)"/>
+  <text x="572" y="302" text-anchor="middle" class="t t-s k-tra">la voz va de SBC a SBC, sin pasar por el núcleo</text>
+
+  
+  <rect x="790" y="56" width="164" height="64" rx="10" class="caja"/><use href="#i-nube" x="800" y="70" width="30" height="30" class="ico"/>
+  <text x="838" y="84" class="t t-s t-b">Otros operadores</text><text x="838" y="100" class="t t-xs t-m">fijos y móviles</text>
+  <rect x="790" y="158" width="164" height="64" rx="10" class="caja"/><use href="#i-nube" x="800" y="172" width="30" height="30" class="ico"/>
+  <text x="838" y="186" class="t t-s t-b">Larga distancia</text><text x="838" y="202" class="t t-xs t-m">internacional</text>
+  <rect x="790" y="260" width="164" height="64" rx="10" class="caja"/><use href="#i22-6-emergencia" x="800" y="274" width="30" height="30" class="ico"/>
+  <text x="838" y="288" class="t t-s t-b">Emergencias</text><text x="838" y="304" class="t t-xs t-m">centro de atención</text>
+  <path d="M750 180 790 90M750 190H790M750 200 790 292" class="ln"/>
+
+  
+  <g class="t t-s t-m">
+    <line x1="270" y1="380" x2="300" y2="380" class="ln s-apl" style="stroke-width:2.4"/><text x="306" y="384">señalización SIP</text>
+    <line x1="420" y1="380" x2="450" y2="380" class="ln s-tra" style="stroke-width:3"/><text x="456" y="384">voz en RTP</text>
+    <line x1="550" y1="380" x2="580" y2="380" class="ln s-fis" style="stroke-width:3"/><text x="586" y="384" class="k-fis">fibra</text>
+    <line x1="640" y1="380" x2="670" y2="380" class="ln ln-d"/><text x="676" y="384">radio o consulta</text>
+  </g>
+</svg></div><figcaption><b>La red de voz de un operador.</b> En la casa, el teléfono se conecta a la ONT, que lo convierte en un cliente SIP; un celular con una app de voz puede entrar por el Wi-Fi. La voz viaja por la red del operador hasta el SBC de acceso y el núcleo de voz, que consulta la base de abonados y la de portabilidad y registra cada llamada para facturarla. Desde el núcleo, un SBC de interconexión lleva las llamadas a otros operadores y al centro de emergencias. Las líneas rosadas son señalización SIP; las moradas, la voz en RTP.</figcaption></figure></section>
+<section><h2>IMS y VoLTE: la voz en las redes modernas</h2><div class="prose"><p>A medida que la voz se volvió IP en todas las redes, la industria definió una arquitectura común para el núcleo de voz: <b>IMS</b> (subsistema multimedia IP), normalizada por el organismo de las redes móviles, el 3GPP. IMS usa SIP por dentro y reparte el trabajo en funciones con nombre propio:</p><ul><li>El <b>P-CSCF</b> es la puerta de entrada que recibe al teléfono (cumple un papel parecido al SBC de acceso).</li><li>El <b>S-CSCF</b> es el que registra a los usuarios y controla sus llamadas.</li><li>El <b>HSS</b> es la base de abonados: quién es quién y qué servicios tiene.</li><li>Los <b>servidores de aplicaciones</b> agregan los servicios: desvío de llamadas, llamada en espera, buzón de voz.</li></ul><p>Sobre IMS corre <b>VoLTE</b> (voz sobre LTE): la voz de los celulares en redes 4G, que ya no usa la vieja red de circuitos del 2G y 3G. Su sucesora en 5G se llama VoNR, y la llamada por Wi-Fi del celular (VoWiFi) usa el mismo núcleo IMS. Para el cliente es lo mismo que siempre: marca y habla, con voz HD y conexión rápida. Para el operador es la misma pieza que ya conoce: SIP para organizar, RTP para hablar. El capítulo 24 cuenta cómo la red móvil le reserva a la voz un canal con prioridad.</p></div></section>
+<section><h2>Fraude telefónico y cómo se previene</h2><div class="prose"><p>Donde hay llamadas que se cobran, hay fraude. Las formas más comunes son:</p><ul><li><b>Fraude de reparto de ingresos internacional</b> (IRSF). El atacante obtiene acceso a una línea, por ejemplo adivinando la contraseña SIP de una central telefónica de empresa, y hace miles de llamadas a números internacionales de tarifa alta de los que cobra una parte. La factura, que puede ser enorme, llega al dueño de la línea.</li><li><b>Wangiri</b> («una llamada y cortar», en japonés). Llamadas perdidas desde números internacionales para que la víctima devuelva la llamada a un número de tarifa alta.</li><li><b>Bypass o SIM box</b>. Llamadas internacionales que entran al país disfrazadas de llamadas locales, usando muchas tarjetas SIM, para no pagar la interconexión internacional.</li><li><b>Robo de credenciales</b>. Robots que prueban millones de contraseñas contra cualquier equipo que responda SIP en Internet.</li></ul><p>La prevención combina varias capas: contraseñas SIP largas y únicas, el SBC que bloquea a quien insiste con contraseñas falsas, límites de llamadas simultáneas y de gasto por línea, destinos de alto riesgo bloqueados por defecto y un sistema de gestión de fraude que vigila los registros de llamadas y alerta cuando una línea se comporta de forma rara, como cientos de llamadas internacionales de madrugada.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región que vende telefonía fija la entrega desde la propia ONT: el cliente enchufa su teléfono de siempre en el puerto de voz y la ONT actúa como teléfono SIP. Esa voz no se mezcla con el Internet del cliente: viaja por una VLAN propia, con su propia dirección IP y con prioridad sobre el resto del tráfico, hasta el SBC del operador. Como no pasa por el router Wi-Fi ni por su NAT, se evitan los problemas de audio en un solo sentido, y la línea sigue registrada aunque el cliente desconecte o cambie su router. La configuración de la línea (número y contraseña SIP) se carga en la ONT desde los sistemas de gestión del operador al activar el servicio.</p></div><div class="ml"><b>En la práctica</b><p>Los reclamos de voz tienen patrones. «<b>No suena</b> cuando me llaman» suele ser una línea que perdió el registro: ONT reiniciada, sin fibra o con la configuración de voz incompleta; se revisa el estado de registro antes de mandar un técnico. «<b>Me oyen pero no los oigo</b>» (o al revés) es audio en un solo sentido: NAT, SIP ALG o un firewall que bloquea la voz; va a soporte de segundo nivel o al equipo de voz. «<b>Se corta a los 30 segundos</b>» es un <code>ACK</code> que no llega, casi siempre por NAT o por una configuración del SBC. Y «<b>se oye robotizada o entrecortada</b>» es pérdida de paquetes o jitter: hay que mirar el Wi-Fi si es una app, o la calidad del enlace si es la ONT.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué hace SIP y qué hace RTP en una llamada?</summary><p>SIP organiza la llamada (invitar, hacer sonar, contestar, colgar); RTP lleva la voz misma en paquetes pequeños.</p></details><details><summary>¿Para qué sirve el desafío <code>401 Unauthorized</code> en el registro?</summary><p>Para que el teléfono demuestre que conoce la contraseña sin enviarla: mezcla un número al azar de la red con la contraseña y devuelve el resultado.</p></details><details><summary>Una llamada se arma bien, pero uno de los dos no escucha al otro. ¿Cuál es la causa más probable?</summary><p>El NAT: el SDP lleva escrita una dirección privada y la voz de vuelta se manda a un lugar al que no puede llegar. Un SBC lo corrige.</p></details><details><summary>¿Por qué la voz viaja sobre UDP y no sobre TCP?</summary><p>Porque un pedacito de voz que llega tarde ya no sirve; es mejor perderlo que esperar a que se reenvíe.</p></details><details><summary>Si G.711 usa 64 kbit/s, ¿por qué la llamada ocupa unos 80 kbit/s?</summary><p>Porque cada paquete de 20 ms suma 40 bytes de cabeceras IP, UDP y RTP, y se mandan 50 paquetes por segundo.</p></details><details><summary>¿Qué consulta el núcleo de voz antes de encaminar una llamada a otro número del país?</summary><p>La base de datos de portabilidad, para saber en qué operador está hoy ese número.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Session_Initiation_Protocol" target="_blank" rel="noopener">Session Initiation Protocol (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.rfc-editor.org/rfc/rfc3665" target="_blank" rel="noopener">RFC 3665: ejemplos de flujos SIP básicos (IETF, en inglés) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Real-time_Transport_Protocol" target="_blank" rel="noopener">Real-time Transport Protocol (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.itu.int/rec/T-REC-E.164" target="_blank" rel="noopener">Recomendación UIT-T E.164 (UIT) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab, $=L.$;
+  const CODEC={
+    g711:{n:'G.711',Ie:0,Bpl:25.1,dc:25,bw:80},
+    g729:{n:'G.729',Ie:11,Bpl:19,dc:35,bw:24},
+    opus:{n:'Opus',Ie:0,Bpl:30,dc:27,bw:40}
+  };
+  // paquetes de ejemplo con azar fijo (siempre el mismo dibujo para los mismos valores)
+  let s=7;const rnd=()=>{s=(s*16807)%2147483647;return (s-1)/2147483646;};
+  const N=24, G=[], U=[];
+  for(let i=0;i<N;i++){const a=rnd(),b=rnd();G.push(Math.abs(Math.sqrt(-2*Math.log(a+1e-9))*Math.cos(2*Math.PI*b)));U.push(rnd());}
+  const erf=x=>{const t=1/(1+0.3275911*x);return 1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);};
+  const coma=(n,d)=>L.fmt(n,d).replace('.',',');
+
+  function modelo(){
+    const c=CODEC[$('#c22-codec').value], red=+$('#c22-ret').value, j=+$('#c22-jit').value, per=+$('#c22-per').value;
+    const buf=j>0?2*j+10:0;                          // depósito de jitter
+    const z=j>0?buf/(1.25*j):99, tarde=j>0?(1-erf(z/Math.SQRT2))*100:0; // % que llega después de su turno
+    const ppl=Math.min(100,per+tarde), d=red+buf+c.dc;
+    const Id=0.024*d+(d>177.3?0.11*(d-177.3):0);
+    const Ie=c.Ie+(95-c.Ie)*ppl/(ppl+c.Bpl);
+    const R=Math.max(0,Math.min(100,93.2-Id-Ie));
+    const mos=1+0.035*R+7e-6*R*(R-60)*(100-R);
+    return {c,red,j,per,buf,tarde,ppl,d,R,mos:Math.max(1,Math.min(4.5,mos)),Id,Ie};
+  }
+  function dibujar(ctx,w,h){
+    const m=modelo(), col={ok:L.tok('--c-tra'),late:L.tok('--warm'),lost:L.tok('--muted'),ink:L.tok('--ink'),line:L.tok('--line')};
+    ctx.clearRect(0,0,w,h);
+    const pl=w<520?54:70, pr=12, y1=26, y2=h*0.55, y3=h-26;
+    const n=w<520?12:N, llegada=G.map(g=>m.red+g*1.25*m.j).slice(0,n);
+    const tmax=Math.max((n-1)*20+m.red+m.buf+40,...llegada.map((a,i)=>i*20+a+20));
+    const X=t=>pl+t/tmax*(w-pl-pr);
+    ctx.font='600 12px '+L.tok('--f-display');ctx.fillStyle=col.ink;ctx.textBaseline='middle';ctx.textAlign='left';
+    ctx.fillText('salen',4,y1);ctx.fillText('llegan',4,y2);ctx.fillText(w<520?'suenan':'suenan',4,y3);
+    ctx.strokeStyle=col.line;ctx.lineWidth=1;
+    [y1,y2,y3].forEach(y=>{ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(w-pr,y);ctx.stroke();});
+    const r=w<520?3.2:4.2;
+    for(let i=0;i<n;i++){
+      const ts=i*20, perdido=U[i]<m.per/100, ta=ts+llegada[i], tp=ts+m.red+m.buf, tarde=!perdido&&ta>tp;
+      const xs=X(ts);
+      if(perdido){
+        ctx.strokeStyle=col.lost;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(xs,y1);ctx.lineTo(xs+(X(ta)-xs)*.5,(y1+y2)/2);ctx.stroke();ctx.setLineDash([]);
+        const cx=xs+(X(ta)-xs)*.5,cy=(y1+y2)/2;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx-4,cy-4);ctx.lineTo(cx+4,cy+4);ctx.moveTo(cx+4,cy-4);ctx.lineTo(cx-4,cy+4);ctx.stroke();ctx.lineWidth=1;
+        L.dot(ctx,xs,y1,col.lost,r);continue;
+      }
+      const c=tarde?col.late:col.ok;
+      ctx.strokeStyle=c;ctx.globalAlpha=.55;ctx.beginPath();ctx.moveTo(xs,y1);ctx.lineTo(X(ta),y2);ctx.stroke();ctx.globalAlpha=1;
+      L.dot(ctx,xs,y1,col.ok,r);L.dot(ctx,X(ta),y2,c,r);
+      if(!tarde){ctx.strokeStyle=c;ctx.globalAlpha=.35;ctx.beginPath();ctx.moveTo(X(ta),y2);ctx.lineTo(X(tp),y3);ctx.stroke();ctx.globalAlpha=1;L.dot(ctx,X(tp),y3,c,r);}
+      else{ctx.strokeStyle=col.late;ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(X(tp),y3,r+1,0,Math.PI*2);ctx.stroke();ctx.lineWidth=1;}
+    }
+    // regla de tiempo
+    ctx.font='11px '+L.tok('--f-mono');ctx.fillStyle=L.tok('--muted');ctx.textAlign='center';ctx.textBaseline='top';
+    const paso=[50,100,200,250,500].find(p=>p/tmax*(w-pl-pr)>=70)||1000;
+    for(let t=0;t<=tmax;t+=paso){ctx.fillText(t+' ms',Math.min(w-pr-18,Math.max(pl+14,X(t))),y3+8);}
+  }
+  const redraw=L.canvasWidget($('#c22-lin'),w=>w<520?0.62:0.3,dibujar);
+  function texto(){
+    const m=modelo();
+    $('#c22-mos').textContent='MOS '+coma(m.mos,1);
+    let sens;
+    if(m.mos>=4.3)sens='Como un teléfono fijo: clara y sin demoras.';
+    else if(m.mos>=4.0)sens='Buena: casi nadie nota la diferencia.';
+    else if(m.mos>=3.6)sens='Aceptable, aunque ya se nota algo raro.';
+    else if(m.mos>=3.1)sens='Molesta: muchos clientes se quejan.';
+    else sens='Mala: la gente cuelga y vuelve a llamar.';
+    $('#c22-sens').textContent=sens;
+    $('#c22-aguja').style.left=((m.mos-1)/3.5*100)+'%';
+    $('#c22-out').innerHTML=
+      '<span>Retardo boca a oído: <b class="'+(m.d>177?'warn':'ok')+'">'+Math.round(m.d)+' ms</b> = red '+m.red+' + depósito de jitter '+Math.round(m.buf)+' + códec '+m.c.dc+'</span>'+
+      '<span>Pérdida efectiva: <b class="'+(m.ppl>2?'warn':'ok')+'">'+coma(m.ppl,1)+' %</b> = perdidos en la red '+coma(m.per,1)+' + llegados tarde '+coma(m.tarde,1)+'</span>'+
+      '<span>Ancho de banda de '+m.c.n+': '+m.c.bw+' kbit/s por sentido (con cabeceras)</span>';
+    const causas=[];
+    if(m.d>177)causas.push('con más de 177 ms boca a oído la gente empieza a pisarse al hablar: uno responde y el otro ya volvió a hablar');
+    if(m.ppl>2)causas.push(m.c.n==='G.729'?'G.729 comprime tanto que cada paquete perdido es una sílaba entera: suena robotizada':'los huecos de los paquetes perdidos se oyen como cortes o voz entrecortada');
+    if(m.j>=20)causas.push('el jitter obliga al teléfono a esperar '+Math.round(m.buf)+' ms en su depósito antes de reproducir, y aun así algunos paquetes llegan tarde');
+    $('#c22-nota').textContent=causas.length?'Qué pasa: '+causas.join('; ')+'.':'Todo en orden: los paquetes salen cada 20 ms y suenan con el mismo ritmo, apenas corridos por el retardo.';
+  }
+  function actualizar(){redraw();texto();}
+  L.bindOut('#c22-ret',v=>v+' ms');L.bindOut('#c22-jit',v=>v+' ms');L.bindOut('#c22-per',v=>coma(v,1)+' %');
+  ['#c22-ret','#c22-jit','#c22-per'].forEach(id=>$(id).addEventListener('input',()=>{document.querySelectorAll('[id="22-lab-4"] [data-esc]').forEach(b=>b.setAttribute('aria-pressed','false'));actualizar();}));
+  $('#c22-codec').addEventListener('change',actualizar);
+  document.querySelectorAll('[id="22-lab-4"] [data-esc]').forEach(b=>b.addEventListener('click',()=>{
+    const [r,j,p]=b.dataset.esc.split(',');
+    $('#c22-ret').value=r;$('#c22-jit').value=j;$('#c22-per').value=p;
+    ['#c22-ret','#c22-jit','#c22-per'].forEach(id=>$(id).dispatchEvent(new Event('input')));
+    document.querySelectorAll('[id="22-lab-4"] [data-esc]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+  }));
+  actualizar();
+})();
+</script>
+<script>
+(function(){
+  const $=window.Lab.$;
+  const ESC={
+    nat:{filas:[['Ana · teléfono','192.168.1.20',1],['Router con NAT','pública 203.0.113.45',1],['(sin SBC)','solo Internet',0],['Beto','198.51.100.77',1]],
+      c:'192.168.1.20',bien:false,ida:true,vuelta:false,corte:1,
+      exp:'El router cambió la dirección de la cabecera, pero no la escrita dentro del SDP. Beto obedece al SDP y manda su voz a 192.168.1.20, una dirección privada que en Internet no lleva a ningún lado. La voz de Ana sí llega, porque sale por el NAT como cualquier otro paquete: audio en un solo sentido.'},
+    sbc:{filas:[['Ana · teléfono','192.168.1.20',1],['Router con NAT','pública 203.0.113.45',1],['SBC del operador','198.51.100.10',1],['Beto','198.51.100.77',1]],
+      c:'198.51.100.10',bien:true,ida:true,vuelta:true,corte:-1,
+      exp:'El SBC reescribe el SDP con su propia dirección, así Beto le manda la voz al SBC. Para devolvérsela a Ana, el SBC no le cree al SDP: mira de dónde le llegan los paquetes de Ana (203.0.113.45 y su puerto) y responde ahí. El NAT reconoce esa conversación y la entrega. Esto se llama «latching».'},
+    ont:{filas:[['Ana · teléfono en la ONT','10.20.0.15 · VLAN de voz',1],['(sin router ni NAT)','la voz no pasa por el Wi-Fi',0],['SBC del operador','198.51.100.10',1],['Beto','198.51.100.77',1]],
+      c:'198.51.100.10',bien:true,ida:true,vuelta:true,corte:-1,
+      exp:'La ONT tiene su propia dirección en la red de voz del operador, separada del Internet del cliente. No hay NAT de por medio, así que la dirección del SDP es alcanzable desde el SBC, que igual hace de intermediario con el resto del mundo. Es la forma más robusta de entregar la línea fija.'}
+  };
+  function svg(e){
+    const W=360,top=14,alto=58,sep=40;
+    let s='<svg viewBox="0 0 '+W+' '+(top+4*alto+3*sep+30)+'" aria-hidden="true"><defs>'+
+      '<marker id="c22n-fo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ok"/></marker>'+
+      '<marker id="c22n-fk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ko"/></marker></defs>';
+    const y=i=>top+i*(alto+sep);
+    e.filas.forEach((f,i)=>{
+      s+='<rect x="70" y="'+y(i)+'" width="220" height="'+alto+'" rx="10" class="nd'+(f[2]?'':' off')+'"/>'+
+         '<text x="180" y="'+(y(i)+24)+'" text-anchor="middle" class="tx">'+f[0]+'</text>'+
+         '<text x="180" y="'+(y(i)+43)+'" text-anchor="middle" class="ip">'+f[1]+'</text>';
+    });
+    const y0=y(0)+alto/2, y3=y(3)+alto/2;
+    // ida: voz de Ana a Beto (izquierda, hacia abajo)
+    s+='<text x="34" y="'+(y0-16)+'" text-anchor="middle" class="lb">ida</text>';
+    s+='<line x1="34" y1="'+y0+'" x2="34" y2="'+(y3-4)+'" class="ok" stroke-width="3.5" marker-end="url(#c22n-fo)"/>';
+    // vuelta: voz de Beto a Ana (derecha, hacia arriba)
+    s+='<text x="326" y="'+(y0-16)+'" text-anchor="middle" class="lb">vuelta</text>';
+    if(e.vuelta){s+='<line x1="326" y1="'+y3+'" x2="326" y2="'+(y0+4)+'" class="ok" stroke-width="3.5" marker-end="url(#c22n-fo)"/>';}
+    else{
+      const yc=y(e.corte+1)-sep/2; // se corta entre la fila del router y la siguiente
+      s+='<line x1="326" y1="'+y3+'" x2="326" y2="'+(yc+10)+'" class="ko" stroke-width="3.5" stroke-dasharray="6 4"/>'+
+         '<path d="M316 '+(yc-10)+'l20 20M336 '+(yc-10)+'l-20 20" class="ko" stroke-width="3.5" fill="none"/>'+
+         '<text x="308" y="'+(yc+4)+'" text-anchor="end" class="lb" style="fill:var(--warm)">se pierde: va a 192.168.1.20</text>';
+    }
+    s+='<text x="180" y="'+(y3+alto+24)+'" text-anchor="middle" class="lb">ida: voz de Ana · vuelta: voz de Beto</text>';
+    return s+'</svg>';
+  }
+  function mostrar(k){
+    const e=ESC[k];
+    $('#c22n-dib').innerHTML=svg(e);
+    $('#c22n-sdp').innerHTML='v=0\no=ana 2890 2890 IN IP4 …\nc=IN IP4 <mark class="'+(e.bien?'bien':'')+'">'+e.c+'</mark>\nm=audio 40000 RTP/AVP 8 0\na=rtpmap:8 PCMA/8000';
+    $('#c22n-res').innerHTML='<span>Beto oye a Ana: <b class="'+(e.ida?'ok':'warn')+'" style="color:var(--'+(e.ida?'good':'warm')+')">'+(e.ida?'sí':'no')+'</b></span>'+
+      '<span>Ana oye a Beto: <b style="color:var(--'+(e.vuelta?'good':'warm')+')">'+(e.vuelta?'sí':'no')+'</b></span>';
+    $('#c22n-exp').textContent=e.exp;
+    document.querySelectorAll('[data-c22n]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c22n===k?'true':'false'));
+  }
+  document.querySelectorAll('[data-c22n]').forEach(b=>b.addEventListener('click',()=>mostrar(b.dataset.c22n)));
+  mostrar('nat');
+})();
+</script>
+</body>
+</html>

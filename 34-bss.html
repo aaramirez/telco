@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BSS · Cómo funciona un telco</title>
+<meta name="description" content="Los sistemas de negocio llevan al cliente desde la oferta hasta el pago: el catálogo define qué se vende, el CRM conoce al cliente, la orden pide el servicio, la facturación cobra y el aseguramiento de ingresos vigila que nada se escape.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="34-bss">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 34 DE 49</span><h1>BSS: del producto a la factura</h1><p class="lede">Los sistemas de negocio llevan al cliente desde la oferta hasta el pago: el catálogo define qué se vende, el CRM conoce al cliente, la orden pide el servicio, la facturación cobra y el aseguramiento de ingresos vigila que nada se escape.</p></header>
+<section><div class="prose"><p>Un cliente no compra «una ONT, un perfil de velocidad en la OLT y una sesión en el BNG». Compra el «Plan Hogar 600», con un precio, una promoción de bienvenida y una fecha de pago. Alguien tiene que traducir esa promesa comercial en algo que la red entienda, y después convertir cada mes de servicio en una factura que el cliente pague. Ese trabajo lo hacen los <b>sistemas de soporte al negocio</b>, que la industria llama <b>BSS</b> (por sus siglas en inglés, <i>Business Support Systems</i>).</p><p>Este capítulo recorre el BSS en el orden en que lo vive un cliente: primero ve el catálogo, después le abren una ficha, firma una orden, usa el servicio, recibe la factura y paga (o no paga). Al final aparece la pieza que casi nadie ve: el equipo que vigila que todo lo que la red entrega termine cobrado.</p></div><div class="analogia"><b>Imagínalo así</b><p>Una tienda en línea: el catálogo dice qué se vende y a qué precio, la ficha del cliente guarda quién eres y qué compraste, el carrito se convierte en un pedido, el pedido en una factura y la factura en un cobro. Y al cierre del día, alguien cuadra la caja para ver si lo que salió del depósito coincide con lo que entró al banco.</p></div><figure class="fig fig-capas" id="34-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el BSS, del catálogo a la factura y el cobro">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class="apagado"><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class="apagado"><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class="apagado"><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class="apagado"><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class=""><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class=""><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class="apagado"><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class="apagado"><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class=""><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class=""><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class=""><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class=""><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: el BSS, del catálogo a la factura y el cobro</text>
+</svg></div><figcaption><b>Dónde estamos.</b> En el mapa de sistemas del telco, este capítulo enciende la capa BSS, entre los canales por donde entra el cliente y la integración que lleva las órdenes a la red. En la cadena de valor cubre los eslabones donde el servicio se vende, se ordena, se factura y se cobra.</figcaption></figure></section>
+<section><h2>Catálogo de productos y precios</h2><div class="prose"><p>El <b>catálogo</b> es la lista oficial de todo lo que el operador vende. No es el folleto de mercadeo: es una base de datos con reglas. Para cada producto guarda el nombre comercial, el precio, la moneda, los impuestos que aplican, las promociones que se le pueden sumar, a quién se le puede vender (por ejemplo, solo en zonas con fibra o solo a empresas) y con qué otros productos es compatible.</p><p>La idea más importante del catálogo es que separa <b>lo que se vende</b> de <b>lo que la red tiene que hacer</b>. El «Plan Hogar 600» es una oferta comercial. Por dentro, esa oferta se descompone en piezas técnicas: un servicio de acceso a Internet de 600 Mbps de bajada y 300 de subida, una ONT con Wi-Fi entregada en comodato y quizá una línea de voz. Mercadeo puede cambiar el nombre, el precio o la promoción sin tocar la red; y la red puede cambiar de fabricante sin tocar la oferta.</p></div><figure class="fig fig-esquema" id="34-diagrama-6"><div class="lienzo"><svg viewBox="0 0 880 330" style="min-width:700px" role="img" aria-label="Del producto comercial a la red: el plan Hogar 600 con su precio y promoción se guarda en el catálogo como una oferta con precios y especificaciones, que se traducen en servicios técnicos: perfil de velocidad, alta de la ONT y configuración del Wi-Fi">
+  <rect x="10" y="12" width="230" height="306" rx="12" class="d-casa"/>
+  <rect x="252" y="12" width="330" height="306" rx="12" class="d-sis"/>
+  <rect x="594" y="12" width="276" height="306" rx="12" class="d-oper"/>
+  <text x="125" y="36" text-anchor="middle" class="t t-xs t-b k-casa">LO QUE VE EL CLIENTE</text>
+  <text x="417" y="36" text-anchor="middle" class="t t-xs t-b k-sis">EL CATÁLOGO (BSS)</text>
+  <text x="732" y="36" text-anchor="middle" class="t t-xs t-b k-oper">LO QUE CONFIGURA LA RED (OSS)</text>
+
+  
+  <rect x="28" y="60" width="194" height="200" rx="12" class="caja"/>
+  <text x="125" y="92" text-anchor="middle" class="t t-b">Plan Hogar 600</text>
+  <text x="125" y="122" text-anchor="middle" class="t t-b k-casa" style="font-size:22px">$ 28</text>
+  <text x="125" y="140" text-anchor="middle" class="t t-s t-m">al mes, impuestos aparte</text>
+  <line x1="46" y1="156" x2="204" y2="156" class="ln ln-d"/>
+  <g class="t t-s">
+    <text x="46" y="180">✓ 600 Mbps por fibra</text>
+    <text x="46" y="202">✓ Wi-Fi incluido</text>
+    <text x="46" y="224">✓ Instalación gratis</text>
+    <text x="46" y="246">✓ 50 % menos el 1.er mes</text>
+  </g>
+  <text x="125" y="296" text-anchor="middle" class="t t-s t-m">web, tienda, vendedor</text>
+
+  
+  <rect x="270" y="60" width="150" height="56" rx="10" class="caja"/>
+  <text x="345" y="83" text-anchor="middle" class="t t-s t-b">Oferta</text>
+  <text x="345" y="101" text-anchor="middle" class="t t-s t-mono">HOGAR-600</text>
+  <line x1="222" y1="110" x2="268" y2="90" class="ln" marker-end="url(#fl)"/>
+
+  <g class="t t-s">
+    <rect x="440" y="52" width="128" height="34" rx="8" class="caja"/><text x="452" y="73">Precio mensual 28</text>
+    <rect x="440" y="94" width="128" height="34" rx="8" class="caja"/><text x="452" y="115">Instalación 0</text>
+    <rect x="440" y="136" width="128" height="34" rx="8" class="caja"/><text x="452" y="157">Promo −50 % mes 1</text>
+  </g>
+  <path d="M420 80H430V69H440M430 80V111H440M430 111V153H440" class="ln"/>
+  <text x="505" y="186" text-anchor="middle" class="t t-xs t-m">PRECIOS Y REGLAS</text>
+
+  <text x="292" y="188" class="t t-xs t-m">ESPECIFICACIONES</text>
+  <rect x="290" y="196" width="278" height="34" rx="8" class="c-red"/><text x="302" y="218" class="t t-s t-b">Acceso a Internet 600/300 Mbps</text>
+  <rect x="290" y="238" width="278" height="34" rx="8" class="c-enl"/><text x="302" y="260" class="t t-s t-b">ONT con Wi-Fi en comodato</text>
+  <path d="M280 116V255H290M280 213H290" class="ln"/>
+  <text x="417" y="300" text-anchor="middle" class="t t-s t-m">mercadeo cambia precios sin tocar la red</text>
+
+  
+  <g class="t t-s">
+    <rect x="612" y="60" width="240" height="56" rx="10" class="caja"/>
+    <use href="#i-router-core" x="622" y="72" width="30" height="30" class="ico"/>
+    <text x="660" y="83" class="t-b">Perfil de velocidad</text><text x="660" y="101" class="t-m">en la OLT y el BNG</text>
+    <rect x="612" y="128" width="240" height="56" rx="10" class="caja"/>
+    <use href="#i-ont" x="622" y="140" width="30" height="30" class="ico"/>
+    <text x="660" y="151" class="t-b">Alta de la ONT</text><text x="660" y="169" class="t-m">número de serie y puerto</text>
+    <rect x="612" y="196" width="240" height="56" rx="10" class="caja"/>
+    <use href="#i-router" x="622" y="208" width="30" height="30" class="ico"/>
+    <text x="660" y="219" class="t-b">Red Wi-Fi y clave</text><text x="660" y="237" class="t-m">por el ACS</text>
+  </g>
+  <line x1="568" y1="213" x2="610" y2="90" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <line x1="568" y1="255" x2="610" y2="158" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <line x1="568" y1="258" x2="610" y2="226" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="732" y="300" text-anchor="middle" class="t t-s t-m">la red cambia de fabricante sin tocar la oferta</text>
+</svg></div><figcaption><b>Del producto comercial a lo que configura la red.</b> A la izquierda, lo que ve el cliente en la web o en la tienda: un plan con precio y promoción. En el centro, cómo lo guarda el catálogo: una oferta que agrupa precios y especificaciones de producto. A la derecha, los servicios técnicos que el OSS debe activar para cumplir esa promesa. Cambiar la columna izquierda no obliga a tocar la derecha.</figcaption></figure><div class="prose"><p>Un catálogo bien hecho evita el gran problema de los operadores que crecen rápido: cientos de planes casi iguales, creados a mano para cada campaña, que nadie se anima a borrar. Cada plan duplicado es una regla más que facturación debe aplicar bien y una fuente más de errores.</p></div></section>
+<section><h2>CRM: la ficha del cliente</h2><div class="prose"><p>El <b>CRM</b> (<i>Customer Relationship Management</i>, gestión de la relación con el cliente) es la ficha del cliente. Guarda quién es (nombre, documento de identidad, dirección, teléfonos, correo), qué tiene contratado, qué contactos ha tenido con el operador y en qué estado está su relación: activo, suspendido por mora, en proceso de baja.</p><p>En un telco la ficha se organiza en tres niveles que conviene distinguir:</p><ul><li><b>El cliente</b>: la persona o la empresa.</li><li><b>La cuenta de facturación</b>: a quién y cómo se le cobra. Una empresa puede tener una sola cuenta para veinte sedes, o una por sede.</li><li><b>El servicio</b>: cada cosa contratada en una dirección concreta. Una familia con fibra en la casa y en la casa de la playa tiene un cliente, quizá una cuenta y dos servicios.</li></ul><p>Esta separación parece burocrática, pero resuelve problemas reales: permite mudar un servicio sin crear un cliente nuevo, cobrar en una sola factura servicios de varias direcciones o cambiar al responsable del pago sin cortar Internet. Cuando un agente de atención abre la ficha, ve las tres cosas a la vez, y por eso el CRM es la pantalla más usada de todo el operador.</p></div></section>
+<section><h2>Gestión de órdenes</h2><div class="prose"><p>Cada vez que algo cambia en la relación con el cliente nace una <b>orden</b>: un alta (cliente nuevo), un cambio de plan, un traslado a otra dirección, una suspensión, una reconexión o una baja. La orden es el «carrito confirmado» de la tienda en línea: dice qué se pidió, para qué servicio, desde cuándo y con qué precio.</p><p>El sistema de <b>gestión de órdenes</b> tiene dos trabajos. Primero, validar que la orden tenga sentido: que el plan exista en el catálogo, que la dirección tenga cobertura, que el cliente no tenga deudas que lo impidan. Segundo, <b>descomponerla</b>: una orden comercial de alta se convierte en varias órdenes técnicas (reservar un puerto, agendar la visita del técnico, activar la ONT, crear el perfil de velocidad) que viajan hacia el OSS, el mundo de la operación que cuenta el capítulo 36. Cuando todas las piezas técnicas terminan, la orden vuelve al BSS como «completada» y recién ahí empieza a facturarse.</p><p>Ese último detalle importa: si el servicio se activa en la red pero la orden nunca se marca como completada, el cliente navega y no paga. Si la orden se marca completada pero la red no se activó, el cliente paga y no navega. Las dos cosas pasan, y son de los reclamos más caros.</p></div><figure class="fig fig-arquitectura" id="34-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 410" style="min-width:720px" role="img" aria-label="Arquitectura del BSS: los canales entran al CRM; el catálogo alimenta al CRM y este crea órdenes; las órdenes van al OSS, que configura la red; la red entrega registros de uso a la mediación, que pasan a facturación y cobranza; la cobranza pide suspensiones y reconexiones por órdenes; fraude y aseguramiento de ingresos miran todo el recorrido">
+  
+  <rect x="10" y="10" width="880" height="74" rx="12" class="d-casa"/>
+  <rect x="10" y="94" width="880" height="214" rx="12" class="d-sis"/>
+  <rect x="10" y="318" width="880" height="82" rx="12" class="d-oper"/>
+  <text x="24" y="30" class="t t-xs t-b k-casa">CANALES</text>
+  <text x="24" y="114" class="t t-xs t-b k-sis">BSS</text>
+  <text x="24" y="338" class="t t-xs t-b k-oper">OSS Y RED</text>
+
+  
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="110" y="38" width="110" height="34" rx="8" class="caja"/><text x="165" y="60">App</text>
+    <rect x="234" y="38" width="110" height="34" rx="8" class="caja"/><text x="289" y="60">Web</text>
+    <rect x="358" y="38" width="110" height="34" rx="8" class="caja"/><text x="413" y="60">Tiendas</text>
+    <rect x="482" y="38" width="110" height="34" rx="8" class="caja"/><text x="537" y="60">Call center</text>
+    <rect x="606" y="38" width="110" height="34" rx="8" class="caja"/><text x="661" y="60">Vendedores</text>
+  </g>
+  <line x1="350" y1="72" x2="350" y2="126" class="ln" marker-end="url(#fl)"/>
+
+  
+  <rect x="40" y="128" width="180" height="58" rx="10" class="caja"/>
+  <text x="130" y="152" text-anchor="middle" class="t t-b">Catálogo</text><text x="130" y="171" text-anchor="middle" class="t t-s t-m">planes, precios, reglas</text>
+  <rect x="260" y="128" width="180" height="58" rx="10" class="caja"/>
+  <use href="#i-persona" x="270" y="140" width="32" height="32" class="ico"/>
+  <text x="310" y="152" class="t t-b">CRM</text><text x="310" y="171" class="t t-s t-m">ficha del cliente</text>
+  <rect x="480" y="128" width="180" height="58" rx="10" class="caja"/>
+  <text x="570" y="152" text-anchor="middle" class="t t-b">Gestión de órdenes</text><text x="570" y="171" text-anchor="middle" class="t t-s t-m">alta, cambio, baja</text>
+  <line x1="220" y1="157" x2="258" y2="157" class="ln" marker-end="url(#fl)"/>
+  <line x1="440" y1="157" x2="478" y2="157" class="ln" marker-end="url(#fl)"/>
+
+  
+  <rect x="40" y="232" width="180" height="58" rx="10" class="caja"/>
+  <text x="130" y="256" text-anchor="middle" class="t t-b">Mediación</text><text x="130" y="275" text-anchor="middle" class="t t-s t-m">y tarificación del uso</text>
+  <rect x="260" y="232" width="180" height="58" rx="10" class="caja"/>
+  <use href="#i-factura" x="270" y="244" width="32" height="32" class="ico"/>
+  <text x="310" y="256" class="t t-b">Facturación</text><text x="310" y="275" class="t t-s t-m">ciclos e impuestos</text>
+  <rect x="480" y="232" width="180" height="58" rx="10" class="caja"/>
+  <text x="570" y="256" text-anchor="middle" class="t t-b">Cobranza</text><text x="570" y="275" text-anchor="middle" class="t t-s t-m">pagos y mora</text>
+  <line x1="220" y1="261" x2="258" y2="261" class="ln" marker-end="url(#fl)"/>
+  <line x1="440" y1="261" x2="478" y2="261" class="ln" marker-end="url(#fl)"/>
+
+  
+  <line x1="500" y1="186" x2="430" y2="230" class="ln" marker-end="url(#fl)"/>
+  <text x="446" y="214" text-anchor="end" class="t t-xs t-m">EMPIEZA A COBRAR</text>
+  <line x1="620" y1="232" x2="620" y2="189" class="ln s-apl" style="stroke-width:1.8" marker-end="url(#fl-apl)"/>
+  <text x="612" y="210" text-anchor="end" class="t t-xs k-apl">SUSPENDER</text><text x="612" y="222" text-anchor="end" class="t t-xs k-apl">O RECONECTAR</text>
+
+  
+  <path d="M660 157H694V342" class="ln" style="stroke-width:1.8" marker-end="url(#fl)"/>
+  <text x="702" y="196" class="t t-xs t-m" transform="rotate(90 702 196)">ÓRDENES TÉCNICAS</text>
+
+  
+  <rect x="730" y="128" width="148" height="70" rx="10" class="caja"/>
+  <use href="#i-candado" x="740" y="140" width="26" height="26" class="ico"/>
+  <text x="772" y="155" class="t t-b">Fraude</text><text x="742" y="185" class="t t-s t-m">¿alguien evita pagar?</text>
+  <rect x="730" y="210" width="148" height="80" rx="10" class="caja"/>
+  <text x="742" y="234" class="t t-b">Aseguramiento</text><text x="742" y="252" class="t t-b">de ingresos</text><text x="742" y="275" class="t t-s t-m">¿se escapa algo?</text>
+  <line x1="722" y1="124" x2="722" y2="294" class="ln ln-d"/>
+
+  
+  <rect x="580" y="344" width="200" height="46" rx="10" class="caja"/>
+  <use href="#i-monitor" x="590" y="352" width="30" height="30" class="ico"/>
+  <text x="628" y="364" class="t t-b">OSS</text><text x="628" y="381" class="t t-s t-m">inventario, activación</text>
+  <rect x="40" y="344" width="260" height="46" rx="10" class="caja"/>
+  <use href="#i-olt" x="50" y="352" width="30" height="30" class="ico"/>
+  <text x="88" y="364" class="t t-b">Red</text><text x="88" y="381" class="t t-s t-m">OLT, BNG, RADIUS, voz</text>
+  <line x1="580" y1="367" x2="302" y2="367" class="ln" marker-end="url(#fl)"/>
+  <text x="440" y="360" text-anchor="middle" class="t t-xs t-m">CONFIGURA</text>
+  <line x1="130" y1="344" x2="130" y2="292" class="ln s-red" style="stroke-width:1.8" marker-end="url(#fl-red)"/>
+  <text x="138" y="300" class="t t-xs k-red">REGISTROS DE USO</text>
+</svg></div><figcaption><b>La arquitectura del BSS.</b> Arriba, los canales por donde entra el cliente. En la franja del BSS, el CRM y el catálogo alimentan a la gestión de órdenes; la mediación y la tarificación convierten el uso en importes; la facturación arma la factura y la cobranza persigue el pago. A la derecha, fraude y aseguramiento de ingresos miran todo el recorrido. Abajo, el OSS y la red reciben las órdenes técnicas y devuelven el uso.</figcaption></figure></section>
+<section><h2>Mediación y tarificación</h2><div class="prose"><p>Algunos servicios se cobran por lo que se usa: minutos de voz, llamadas internacionales, datos móviles fuera del plan, películas alquiladas en la televisión. La red registra ese uso, pero cada equipo lo anota a su manera: la central de voz deja un <b>CDR</b> (registro de detalle de llamada) por cada llamada; el servidor RADIUS anota cuántos bytes usó cada sesión (el <i>accounting</i> del capítulo 20); la plataforma de video registra cada alquiler.</p><p>La <b>mediación</b> es el traductor que recoge esos registros de decenas de equipos, los pone en un mismo formato, descarta los duplicados y los incompletos y los asocia al servicio correcto. Después, la <b>tarificación</b> (<i>rating</i>) les pone precio: esta llamada fue a un celular de otro operador, duró 3 minutos y 20 segundos, se cobra por minuto iniciado y el plan incluía 100 minutos de los que quedan 40, así que cuesta cero.</p><p>En un operador de fibra residencial con planes de tarifa plana, la mediación pesa menos que en un operador móvil, porque el precio no depende del uso. Pero no desaparece: la voz, los extras, los planes con tope de datos y los servicios mayoristas siguen dependiendo de que cada registro llegue completo y una sola vez.</p></div></section>
+<section><h2>Facturación y ciclos</h2><div class="prose"><p>La <b>facturación</b> (<i>billing</i>) junta todo lo que corresponde cobrarle a una cuenta en un período: los cargos fijos de cada plan, los cargos por uso ya tarificados, los cargos únicos (instalación, un equipo extra), los descuentos y las promociones, y los impuestos. El resultado es la factura, que en muchos países debe emitirse además como documento fiscal electrónico ante la autoridad tributaria.</p><p>Facturar a todos los clientes el mismo día sería un cuello de botella para los sistemas y para la cobranza. Por eso los clientes se reparten en <b>ciclos de facturación</b>: unos cierran el día 1, otros el 10, otros el 20. Cada ciclo tiene su fecha de corte, su fecha de emisión y su fecha de vencimiento.</p><p>Dos decisiones de diseño explican muchas dudas de los clientes:</p><ul><li><b>Mes adelantado o mes vencido.</b> Algunos operadores cobran el mes que empieza; otros, el mes que terminó. El primer caso exige una factura de «ajuste» cuando algo cambia a mitad de mes.</li><li><b>Prorrateo.</b> Si el cliente se instaló el día 12 o subió de plan el día 15, el sistema cobra cada plan solo por los días que lo tuvo. La factura de ese mes no coincide con ningún precio del folleto, y eso genera llamadas.</li></ul></div><figure class="fig fig-flujo" id="34-diagrama-4"><div class="lienzo"><svg viewBox="0 0 960 640" style="min-width:740px" role="img" aria-label="Flujo del ciclo de facturación: la red entrega registros de uso a la mediación; la tarificación les pone precio; al cierre del ciclo la facturación emite la factura al cliente y la cuenta por cobrar a la cobranza; si el cliente paga, el pago se concilia; si no paga, la cobranza envía avisos, ordena la suspensión y, cuando el cliente paga, la reconexión">
+  
+  <g class="t t-b">
+    <rect x="24" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-olt" x="34" y="26" width="30" height="30" class="ico"/><text x="72" y="40">Red</text><text x="72" y="57" class="t-s t-m" style="font-weight:400">OLT, RADIUS</text>
+    <rect x="184" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-monitor" x="194" y="26" width="30" height="30" class="ico"/><text x="232" y="40">Mediación</text><text x="232" y="57" class="t-s t-m" style="font-weight:400">y tarificación</text>
+    <rect x="344" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-factura" x="354" y="26" width="30" height="30" class="ico"/><text x="392" y="47">Facturación</text>
+    <rect x="504" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-persona" x="514" y="26" width="30" height="30" class="ico"/><text x="552" y="47">Cliente</text>
+    <rect x="664" y="14" width="132" height="56" rx="10" class="caja"/><use href="#i-monitor" x="674" y="26" width="30" height="30" class="ico"/><text x="712" y="47">Cobranza</text>
+  </g>
+  <line x1="90" y1="70" x2="90" y2="626" class="vida"/>
+  <line x1="250" y1="70" x2="250" y2="626" class="vida"/>
+  <line x1="410" y1="70" x2="410" y2="626" class="vida"/>
+  <line x1="570" y1="70" x2="570" y2="626" class="vida"/>
+  <line x1="730" y1="70" x2="730" y2="626" class="vida"/>
+
+  
+  <line x1="90" y1="112" x2="248" y2="118" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="98" y="104" class="t t-s">① Registros de uso</text>
+  <text x="258" y="140" class="t t-s t-m">llamadas, bytes, alquileres</text>
+
+  
+  <line x1="250" y1="168" x2="408" y2="174" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="258" y="160" class="t t-s">② Uso con precio</text>
+
+  
+  <rect x="352" y="190" width="180" height="66" rx="8" class="c-apl"/>
+  <text x="362" y="208" class="t t-s t-b">③ Cierre de ciclo</text>
+  <text x="362" y="226" class="t t-s">cargos fijos + uso</text>
+  <text x="362" y="244" class="t t-s">− descuentos + impuestos</text>
+  <line x1="410" y1="272" x2="568" y2="278" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="418" y="266" class="t t-s">④ Factura emitida</text>
+  <line x1="410" y1="304" x2="728" y2="310" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="586" y="300" class="t t-s">⑤ Cuenta por cobrar</text>
+
+  
+  <text x="578" y="344" class="t t-xs t-b k-enl">SI PAGA A TIEMPO</text>
+  <line x1="570" y1="360" x2="728" y2="366" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="578" y="384" class="t t-s">⑥ Pago</text>
+  <line x1="730" y1="402" x2="412" y2="408" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="418" y="400" class="t t-s">⑦ Pago conciliado: factura saldada</text>
+
+  
+  <line x1="40" y1="430" x2="800" y2="430" class="ln ln-d"/>
+  <text x="578" y="452" class="t t-xs t-b k-fis">SI NO PAGA</text>
+  <line x1="730" y1="472" x2="572" y2="478" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="584" y="496" class="t t-s">⑧ Recordatorio y aviso</text>
+  <line x1="730" y1="524" x2="92" y2="530" class="ln s-fis" style="stroke-width:2.4" marker-end="url(#fl-fis)"/>
+  <text x="98" y="518" class="t t-s"><tspan class="t-b">⑨ Orden de suspensión</tspan> (por gestión de órdenes y OSS)</text>
+  <line x1="570" y1="560" x2="728" y2="566" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="578" y="554" class="t t-s">⑩ Paga la deuda</text>
+  <line x1="730" y1="596" x2="92" y2="602" class="ln s-enl" style="stroke-width:2.4" marker-end="url(#fl-enl)"/>
+  <text x="98" y="590" class="t t-s t-b">⑪ Orden de reconexión</text>
+  <text x="98" y="620" class="t t-s t-m">el servicio vuelve en minutos</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M830 98v28" class="ln s-red" style="stroke-width:3"/><text x="840" y="110" class="k-red">USO</text><text x="840" y="123" class="t-m">continuo</text>
+    <path d="M830 152v28" class="ln s-tra" style="stroke-width:3"/><text x="840" y="164" class="k-tra">TARIFA</text><text x="840" y="177" class="t-m">diaria o al cierre</text>
+    <path d="M830 194v120" class="ln s-apl" style="stroke-width:3"/><text x="840" y="248" class="k-apl">FACTURA</text><text x="840" y="261" class="t-m">una vez por ciclo</text>
+    <path d="M830 340v72" class="ln s-enl" style="stroke-width:3"/><text x="840" y="372" class="k-enl">COBRO</text><text x="840" y="385" class="t-m">hasta el vencimiento</text>
+    <path d="M830 444v164" class="ln s-fis" style="stroke-width:3"/><text x="840" y="520" class="k-fis">MORA</text><text x="840" y="533" class="t-m">escalera de días</text>
+  </g>
+  <text x="14" y="330" class="t t-xs t-m" transform="rotate(-90 14 330)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El ciclo de facturación, de punta a punta.</b> Cada flecha es un paso y el tiempo corre hacia abajo. La red entrega el uso, la mediación y la tarificación le ponen precio, el cierre de ciclo arma la factura, el cliente paga o no paga, y si no paga la cobranza escala hasta pedirle a la red que suspenda el servicio. A la derecha, las cinco fases: uso, tarifa, factura, cobro y mora.</figcaption></figure><div class="prose"><p>El laboratorio muestra el prorrateo en acción. Arma un plan, véndelo y cámbialo a mitad de mes: la factura cambia línea por línea.</p></div><div class="lab" id="34-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>De la oferta a la factura</h3></div><p class="hint">Arma el plan con las piezas del catálogo, elige qué día se instaló el cliente y si cambió de plan a mitad de mes. La factura se recalcula al instante y explica de dónde sale cada importe.</p><div id="c34-lab">
+<style>
+#c34-lab{display:grid;gap:14px}
+#c34-lab fieldset{border:1px solid var(--line);border-radius:10px;padding:10px 12px 12px;margin:0;display:grid;gap:10px;min-width:0}
+#c34-lab legend{font:700 .74rem var(--f-display);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:0 6px}
+#c34-lab .c34-precio{font:600 .92rem var(--f-display)}
+#c34-lab .c34-precio b{color:var(--accent);font-family:var(--f-mono)}
+#c34-lab input[type=range]:disabled{opacity:.4}
+#c34-lab .c34-fac td:last-child,#c34-lab .c34-fac th:last-child{text-align:right;font-family:var(--f-mono);white-space:nowrap}
+#c34-lab .c34-fac td:nth-child(2),#c34-lab .c34-fac th:nth-child(2){text-align:right;font-family:var(--f-mono)}
+#c34-lab .c34-fac tr.c34-neg td:last-child{color:var(--good)}
+#c34-lab .c34-fac tr.c34-tot td{font-weight:700;border-top:2px solid var(--ink)}
+#c34-lab .c34-fac td{padding:6px 8px}
+#c34-lab .c34-dias{display:flex;height:30px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:var(--paper)}
+#c34-lab .c34-dias i{display:block;height:100%;transition:width .3s}
+@media (prefers-reduced-motion: reduce){#c34-lab .c34-dias i{transition:none}}
+#c34-lab .c34-eje{display:flex;justify-content:space-between;font:500 .75rem var(--f-mono);color:var(--muted);margin-top:4px}
+#c34-lab select{width:100%}
+#c34-lab .opciones label{min-width:0}
+</style>
+
+<fieldset>
+  <legend>Paso 1 · Arma el plan</legend>
+  <div class="opciones">
+    <label>Internet
+      <select id="c34-vel">
+        <option value="300">300 Mbps · $ 20</option>
+        <option value="600" selected>600 Mbps · $ 28</option>
+        <option value="1000">1000 Mbps · $ 38</option>
+      </select></label>
+    <label>Televisión
+      <select id="c34-tv">
+        <option value="0">Sin televisión</option>
+        <option value="10" selected>Con televisión · $ 10</option>
+      </select></label>
+    <label>Promoción de bienvenida
+      <select id="c34-promo">
+        <option value="0">Ninguna</option>
+        <option value="50" selected>50 % menos el 1.er mes</option>
+      </select></label>
+  </div>
+  <div class="c34-precio" id="c34-lista" aria-live="polite"></div>
+</fieldset>
+
+<fieldset>
+  <legend>Paso 2 · Véndelo y cámbialo</legend>
+  <div class="ctls">
+    <div class="ctl"><label for="c34-alta">Día de instalación</label><output id="c34-alta-o"></output>
+      <input type="range" id="c34-alta" min="1" max="29" value="5"></div>
+    <div class="opciones" style="grid-template-columns:1fr">
+      <label>Cambio de plan a mitad del ciclo
+        <select id="c34-nuevo">
+          <option value="0">Sin cambio</option>
+          <option value="300">Baja a 300 Mbps</option>
+          <option value="600">Pasa a 600 Mbps</option>
+          <option value="1000" selected>Sube a 1000 Mbps</option>
+        </select></label>
+    </div>
+    <div class="ctl"><label for="c34-dc">Día del cambio</label><output id="c34-dc-o"></output>
+      <input type="range" id="c34-dc" min="2" max="30" value="15"></div>
+    <div class="ctl"><label for="c34-imp">Impuesto</label><output id="c34-imp-o"></output>
+      <input type="range" id="c34-imp" min="0" max="25" value="16"></div>
+  </div>
+</fieldset>
+
+<div>
+  <div class="c34-dias" id="c34-dias" role="img" aria-label="Días del ciclo con cada plan"></div>
+  <div class="c34-eje" aria-hidden="true"><span>día 1</span><span>día 15</span><span>día 30</span></div>
+</div>
+<div class="crono-ley" id="c34-ley"></div>
+
+<fieldset>
+  <legend>Paso 3 · La factura del ciclo (30 días, se cobra al cierre)</legend>
+  <div class="tbl"><table class="c34-fac"><thead><tr><th>Concepto</th><th>Días</th><th>Importe</th></tr></thead><tbody id="c34-lineas"></tbody></table></div>
+  <p class="hint" id="c34-nota" aria-live="polite"></p>
+</fieldset>
+</div></div></section>
+<section><h2>Cobranza y mora</h2><div class="prose"><p>Emitir la factura no es cobrarla. La <b>cobranza</b> recibe los pagos por todos los medios disponibles (débito automático, tarjeta, transferencia, puntos de pago en comercios, la app) y los <b>concilia</b>: asocia cada pago a la factura correcta, aunque el cliente haya pagado de menos, de más o con la referencia equivocada. Un pago que no se concilia es un cliente que pagó y sigue apareciendo como deudor, y probablemente llame enojado.</p><p>Cuando el pago no llega, el cliente entra en <b>mora</b>, y el operador sigue una escalera de acciones definida de antemano. Los números cambian de un operador a otro, pero la forma es parecida:</p><ol class="steps"><li><span>Unos días antes del vencimiento, un recordatorio amable por mensaje o correo.</span></li><li><span>Vencida la factura, avisos más insistentes y, en algunos casos, una llamada.</span></li><li><span>Pasado un plazo, la <b>suspensión</b>: el BSS pide al OSS que corte el servicio, a menudo enviando al cliente a una página que le explica cómo pagar.</span></li><li><span>Si la deuda sigue, la baja del servicio, el retiro del equipo y el paso a gestión externa o a pérdida.</span></li></ol><p>Cuando el cliente paga, la escalera se recorre al revés: la cobranza registra el pago y dispara una <b>orden de reconexión</b>, que debe llegar a la red en minutos, no en días. El capítulo 44 recorre ese proceso completo, con la diferencia entre prepago y postpago.</p></div></section>
+<section><h2>Fraude</h2><div class="prose"><p>En un telco, el fraude es usar el servicio con la intención de no pagarlo o de cobrárselo a otro. En la fibra residencial toma formas concretas: contratar con documentos falsos y desaparecer con el equipo, conectar vecinos de forma clandestina desde una caja de la calle, revender el acceso a todo un edificio con un plan residencial o clonar una ONT para colgarla de la cuenta de otro cliente. En la voz aparecen otras, como desviar tráfico internacional hacia números de tarifa especial o colar llamadas internacionales como si fueran locales.</p><p>También existe el fraude interno: altas que nunca se facturan, descuentos que alguien aplica sin autorización o bajas que no se ejecutan en la red. Por eso los sistemas registran quién hizo cada cambio y con qué permiso.</p><p>La <b>gestión de fraude</b> combina reglas («más de cinco altas con el mismo documento en un mes», «una ONT que aparece en dos puertos distintos») con análisis de patrones de uso. Cuando algo salta, no corta automáticamente: abre un caso para que una persona lo revise, porque un falso positivo también cuesta un cliente.</p></div></section>
+<section><h2>Aseguramiento de ingresos (revenue assurance)</h2><div class="prose"><p>El fraude es alguien que quiere no pagar. Las <b>fugas de ingresos</b> son algo más silencioso: el operador entrega un servicio y, por un error de proceso o de sistemas, no lo cobra o lo cobra de menos. Nadie lo hizo a propósito y nadie reclama, porque el cliente beneficiado no va a llamar para pedir que le cobren.</p><p>El <b>aseguramiento de ingresos</b> (<i>revenue assurance</i>) es la disciplina que busca esas fugas. Su herramienta principal es la <b>conciliación</b>: comparar, registro por registro, lo que dice cada sistema. ¿Todos los servicios activos en la red tienen un contrato en el CRM? ¿Todos los contratos se están facturando? ¿El plan que se factura es el mismo que tiene configurado la ONT? ¿Todas las bajas del CRM se ejecutaron en la red?</p></div><figure class="fig fig-esquema" id="34-diagrama-3"><div class="lienzo"><svg viewBox="0 0 910 330" style="min-width:720px" role="img" aria-label="Fugas de ingresos: el ingreso fluye de la venta a la orden, a la red, al uso, a la factura y al cobro; en cada unión puede escaparse dinero: precios distintos al catálogo, servicios activos sin contrato, uso perdido, planes o promociones mal aplicados y pagos sin conciliar; debajo de cada fuga, la conciliación que la detecta">
+  <defs>
+    <symbol id="i34-gota" viewBox="0 0 20 28"><path d="M10 2C10 2 2 13 2 19a8 8 0 0 0 16 0C18 13 10 2 10 2z" fill="currentColor"/></symbol>
+  </defs>
+  
+  <rect x="20" y="74" width="870" height="32" rx="16" class="d-sis"/>
+  <text x="455" y="24" text-anchor="middle" class="t t-xs t-b t-m">EL INGRESO FLUYE DE IZQUIERDA A DERECHA →</text>
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="30" y="64" width="100" height="52" rx="10" class="caja"/><text x="80" y="88">Venta</text><text x="80" y="104" class="t-m" style="font-weight:400">CRM</text>
+    <rect x="180" y="64" width="100" height="52" rx="10" class="caja"/><text x="230" y="88">Orden</text><text x="230" y="104" class="t-m" style="font-weight:400">gestión</text>
+    <rect x="330" y="64" width="100" height="52" rx="10" class="caja"/><text x="380" y="88">Red</text><text x="380" y="104" class="t-m" style="font-weight:400">servicio activo</text>
+    <rect x="480" y="64" width="100" height="52" rx="10" class="caja"/><text x="530" y="88">Uso</text><text x="530" y="104" class="t-m" style="font-weight:400">mediación</text>
+    <rect x="630" y="64" width="100" height="52" rx="10" class="caja"/><text x="680" y="88">Factura</text><text x="680" y="104" class="t-m" style="font-weight:400">facturación</text>
+    <rect x="780" y="64" width="100" height="52" rx="10" class="caja"/><text x="830" y="88">Cobro</text><text x="830" y="104" class="t-m" style="font-weight:400">cobranza</text>
+  </g>
+  
+  <g class="k-apl" style="color:var(--c-apl)">
+    <use href="#i34-gota" x="145" y="112" width="20" height="28"/>
+    <use href="#i34-gota" x="295" y="112" width="20" height="28"/>
+    <use href="#i34-gota" x="445" y="112" width="20" height="28"/>
+    <use href="#i34-gota" x="595" y="112" width="20" height="28"/>
+    <use href="#i34-gota" x="745" y="112" width="20" height="28"/>
+  </g>
+  
+  <g class="t t-s" text-anchor="middle">
+    <rect x="88" y="150" width="134" height="52" rx="8" class="c-apl"/><text x="155" y="172" class="t-b">Precio distinto</text><text x="155" y="189">al del catálogo</text>
+    <rect x="238" y="150" width="134" height="52" rx="8" class="c-apl"/><text x="305" y="172" class="t-b">Activo en la red</text><text x="305" y="189">sin contrato</text>
+    <rect x="388" y="150" width="134" height="52" rx="8" class="c-apl"/><text x="455" y="172" class="t-b">Uso perdido</text><text x="455" y="189">o duplicado</text>
+    <rect x="538" y="150" width="134" height="52" rx="8" class="c-apl"/><text x="605" y="172" class="t-b">Plan o promoción</text><text x="605" y="189">mal aplicados</text>
+    <rect x="688" y="150" width="134" height="52" rx="8" class="c-apl"/><text x="755" y="172" class="t-b">Pago sin conciliar</text><text x="755" y="189">o mora sin cortar</text>
+  </g>
+  <text x="20" y="180" class="t t-xs t-b k-apl" transform="rotate(-90 20 180)">FUGA</text>
+  
+  <g class="ln ln-d"><path d="M155 202v26M305 202v26M455 202v26M605 202v26M755 202v26"/></g>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="88" y="230" width="134" height="52" rx="8" class="c-enl"/><text x="155" y="252">órdenes</text><text x="155" y="269">vs catálogo</text>
+    <rect x="238" y="230" width="134" height="52" rx="8" class="c-enl"/><text x="305" y="252">ONT en línea</text><text x="305" y="269">vs CRM</text>
+    <rect x="388" y="230" width="134" height="52" rx="8" class="c-enl"/><text x="455" y="252">registros de red</text><text x="455" y="269">vs mediados</text>
+    <rect x="538" y="230" width="134" height="52" rx="8" class="c-enl"/><text x="605" y="252">perfil en la red</text><text x="605" y="269">vs cargo facturado</text>
+    <rect x="688" y="230" width="134" height="52" rx="8" class="c-enl"/><text x="755" y="252">cuentas en mora</text><text x="755" y="269">vs servicios activos</text>
+  </g>
+  <text x="20" y="256" class="t t-xs t-b k-enl" transform="rotate(-90 20 256)">SE VE</text>
+  <text x="455" y="312" text-anchor="middle" class="t t-s t-m">Lo que no se factura no aparece en ningún reporte: solo se ve comparando sistemas.</text>
+</svg></div><figcaption><b>Por dónde se escapa el dinero.</b> El ingreso fluye de izquierda a derecha, de la venta al cobro, como agua por una tubería. Cada unión entre dos sistemas es un punto donde puede haber una fuga: servicios activos sin facturar, planes configurados más rápidos que los cobrados, promociones que no vencen, uso que nunca llega a tarificarse o pagos que no se concilian. Debajo de cada fuga, la conciliación que la detecta.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región cruzó tres listas una noche: las ONT que estaban en línea en las OLT, los servicios activos en el CRM y las cuentas facturadas en el último ciclo. Aparecieron grupos que no deberían existir: ONT navegando sin contrato asociado (altas de prueba olvidadas, traslados donde el puerto viejo nunca se liberó, bajas que no llegaron a la red), contratos activos que no se facturaban por un error al crear la cuenta, y clientes con un perfil de velocidad mayor que el plan cobrado tras un cambio de plan a medias. Ninguno de esos casos aparecía en un reporte de facturación, porque lo que no se factura simplemente no figura. Desde entonces la conciliación corre todas las noches y cada diferencia abre un caso con dueño y plazo.</p></div></section>
+<section><h2>Ciclo de vida del producto</h2><div class="prose"><p>Los productos también nacen, viven y mueren. La <b>gestión del ciclo de vida del producto</b> ordena ese recorrido: la idea (qué necesita el mercado y qué hace la competencia), el diseño (precio, condiciones y piezas técnicas), las pruebas (¿la red puede entregarlo?, ¿facturación sabe cobrarlo?), el lanzamiento, la revisión periódica de resultados y, al final, el retiro.</p></div><figure class="fig fig-esquema" id="34-diagrama-7"><div class="lienzo"><svg viewBox="0 0 860 290" style="min-width:700px" role="img" aria-label="Ciclo de vida de un producto en seis etapas: idea, diseño, pruebas, lanzamiento, revisión y retiro; debajo de cada una, el área que la lidera y el sistema que se toca; del retiro vuelve una flecha a la idea">
+  <path d="M780 70V30H80V64" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="430" y="24" text-anchor="middle" class="t t-xs t-m">LO QUE SE APRENDE ALIMENTA LA PRÓXIMA IDEA</text>
+  <g class="t t-b" text-anchor="middle">
+    <rect x="20" y="70" width="120" height="56" rx="28" class="c-apl"/><text x="80" y="94">① Idea</text><text x="80" y="112" class="t-s" style="font-weight:400">¿qué se necesita?</text>
+    <rect x="160" y="70" width="120" height="56" rx="28" class="c-tra"/><text x="220" y="94">② Diseño</text><text x="220" y="112" class="t-s" style="font-weight:400">precio y piezas</text>
+    <rect x="300" y="70" width="120" height="56" rx="28" class="c-red"/><text x="360" y="94">③ Pruebas</text><text x="360" y="112" class="t-s" style="font-weight:400">¿la red y el cobro?</text>
+    <rect x="440" y="70" width="120" height="56" rx="28" class="c-enl"/><text x="500" y="94">④ Lanzamiento</text><text x="500" y="112" class="t-s" style="font-weight:400">sale a la venta</text>
+    <rect x="580" y="70" width="120" height="56" rx="28" class="c-fis"/><text x="640" y="94">⑤ Revisión</text><text x="640" y="112" class="t-s" style="font-weight:400">¿funciona y deja?</text>
+    <rect x="720" y="70" width="120" height="56" rx="28" class="caja"/><text x="780" y="94">⑥ Retiro</text><text x="780" y="112" class="t-s" style="font-weight:400">deja de venderse</text>
+  </g>
+  <g class="ln"><path d="M140 98h18M280 98h18M420 98h18M560 98h18M700 98h18"/></g>
+  <g class="fl-muted"><path d="M158 98l-7-4v8zM298 98l-7-4v8zM438 98l-7-4v8zM578 98l-7-4v8zM718 98l-7-4v8z"/></g>
+
+  <text x="10" y="160" class="t t-xs t-b t-m">QUIÉN LIDERA</text>
+  <g class="t t-s" text-anchor="middle">
+    <text x="80" y="180">Mercadeo</text><text x="220" y="180">Producto</text><text x="360" y="180">Red y sistemas</text>
+    <text x="500" y="180">Ventas y canales</text><text x="640" y="180">Finanzas</text><text x="780" y="180">Producto</text>
+  </g>
+  <line x1="10" y1="196" x2="850" y2="196" class="ln ln-d"/>
+  <text x="10" y="218" class="t t-xs t-b t-m">QUÉ SISTEMA SE TOCA</text>
+  <g class="t t-s t-m" text-anchor="middle">
+    <text x="80" y="240">estudios y datos</text>
+    <text x="220" y="240">catálogo en borrador</text>
+    <text x="360" y="240">ambiente de pruebas</text>
+    <text x="500" y="240">catálogo vigente</text>
+    <text x="640" y="240">reportes de ingresos</text>
+    <text x="780" y="240">plan «heredado»</text>
+    <text x="780" y="258">y migraciones</text>
+  </g>
+</svg></div><figcaption><b>El ciclo de vida de un producto.</b> Seis etapas, de la idea al retiro, y una flecha que vuelve al principio. Debajo de cada una, qué área lleva la voz cantante y qué sistema se toca. El retiro no borra el plan: deja de venderse, pero los clientes que ya lo tienen siguen facturándose hasta que migran.</figcaption></figure><div class="prose"><p>El retiro es la etapa que más se olvida. Cuando un plan deja de venderse, los clientes que ya lo tienen siguen ahí, a veces durante años. El operador debe decidir si los mantiene con sus condiciones (a esos planes se les dice «heredados»), si los migra a un plan nuevo equivalente o si les ofrece algo mejor para que se muden por voluntad propia. Mientras tanto, el catálogo debe seguir sabiendo cobrar ese plan viejo, y la red debe seguir sabiendo configurarlo.</p></div></section>
+<section><h2>Sistemas de ejemplo: plataformas de gestión para proveedores de Internet que juntan CRM, facturación y cobranza</h2><div class="prose"><p>Los grandes operadores suelen armar su BSS con varios sistemas especializados, comprados a distintos fabricantes o desarrollados en casa, e integrados entre sí. Los proveedores de Internet pequeños y medianos, en cambio, suelen empezar con una <b>plataforma de gestión para ISP</b> que reúne en un solo producto la ficha del cliente, el catálogo de planes, la facturación, la cobranza, el corte y la reconexión automáticos, los tickets de soporte y, a veces, un mapa básico de la red.</p><p>En América Latina hay varias opciones de este tipo, comerciales y de código abierto; entre las conocidas del mercado están MikroWisp, ISPCube, Wisphub, IXC Soft y Splynx. Muchas se conectan directamente a los equipos de red para cortar y reconectar, y se integran con pasarelas de pago y con la factura electrónica de cada país.</p><p>La ventaja de una plataforma así es la rapidez: un ISP puede estar cobrando en semanas. La desventaja aparece con el crecimiento: cuando el operador quiere un catálogo más flexible, varios países, ventas mayoristas o una integración profunda con su orquestador, la plataforma única se queda corta y empieza la migración a sistemas separados. Ninguna opción es mejor en abstracto; depende del tamaño y de la etapa del operador.</p></div><div class="ml"><b>En la práctica</b><p>Cuando un cliente reclama «me cobraron de más», casi siempre la respuesta está en una de estas piezas: un prorrateo por cambio de plan, una promoción que venció, un cargo único de instalación, un pago que no se concilió o un ciclo de facturación que no coincide con la fecha en que se instaló. Saber cómo se arma la factura permite explicarla en una llamada en vez de abrir un reclamo. Y cuando alguien de cualquier área ve un servicio que funciona sin estar en el sistema, ya sabe que no es un detalle: es una fuga de ingresos.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué diferencia hay entre una oferta del catálogo y un servicio técnico?</summary><p>La oferta es lo que se vende (nombre, precio, promoción); el servicio técnico es lo que la red debe configurar para cumplirla (perfil de velocidad, ONT, línea de voz). Separarlos permite cambiar uno sin tocar el otro.</p></details><details><summary>Un cliente sube de plan el día 15 de un ciclo de 30 días. ¿Por qué su factura no coincide con ninguno de los dos precios?</summary><p>Porque el sistema prorratea: cobra el plan viejo por los días que lo tuvo y el nuevo por los días restantes.</p></details><details><summary>¿Para qué sirve la mediación si la red ya registra el uso?</summary><p>Para juntar registros de muchos equipos en un mismo formato, quitar duplicados e incompletos y asociarlos al servicio correcto antes de ponerles precio.</p></details><details><summary>¿Qué diferencia hay entre fraude y fuga de ingresos?</summary><p>El fraude es intencional: alguien quiere no pagar o cargarle el consumo a otro. La fuga es un error de proceso o de sistemas que hace que un servicio entregado no se cobre bien.</p></details><details><summary>¿Cómo se detecta un cliente que navega pero no se factura?</summary><p>Conciliando sistemas: comparando las ONT activas en la red con los servicios del CRM y con las cuentas facturadas, registro por registro.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://en.wikipedia.org/wiki/Business_support_system" target="_blank" rel="noopener">Business support system, en inglés (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Customer_relationship_management" target="_blank" rel="noopener">Gestión de relaciones con clientes, CRM (Wikipedia) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Telecommunications_billing" target="_blank" rel="noopener">Telecommunications billing, en inglés (Wikipedia) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Revenue_assurance" target="_blank" rel="noopener">Revenue assurance, en inglés (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const PRECIO={300:20,600:28,1000:38}, CICLO=30;
+  const m=n=>'$ '+n.toFixed(2).replace('.',',');
+  const pct=n=>n+' %';
+  function dibujar(){
+    const vel=+$('#c34-vel').value, tv=+$('#c34-tv').value, promo=+$('#c34-promo').value;
+    const alta=+$('#c34-alta').value, nuevo=+$('#c34-nuevo').value, imp=+$('#c34-imp').value;
+    const dcEl=$('#c34-dc');
+    const cambia=nuevo!==0&&nuevo!==vel;
+    dcEl.disabled=!cambia;
+    dcEl.min=alta+1;
+    let dc=Math.max(+dcEl.value,alta+1); if(dc>CICLO){dc=CICLO;} dcEl.value=dc;
+    $('#c34-alta-o').textContent='día '+alta;
+    $('#c34-dc-o').textContent=cambia?'día '+dc:'—';
+    $('#c34-imp-o').textContent=pct(imp);
+    const lista=PRECIO[vel]+tv;
+    $('#c34-lista').innerHTML='Precio de lista del plan armado: <b>'+m(lista)+'</b> al mes, más impuesto.';
+
+    const lineas=[]; const diasA=cambia?dc-alta:CICLO-alta+1, diasB=cambia?CICLO-dc+1:0;
+    const finA=alta+diasA-1;
+    const intA=PRECIO[vel]*diasA/CICLO;
+    lineas.push({c:'Internet '+vel+' Mbps (días '+alta+' al '+finA+')',d:diasA,v:intA});
+    let intB=0;
+    if(cambia){intB=PRECIO[nuevo]*diasB/CICLO;lineas.push({c:'Internet '+nuevo+' Mbps (días '+dc+' al 30)',d:diasB,v:intB});}
+    const activos=CICLO-alta+1;
+    if(tv)lineas.push({c:'Televisión (días '+alta+' al 30)',d:activos,v:tv*activos/CICLO});
+    if(promo)lineas.push({c:'Promoción de bienvenida −'+promo+' % en Internet',d:'',v:-(intA+intB)*promo/100,neg:1});
+    const sub=lineas.reduce((s,l)=>s+l.v,0), impuesto=sub*imp/100, total=sub+impuesto;
+    $('#c34-lineas').innerHTML=lineas.map(l=>'<tr'+(l.neg?' class="c34-neg"':'')+'><td>'+l.c+'</td><td>'+l.d+'</td><td>'+(l.v<0?'− '+m(-l.v):m(l.v))+'</td></tr>').join('')+
+      '<tr><td>Subtotal</td><td></td><td>'+m(sub)+'</td></tr>'+
+      '<tr><td>Impuesto ('+pct(imp)+')</td><td></td><td>'+m(impuesto)+'</td></tr>'+
+      '<tr class="c34-tot"><td>Total a pagar</td><td></td><td>'+m(total)+'</td></tr>';
+
+    const colA='var(--c-red)', colB='var(--c-tra)';
+    const seg=[{w:alta-1,c:'var(--line)',n:'Todavía sin servicio',d:alta-1},{w:diasA,c:colA,n:'Internet '+vel+' Mbps',d:diasA}];
+    if(cambia)seg.push({w:diasB,c:colB,n:'Internet '+nuevo+' Mbps',d:diasB});
+    $('#c34-dias').innerHTML=seg.map(s=>'<i style="width:'+(s.w/CICLO*100)+'%;background:'+s.c+'"></i>').join('');
+    $('#c34-dias').setAttribute('aria-label','Ciclo de 30 días: '+seg.filter(s=>s.d>0).map(s=>s.n+', '+s.d+' días').join('; '));
+    $('#c34-ley').innerHTML=seg.filter(s=>s.d>0).map(s=>'<span><i style="background:'+s.c+'"></i>'+s.n+'<b>'+s.d+' días</b></span>').join('');
+
+    const velSig=cambia?nuevo:vel, normal=(PRECIO[velSig]+tv)*(1+imp/100);
+    let nota='Ningún precio del folleto coincide con este total: el sistema cobra cada pieza solo por los días que el cliente la tuvo';
+    nota+=promo?', y descuenta la promoción solo en Internet. ':'. ';
+    nota+='El próximo ciclo, sin cambios ni promoción, la factura será de '+m(normal)+'.';
+    if(cambia&&nuevo<vel)nota+=' Ojo: bajar de plan a mitad de mes también se prorratea, así que este mes el cliente no ve todavía todo el ahorro.';
+    $('#c34-nota').textContent=nota;
+  }
+  ['#c34-vel','#c34-tv','#c34-promo','#c34-nuevo'].forEach(s=>$(s).addEventListener('change',dibujar));
+  ['#c34-alta','#c34-dc','#c34-imp'].forEach(s=>$(s).addEventListener('input',dibujar));
+  dibujar();
+})();
+</script>
+</body>
+</html>

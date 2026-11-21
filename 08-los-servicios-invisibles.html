@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Los servicios invisibles · Cómo funciona un telco</title>
+<meta name="description" content="Sin que nadie los vea, tres servicios hacen usable la red: DHCP le da a cada equipo su dirección al conectarse, DNS traduce nombres a direcciones y NTP mantiene a todos en la misma hora.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="08-los-servicios-invisibles">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 08 DE 49</span><h1>Los servicios invisibles: DNS, DHCP y NTP</h1><p class="lede">Sin que nadie los vea, tres servicios hacen usable la red: DHCP le da a cada equipo su dirección al conectarse, DNS traduce nombres a direcciones y NTP mantiene a todos en la misma hora.</p></header>
+<section><div class="prose"><p>Cuando llegas a casa, tu celular se conecta solo al Wi-Fi. No le escribiste ninguna dirección IP, no le dijiste cuál es el router ni a quién preguntarle los nombres de los sitios, y aun así a los dos segundos ya funciona. Cuando escribes <code>ejemplo.com</code>, el celular sabe a qué número llamar. Y la hora de la pantalla está bien al segundo, aunque nunca la ajustaste.</p><p>Detrás de esas tres comodidades hay tres servicios que casi nadie conoce por su nombre y que todo el mundo usa cientos de veces al día: <b>DHCP</b>, <b>DNS</b> y <b>NTP</b>. Son invisibles mientras funcionan. Cuando fallan, el cliente dice lo de siempre: «no tengo Internet».</p></div><div class="analogia"><b>Imagínalo así</b><p>Piensa en un hotel. Al llegar, la <b>recepción</b> te asigna una habitación por unos días y te da un papel con lo que necesitas saber: dónde está el comedor y a qué número llamar (eso es DHCP). Para encontrar a alguien de afuera usas la <b>guía telefónica</b>, que traduce nombres a números (DNS). Y para no perder el tren, todos miran el mismo <b>reloj de la estación</b> (NTP).</p></div><figure class="fig fig-capas" id="08-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: DHCP, DNS y NTP, los servicios que preparan cada conexión">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: DHCP, DNS y NTP, los servicios que preparan cada conexión</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Los tres servicios de este capítulo son programas de la capa de aplicación que viajan sobre UDP. Trabajan en la casa (el router reparte direcciones), en el operador (el BNG reparte direcciones a los routers, y el operador tiene sus propios servidores DNS y de hora) y en Internet (la jerarquía mundial de DNS).</figcaption></figure></section>
+<section><h2>DHCP: pedir dirección al llegar</h2><div class="prose"><p>Para hablar en una red IP, un equipo necesita cuatro datos: <b>su propia dirección IP</b>, la <b>máscara</b> (qué direcciones son vecinas, capítulo 5), la <b>puerta de enlace</b> (a quién mandarle lo que va afuera, normalmente el router) y <b>a qué servidor DNS preguntar</b>. En los años ochenta esos datos se escribían a mano en cada computador. Hoy los reparte <b>DHCP</b> (protocolo de configuración dinámica de equipos).</p><p>El problema de fondo es curioso: el equipo que llega todavía no tiene dirección, así que no puede mandarle un mensaje normal a nadie. Lo resuelve gritando en la red: manda un mensaje de <b>difusión</b> (<i>broadcast</i>), dirigido a «todos» (<code>255.255.255.255</code>), desde «nadie» (<code>0.0.0.0</code>). El servidor DHCP lo escucha y la conversación sigue en cuatro pasos, que en inglés forman la palabra <b>DORA</b>:</p><ol class="steps"><li><span><b>Descubrir</b> (<i>Discover</i>). El equipo nuevo grita: «¿hay algún servidor DHCP por aquí?». Incluye su dirección física (MAC, capítulo 4) para que lo reconozcan.</span></li><li><span><b>Ofrecer</b> (<i>Offer</i>). El servidor responde: «te ofrezco la <code>192.168.1.23</code>, con esta máscara, este router y este DNS, por 24 horas».</span></li><li><span><b>Pedir</b> (<i>Request</i>). El equipo contesta: «acepto la <code>192.168.1.23</code>». Lo dice también en difusión, para que si había otros servidores que le ofrecieron algo, sepan que eligió otro.</span></li><li><span><b>Confirmar</b> (<i>Ack</i>). El servidor anota el préstamo y responde: «es tuya por 24 horas».</span></li></ol></div><figure class="fig fig-flujo" id="08-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 480" style="min-width:660px" role="img" aria-label="Flujo DHCP: el celular sin dirección manda DISCOVER en difusión, el router le ofrece 192.168.1.23 con OFFER, el celular la pide con REQUEST y el router confirma con ACK por 24 horas; a mitad del préstamo el celular renueva con REQUEST directo y ACK">
+<rect x="55" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-celular" x="65" y="26" width="30" height="30" class="ico"/>
+<text x="103" y="40" class="t t-b">Celular</text><text x="103" y="57" class="t t-s t-m">sin dirección</text>
+<line x1="130" y1="70" x2="130" y2="468" class="vida"/>
+<rect x="465" y="14" width="190" height="56" rx="10" class="caja"/><use href="#i-router" x="475" y="26" width="30" height="30" class="ico"/>
+<text x="513" y="40" class="t t-b">Router Wi-Fi</text><text x="513" y="57" class="t t-s t-m">servidor DHCP</text>
+<line x1="560" y1="70" x2="560" y2="468" class="vida"/>
+<line x1="130" y1="110" x2="558" y2="124" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="104" class="t t-s"><tspan class="t-mono t-b">DISCOVER</tspan> ① ¿Hay algún servidor DHCP? (de 0.0.0.0 a todos)</text>
+<line x1="560" y1="162" x2="132" y2="176" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="544" y="156" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">OFFER</tspan> ② Te ofrezco 192.168.1.23, router .1, DNS, 24 h</text>
+<line x1="130" y1="214" x2="558" y2="228" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="208" class="t t-s"><tspan class="t-mono t-b">REQUEST</tspan> ③ Acepto la 192.168.1.23 (a todos)</text>
+<line x1="560" y1="266" x2="132" y2="280" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="544" y="260" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">ACK</tspan> ④ Es tuya por 24 horas</text>
+<line x1="130" y1="384" x2="558" y2="398" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="140" y="378" class="t t-s"><tspan class="t-mono t-b">REQUEST</tspan> ⑤ ¿Renuevo la 192.168.1.23? (directo)</text>
+<line x1="560" y1="436" x2="132" y2="450" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="544" y="430" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">ACK</tspan> ⑥ Renovada por 24 horas más</text>
+<g class="t t-xs t-b">
+<path d="M740 102v180" class="ln s-apl" style="stroke-width:3"/>
+<text x="750" y="182" class="k-apl">DORA</text>
+<text x="750" y="196" class="t-m">2 idas y vueltas</text>
+<text x="750" y="210" class="t-m">al conectarse</text>
+<path d="M740 376v76" class="ln s-apl" style="stroke-width:3"/>
+<text x="750" y="411" class="k-apl">RENOVACIÓN</text>
+<text x="750" y="425" class="t-m">1 ida y vuelta</text>
+</g>
+<text x="20" y="240" class="t t-xs t-m" transform="rotate(-90 20 240)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+<text x="140" y="306" class="t t-s t-b">El celular navega con 192.168.1.23</text>
+<line x1="60" y1="334" x2="660" y2="334" class="ln ln-d"/><text x="360" y="350" text-anchor="middle" class="t t-s t-m">… 12 horas después, a mitad del préstamo …</text>
+<g class="t t-xs t-b k-apl"><text x="140" y="140">DIFUSIÓN</text><text x="140" y="244">DIFUSIÓN</text></g>
+</svg></div><figcaption><b>Pedir dirección con DHCP.</b> El celular llega a la casa sin dirección y conversa con el servidor DHCP, que vive dentro del router Wi-Fi. Los mensajes ① y ③ son difusiones a toda la red; ② y ④ son las respuestas del servidor. Abajo, a mitad del préstamo, el celular renueva en silencio con un pedido directo, sin gritar.</figcaption></figure><div class="prose"><p>Fíjate en una palabra: <b>préstamo</b> (<i>lease</i>). DHCP no regala direcciones, las presta por un tiempo. Cuando va por la mitad, el equipo pide renovar, y si sigue conectado el servidor le extiende el plazo. Si el equipo se fue, la dirección vuelve al grupo disponible (el <i>pool</i>) cuando vence. Así un router con espacio para 200 direcciones atiende a todos los celulares que pasan por la casa en un año.</p><p>Este mismo protocolo funciona en dos lugares de la red de un telco. <b>Dentro de la casa</b>, el router Wi-Fi le presta direcciones privadas a los celulares, televisores y computadores. <b>Del lado del operador</b>, el router de la casa es a su vez un cliente: cuando enciende, pide su dirección pública (o su dirección de CGNAT) al <b>BNG</b> o a un servidor DHCP del operador, con los mismos cuatro pasos. En el camino, la OLT o el BNG pueden agregar al mensaje una etiqueta que dice por qué puerto y qué ONT llegó el pedido (la llamada <b>opción 82</b>), para que el operador sepa qué cliente es y qué plan tiene.</p></div><div class="lab" id="08-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>DHCP: descubrir, ofrecer, pedir, confirmar</h3></div><p class="hint">Conecta equipos a la red de la casa paso a paso y mira la tabla de préstamos del router. Prueba también qué pasa si el servidor DHCP está apagado o si ya no quedan direcciones libres.</p><style>
+[id="08-lab-2"]>*{min-width:0}
+[id="08-lab-2"] select{width:100%}
+[id="08-lab-2"] .c08-msgs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+[id="08-lab-2"] .c08-msgs li{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:500 .9rem var(--f-display);color:var(--muted);background:var(--paper)}
+[id="08-lab-2"] .c08-msgs li b{font-family:var(--f-mono);font-size:.85rem;margin-right:6px}
+[id="08-lab-2"] .c08-msgs li.hecho{color:var(--ink);background:var(--card)}
+[id="08-lab-2"] .c08-msgs li.hecho b{color:var(--c-apl)}
+[id="08-lab-2"] .c08-msgs li.ahora{border-color:var(--c-apl);box-shadow:inset 3px 0 0 var(--c-apl);color:var(--ink);background:var(--card)}
+[id="08-lab-2"] .c08-msgs li.mal{border-color:var(--warm);color:var(--warm)}
+</style>
+<div class="opciones">
+  <label>El servidor DHCP del router
+    <select id="c08d-esc">
+      <option value="normal" selected>Funciona normal (10 direcciones libres)</option>
+      <option value="pocas">Funciona, pero solo le quedan 2 direcciones</option>
+      <option value="apagado">Está apagado o colgado</option>
+    </select></label>
+</div>
+<p class="hint">1. Elige un equipo para conectarlo a la red de la casa:</p>
+<div class="btns" id="c08d-equipos" role="group" aria-label="Equipos que se conectan">
+  <button type="button" data-eq="0">Celular de Ana</button>
+  <button type="button" data-eq="1">Televisor</button>
+  <button type="button" data-eq="2">Laptop</button>
+  <button type="button" data-eq="3">Celular de una visita</button>
+</div>
+<p class="hint">2. Avanza la conversación mensaje por mensaje:</p>
+<div class="btns"><button type="button" class="primary" id="c08d-sig" disabled>Siguiente mensaje</button><button type="button" id="c08d-reset">Empezar de nuevo</button></div>
+<ol class="c08-msgs" id="c08d-msgs"></ol>
+<div class="readout" id="c08d-out" aria-live="polite"></div>
+<div class="tbl"><table><thead><tr><th>Equipo</th><th>Dirección física (MAC)</th><th>Dirección IP prestada</th><th>Préstamo</th></tr></thead><tbody id="c08d-tabla"></tbody></table></div></div></section>
+<section><h2>DNS: la guía telefónica de Internet</h2><div class="prose"><p>Las máquinas se encuentran por número; las personas, por nombre. El <b>DNS</b> (sistema de nombres de dominio) es la guía que los conecta: le das <code>www.ejemplo.com</code> y te devuelve <code>203.0.113.10</code>.</p><p>Lo interesante es que <b>no existe una guía única</b>. Ningún servidor del mundo conoce todos los nombres. El DNS es una jerarquía repartida, y se lee de derecha a izquierda:</p><ul><li>Arriba de todo está la <b>raíz</b>, representada por un punto que normalmente no se escribe (<code>www.ejemplo.com.</code>). Hay 13 nombres de servidores raíz, cada uno copiado en cientos de lugares del mundo.</li><li>Debajo están los <b>dominios de primer nivel</b> (TLD): los genéricos como <code>.com</code>, <code>.org</code> o <code>.net</code>, y los de cada país como <code>.mx</code>, <code>.co</code> o <code>.pe</code>. La raíz no sabe dónde está <code>ejemplo.com</code>, pero sabe quién administra <code>.com</code>.</li><li>Debajo, cada <b>dominio</b> tiene sus <b>servidores autoritativos</b>: los que tienen la última palabra sobre los nombres de ese dominio. Los de <code>ejemplo.com</code> saben cuál es la dirección de <code>www.ejemplo.com</code>, de <code>correo.ejemplo.com</code> y de cualquier otro nombre que el dueño haya creado.</li></ul></div><figure class="fig fig-esquema" id="08-diagrama-6"><div class="lienzo"><svg viewBox="0 0 880 440" style="min-width:700px" role="img" aria-label="Jerarquía DNS: la raíz arriba; debajo los dominios de primer nivel genéricos (.com, .org, .net) y de país (.mx, .co, .pe); debajo los dominios ejemplo.com, ejemplo.org y ejemplo.pe con sus servidores autoritativos; y dentro de ejemplo.com los nombres www, correo y api">
+  
+  <g class="t">
+    <text x="20" y="46" class="t-xs t-b k-apl">RAÍZ</text><text x="20" y="62" class="t-s t-m">13 nombres, cientos</text><text x="20" y="76" class="t-s t-m">de copias en el mundo</text>
+    <text x="20" y="136" class="t-xs t-b k-apl">PRIMER NIVEL (TLD)</text><text x="20" y="152" class="t-s t-m">genéricos y de país</text>
+    <text x="20" y="226" class="t-xs t-b k-apl">DOMINIOS</text><text x="20" y="242" class="t-s t-m">sus servidores</text><text x="20" y="256" class="t-s t-m">autoritativos</text>
+    <text x="20" y="316" class="t-xs t-b k-apl">NOMBRES</text><text x="20" y="332" class="t-s t-m">los que crea el dueño</text>
+  </g>
+  
+  <g class="ln">
+    <path d="M540 66L290 120M540 66L380 120M540 66L470 120M540 66L610 120M540 66L700 120M540 66L790 120"/>
+    <path d="M290 156L290 210M380 156L440 210M790 156L790 210"/>
+    <path d="M290 246L230 300M290 246L310 300M290 246L390 300"/>
+  </g>
+  <rect x="500" y="30" width="80" height="36" rx="8" class="c-apl"/><text x="540" y="54" text-anchor="middle" class="t t-b">.</text>
+  <text x="592" y="53" class="t t-s t-m">la raíz</text>
+  <g class="t t-b t-mono" text-anchor="middle">
+    <rect x="258" y="120" width="64" height="36" rx="8" class="caja"/><text x="290" y="143">.com</text>
+    <rect x="348" y="120" width="64" height="36" rx="8" class="caja"/><text x="380" y="143">.org</text>
+    <rect x="438" y="120" width="64" height="36" rx="8" class="caja"/><text x="470" y="143">.net</text>
+    <rect x="578" y="120" width="64" height="36" rx="8" class="caja"/><text x="610" y="143">.mx</text>
+    <rect x="668" y="120" width="64" height="36" rx="8" class="caja"/><text x="700" y="143">.co</text>
+    <rect x="758" y="120" width="64" height="36" rx="8" class="caja"/><text x="790" y="143">.pe</text>
+  </g>
+  <g class="t t-xs t-m" text-anchor="middle"><text x="380" y="174">GENÉRICOS</text><text x="700" y="174">DE PAÍS</text></g>
+  <g class="t t-b t-mono" text-anchor="middle">
+    <rect x="225" y="210" width="130" height="36" rx="8" class="c-apl"/><text x="290" y="233">ejemplo.com</text>
+    <rect x="375" y="210" width="130" height="36" rx="8" class="caja"/><text x="440" y="233">ejemplo.org</text>
+    <rect x="730" y="210" width="120" height="36" rx="8" class="caja"/><text x="790" y="233">ejemplo.pe</text>
+  </g>
+  <use href="#i-servidor" x="358" y="250" width="22" height="22" class="ico"/><text x="384" y="266" class="t t-s t-m">ns1 y ns2.ejemplo.com</text>
+  <g class="t t-b t-mono" text-anchor="middle">
+    <rect x="198" y="300" width="64" height="36" rx="8" class="caja"/><text x="230" y="323">www</text>
+    <rect x="272" y="300" width="76" height="36" rx="8" class="caja"/><text x="310" y="323">correo</text>
+    <rect x="358" y="300" width="64" height="36" rx="8" class="caja"/><text x="390" y="323">api</text>
+  </g>
+  <text x="440" y="316" class="t t-s t-m">El dueño de ejemplo.com crea los nombres</text>
+  <text x="440" y="332" class="t t-s t-m">que quiera, sin pedir permiso a nadie</text>
+
+  
+  <line x1="20" y1="364" x2="860" y2="364" class="ln ln-d"/>
+  <text x="20" y="400" class="t t-s t-b">Un nombre completo, leído de derecha a izquierda:</text>
+  <g class="t t-b t-mono" style="font-size:20px" text-anchor="middle">
+    <text x="418" y="402" class="k-apl">www</text><text x="442" y="402">.</text><text x="490" y="402">ejemplo</text><text x="538" y="402">.</text><text x="562" y="402">com</text><text x="586" y="402" class="k-apl">.</text>
+  </g>
+  <g class="t t-xs t-m" text-anchor="middle"><text x="418" y="424">NOMBRE</text><text x="490" y="424">DOMINIO</text><text x="562" y="424">TLD</text></g>
+  <text x="600" y="400" class="t t-s t-m">← el punto final es la raíz;</text>
+  <text x="600" y="416" class="t t-s t-m">casi nunca se escribe</text>
+</svg></div><figcaption><b>La jerarquía del DNS.</b> Es un árbol invertido: la raíz arriba, los dominios de primer nivel en el medio y los dominios de cada organización abajo, con sus nombres propios. Cada nivel solo sabe quién está a cargo del nivel siguiente. Un nombre completo se lee de abajo hacia arriba: <code>www</code>, dentro de <code>ejemplo</code>, dentro de <code>com</code>, dentro de la raíz.</figcaption></figure><div class="prose"><h3>Una resolución de punta a punta</h3><p>Tu celular no recorre ese árbol por su cuenta. Le pregunta a un <b>resolutor</b> (casi siempre el DNS del operador, que le llegó por DHCP) y espera la respuesta final. El resolutor sí hace el recorrido, preguntando nivel por nivel. A la pregunta del celular se le llama <b>recursiva</b> («dame la respuesta final») y a las del resolutor, <b>iterativas</b> («dime a quién sigo preguntando»).</p></div><figure class="fig fig-flujo" id="08-diagrama-5"><div class="lienzo"><svg viewBox="0 0 940 470" style="min-width:720px" role="img" aria-label="Flujo de la resolución DNS: el celular pregunta al resolutor del operador; el resolutor pregunta a la raíz, que lo manda a .com; .com lo manda al autoritativo de ejemplo.com, que responde 203.0.113.10 con TTL de una hora; el resolutor la guarda y responde al celular">
+<rect x="35" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-celular" x="45" y="26" width="30" height="30" class="ico"/>
+<text x="83" y="47" class="t t-b">Celular</text>
+<line x1="100" y1="70" x2="100" y2="458" class="vida"/>
+<rect x="185" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-guia" x="195" y="26" width="30" height="30" class="ico"/>
+<text x="233" y="40" class="t t-b">Resolutor</text><text x="233" y="57" class="t t-s t-m">del operador</text>
+<line x1="265" y1="70" x2="265" y2="458" class="vida"/>
+<rect x="365" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-nube" x="375" y="26" width="30" height="30" class="ico"/>
+<text x="413" y="40" class="t t-b">Raíz</text><text x="413" y="57" class="t t-s t-m">servidor «.»</text>
+<line x1="430" y1="70" x2="430" y2="458" class="vida"/>
+<rect x="520" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-servidor" x="530" y="26" width="30" height="30" class="ico"/>
+<text x="568" y="40" class="t t-b">TLD</text><text x="568" y="57" class="t t-s t-m">de .com</text>
+<line x1="585" y1="70" x2="585" y2="458" class="vida"/>
+<rect x="670" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-servidor" x="680" y="26" width="30" height="30" class="ico"/>
+<text x="718" y="40" class="t t-b">Autoritativo</text><text x="718" y="57" class="t t-s t-m">ejemplo.com</text>
+<line x1="745" y1="70" x2="745" y2="458" class="vida"/>
+<line x1="100" y1="112" x2="263" y2="126" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="110" y="106" class="t t-s">① ¿www.ejemplo.com?</text>
+<line x1="265" y1="152" x2="428" y2="166" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="275" y="146" class="t t-s">② ¿www.ejemplo.com?</text>
+<line x1="430" y1="192" x2="267" y2="206" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="414" y="186" text-anchor="end" class="t t-s">③ No sé: pregunta a .com</text>
+<line x1="265" y1="232" x2="583" y2="246" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="275" y="226" class="t t-s">④ ¿www.ejemplo.com?</text>
+<line x1="585" y1="272" x2="267" y2="286" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="569" y="266" text-anchor="end" class="t t-s">⑤ Pregunta a ns1.ejemplo.com</text>
+<line x1="265" y1="312" x2="743" y2="326" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="275" y="306" class="t t-s">⑥ ¿www.ejemplo.com?</text>
+<line x1="745" y1="352" x2="267" y2="366" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="729" y="346" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">203.0.113.10</tspan> TTL 3600 ⑦</text>
+<line x1="265" y1="402" x2="102" y2="416" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="249" y="396" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">203.0.113.10</tspan> ⑧</text>
+<g class="t t-xs t-b">
+<path d="M832 104v26" class="ln s-apl" style="stroke-width:3"/>
+<text x="842" y="121" class="k-apl">RECURSIVA</text>
+<path d="M832 144v226" class="ln s-apl" style="stroke-width:3"/>
+<text x="842" y="247" class="k-apl">ITERATIVAS</text>
+<text x="842" y="261" class="t-m">3 idas y vueltas</text>
+<text x="842" y="275" class="t-m">del resolutor</text>
+<path d="M832 394v26" class="ln s-apl" style="stroke-width:3"/>
+<text x="842" y="411" class="k-apl">RESPUESTA</text>
+</g>
+<text x="20" y="235" class="t t-xs t-m" transform="rotate(-90 20 235)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+<text x="265" y="446" text-anchor="middle" class="t t-s t-b">La guarda 1 hora en su caché</text>
+<text x="100" y="446" text-anchor="middle" class="t t-s t-m">1 pregunta</text>
+</svg></div><figcaption><b>La resolución DNS recursiva.</b> El celular hace una sola pregunta al resolutor del operador ①. El resolutor, que no tiene la respuesta guardada, pregunta a un servidor raíz ②, que lo manda a los servidores de <code>.com</code> ③. Estos lo mandan a los autoritativos de <code>ejemplo.com</code> ④ ⑤, que dan la respuesta definitiva con su tiempo de vida ⑥ ⑦. El resolutor la guarda y se la entrega al celular ⑧. La próxima vez que alguien pregunte lo mismo, contestará en el acto.</figcaption></figure><div class="prose"><p>Las preguntas y respuestas DNS son cortitas y viajan por <b>UDP al puerto 53</b>: no hace falta saludo TCP para una pregunta de una línea. Si la respuesta es muy grande, o para copiar zonas enteras entre servidores, se usa TCP en el mismo puerto.</p><p>Además de traducir nombres a direcciones IPv4 (registros <b>A</b>), el DNS guarda otros tipos de datos. Los más comunes son <b>AAAA</b> (direcciones IPv6), <b>CNAME</b> (un alias: «<code>www</code> es otro nombre de <code>servidor1</code>»), <b>MX</b> (a qué servidor se entrega el correo de un dominio, capítulo 10), <b>TXT</b> (texto libre, muy usado para verificar dominios y para las reglas contra el correo falso) y <b>NS</b> (quiénes son los autoritativos de un dominio).</p></div><div class="lab" id="08-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>DNS: de la raíz al servidor del sitio</h3></div><p class="hint">Elige un nombre y lo que el resolutor ya tiene guardado, y avanza paso a paso. Mira a quién le pregunta, qué le contestan y cuánto tarda cada salto. Prueba también con un nombre que no existe.</p><style>
+[id="08-lab-3"]>*{min-width:0}
+[id="08-lab-3"] select{width:100%}
+[id="08-lab-3"] .c08n-nodos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+[id="08-lab-3"] .c08n-nodos div{border:1.5px solid var(--line);border-radius:8px;padding:6px 2px;text-align:center;font:600 .74rem/1.25 var(--f-display);background:var(--paper)}
+[id="08-lab-3"] .c08n-nodos small{display:block;font:400 .72rem var(--f-mono);color:var(--muted)}
+[id="08-lab-3"] .c08n-nodos div.activo{border-color:var(--c-apl);background:var(--c-apl-s)}
+[id="08-lab-3"] .c08n-pasos{margin:0;padding-left:1.4em;display:grid;gap:4px;font:500 .9rem var(--f-display)}
+[id="08-lab-3"] .c08n-pasos li.nuevo{color:var(--c-apl)}
+[id="08-lab-3"] .c08n-pasos .ms{font-family:var(--f-mono);color:var(--muted);font-size:.82rem}
+</style>
+<div class="opciones">
+  <label>Nombre que buscas
+    <select id="c08n-nombre">
+      <option value="www.ejemplo.com" selected>www.ejemplo.com</option>
+      <option value="correo.ejemplo.org">correo.ejemplo.org</option>
+      <option value="www.ejemplo.pe">www.ejemplo.pe</option>
+      <option value="noexiste.ejemplo.com">noexiste.ejemplo.com</option>
+    </select></label>
+  <label>Lo que el resolutor ya tiene guardado
+    <select id="c08n-cache">
+      <option value="nada" selected>Nada: recién encendido</option>
+      <option value="tld">Sabe quién atiende cada dominio de primer nivel</option>
+      <option value="todo">Ya tiene esta respuesta (alguien la pidió hace poco)</option>
+    </select></label>
+</div>
+<div class="c08n-nodos" id="c08n-nodos" aria-hidden="true"></div>
+<div class="btns"><button type="button" class="primary" id="c08n-sig">Siguiente paso</button><button type="button" id="c08n-todo">Resolver todo</button><button type="button" id="c08n-reset">Empezar de nuevo</button></div>
+<ol class="c08n-pasos" id="c08n-pasos"></ol>
+<div class="readout" id="c08n-out" aria-live="polite"></div></div></section>
+<section><h2>Caché, tiempos de vida y por qué un cambio tarda en verse</h2><div class="prose"><p>Si cada búsqueda recorriera el árbol entero, los servidores raíz no darían abasto y cada página tardaría bastante más. La solución es la <b>caché</b>: el resolutor guarda cada respuesta durante un tiempo. Ese tiempo lo decide el dueño del dominio y viaja en la propia respuesta: es el <b>TTL</b> (tiempo de vida), en segundos.</p><p>Si <code>www.ejemplo.com</code> tiene un TTL de 3.600, el resolutor del operador guarda la respuesta una hora. Durante esa hora, los miles de clientes que la pidan recibirán la respuesta en uno o dos milisegundos, sin que nadie salga a preguntar. Lo mismo hacen el sistema operativo del celular y el navegador, cada uno con su propia caché más pequeña.</p><p>Esa comodidad tiene una consecuencia que sorprende a muchos: <b>los cambios no se ven en el acto</b>. Si una empresa muda su sitio a un servidor nuevo y cambia la dirección en su DNS, los resolutores que tenían guardada la dirección vieja la seguirán entregando hasta que venza su TTL. Durante ese rato, unos clientes ven el sitio nuevo y otros el viejo. A eso se le suele llamar, con poca precisión, «esperar que el DNS se propague». En realidad nada se propaga: cada caché espera a que su copia caduque. Por eso, antes de una mudanza, los administradores bajan el TTL a unos minutos con un día de anticipación.</p><p>La caché también guarda las respuestas negativas («ese nombre no existe»), por un tiempo que fija el dominio. Si alguien consulta un nombre antes de crearlo, puede tener que esperar a que caduque ese «no existe».</p></div></section>
+<section><h2>DNS del operador y DNS con filtro</h2><div class="prose"><p>Cuando el router de la casa se conecta, el operador le entrega por DHCP (o por PPPoE, capítulo 19) las direcciones de <b>sus propios resolutores DNS</b>, y el router se las pasa a los equipos de la casa. Para el operador tener resolutores propios tiene varias ventajas: están cerca del cliente (responden en pocos milisegundos), su caché la comparten cientos de miles de clientes (casi todo lo popular ya está guardado) y permiten que las grandes plataformas de video entreguen el contenido desde la copia más cercana al cliente, porque deciden qué dirección contestar según de dónde viene la pregunta.</p><p>El cliente puede cambiar esos resolutores por otros públicos, como los de Google (<code>8.8.8.8</code>), Cloudflare (<code>1.1.1.1</code>) o Quad9 (<code>9.9.9.9</code>), configurándolos en el router o en cada equipo. Algunos navegadores y sistemas, además, ya consultan el DNS <b>cifrado</b> dentro de HTTPS (DoH) o de TLS (DoT), y así esquivan al resolutor del operador sin que el cliente lo sepa.</p><p>Un resolutor también puede <b>filtrar</b>: si le preguntan por un dominio de una lista, en lugar de la dirección real contesta con la de una página de aviso o responde «no existe». Así funcionan los <b>filtros de control parental</b> que ofrecen algunos operadores, los servicios que bloquean sitios de engaño (<i>phishing</i>) y software malicioso, y los bloqueos que ordenan algunas autoridades. Es un filtro sencillo y barato, pero tiene un límite claro: solo funciona si el equipo pregunta a ese resolutor. Si el cliente cambia su DNS o usa DNS cifrado, el filtro deja de aplicar.</p></div></section>
+<section><h2>NTP: por qué la hora importa (registros, certificados, facturación)</h2><div class="prose"><p>Cada computador, celular, router y servidor tiene un reloj interno, y todos se adelantan o atrasan unos segundos por día. Parece poco, pero en una red muchas cosas dependen de que todos estén de acuerdo en la hora:</p><ul><li><b>Certificados.</b> Cada certificado de un sitio seguro tiene fecha de inicio y de vencimiento (capítulo 9). Un equipo con la fecha mal cree que todos los certificados están vencidos o que todavía no valen, y ninguna página segura abre.</li><li><b>Registros.</b> Cuando algo falla, el NOC reconstruye qué pasó juntando los registros de decenas de equipos. Si cada uno tiene una hora distinta, es imposible saber qué ocurrió primero.</li><li><b>Facturación y consumos.</b> Las sesiones de los clientes, las llamadas y los consumos se registran con hora de inicio y fin. Un reloj corrido cobra minutos de más o de menos y hace que dos sistemas no cuadren.</li><li><b>Seguridad.</b> Muchos sistemas de acceso rechazan una clave o un código si la hora del equipo difiere demasiado de la del servidor.</li></ul><p>El <b>NTP</b> (protocolo de hora de red) mantiene a todos en hora. Funciona como una pirámide de relojes. Arriba, en el <b>estrato 0</b>, están los relojes de referencia: atómicos, o receptores GPS que toman la hora de los satélites. Los servidores conectados directo a ellos son de <b>estrato 1</b>. Los que toman la hora de un estrato 1 son de estrato 2, y así hacia abajo. Un operador suele tener sus propios servidores de estrato 1 o 2, y todos sus equipos toman la hora de ellos.</p><p>Lo ingenioso de NTP es cómo corrige el tiempo que tarda el mensaje en viajar. El cliente anota cuándo mandó la pregunta, el servidor anota cuándo la recibió y cuándo respondió, y el cliente anota cuándo le llegó la respuesta. Con esas cuatro marcas calcula cuánto tardó el viaje y cuánto está corrido su reloj, suponiendo que la ida y la vuelta tardan lo mismo.</p></div><figure class="fig fig-flujo" id="08-diagrama-7"><div class="lienzo"><svg viewBox="0 0 900 400" style="min-width:720px" role="img" aria-label="Flujo NTP: el router pregunta la hora al servidor NTP del operador anotando T1; el servidor anota T2 al recibir y T3 al responder; el router anota T4; con las cuatro marcas calcula que el viaje tardó 20 milisegundos y que su reloj iba 2 segundos atrasado. A la derecha, la pirámide de estratos: del reloj atómico o GPS a los servidores del operador y a los equipos">
+  
+  <rect x="55" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-router" x="65" y="26" width="30" height="30" class="ico"/><text x="103" y="40" class="t t-b">Router</text><text x="103" y="57" class="t t-s t-m">de la casa</text>
+  <rect x="380" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-servidor" x="390" y="26" width="30" height="30" class="ico"/><text x="428" y="40" class="t t-b">Servidor NTP</text><text x="428" y="57" class="t t-s t-m">del operador</text>
+  <line x1="130" y1="70" x2="130" y2="236" class="vida"/>
+  <line x1="460" y1="70" x2="460" y2="236" class="vida"/>
+
+  <line x1="130" y1="112" x2="458" y2="148" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="140" y="104" class="t t-s"><tspan class="t-mono t-b">NTP · UDP 123</tspan> ① ¿Qué hora es?</text>
+  <line x1="460" y1="168" x2="132" y2="204" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="300" y="170" text-anchor="middle" class="t t-s">② Recibí en T2 y respondo en T3</text>
+
+  <g class="t t-s t-mono">
+    <text x="122" y="116" text-anchor="end"><tspan class="t-b k-apl">T1</tspan> 10:00:00,000</text>
+    <text x="122" y="208" text-anchor="end"><tspan class="t-b k-apl">T4</tspan> 10:00:00,021</text>
+    <text x="468" y="152"><tspan class="t-b k-apl">T2</tspan> 10:00:02,010</text>
+    <text x="468" y="172"><tspan class="t-b k-apl">T3</tspan> 10:00:02,011</text>
+  </g>
+  <text x="140" y="230" class="t t-xs t-m">RELOJ DEL ROUTER</text>
+  <text x="452" y="230" text-anchor="end" class="t t-xs t-m">RELOJ DEL SERVIDOR</text>
+
+  
+  <rect x="40" y="252" width="540" height="132" rx="10" class="caja"/>
+  <text x="56" y="276" class="t t-s t-b">Con las cuatro marcas, el router calcula:</text>
+  <text x="56" y="300" class="t t-s">Viaje = (T4 − T1) − (T3 − T2) = 21 ms − 1 ms = <tspan class="t-b">20 ms</tspan></text>
+  <text x="56" y="322" class="t t-s">Diferencia = ((T2 − T1) + (T3 − T4)) ÷ 2 = (2.010 + 1.990) ÷ 2 = <tspan class="t-b">2.000 ms</tspan></text>
+  <text x="56" y="350" class="t t-s t-b k-apl">El reloj del router iba 2 segundos atrasado: se corrige.</text>
+  <text x="56" y="370" class="t t-s t-m">Supone que la ida y la vuelta tardan lo mismo (10 ms cada una).</text>
+
+  
+  <text x="740" y="30" text-anchor="middle" class="t t-xs t-b t-m">DE DÓNDE SALE LA HORA</text>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="670" y="44" width="140" height="48" rx="8" class="caja"/><text x="740" y="64" class="t-b">Estrato 0</text><text x="740" y="82">reloj atómico o GPS</text>
+    <rect x="650" y="104" width="180" height="48" rx="8" class="caja"/><text x="740" y="124" class="t-b">Estrato 1</text><text x="740" y="142">conectado al reloj</text>
+    <rect x="630" y="164" width="220" height="48" rx="8" class="c-apl"/><text x="740" y="184" class="t-b">Estrato 2</text><text x="740" y="202">servidores NTP del operador</text>
+    <rect x="610" y="224" width="260" height="48" rx="8" class="caja"/><text x="740" y="244" class="t-b">Estrato 3</text><text x="740" y="262">routers, OLT, servidores, ONT</text>
+  </g>
+  <g class="ln"><path d="M740 92v12M740 152v12M740 212v12"/></g>
+  <text x="740" y="300" text-anchor="middle" class="t t-s t-m">Cada nivel toma la hora del de arriba.</text>
+  <text x="740" y="318" text-anchor="middle" class="t t-s t-m">Cuanto más abajo, unos milisegundos</text>
+  <text x="740" y="336" text-anchor="middle" class="t t-s t-m">más de error.</text>
+</svg></div><figcaption><b>Poner la hora con NTP.</b> El router de la casa pregunta la hora al servidor NTP del operador por UDP 123. Las cuatro marcas de tiempo (T1 a T4) permiten calcular la demora del viaje y la diferencia entre los relojes. En el ejemplo, el router estaba 2 segundos atrasado y se corrige. A la derecha, la pirámide de estratos de la que sale esa hora.</figcaption></figure><div class="prose"><p>Con NTP, los equipos de una red bien configurada quedan dentro de unos pocos milisegundos de la hora oficial. Para la telefonía móvil y algunas redes que necesitan sincronía aún más fina se usa otro protocolo, PTP, que logra microsegundos.</p></div></section>
+<section><h2>Cuando falla uno de ellos</h2><div class="prose"><p>Lo que hace engañosos a estos tres servicios es que, cuando fallan, el síntoma casi nunca dice su nombre.</p><div class="tbl"><table><thead><tr><th>Falla</th><th>Lo que ve el cliente</th><th>Cómo se reconoce</th></tr></thead><tbody><tr><td>DHCP no responde en la casa</td><td>El celular dice «conectado, sin Internet»</td><td>El equipo tiene una dirección <code>169.254.x.x</code>, que se pone a sí mismo cuando nadie le responde</td></tr><tr><td>Se acabaron las direcciones del router</td><td>Los primeros equipos andan, el nuevo no</td><td>Muchos equipos conectados o préstamos muy largos</td></tr><tr><td>El router no obtiene dirección del operador</td><td>Todo sin Internet, la luz de la fibra en verde</td><td>El router muestra su conexión WAN sin dirección</td></tr><tr><td>El DNS no responde</td><td>«No tengo Internet», pero las llamadas de WhatsApp andan</td><td>Hacer <i>ping</i> a una dirección numérica funciona; a un nombre, no</td></tr><tr><td>El DNS responde mal o el cambio no se ve</td><td>Un sitio abre para unos y no para otros</td><td>Distintos resolutores devuelven direcciones distintas</td></tr><tr><td>La hora del equipo está mal</td><td>Ninguna página segura abre: «su conexión no es privada»</td><td>Fecha del equipo en el pasado (típico tras quedarse sin batería)</td></tr></tbody></table></div><p>La regla práctica: si <b>algunas</b> cosas andan y otras no, sospecha del DNS; si <b>nada</b> anda pero el equipo dice estar conectado, mira qué dirección tiene; y si solo fallan los sitios seguros, mira la fecha.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región aprovecha DHCP para algo más que repartir direcciones. Cuando el router del cliente se enciende por primera vez y pide su dirección, la respuesta del operador incluye una opción adicional con la dirección de su <b>servidor de gestión</b> (el ACS del capítulo 28). Así el router, recién sacado de la caja, sabe solo a quién presentarse, descarga su configuración y queda listo sin que el técnico teclee nada. El mismo operador ofrece un <b>control parental</b> basado en DNS: cuando el cliente lo activa desde la app, el sistema de gestión cambia en el router los resolutores que se entregan a los equipos de la casa por unos que filtran categorías de sitios. Es simple y no exige instalar nada en cada celular, pero el operador lo explica con honestidad: un equipo configurado con otro DNS queda fuera del filtro.</p></div><div class="ml"><b>En la práctica</b><p>Muchos reclamos de «no tengo Internet» son en realidad «no resuelve DNS». La señal es clara: el cliente dice que no abre nada, pero WhatsApp manda mensajes o un juego sigue conectado. Esas aplicaciones ya tenían su conexión abierta o usan direcciones guardadas. Antes de agendar una visita técnica conviene revisar si el problema es del resolutor, de un DNS que el cliente cambió a mano o de un sitio puntual. Y si el cliente dice que «ninguna página segura abre», la primera pregunta es la fecha del equipo.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Cuáles son los cuatro mensajes de DHCP y por qué el primero se manda a «todos»?</summary><p>Descubrir, ofrecer, pedir y confirmar. El primero va en difusión porque el equipo todavía no tiene dirección ni sabe quién es el servidor DHCP.</p></details><details><summary>Un celular tiene la dirección <code>169.254.12.7</code>. ¿Qué te dice eso?</summary><p>Que nadie le respondió por DHCP y se puso una dirección a sí mismo; no puede salir a Internet. Hay que revisar el servidor DHCP (normalmente el router).</p></details><details><summary>¿Por qué un servidor raíz no sabe la dirección de <code>www.ejemplo.com</code>?</summary><p>Porque el DNS está repartido: la raíz solo sabe quién administra <code>.com</code>, y esos solo saben quiénes son los autoritativos de <code>ejemplo.com</code>, que son los que tienen la respuesta.</p></details><details><summary>Una empresa cambió la dirección de su sitio y algunos clientes todavía ven el viejo. ¿Por qué?</summary><p>Porque sus resolutores tienen guardada la respuesta anterior hasta que venza su TTL; cuando caduque, preguntarán de nuevo y obtendrán la dirección nueva.</p></details><details><summary>¿Por qué un filtro de control parental por DNS no es infalible?</summary><p>Porque solo aplica si el equipo pregunta a ese resolutor; si se configura otro DNS o se usa DNS cifrado, el filtro no se entera.</p></details><details><summary>Un computador que estuvo años guardado no abre ningún sitio con candado. ¿Qué revisarías primero?</summary><p>La fecha y la hora: si están en el pasado, el equipo cree que los certificados no son válidos todavía. NTP la corrige si puede consultar un servidor de hora.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Sistema_de_nombres_de_dominio" target="_blank" rel="noopener">Sistema de nombres de dominio (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.ibm.com/es-es/think/topics/dhcp" target="_blank" rel="noopener">Qué es DHCP (IBM) <small>lectura</small></a><a class="vid" href="https://www.ntppool.org/es/" target="_blank" rel="noopener">El proyecto NTP Pool: servidores de hora públicos <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Network_Time_Protocol" target="_blank" rel="noopener">Network Time Protocol (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const EQ=[['Celular de Ana','a4:5e:60:11:22:33'],['Televisor','3c:2a:f4:44:55:66'],['Laptop','f0:18:98:77:88:99'],['Celular de una visita','d2:9b:00:aa:bb:cc']];
+  let prestamos=[], libres=[], plan=[], paso=0, eq=null;
+  function reiniciar(){
+    const esc=$('#c08d-esc').value;
+    prestamos=[];libres=[];
+    const n=esc==='pocas'?2:10;
+    for(let i=0;i<n;i++)libres.push('192.168.1.'+(20+i));
+    plan=[];paso=0;eq=null;
+    $('#c08d-sig').disabled=true;
+    $('#c08d-out').innerHTML='<span>Elige un equipo para empezar. El router tiene '+(esc==='apagado'?'su servidor DHCP apagado':libres.length+' direcciones para prestar ('+libres[0]+' a '+libres[libres.length-1]+')')+'.</span>';
+    pintar();
+  }
+  function armar(i){
+    const esc=$('#c08d-esc').value, [nom,mac]=EQ[i], ya=prestamos.find(p=>p.eq===i);
+    if(ya)return [
+      {m:'REQUEST',t:nom+' → router (directo): «¿sigo con la '+ya.ip+'?»',d:'Ya tenía préstamo, así que no necesita gritar: le pide directamente al router que se lo extienda.'},
+      {m:'ACK',t:'router → '+nom+': «sí, la '+ya.ip+' por 24 horas más»',d:'Renovado. Así funciona la renovación a mitad del préstamo: dos mensajes, sin difusión.',fin:()=>{ya.h=24;}}];
+    const disc={m:'DISCOVER',t:nom+' → todos (de 0.0.0.0 a 255.255.255.255): «¿hay algún servidor DHCP?», con su MAC '+mac,d:'El equipo todavía no tiene dirección, así que grita en la red. Todos los equipos de la casa lo oyen, pero solo un servidor DHCP responde.'};
+    if(esc==='apagado'||!libres.length){
+      const motivo=esc==='apagado'?'el servidor DHCP no está funcionando':'al router no le quedan direcciones para prestar, así que no ofrece nada';
+      return [disc,
+        {m:'DISCOVER',t:nom+' → todos: «¿hay alguien?» (segundo intento)',d:'Nadie respondió: '+motivo+'. El equipo espera unos segundos y vuelve a gritar.',mal:true},
+        {m:'DISCOVER',t:nom+' → todos: «¿hay alguien?» (tercer intento)',d:'Tampoco esta vez. Después de varios intentos el equipo se rinde.',mal:true},
+        {m:'169.254.x.x',t:nom+' se pone a sí mismo una dirección 169.254.'+(10+i*31)+'.'+(7+i*13),d:'Es la dirección «de emergencia» que un equipo se asigna cuando nadie le responde. Con ella puede hablar con otros equipos en la misma situación, pero no puede salir a Internet: el celular dirá «conectado, sin Internet».',mal:true,fin:()=>{}}];
+    }
+    const ip=libres[0];
+    return [disc,
+      {m:'OFFER',t:'router → '+nom+': «te ofrezco la '+ip+', máscara 255.255.255.0, router 192.168.1.1, DNS 192.168.1.1, por 24 horas»',d:'El servidor aparta una dirección libre y se la ofrece junto con todo lo que el equipo necesita saber para navegar.'},
+      {m:'REQUEST',t:nom+' → todos: «acepto la '+ip+'»',d:'La aceptación también va en difusión: si hubiera otro servidor DHCP que le ofreció algo, así se entera de que el equipo eligió otra oferta.'},
+      {m:'ACK',t:'router → '+nom+': «confirmado, la '+ip+' es tuya por 24 horas»',d:'El servidor anota el préstamo en su tabla. Desde ahora el equipo navega con esa dirección.',fin:()=>{libres.shift();prestamos.push({eq:i,ip,h:24});}}];
+  }
+  function pintar(){
+    $('#c08d-msgs').innerHTML=plan.map((p,k)=>'<li class="'+(k<paso?'hecho':'')+(k===paso-1?' ahora':'')+(p.mal&&k<paso?' mal':'')+'"><b>'+p.m+'</b>'+(k<paso?p.t:'…')+'</li>').join('');
+    $('#c08d-tabla').innerHTML=prestamos.length?prestamos.map(p=>'<tr><td>'+EQ[p.eq][0]+'</td><td class="mono">'+EQ[p.eq][1]+'</td><td class="mono">'+p.ip+'</td><td>'+p.h+' horas</td></tr>').join(''):'<tr><td colspan="4">Todavía no hay préstamos.</td></tr>';
+    document.querySelectorAll('#c08d-equipos button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.eq===eq)));
+  }
+  function siguiente(){
+    if(paso>=plan.length)return;
+    const p=plan[paso];paso++;
+    if(p.fin)p.fin();
+    const fin=paso===plan.length;
+    $('#c08d-out').innerHTML='<span class="big">Mensaje '+paso+' de '+plan.length+': '+p.m+'</span><span>'+p.d+'</span>'+(fin?'<span class="'+(p.mal?'warn':'ok')+'">'+(p.mal?'Sin dirección válida: este equipo no podrá navegar.':'Listo. Quedan '+libres.length+' direcciones libres.')+'</span>':'');
+    $('#c08d-sig').disabled=fin;
+    if(fin)$('#c08d-sig').textContent='Siguiente mensaje';
+    pintar();
+  }
+  document.querySelectorAll('#c08d-equipos button').forEach(b=>b.addEventListener('click',()=>{
+    eq=+b.dataset.eq;plan=armar(eq);paso=0;
+    $('#c08d-sig').disabled=false;
+    $('#c08d-out').innerHTML='<span>'+EQ[eq][0]+' se conecta al Wi-Fi. Pulsa «Siguiente mensaje».</span>';
+    pintar();$('#c08d-sig').focus();
+  }));
+  $('#c08d-sig').addEventListener('click',siguiente);
+  $('#c08d-reset').addEventListener('click',reiniciar);
+  $('#c08d-esc').addEventListener('change',reiniciar);
+  reiniciar();
+})();
+</script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const IP={'www.ejemplo.com':'203.0.113.10','correo.ejemplo.org':'198.51.100.25','www.ejemplo.pe':'203.0.113.80'};
+  const RTT={cel:4,raiz:20,tld:35,aut:90};
+  let pasos=[], i=0;
+  function armar(){
+    const n=$('#c08n-nombre').value, c=$('#c08n-cache').value, partes=n.split('.'), tld='.'+partes[partes.length-1], dom=partes.slice(-2).join('.'), ip=IP[n];
+    const nodos=[['Celular','tú'],['Resolutor','operador'],['Raíz','«.»'],['TLD',tld],['Dominio',dom.replace('.','<wbr>.')]];
+    $('#c08n-nodos').innerHTML=nodos.map((x,k)=>'<div id="c08n-n'+k+'">'+x[0]+'<small>'+x[1]+'</small></div>').join('');
+    const resp=ip?'«'+n+' es '+ip+', guárdalo 1 hora (TTL 3600)»':'«'+n+' no existe» (respuesta NXDOMAIN)';
+    pasos=[{de:0,a:1,t:'El celular pregunta al resolutor: «¿cuál es la dirección de '+n+'?»',ms:0}];
+    if(c==='todo'){
+      pasos.push({de:1,a:0,t:'El resolutor la tiene en su caché y contesta en el acto: '+resp.replace('guárdalo 1 hora (TTL 3600)','le quedan 41 minutos de vida'),ms:RTT.cel});
+    } else {
+      if(c==='nada'){
+        pasos.push({de:1,a:2,t:'El resolutor no sabe nada y empieza por arriba: pregunta a un servidor raíz.',ms:0});
+        pasos.push({de:2,a:1,t:'La raíz no conoce '+n+', pero sabe quién atiende '+tld+': «pregúntale a los servidores de '+tld+'».',ms:RTT.raiz});
+      }
+      pasos.push({de:1,a:3,t:(c==='tld'?'El resolutor ya sabe quién atiende '+tld+' (lo tiene guardado) y le pregunta directo.':'El resolutor pregunta a un servidor de '+tld+'.'),ms:0});
+      pasos.push({de:3,a:1,t:'El servidor de '+tld+' responde: «de '+dom+' se encargan ns1.'+dom+' y ns2.'+dom+'».',ms:RTT.tld});
+      pasos.push({de:1,a:4,t:'El resolutor pregunta al autoritativo ns1.'+dom+'.',ms:0});
+      pasos.push({de:4,a:1,t:'El autoritativo tiene la última palabra: '+resp+'.',ms:RTT.aut});
+      pasos.push({de:1,a:0,t:'El resolutor guarda la respuesta en su caché y se la entrega al celular.',ms:RTT.cel});
+    }
+    i=0;pintar();
+  }
+  function pintar(){
+    const total=pasos.slice(0,i).reduce((s,p)=>s+p.ms,0);
+    $('#c08n-pasos').innerHTML=pasos.slice(0,i).map((p,k)=>'<li class="'+(k===i-1?'nuevo':'')+'">'+p.t+(p.ms?' <span class="ms">+'+p.ms+' ms</span>':'')+'</li>').join('');
+    for(let k=0;k<5;k++){const el=$('#c08n-n'+k);if(el)el.classList.toggle('activo',i>0&&(pasos[i-1].de===k||pasos[i-1].a===k));}
+    const fin=i===pasos.length, n=$('#c08n-nombre').value, ok=!!IP[n];
+    let txt='<span class="big">'+(i===0?'Listo para preguntar':fin?(ok?'Respuesta: '+IP[n]:'Respuesta: ese nombre no existe'):'Paso '+i+' de '+pasos.length)+'</span><span>Tiempo acumulado: '+total+' ms</span>';
+    if(fin){
+      const idas=pasos.filter(p=>p.ms&&p.de!==0&&p.a===1).length;
+      txt+='<span>'+(idas?'El resolutor hizo '+idas+' '+(idas===1?'consulta':'consultas')+' por su cuenta; el celular hizo una sola pregunta.':'Desde la caché: nadie tuvo que salir a preguntar.')+'</span>';
+      if(!ok)txt+='<span class="warn">El «no existe» también se guarda en caché un rato: si alguien crea ese nombre ahora, el resolutor seguirá diciendo que no existe hasta que caduque.</span>';
+      else if(idas)txt+='<span class="ok">La próxima persona que pregunte por este nombre tendrá la respuesta en '+RTT.cel+' ms, mientras dure el TTL.</span>';
+    }
+    $('#c08n-out').innerHTML=txt;
+    $('#c08n-sig').disabled=fin;$('#c08n-todo').disabled=fin;
+  }
+  $('#c08n-sig').addEventListener('click',()=>{if(i<pasos.length){i++;pintar();}});
+  $('#c08n-todo').addEventListener('click',()=>{i=pasos.length;pintar();});
+  $('#c08n-reset').addEventListener('click',armar);
+  ['#c08n-nombre','#c08n-cache'].forEach(s=>$(s).addEventListener('change',armar));
+  armar();
+})();
+</script>
+</body>
+</html>

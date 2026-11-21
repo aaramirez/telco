@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Regulación · Cómo funciona un telco</title>
+<meta name="description" content="Un telco no opera solo: necesita una habilitación del Estado, cumple obligaciones de calidad, de atención al usuario y de protección de datos, paga tributos específicos y responde ante un regulador, y esas reglas influyen en precios, contratos, cortes y hasta en cómo se construye la red.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="47-regulacion">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 47 DE 49</span><h1>Regulación: las reglas del juego</h1><p class="lede">Un telco no opera solo: necesita una habilitación del Estado, cumple obligaciones de calidad, de atención al usuario y de protección de datos, paga tributos específicos y responde ante un regulador, y esas reglas influyen en precios, contratos, cortes y hasta en cómo se construye la red.</p></header>
+<section><div class="prose"><p>Casi todo lo que vimos en el libro, desde la fibra en el poste hasta el mensaje que avisa que la factura vence, tiene detrás una regla escrita por alguien que no trabaja en el telco. Esa regla dice quién puede ofrecer el servicio, cómo hay que tratar al cliente, cuándo se puede cortar, qué se hace con sus datos y cuánto hay que aportar al Estado.</p><p>Este capítulo no es un manual de derecho. Cada país de Latinoamérica tiene sus propias leyes, y cambian con los años. Lo que sigue son las <b>reglas típicas</b> del sector, las que se repiten en casi todos los países con distintos nombres, para que cualquier persona del telco reconozca cuándo una decisión tiene un costado regulatorio y sepa que tiene que preguntar.</p></div><div class="analogia"><b>Imagínalo así</b><p>Las reglas de tránsito: cualquiera puede tener un auto, pero para manejar un autobús de pasajeros hace falta licencia especial, revisiones periódicas, seguro y respetar a un fiscal que puede multar.</p></div><figure class="fig fig-capas" id="47-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: las reglas que tocan toda la cadena, cuidadas desde el gobierno">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class=""><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class=""><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class=""><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class="apagado"><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class="apagado"><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class="apagado"><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class=""><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class=""><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class=""><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: las reglas que tocan toda la cadena, cuidadas desde el gobierno</text>
+</svg></div><figcaption><b>Dónde estamos.</b> La regulación no vive en un sistema ni en un eslabón: toca a todos. Este capítulo enciende las cinco capas de sistemas y se apoya en el eslabón de gobierno, desde donde el telco cuida que la red, las ventas, la atención y la cobranza cumplan las reglas.</figcaption></figure></section>
+<section><h2>Por qué las telecomunicaciones están reguladas</h2><div class="prose"><p>Hay tres razones, y las tres se entienden con sentido común.</p><p>La primera es que las telecomunicaciones son un <b>servicio esencial</b>. Sin conexión no se estudia, no se trabaja a distancia, no se hace un trámite ni se pide una ambulancia. Por eso los Estados las tratan como tratan el agua o la electricidad: no pueden quedar solo a la suerte del mercado.</p><p>La segunda es que usan <b>recursos escasos y públicos</b>: el espectro radioeléctrico, las calles por donde pasan los ductos, los postes, los números de teléfono. Alguien tiene que repartirlos y cobrar por su uso.</p><p>La tercera es que hay una <b>diferencia de poder</b> entre el operador y el usuario. El operador redacta el contrato, conoce la red y controla la factura; el usuario no puede verificar si su velocidad es la prometida o si su reclamo fue bien atendido. La regulación pone reglas mínimas para equilibrar esa relación, y también para que un operador grande no use su tamaño para dejar fuera a los pequeños.</p></div></section>
+<section><h2>El regulador y los organismos internacionales (UIT y otros)</h2><div class="prose"><p>En casi todos los países hay tres niveles de actores. Arriba, el <b>Estado</b>, normalmente a través de un ministerio, define la política: cuánta cobertura quiere, qué zonas priorizar, qué leyes proponer. En el medio, el <b>regulador</b> sectorial, una agencia técnica que convierte esa política en reglas concretas, otorga las habilitaciones, asigna el espectro, mide la calidad, recibe reclamos y puede sancionar. Y alrededor, otras autoridades que también tocan al telco: la de defensa del consumidor, la de protección de datos personales, la de competencia, la tributaria y los municipios, que dan los permisos de obra en la calle.</p><p>Por encima de los países está la <b>UIT</b> (Unión Internacional de Telecomunicaciones), el organismo de las Naciones Unidas para el sector. La UIT no manda sobre los telcos de cada país, pero coordina lo que necesita acuerdo global: el reparto del espectro entre servicios, las normas técnicas (la serie G.984 de GPON, por ejemplo, es una recomendación de la UIT) y los planes de numeración. Su rama de desarrollo, la UIT-D, publica estudios y guías de buenas prácticas que muchos reguladores toman como modelo. En las Américas, la <b>CITEL</b>, de la Organización de los Estados Americanos, coordina posiciones regionales. Y los reguladores de la región se reúnen en foros propios para compartir experiencias.</p></div><figure class="fig fig-mapa" id="47-diagrama-2"><div class="lienzo"><svg viewBox="0 0 860 430" style="min-width:680px" role="img" aria-label="Mapa de actores alrededor de un telco: Estado, regulador y organismos internacionales arriba; autoridades de consumo y datos y otros operadores a los lados; municipios, usuarios y fisco con fondo de servicio universal abajo; el operador en el centro">
+<rect x="30" y="20" width="200" height="72" rx="10" class="d-inet"/>
+<use href="#i-monitor" x="40" y="40" width="30" height="30" class="ico"/>
+<text x="78" y="44" class="t t-b">Estado (ministerio)</text>
+<text x="78" y="63" class="t t-s t-m">define la política</text><text x="78" y="78" class="t t-s t-m">y propone las leyes</text>
+<rect x="330" y="20" width="200" height="72" rx="10" class="d-sis"/>
+<use href="#i-llave" x="340" y="40" width="30" height="30" class="ico"/>
+<text x="378" y="44" class="t t-b">Regulador</text>
+<text x="378" y="63" class="t t-s t-m">habilita, asigna espectro,</text><text x="378" y="78" class="t t-s t-m">mide calidad y sanciona</text>
+<rect x="630" y="20" width="200" height="72" rx="10" class="d-inet"/>
+<use href="#i-nube" x="640" y="40" width="30" height="30" class="ico"/>
+<text x="678" y="44" class="t t-b">UIT, CITEL y otros</text>
+<text x="678" y="63" class="t t-s t-m">normas técnicas y reparto</text><text x="678" y="78" class="t t-s t-m">del espectro entre países</text>
+<rect x="30" y="180" width="200" height="72" rx="10" class="caja"/>
+<use href="#i-candado" x="40" y="200" width="30" height="30" class="ico"/>
+<text x="78" y="204" class="t t-b">Consumo y datos</text>
+<text x="78" y="223" class="t t-s t-m">autoridades que protegen</text><text x="78" y="238" class="t t-s t-m">al usuario y su información</text>
+<rect x="630" y="180" width="200" height="72" rx="10" class="caja"/>
+<use href="#i-router-core" x="640" y="200" width="30" height="30" class="ico"/>
+<text x="678" y="204" class="t t-b">Otros operadores</text>
+<text x="678" y="223" class="t t-s t-m">interconexión, postes</text><text x="678" y="238" class="t t-s t-m">y ductos compartidos</text>
+<rect x="30" y="340" width="200" height="72" rx="10" class="caja"/>
+<use href="#i-guia" x="40" y="360" width="30" height="30" class="ico"/>
+<text x="78" y="364" class="t t-b">Municipios</text>
+<text x="78" y="383" class="t t-s t-m">permisos de obra y uso</text><text x="78" y="398" class="t t-s t-m">del espacio público</text>
+<rect x="330" y="340" width="200" height="72" rx="10" class="d-casa"/>
+<use href="#i-persona" x="340" y="360" width="30" height="30" class="ico"/>
+<text x="378" y="364" class="t t-b">Usuarios</text>
+<text x="378" y="383" class="t t-s t-m">pagan, usan y reclaman</text><text x="378" y="398" class="t t-s t-m">(y tienen derechos)</text>
+<rect x="630" y="340" width="200" height="72" rx="10" class="caja"/>
+<use href="#i-factura" x="640" y="360" width="30" height="30" class="ico"/>
+<text x="678" y="364" class="t t-b">Fisco y fondos</text>
+<text x="678" y="383" class="t t-s t-m">tributos, tasas y aportes</text><text x="678" y="398" class="t t-s t-m">al fondo universal</text>
+<rect x="330" y="176" width="200" height="80" rx="12" class="d-oper" style="stroke-width:2"/>
+<use href="#i-olt" x="344" y="196" width="38" height="38" class="ico"/>
+<text x="392" y="210" class="t t-b">Operador</text><text x="392" y="228" class="t t-s t-m">el telco</text>
+<line x1="200" y1="92" x2="352" y2="176" class="ln " marker-end="url(#fl)"/>
+<line x1="430" y1="92" x2="430" y2="174" class="ln " marker-end="url(#fl)"/>
+<line x1="660" y1="92" x2="508" y2="176" class="ln ln-d" marker-end="url(#fl)"/>
+<line x1="230" y1="216" x2="328" y2="216" class="ln " marker-end="url(#fl)"/>
+<line x1="630" y1="216" x2="532" y2="216" class="ln " marker-start="url(#fl)" marker-end="url(#fl)"/>
+<line x1="200" y1="340" x2="352" y2="258" class="ln " marker-end="url(#fl)"/>
+<line x1="430" y1="340" x2="430" y2="258" class="ln " marker-start="url(#fl)" marker-end="url(#fl)"/>
+<line x1="510" y1="258" x2="660" y2="338" class="ln " marker-end="url(#fl)"/>
+<line x1="230" y1="56" x2="328" y2="56" class="ln " marker-end="url(#fl)"/>
+<line x1="630" y1="56" x2="532" y2="56" class="ln ln-d" marker-end="url(#fl)"/>
+<text x="422" y="322" text-anchor="end" class="t t-xs t-m">SERVICIO ↓ ↑ PAGO Y RECLAMOS</text>
+<text x="440" y="140" class="t t-xs t-m">REGLAS Y CONTROL</text>
+</svg></div><figcaption><b>Quién es quién alrededor de un telco.</b> El operador está en el centro. Cada flecha dice qué le pide o le da cada actor: el Estado fija la política, el regulador habilita y controla, los usuarios pagan y reclaman, los municipios dan permisos de obra, otros operadores se interconectan y comparten infraestructura, y los organismos internacionales fijan normas técnicas y reparten el espectro entre países.</figcaption></figure></section>
+<section><h2>Habilitaciones y licencias</h2><div class="prose"><p>Para ofrecer servicios de telecomunicaciones al público hace falta un permiso del Estado. Según el país se llama <b>licencia</b>, <b>concesión</b>, <b>título habilitante</b>, <b>registro</b> o <b>autorización</b>, y puede cubrir todos los servicios o uno por uno (Internet, telefonía, televisión). La tendencia en la región es ir hacia habilitaciones más simples, a veces un registro, para servicios que no usan espectro, y dejar los procesos más exigentes para quien necesita frecuencias.</p><p>La habilitación trae obligaciones: pagar derechos, entregar información periódica al regulador, cumplir metas de calidad o de cobertura y avisar antes de cambios importantes, como vender la empresa o dejar de prestar un servicio. Tiene fecha de vencimiento y se renueva. Perderla, aunque sea por un trámite olvidado, puede significar no poder operar.</p><p>También se regulan los <b>equipos</b>. Muchos países exigen que los aparatos que se conectan a la red o que emiten radio, como ONT con Wi-Fi, routers o teléfonos, estén <b>homologados</b>: probados y aprobados para usarse en el país. Un lote de ONT sin homologar puede quedar retenido en la aduana o no poder instalarse.</p></div></section>
+<section><h2>El espectro radioeléctrico: un recurso público</h2><div class="prose"><p>Las ondas de radio que usan la televisión, la radio, los celulares y el Wi-Fi viajan por el mismo aire. Si dos emisoras usan la misma frecuencia en la misma zona, se interfieren y ninguna funciona. Por eso el <b>espectro radioeléctrico</b> se trata como un recurso público y se reparte con un plan: cada servicio tiene sus bandas, como cada auto tiene su carril.</p><p>Hay dos grandes formas de uso. Las <b>bandas con licencia</b> se asignan a un operador en exclusiva, por concurso o subasta, a cambio de un pago y de obligaciones de cobertura; así funcionan las redes móviles 4G y 5G. Las <b>bandas de uso libre</b> pueden usarlas todos sin pedir permiso, siempre que respeten límites de potencia; ahí vive el Wi-Fi de la casa, y por eso el Wi-Fi del vecino puede molestar al tuyo.</p></div><figure class="fig fig-esquema" id="47-diagrama-6"><div class="lienzo"><svg viewBox="0 0 860 340" style="min-width:680px" role="img" aria-label="Regla del espectro radioeléctrico: con licencia, radio AM y FM, televisión, telefonía móvil y enlaces de microondas; de uso libre, Wi-Fi en 2,4, 5 y 6 GHz">
+<text x="20" y="24" class="t t-xs t-b k-casa">USO LIBRE (SIN LICENCIA, CON LÍMITES DE POTENCIA)</text>
+<rect x="606.4" y="96" width="8" height="34" rx="2" class="d-casa"/>
+<line x1="610.4" y1="96" x2="560" y2="62" class="ln"/>
+<text x="560" y="56" text-anchor="middle" class="t t-s t-b">Wi-Fi 2,4 GHz</text>
+<rect x="652.2" y="96" width="8" height="34" rx="2" class="d-casa"/>
+<line x1="656.2" y1="96" x2="660" y2="62" class="ln"/>
+<text x="660" y="56" text-anchor="middle" class="t t-s t-b">Wi-Fi 5 GHz</text>
+<rect x="661.7" y="96" width="8" height="34" rx="2" class="d-casa"/>
+<line x1="665.7" y1="96" x2="760" y2="62" class="ln"/>
+<text x="760" y="56" text-anchor="middle" class="t t-s t-b">Wi-Fi 6 GHz</text>
+<line x1="40" y1="150" x2="824" y2="150" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+<line x1="40.0" y1="144" x2="40.0" y2="156" class="ln"/><text x="40.0" y="172" text-anchor="middle" class="t t-xs t-m">100 kHz</text>
+<line x1="170.0" y1="144" x2="170.0" y2="156" class="ln"/><text x="170.0" y="172" text-anchor="middle" class="t t-xs t-m">1 MHz</text>
+<line x1="300.0" y1="144" x2="300.0" y2="156" class="ln"/><text x="300.0" y="172" text-anchor="middle" class="t t-xs t-m">10 MHz</text>
+<line x1="430.0" y1="144" x2="430.0" y2="156" class="ln"/><text x="430.0" y="172" text-anchor="middle" class="t t-xs t-m">100 MHz</text>
+<line x1="560.0" y1="144" x2="560.0" y2="156" class="ln"/><text x="560.0" y="172" text-anchor="middle" class="t t-xs t-m">1 GHz</text>
+<line x1="690.0" y1="144" x2="690.0" y2="156" class="ln"/><text x="690.0" y="172" text-anchor="middle" class="t t-xs t-m">10 GHz</text>
+<line x1="820.0" y1="144" x2="820.0" y2="156" class="ln"/><text x="820.0" y="172" text-anchor="middle" class="t t-xs t-m">100 GHz</text>
+<text x="20" y="200" class="t t-xs t-b k-sis">CON LICENCIA (ASIGNADAS POR EL ESTADO)</text>
+<rect x="134.2" y="214" width="65.8" height="22" rx="4" class="d-sis"/>
+<text x="167.1" y="252" text-anchor="middle" class="t t-s t-b">Radio AM</text>
+<rect x="422.8" y="214" width="11.6" height="22" rx="4" class="d-sis"/>
+<text x="428.6" y="252" text-anchor="middle" class="t t-s t-b">Radio FM</text>
+<rect x="661.2" y="214" width="107.1" height="22" rx="4" class="d-sis"/>
+<text x="714.7" y="252" text-anchor="middle" class="t t-s t-b">Enlaces de microondas</text>
+<rect x="395.2" y="262" width="144.5" height="22" rx="4" class="d-sis"/>
+<text x="467.5" y="300" text-anchor="middle" class="t t-s t-b">TV abierta</text>
+<rect x="531.2" y="262" width="104.2" height="22" rx="4" class="d-sis"/>
+<text x="583.3" y="300" text-anchor="middle" class="t t-s t-b">Móvil 4G y 5G</text>
+<text x="40" y="326" class="t t-s t-m">← Más baja: llega más lejos y atraviesa paredes</text>
+<text x="824" y="326" text-anchor="end" class="t t-s t-m">Más alta: más capacidad, menos alcance →</text>
+</svg></div><figcaption><b>El espectro, como una regla.</b> De izquierda a derecha, las frecuencias suben (la escala no es exacta). Abajo, las bandas que se asignan con licencia exclusiva; arriba, las de uso libre. La radio, la televisión y la telefonía móvil compiten por las frecuencias bajas, que llegan lejos y atraviesan paredes; el Wi-Fi usa bandas libres de 2,4, 5 y 6 GHz. Las bandas exactas cambian por país y por región.</figcaption></figure><div class="prose"><p>Para un operador de fibra, el espectro importa menos que para uno móvil, pero no desaparece: el Wi-Fi que entrega con la ONT depende de qué bandas libres habilita el país (no todos abrieron aún la de 6 GHz), y los enlaces de microondas que a veces llevan la red a zonas alejadas sí necesitan frecuencias asignadas.</p></div></section>
+<section><h2>Obligaciones de calidad y de información al usuario</h2><div class="prose"><p>El regulador suele fijar <b>indicadores de calidad</b> que el operador debe medir y reportar: disponibilidad del servicio, tiempo de instalación, tiempo para reparar una falla, porcentaje de reclamos, velocidad real frente a la contratada. Algunos países publican esos datos para que los usuarios comparen operadores; otros miden por su cuenta con sondas o aplicaciones de prueba de velocidad.</p><p>La otra mitad es <b>informar bien</b>. Las reglas típicas piden que la oferta diga con claridad el precio final con impuestos, la velocidad de bajada y de subida, si hay una velocidad mínima garantizada, el plazo del contrato, las penalidades por cancelar antes y las condiciones de las promociones. Una publicidad que dice «hasta 1 Gbps» sin aclarar qué velocidad se puede esperar en la práctica es, en muchos países, motivo de reclamo y de multa.</p><p>Para el telco, esto tiene una consecuencia técnica concreta: hay que <b>poder medir</b>. Las métricas de la red y los registros de atención que vimos en los capítulos 27, 31 y 35 no solo sirven para operar; también son la evidencia que se entrega al regulador.</p></div></section>
+<section><h2>Derechos del usuario: contratos, reclamos, cortes y portabilidad</h2><div class="prose"><p>Los derechos que se repiten en casi todos los marcos de la región son pocos y fáciles de recordar.</p><ul><li><b>Contrato claro.</b> El usuario recibe sus condiciones por escrito y no se le pueden cambiar sin aviso. Las cláusulas de permanencia mínima suelen estar limitadas.</li><li><b>Reclamar y recibir respuesta.</b> El operador debe recibir el reclamo por canales accesibles, entregar un número o constancia y responder dentro de un plazo. Si el usuario no queda conforme, puede acudir al regulador o a la autoridad de consumo.</li><li><b>Aviso antes del corte.</b> Por falta de pago, el servicio no se corta de un día para otro: suele exigirse un aviso previo y un plazo para pagar. Algunos países protegen además ciertos servicios mínimos, como llamar a emergencias.</li><li><b>Dar de baja sin trabas.</b> Cada vez más reguladores exigen que cancelar sea tan fácil como contratar, por los mismos canales.</li><li><b>Portabilidad.</b> En telefonía, el usuario puede cambiar de operador y conservar su número; el operador que pierde al cliente no puede demorar el cambio.</li><li><b>Compensación por fallas.</b> Cuando el servicio se cae por más de cierto tiempo por causa del operador, muchos marcos obligan a descontar esos días de la factura.</li></ul></div><figure class="fig fig-flujo" id="47-diagrama-3"><div class="lienzo"><svg viewBox="0 0 900 560" style="min-width:700px" role="img" aria-label="Flujo de un reclamo: el usuario reclama al operador, recibe número y respuesta en plazo; si no queda conforme acude al regulador, que pide descargos al operador y resuelve; el operador corrige o compensa">
+<rect x="50" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-persona" x="62" y="26" width="32" height="32" class="ico"/>
+<text x="102" y="47" class="t t-b">Usuario</text>
+<rect x="330" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-olt" x="342" y="26" width="32" height="32" class="ico"/>
+<text x="382" y="40" class="t t-b">Operador</text><text x="382" y="57" class="t t-s t-m">atención al cliente</text>
+<rect x="600" y="14" width="170" height="56" rx="10" class="caja"/><use href="#i-llave" x="612" y="26" width="32" height="32" class="ico"/>
+<text x="652" y="40" class="t t-b">Regulador</text><text x="652" y="57" class="t t-s t-m">o ente de consumo</text>
+<line x1="135" y1="70" x2="135" y2="545" class="vida"/>
+<line x1="415" y1="70" x2="415" y2="545" class="vida"/>
+<line x1="685" y1="70" x2="685" y2="545" class="vida"/>
+<line x1="135" y1="108" x2="413" y2="120" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="145" y="100" class="t t-s">① Reclamo: «me cobraron algo que no pedí»</text>
+<line x1="415" y1="156" x2="137" y2="168" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="145" y="148" class="t t-s">② Número de reclamo y plazo de respuesta</text>
+<line x1="415" y1="214" x2="137" y2="226" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+<text x="145" y="206" class="t t-s">③ Respuesta dentro del plazo</text>
+<text x="423" y="188" class="t t-s t-m">(revisa factura, tickets y red)</text>
+<line x1="135" y1="282" x2="683" y2="294" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="145" y="274" class="t t-s">④ No conforme: presenta queja ante el regulador</text>
+<line x1="685" y1="334" x2="417" y2="346" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="425" y="326" class="t t-s">⑤ Pide información y descargos</text>
+<line x1="415" y1="386" x2="683" y2="398" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="425" y="378" class="t t-s">⑥ Descargos con evidencia: registros y tickets</text>
+<line x1="685" y1="444" x2="137" y2="456" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="145" y="436" class="t t-s">⑦ Resolución: da la razón a una de las partes</text>
+<line x1="415" y1="500" x2="137" y2="512" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+<text x="145" y="492" class="t t-s">⑧ Corrige, devuelve lo cobrado o compensa</text>
+<g class="t t-xs t-b">
+<path d="M800 96v134" class="ln s-red" style="stroke-width:3"/><text x="810" y="150" class="k-red">PRIMERA</text><text x="810" y="164" class="k-red">INSTANCIA</text><text x="810" y="178" class="t-m">el operador,</text><text x="810" y="192" class="t-m">plazo de días</text>
+<path d="M800 270v190" class="ln s-tra" style="stroke-width:3"/><text x="810" y="350" class="k-tra">SEGUNDA</text><text x="810" y="364" class="k-tra">INSTANCIA</text><text x="810" y="378" class="t-m">el regulador</text>
+<path d="M800 488v28" class="ln s-enl" style="stroke-width:3"/><text x="810" y="500" class="k-enl">CUMPLIR</text><text x="810" y="514" class="t-m">y quizá multa</text>
+</g>
+<text x="20" y="300" class="t t-xs t-m" transform="rotate(-90 20 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El camino de un reclamo.</b> Como en todo diagrama de flujo, el tiempo corre hacia abajo. Primero el usuario reclama ante el operador, que debe dejar constancia y responder en un plazo. Solo si no queda conforme, el reclamo sube al regulador, que pide información al operador, escucha sus descargos y resuelve. Si el regulador da la razón al usuario, el operador corrige, devuelve lo cobrado o compensa, y puede recibir además una sanción.</figcaption></figure><div class="prose"><p>Fíjate en un detalle del flujo: casi todo se decide en la primera instancia. Un reclamo bien atendido y bien registrado en el sistema de tickets no llega nunca al regulador. Uno mal registrado, sin número, sin plazo o sin respuesta, se convierte en una queja formal en la que el operador tiene que demostrar lo que hizo, y si no hay registro, no hay forma de demostrarlo.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región tenía un proceso de cobranza muy simple: al día siguiente del vencimiento, el sistema suspendía el servicio de todos los clientes con deuda. Cuando la norma del país pasó a exigir un aviso previo con un plazo mínimo antes del corte, ese proceso dejó de servir. El operador tuvo que rediseñarlo de punta a punta: el sistema de facturación empezó a generar el aviso por mensaje y correo con fecha de corte; el orquestador solo podía suspender a quien tuviera un aviso registrado con el plazo vencido; los pagos hechos dentro del plazo cancelaban la orden de corte automáticamente; y cada aviso quedaba guardado como prueba ante un eventual reclamo. El cambio llevó semanas de trabajo de sistemas, pero bajó los reclamos por cortes y los clientes empezaron a pagar antes, porque el aviso les recordaba la fecha.</p></div></section>
+<section><h2>Neutralidad de red</h2><div class="prose"><p>La <b>neutralidad de red</b> es el principio de que el operador debe tratar todo el tráfico de Internet de la misma forma, sin bloquear, frenar ni favorecer contenidos, aplicaciones o servicios según quién los ofrece. Un operador no puede, por ejemplo, ralentizar una aplicación de videollamadas para que sus clientes usen su propia telefonía, ni cobrarle a un sitio para que cargue más rápido que su competencia.</p><p>La neutralidad no prohíbe <b>gestionar</b> la red. Los marcos típicos permiten medidas razonables, transparentes y no discriminatorias: proteger la red de un ataque, cumplir una orden judicial de bloqueo, o administrar una congestión excepcional tratando por igual a todo el tráfico de un mismo tipo. Lo que se pide es que se informe y que no se use para favorecer a nadie.</p><p>Hay zonas grises donde los países difieren, como el <b>zero rating</b>: planes móviles en los que ciertas aplicaciones no consumen datos. Algunos reguladores lo permiten, otros lo limitan y otros lo prohíben. Es el ejemplo perfecto de una decisión comercial que hay que consultar antes de lanzar.</p></div></section>
+<section><h2>Protección de datos personales y secreto de las comunicaciones</h2><div class="prose"><p>Un telco sabe mucho de sus clientes: dónde viven, cuánto pagan, a qué hora navegan, a quién llaman. La mayoría de los países de la región tiene una <b>ley de protección de datos personales</b>, con principios parecidos a los del reglamento europeo (RGPD): usar los datos solo para el fin con el que se pidieron, pedir consentimiento para otros usos, guardarlos de forma segura, dejar que el titular los consulte, corrija o pida borrarlos, y avisar si hay una filtración.</p><p>Además, las telecomunicaciones tienen una regla propia, mucho más antigua: el <b>secreto de las comunicaciones</b>. El contenido de lo que el cliente habla o envía no se puede interceptar ni revelar, salvo con orden de un juez y por los procedimientos que la ley fije. Muchos marcos obligan también a <b>conservar</b> ciertos registros, como qué dirección IP tenía un cliente en un momento dado, por un tiempo determinado, y a entregarlos solo a la autoridad que los pida formalmente.</p><p>En la práctica esto se traduce en conductas diarias: verificar la identidad antes de dar información de una cuenta, no sacar bases de clientes en planillas, no compartir datos con empresas aliadas sin consentimiento y derivar al área legal cualquier pedido de información que llegue de una autoridad.</p><p>Con cortes, neutralidad y datos ya sobre la mesa, prueba tu instinto regulatorio con casos que aparecen en cualquier telco.</p></div><div class="lab" id="47-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Se puede?</h3></div><p class="hint">Para cada situación, decide si se puede, si no se puede o si depende de la norma de cada país. Después de responder verás la regla típica y su porqué. Las respuestas describen lo habitual en la región; ante un caso real, siempre se consulta al área legal o regulatoria.</p><style>
+[id="47-lab-5"] .c47-lista{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+[id="47-lab-5"] .c47-caso{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px;background:var(--card)}
+[id="47-lab-5"] .c47-caso p{margin:0}
+[id="47-lab-5"] .c47-q{font:600 .95rem var(--f-display)}
+[id="47-lab-5"] .c47-fb{font-size:.92rem;border-left:4px solid var(--line);padding:6px 10px;border-radius:0 6px 6px 0;background:var(--paper)}
+[id="47-lab-5"] .c47-fb.ok{border-color:var(--good)}
+[id="47-lab-5"] .c47-fb.mal{border-color:var(--warm)}
+[id="47-lab-5"] .c47-fb b{font-family:var(--f-display)}
+</style>
+<div class="readout" aria-live="polite"><span class="big" id="c47-puntaje">0 de 10 respondidas</span><span id="c47-detalle">Elige una respuesta en cada caso.</span></div>
+<ol class="c47-lista" id="c47-lista"></ol>
+<div class="btns"><button type="button" id="c47-reiniciar">Empezar de nuevo</button></div></div></section>
+<section><h2>Uso de postes y ductos, y compartición de infraestructura</h2><div class="prose"><p>La fibra tiene que pasar por algún lado, y casi siempre ese lado es de otro: los postes de la empresa eléctrica o de un municipio, los ductos de otro operador, las fachadas de los edificios. Por eso existen reglas de <b>uso compartido de infraestructura</b>: el dueño del poste debe permitir el uso a precios razonables y sin discriminar, y el telco que cuelga su cable debe respetar alturas, pesos, señalización y pagar por cada apoyo.</p><p>Los <b>municipios</b> también participan: dan los permisos para abrir zanjas, instalar postes nuevos o gabinetes en la acera, y en algunos casos cobran tasas por ocupar el espacio público. Un despliegue puede atrasarse meses por un permiso municipal.</p><p>Para el telco, esto se ve en el inventario de planta y en el GIS del capítulo 37: cada poste usado debe estar registrado con su dueño, porque de ahí sale lo que se paga y lo que se reporta. Cables colgados sin acuerdo o fuera de norma son una fuente frecuente de multas y de retiros forzados.</p><p>La compartición va también en el otro sentido. Muchos marcos permiten u obligan a compartir torres, ductos o incluso redes de acceso, para que no haya cinco fibras paralelas en la misma calle. Por eso cada vez más operadores alquilan infraestructura a otros o la compran como servicio mayorista.</p></div></section>
+<section><h2>Tributos y aportes del sector</h2><div class="prose"><p>Además de los impuestos de cualquier empresa, un telco suele pagar <b>cargas propias del sector</b>: derechos por la habilitación, una tasa por el uso del espectro, un aporte porcentual sobre los ingresos para financiar al regulador y, en muchos países, otro aporte a un <b>fondo de servicio universal</b>. A eso se suman los impuestos que se cobran al cliente en la factura y que el telco solo recauda y entrega, como el impuesto al valor agregado y, en algunos lugares, impuestos específicos a los servicios digitales o a las telecomunicaciones.</p><p>Estas cargas suelen calcularse sobre los ingresos declarados y se reportan con información que sale del BSS. Por eso facturar bien no es solo un tema con el cliente: un error en cómo se clasifica un servicio en la factura puede terminar en un pago de más o de menos al fisco, con su multa.</p><p>Con los tributos queda completo el mapa: no hay área del telco sin una regla que cumplir.</p></div><figure class="fig fig-capas" id="47-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 414" style="min-width:680px" role="img" aria-label="Qué regla toca cada parte del negocio: red, comercial, atención, datos y finanzas, con las reglas típicas y el área que responde">
+<text x="20" y="26" class="t t-xs t-b t-m">PARTE DEL NEGOCIO</text><text x="186" y="26" class="t t-xs t-b t-m">REGLAS TÍPICAS QUE LA TOCAN</text><text x="560" y="26" class="t t-xs t-b t-m">QUIÉN RESPONDE · QUÉ EVIDENCIA</text>
+<rect x="20" y="40" width="150" height="60" rx="8" class="d-oper"/><text x="34" y="75" class="t t-b k-oper">Red</text>
+<rect x="178" y="40" width="662" height="60" rx="8" class="caja"/>
+<text x="192" y="66" class="t t-s">Habilitación, espectro, homologación de equipos,</text><text x="192" y="84" class="t t-s">indicadores de calidad, postes y permisos de obra</text>
+<line x1="548" y1="50" x2="548" y2="90" class="ln ln-d"/>
+<text x="560" y="66" class="t t-s t-b">Red e ingeniería</text><text x="560" y="84" class="t t-s t-m">indicadores de calidad, inventario de postes</text>
+<rect x="20" y="110" width="150" height="60" rx="8" class="d-sis"/><text x="34" y="145" class="t t-b k-sis">Comercial</text>
+<rect x="178" y="110" width="662" height="60" rx="8" class="caja"/>
+<text x="192" y="136" class="t t-s">Ofertas y tarifas claras, publicidad veraz,</text><text x="192" y="154" class="t t-s">contratos y permanencia, neutralidad de red</text>
+<line x1="548" y1="120" x2="548" y2="160" class="ln ln-d"/>
+<text x="560" y="136" class="t t-s t-b">Comercial y marketing</text><text x="560" y="154" class="t t-s t-m">ofertas publicadas, contratos firmados</text>
+<rect x="20" y="180" width="150" height="60" rx="8" class="d-casa"/><text x="34" y="215" class="t t-b k-casa">Atención</text>
+<rect x="178" y="180" width="662" height="60" rx="8" class="caja"/>
+<text x="192" y="206" class="t t-s">Reclamos con número y plazo, aviso antes del corte,</text><text x="192" y="224" class="t t-s">baja sin trabas, portabilidad, compensaciones</text>
+<line x1="548" y1="190" x2="548" y2="230" class="ln ln-d"/>
+<text x="560" y="206" class="t t-s t-b">Atención y cobranza</text><text x="560" y="224" class="t t-s t-m">tickets, avisos de corte enviados</text>
+<rect x="20" y="250" width="150" height="60" rx="8" class="d-inet"/><text x="34" y="285" class="t t-b k-inet">Datos</text>
+<rect x="178" y="250" width="662" height="60" rx="8" class="caja"/>
+<text x="192" y="276" class="t t-s">Datos personales y consentimiento, secreto de las</text><text x="192" y="294" class="t t-s">comunicaciones, conservación de registros</text>
+<line x1="548" y1="260" x2="548" y2="300" class="ln ln-d"/>
+<text x="560" y="276" class="t t-s t-b">Sistemas y seguridad</text><text x="560" y="294" class="t t-s t-m">permisos y registros de acceso</text>
+<rect x="20" y="320" width="150" height="60" rx="8" class="caja"/><text x="34" y="355" class="t t-b ">Finanzas</text>
+<rect x="178" y="320" width="662" height="60" rx="8" class="caja"/>
+<text x="192" y="346" class="t t-s">Derechos y tasas, aportes al regulador y al fondo</text><text x="192" y="364" class="t t-s">universal, impuestos que se cobran en la factura</text>
+<line x1="548" y1="330" x2="548" y2="370" class="ln ln-d"/>
+<text x="560" y="346" class="t t-s t-b">Finanzas e impuestos</text><text x="560" y="364" class="t t-s t-m">declaraciones y facturación</text>
+<text x="20" y="404" class="t t-s t-m">Reglas típicas de la región; cada país las define con sus propios nombres y plazos.</text>
+</svg></div><figcaption><b>Qué regla toca cada parte del negocio.</b> Cada fila es una parte del telco, de la red a las finanzas. La columna del medio resume las reglas típicas que la afectan; la de la derecha, qué área suele responder por ellas y qué evidencia se le pide. Ninguna fila queda fuera: todas las áreas tienen algo que cumplir.</figcaption></figure></section>
+<section><h2>Servicio universal y conectividad rural</h2><div class="prose"><p>Llevar fibra a un pueblo pequeño o a una zona rural casi nunca es rentable con las cuentas del capítulo 46: muchos kilómetros de cable para pocos hogares. Si todo quedara librado al mercado, esas zonas no se conectarían nunca.</p><p>El <b>servicio universal</b> es la respuesta de los Estados. Con los aportes que pagan los operadores se forma un fondo que financia proyectos en zonas no rentables: subsidios para construir red, conectividad para escuelas y centros de salud, puntos de acceso públicos. A veces se adjudican por concurso al operador que pide menos subsidio; otras veces las metas de cobertura rural se exigen como condición al otorgar espectro.</p><p>Para un operador regional, estos programas pueden ser una oportunidad: construir con ayuda en zonas donde después puede vender. Pero vienen con compromisos estrictos de plazos, calidad y reportes.</p></div><figure class="fig fig-esquema" id="47-diagrama-7"><div class="lienzo"><svg viewBox="0 0 860 230" style="min-width:680px" role="img" aria-label="Fondo de servicio universal: los operadores aportan, el fondo elige proyectos, un operador construye con metas y las zonas rurales quedan conectadas">
+<rect x="20" y="30" width="184" height="96" rx="12" class="d-oper"/>
+<use href="#i-router-core" x="32" y="44" width="32" height="32" class="ico"/>
+<text x="72" y="64" class="t t-b">Operadores</text>
+<text x="34" y="100" class="t t-s t-m">aportan un % de</text><text x="34" y="116" class="t t-s t-m">sus ingresos</text>
+<line x1="206" y1="78" x2="230" y2="78" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+<rect x="232" y="30" width="184" height="96" rx="12" class="d-inet"/>
+<use href="#i-factura" x="244" y="44" width="32" height="32" class="ico"/>
+<text x="284" y="64" class="t t-b">Fondo universal</text>
+<text x="246" y="100" class="t t-s t-m">el Estado elige zonas</text><text x="246" y="116" class="t t-s t-m">y proyectos</text>
+<line x1="418" y1="78" x2="442" y2="78" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+<rect x="444" y="30" width="184" height="96" rx="12" class="d-sis"/>
+<use href="#i-olt" x="456" y="44" width="32" height="32" class="ico"/>
+<text x="496" y="64" class="t t-b">Operador</text>
+<text x="496" y="80" class="t t-b">adjudicado</text>
+<text x="458" y="100" class="t t-s t-m">construye y opera</text><text x="458" y="116" class="t t-s t-m">con metas y plazos</text>
+<line x1="630" y1="78" x2="654" y2="78" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+<rect x="656" y="30" width="184" height="96" rx="12" class="d-casa"/>
+<use href="#i-persona" x="668" y="44" width="32" height="32" class="ico"/>
+<text x="708" y="64" class="t t-b">Zonas conectadas</text>
+<text x="670" y="100" class="t t-s t-m">hogares, escuelas y</text><text x="670" y="116" class="t t-s t-m">centros de salud</text>
+<path d="M742 128 V176 H112 V130" class="ln ln-d" marker-end="url(#fl)"/>
+<text x="427" y="198" text-anchor="middle" class="t t-s t-m">Los nuevos usuarios pagan su servicio y el operador reporta el avance de las metas</text>
+</svg></div><figcaption><b>Cómo funciona un fondo de servicio universal.</b> Se lee de izquierda a derecha. Los operadores aportan un pequeño porcentaje de sus ingresos; el fondo, administrado por el Estado o el regulador, elige proyectos en zonas donde el mercado no llega; un operador construye y opera la red con esa ayuda y se compromete a metas; y los hogares, escuelas y centros de salud de esas zonas quedan conectados. La flecha de abajo cierra el ciclo: los nuevos usuarios también pagan, y el operador reporta el avance.</figcaption></figure></section>
+<section><h2>Cómo se prepara una empresa para una auditoría o inspección</h2><div class="prose"><p>El regulador puede pedir información, mandar inspectores a una central, medir la calidad en la calle o auditar una muestra de reclamos. A veces avisa con poca anticipación, y lo que pide casi siempre es evidencia: datos, registros y documentos que muestren que la empresa hizo lo que dice.</p><p>La mejor preparación es la que se hace todos los días. Una empresa bien preparada tiene, como mínimo:</p><ol class="steps"><li><span>Un <b>calendario regulatorio</b> con vencimientos de habilitaciones, reportes periódicos y pagos de tasas, con un responsable para cada uno.</span></li><li><span><b>Evidencia a mano</b>: indicadores de calidad, registros de reclamos con fechas y respuestas, avisos de corte enviados, contratos firmados, acuerdos de uso de postes.</span></li><li><span><b>Procesos escritos</b> que digan cómo se atiende un reclamo, cómo se corta y se reconecta, cómo se responde a un pedido de una autoridad, y que coincidan con lo que los sistemas hacen de verdad.</span></li><li><span>Un <b>punto de contacto</b> con el regulador y un área (legal, regulatoria o de cumplimiento) a la que cualquier empleado sabe que debe consultar.</span></li><li><span><b>Revisiones internas</b> antes de que lleguen las externas: tomar una muestra de reclamos o de cortes y verificar que se cumplieron los plazos.</span></li></ol></div><div class="ml"><b>En la práctica</b><p>No hace falta saber de leyes para cumplir: hace falta reconocer las señales. Si una decisión toca <b>precios o promociones</b>, <b>contratos</b>, <b>cortes o bajas</b>, <b>datos de clientes</b>, <b>cómo se trata un tipo de tráfico</b>, <b>postes o permisos de obra</b> o <b>información que pide una autoridad</b>, consulta al área regulatoria o legal antes de actuar. Una pregunta a tiempo cuesta minutos; una multa o una campaña retirada cuesta meses.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué diferencia hay entre el Estado y el regulador en el sector?</summary><p>El Estado, normalmente un ministerio, define la política; el regulador es la agencia técnica que la convierte en reglas, habilita a los operadores, asigna espectro, controla la calidad y sanciona.</p></details><details><summary>¿Por qué el Wi-Fi de un vecino puede interferir con el tuyo y no pasa lo mismo entre dos operadores móviles?</summary><p>Porque el Wi-Fi usa bandas de uso libre que todos comparten, mientras que cada operador móvil tiene bandas con licencia exclusiva en su zona.</p></details><details><summary>Un cliente reclamó y no quedó conforme con la respuesta. ¿Qué puede hacer?</summary><p>Acudir al regulador o a la autoridad de consumo, que pedirá información y descargos al operador y resolverá.</p></details><details><summary>¿La neutralidad de red prohíbe toda gestión del tráfico?</summary><p>No. Permite medidas razonables, transparentes y no discriminatorias, como proteger la red de un ataque o administrar una congestión excepcional; prohíbe bloquear, frenar o favorecer contenidos según quién los ofrece.</p></details><details><summary>Una empresa aliada pide la base de clientes para ofrecerles un seguro. ¿Qué regla entra en juego?</summary><p>La de protección de datos personales: los datos solo pueden usarse para otro fin si el cliente dio su consentimiento.</p></details><details><summary>¿De dónde sale el dinero de los fondos de servicio universal?</summary><p>Principalmente de aportes que pagan los propios operadores, un porcentaje de sus ingresos, que el Estado usa para conectar zonas no rentables.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.itu.int/es/ITU-D/Pages/default.aspx" target="_blank" rel="noopener">UIT-D: el sector de desarrollo de la UIT <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Neutralidad_de_red" target="_blank" rel="noopener">Neutralidad de red (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Espectro_radioel%C3%A9ctrico" target="_blank" rel="noopener">Espectro radioeléctrico (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Protecci%C3%B3n_de_datos_personales" target="_blank" rel="noopener">Protección de datos personales (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const NOM={si:'Sí, se puede',no:'No se puede',dep:'Depende del país'};
+  const CASOS=[
+    {q:'Un cliente no pagó la factura que venció ayer. ¿Se puede cortarle el servicio hoy mismo, sin aviso previo?',r:'no',
+     e:'Las normas típicas exigen avisar antes de cortar por falta de pago y dar un plazo para pagar. El corte sin aviso es una de las causas más comunes de reclamos y multas.'},
+    {q:'Para que los clientes usen la telefonía del operador, ¿se puede frenar una aplicación de videollamadas?',r:'no',
+     e:'Es el ejemplo clásico de lo que prohíbe la neutralidad de red: frenar o bloquear un servicio según quién lo ofrece.'},
+    {q:'Durante un ataque de denegación de servicio, ¿se puede filtrar el tráfico malicioso que satura la red?',r:'si',
+     e:'La neutralidad permite medidas razonables para proteger la integridad de la red, siempre que sean proporcionales, temporales y no discriminen contenidos legítimos.'},
+    {q:'¿Se puede lanzar un plan móvil en el que una red social no consume datos (zero rating)?',r:'dep',
+     e:'Los países lo tratan distinto: algunos lo permiten, otros lo limitan o lo prohíben. Es una decisión comercial que hay que consultar antes de lanzar.'},
+    {q:'Una aseguradora aliada pide la lista de clientes con teléfono para ofrecerles un seguro. ¿Se puede entregar?',r:'no',
+     e:'Los datos personales solo se usan para el fin con que se recogieron. Para compartirlos con un tercero con otro fin hace falta el consentimiento del cliente.'},
+    {q:'Después de que el cliente paga la deuda, ¿se puede cobrar un cargo por reconexión?',r:'dep',
+     e:'En muchos países se permite si está en el contrato y en las tarifas publicadas y es razonable; en otros está limitado o prohibido. Lo que no se puede es inventarlo en el momento.'},
+    {q:'Para llegar rápido a un barrio nuevo, ¿se pueden colgar cajas y fibra en postes de la empresa eléctrica sin acuerdo de uso?',r:'no',
+     e:'El uso de postes ajenos requiere un acuerdo y el pago por cada apoyo, además de respetar alturas y pesos. Sin acuerdo hay multas y retiros forzados.'},
+    {q:'Alguien llama diciendo ser el titular y pide la dirección registrada en la cuenta. ¿Se le puede dar sin verificar su identidad?',r:'no',
+     e:'Antes de entregar información de una cuenta hay que verificar la identidad. Es protección de datos y también protección contra fraudes.'},
+    {q:'¿Se puede publicitar un plan «de hasta 1 Gbps» sin decir qué velocidad mínima o promedio puede esperar el cliente?',r:'dep',
+     e:'Muchos reguladores exigen informar una velocidad mínima garantizada o un promedio esperado, además de la máxima. Otros solo piden que la publicidad no engañe.'},
+    {q:'Un cliente pide la baja por teléfono. ¿Se puede exigirle que vaya a una oficina a firmar?',r:'no',
+     e:'La tendencia regional es que dar de baja sea tan fácil como contratar y por los mismos canales. Poner trabas a la baja es motivo frecuente de sanción.'}
+  ];
+  const resp={};
+  function render(){
+    $('#c47-lista').innerHTML=CASOS.map((c,i)=>{
+      const r=resp[i];
+      const btn=k=>'<button type="button" data-i="'+i+'" data-k="'+k+'" aria-pressed="'+(r===k)+'">'+NOM[k]+'</button>';
+      let fb='';
+      if(r){const ok=r===c.r;fb='<p class="c47-fb '+(ok?'ok':'mal')+'"><b>'+(ok?'Correcto. ':'La regla típica: '+NOM[c.r]+'. ')+'</b>'+c.e+'</p>';}
+      return '<li class="c47-caso"><p class="c47-q">'+(i+1)+'. '+c.q+'</p><div class="btns" role="group" aria-label="Respuesta al caso '+(i+1)+'">'+btn('si')+btn('no')+btn('dep')+'</div>'+fb+'</li>';
+    }).join('');
+    const n=Object.keys(resp).length, ok=Object.keys(resp).filter(i=>resp[i]===CASOS[i].r).length;
+    $('#c47-puntaje').textContent=n<CASOS.length?n+' de '+CASOS.length+' respondidas · '+ok+' correctas':ok+' de '+CASOS.length+' correctas';
+    $('#c47-detalle').textContent=n<CASOS.length?'Elige una respuesta en cada caso.':
+      (ok>=8?'Buen instinto regulatorio. Aun así, ante un caso real se consulta al área legal o regulatoria.':'Fíjate en los casos de «depende»: son los que siempre conviene consultar antes de actuar.');
+  }
+  $('#c47-lista').addEventListener('click',ev=>{
+    const b=ev.target.closest('button[data-i]');if(!b)return;
+    const i=+b.dataset.i;resp[i]=b.dataset.k;render();
+    const nb=document.querySelector('#c47-lista button[data-i="'+i+'"][data-k="'+b.dataset.k+'"]');if(nb)nb.focus();
+  });
+  $('#c47-reiniciar').addEventListener('click',()=>{Object.keys(resp).forEach(k=>delete resp[k]);render();});
+  render();
+})();
+</script>
+</body>
+</html>

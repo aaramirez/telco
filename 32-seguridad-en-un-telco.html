@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seguridad en un telco · Cómo funciona un telco</title>
+<meta name="description" content="Un telco protege tres cosas a la vez (su red, los datos de sus clientes y la continuidad del servicio), y las amenazas van desde el robo de cable hasta los ataques de denegación de servicio y el fraude.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="32-seguridad-en-un-telco">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 32 DE 49</span><h1>Seguridad en un telco</h1><p class="lede">Un telco protege tres cosas a la vez (su red, los datos de sus clientes y la continuidad del servicio), y las amenazas van desde el robo de cable hasta los ataques de denegación de servicio y el fraude.</p></header>
+<section><div class="prose"><p>El capítulo 12 explicó la ciberseguridad desde los ojos de una persona: claves, candados y correos falsos. Este capítulo la mira desde el otro lado del mostrador. Un operador de telecomunicaciones no solo tiene que cuidar sus propias computadoras: es el dueño de los caminos por donde pasa la información de cientos de miles de personas, guarda sus datos personales y, si su red se cae, se caen con ella hospitales, comercios y casas.</p><p>Por eso la seguridad en un telco no es un departamento aparte. Es una forma de trabajar que toca al técnico que abre una caja en la calle, al ingeniero que configura un router, al agente que atiende una llamada y a quien diseña un sistema nuevo.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un banco: bóveda, cámaras, control de acceso del personal, procedimientos ante un asalto y auditorías. Ninguna de esas medidas alcanza sola. La bóveda no sirve si el cajero le da la llave a cualquiera, y las cámaras no sirven si nadie revisa las grabaciones. La fuerza está en tenerlas todas a la vez.</p></div><figure class="fig fig-capas" id="32-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: proteger cada tramo y cada capa">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class=""><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: proteger cada tramo y cada capa</text>
+</svg></div><figcaption><b>Dónde estamos.</b> La seguridad no vive en una capa ni en un tramo: atraviesa todo el mapa. Hay amenazas físicas (alguien corta o roba la fibra), de red (un ataque que inunda los enlaces), en los equipos de la casa y en las aplicaciones y los datos. Por eso este capítulo enciende todas las capas y todas las estaciones.</figcaption></figure></section>
+<section><h2>Qué se protege y de quién</h2><div class="prose"><p>Un telco protege tres cosas, y conviene nombrarlas porque a veces compiten entre sí:</p><ul><li><b>La red y sus equipos</b>: que nadie los dañe, los robe ni los controle sin permiso.</li><li><b>Los datos de los clientes</b>: quiénes son, dónde viven, cuánto pagan, a qué hora se conectan, qué claves tienen.</li><li><b>La continuidad del servicio</b>: que la red siga funcionando aunque algo falle o alguien la ataque.</li></ul><p>Los especialistas resumen las tres propiedades que se cuidan con una sigla conocida, <b>CIA</b> en inglés: <b>confidencialidad</b> (que solo vea quien debe), <b>integridad</b> (que nadie cambie lo que no debe) y <b>disponibilidad</b> (que funcione cuando se necesita).</p><p>¿Y de quién se protege? La lista es más variada de lo que parece:</p><ul><li><b>Ladrones de cable y equipos</b>, que buscan cobre, baterías o equipos para revender.</li><li><b>Atacantes desde Internet</b>, que inundan la red con tráfico basura, buscan equipos mal configurados o prueban claves.</li><li><b>Defraudadores</b>, que intentan usar el servicio sin pagar, suplantar a un cliente o revender accesos.</li><li><b>Personas de adentro</b>: empleados o contratistas que consultan datos por curiosidad, por dinero o por error.</li><li><b>Accidentes</b>: una retroexcavadora, una tormenta o un cambio mal hecho. No son ataques, pero la respuesta se parece.</li></ul></div><figure class="fig fig-capas" id="32-diagrama-3"><div class="lienzo"><svg viewBox="0 0 880 470" style="min-width:680px" role="img" aria-label="Defensa en capas: una amenaza debe atravesar siete barreras para llegar a la red, los datos y el servicio: seguridad física de la planta, segmentación de la red de gestión, filtros en el perímetro, equipos endurecidos, accesos con roles y segundo factor, datos cifrados y mínimos, y personas capacitadas">
+  
+  <rect x="14" y="14" width="112" height="64" rx="10" class="caja"/><use href="#i-persona" x="20" y="18" width="26" height="26" class="ico"/><text x="50" y="36" class="t t-b">Amenaza</text><text x="22" y="58" class="t t-xs t-m">DE AFUERA</text><text x="22" y="70" class="t t-xs t-m">O DE ADENTRO</text>
+  <line x1="70" y1="80" x2="70" y2="396" class="ln ln-d" style="stroke-width:2" marker-end="url(#fl)"/>
+  <g class="t t-b" text-anchor="middle" style="font-size:16px">
+    <text x="94" y="110" class="k-fis">✕</text><text x="94" y="214" class="k-red">✕</text><text x="94" y="318" class="k-apl">✕</text>
+  </g>
+  <text x="20" y="440" class="t t-xs t-m">CADA BARRERA</text><text x="20" y="454" class="t t-xs t-m">PUEDE DETENERLA</text>
+
+  <g class="t t-s">
+    <rect x="140" y="84" width="720" height="44" rx="8" class="c-fis"/>
+    <text x="154" y="104" class="t-b k-fis">1 · Planta física</text><text x="154" y="120" class="t-m">calle, postes, cajas y nodos</text>
+    <text x="400" y="111">Cerraduras, cámaras, alarmas de apertura, registro de quién entra</text>
+
+    <rect x="140" y="136" width="720" height="44" rx="8" class="c-enl"/>
+    <text x="154" y="156" class="t-b k-enl">2 · Segmentación</text><text x="154" y="172" class="t-m">capa de enlace</text>
+    <text x="400" y="163">Red de gestión separada de la de clientes, VLAN por servicio</text>
+
+    <rect x="140" y="188" width="720" height="44" rx="8" class="c-red"/>
+    <text x="154" y="208" class="t-b k-red">3 · Perímetro de red</text><text x="154" y="224" class="t-m">borde con Internet</text>
+    <text x="400" y="215">Filtros anti-DDoS, anti-suplantación (BCP 38), cortafuegos</text>
+
+    <rect x="140" y="240" width="720" height="44" rx="8" class="caja"/>
+    <text x="154" y="260" class="t-b">4 · Equipos</text><text x="154" y="276" class="t-m">del operador y de la casa</text>
+    <text x="400" y="267">Firmware al día, sin claves de fábrica, gestión cerrada a Internet</text>
+
+    <rect x="140" y="292" width="720" height="44" rx="8" class="c-apl"/>
+    <text x="154" y="312" class="t-b k-apl">5 · Accesos</text><text x="154" y="328" class="t-m">sistemas y consolas</text>
+    <text x="400" y="319">Cuentas personales, segundo factor, roles, bastión, auditoría</text>
+
+    <rect x="140" y="344" width="720" height="44" rx="8" class="c-apl"/>
+    <text x="154" y="364" class="t-b k-apl">6 · Datos</text><text x="154" y="380" class="t-m">de los clientes</text>
+    <text x="400" y="371">Cifrado, solo lo necesario, retención y borrado</text>
+
+    <rect x="140" y="396" width="720" height="44" rx="8" class="caja"/>
+    <text x="154" y="416" class="t-b">7 · Personas</text><text x="154" y="432" class="t-m">todos los empleados</text>
+    <text x="400" y="423">Capacitación, verificación de identidad, avisar lo raro</text>
+  </g>
+  <text x="500" y="462" text-anchor="middle" class="t t-s t-b">Lo que se protege: la red · los datos de los clientes · la continuidad del servicio</text>
+  <text x="140" y="72" class="t t-xs t-b t-m">DE LA CALLE A LAS PERSONAS: SIETE BARRERAS</text>
+</svg></div><figcaption><b>Defensa en capas.</b> Cada fila es una barrera distinta, de la calle a las personas. Un atacante, la flecha, tiene que atravesarlas todas para llegar a lo que se protege, y cada barrera puede detenerlo. Los colores repiten los de las capas de red cuando la barrera trabaja en esa capa: la seguridad física en la física, la segmentación con VLAN en la de enlace, los filtros en la de red y las cuentas y los datos en la de aplicación.</figcaption></figure></section>
+<section><h2>Seguridad física de la planta</h2><div class="prose"><p>La amenaza más antigua de un operador no viene de Internet sino de la calle. La <b>planta externa</b> (fibras, postes, cajas, gabinetes y nodos) está repartida por toda la ciudad, a la vista de todos.</p><ul><li><b>Robo y vandalismo.</b> Las baterías de los gabinetes y el cobre de las redes antiguas tienen valor de reventa. La fibra no lo tiene, pero a veces se corta igual por confusión con el cobre o por vandalismo.</li><li><b>Acceso a nodos y centrales.</b> Las salas donde viven la OLT, los routers y los servidores tienen puertas con control de acceso, cámaras, registro de quién entra y a qué hora, y alarmas de apertura que llegan al NOC.</li><li><b>Cajas en la calle.</b> Las cajas de distribución y los splitters llevan cierres que solo abre personal autorizado. Una caja abierta sin orden de trabajo es una alarma.</li><li><b>Ambiente.</b> La protección contra incendio, agua y temperatura también es seguridad física: protege la disponibilidad.</li></ul><p>Un detalle importante: muchos ataques digitales empiezan por un acceso físico. Quien llega a un puerto de consola de un equipo puede tomar su control, por eso los puertos de gestión no se dejan al alcance.</p></div></section>
+<section><h2>Ataques a la red: DDoS, suplantación, equipos vulnerables</h2><div class="prose"><h3>Denegación de servicio (DDoS)</h3><p>Un <b>ataque de denegación de servicio distribuido</b> (<b>DDoS</b>) es la versión digital de mil camiones que estacionan a la vez frente a una tienda: nadie roba nada, pero los clientes de verdad no pueden entrar. Miles de equipos, casi siempre cámaras, routers o computadoras infectadas que forman una <b>botnet</b>, mandan a la vez tráfico basura hacia una víctima. Si el tráfico supera la capacidad del enlace, todo lo que pasa por ese enlace se ahoga, incluido el tráfico de clientes que no tenían nada que ver.</p><p>Para un telco, la víctima puede ser un cliente (un comercio, un servidor de juegos) o la propia red: su DNS, su BNG o sus enlaces a Internet. Las defensas típicas van de la más tosca a la más fina:</p><ul><li><b>Agujero negro</b> (<i>blackhole</i>): se descarta todo el tráfico hacia la dirección atacada. Salva al resto de la red, pero la víctima queda desconectada: el atacante logra su objetivo.</li><li><b>Filtros en el borde</b>: se descarta tráfico que tiene una forma reconocible de ataque (ciertos puertos o protocolos), en los routers de entrada o pidiéndole al proveedor de Internet que lo filtre antes.</li><li><b>Centro de limpieza</b> (<i>scrubbing</i>): se desvía el tráfico de la víctima hacia equipos especializados que separan lo legítimo de lo malicioso y devuelven solo lo limpio. Lo ofrecen proveedores especializados o se instala en la propia red.</li></ul></div><div class="lab" id="32-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Ataque de denegación de servicio</h3></div><p class="hint">Mueve el tamaño del ataque y mira cómo se llena el enlace de entrada. Después prueba cada defensa: ¿cuál salva al resto de los clientes?, ¿cuál salva también a la víctima?</p><style>
+.c32-tubo{display:grid;gap:6px}
+.c32-fila{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;font:600 .82rem var(--f-display);color:var(--muted)}
+.c32-pista{position:relative;height:30px;border-radius:6px;background:var(--paper);border:1px solid var(--line);overflow:hidden;display:flex}
+.c32-pista i{display:block;height:100%;transition:width .3s}
+.c32-pista .ok{background:var(--accent)}
+.c32-pista .vi{background:var(--good)}
+.c32-pista .at{background:var(--warm)}
+.c32-cap{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--ink)}
+.c32-ley{display:flex;flex-wrap:wrap;gap:6px 14px;font:500 .82rem var(--f-display);color:var(--muted)}
+.c32-ley span{display:inline-flex;align-items:center;gap:6px}
+.c32-ley i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.c32-res{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}
+.c32-res div{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--paper);display:grid;gap:2px}
+.c32-res b{font:700 1.5rem var(--f-display)}
+.c32-res small{color:var(--muted);font-size:.82rem}
+.c32-res .bien b{color:var(--good)} .c32-res .mal b{color:var(--warm)}
+@media (prefers-reduced-motion: reduce){.c32-pista i{transition:none}}
+</style>
+<div class="ctls">
+  <label class="ctl"><span>Tamaño del ataque</span><output id="c32-at-o"></output><input type="range" id="c32-at" min="0" max="50" step="1" value="20"></label>
+</div>
+<div class="btns" role="group" aria-label="Defensa" id="c32-def">
+  <button type="button" data-d="nada" aria-pressed="true">Sin defensa</button>
+  <button type="button" data-d="router" aria-pressed="false">Filtro en tu router</button>
+  <button type="button" data-d="negro" aria-pressed="false">Agujero negro</button>
+  <button type="button" data-d="limpieza" aria-pressed="false">Centro de limpieza</button>
+</div>
+<div class="c32-tubo">
+  <div class="c32-fila"><span>Lo que intenta entrar por el enlace de 10 Gbps</span><div class="c32-pista" id="c32-p1"></div></div>
+  <div class="c32-fila"><span>Lo que llega a destino</span><div class="c32-pista" id="c32-p2"></div></div>
+  <div class="c32-ley"><span><i style="background:var(--accent)"></i>Tráfico de los demás clientes (6 Gbps)</span><span><i style="background:var(--good)"></i>Tráfico legítimo de la víctima</span><span><i style="background:var(--warm)"></i>Ataque</span><span><i style="border-left:2px dashed var(--ink);border-radius:0;width:0"></i>Capacidad del enlace</span></div>
+</div>
+<div class="c32-res">
+  <div id="c32-r1"><small>Los demás clientes</small><b id="c32-v1"></b><small>de su tráfico llega</small></div>
+  <div id="c32-r2"><small>El cliente atacado</small><b id="c32-v2"></b><small>de su tráfico legítimo llega</small></div>
+</div>
+<p class="hint" id="c32-nota" aria-live="polite"></p></div><figure class="fig fig-flujo" id="32-diagrama-6"><div class="lienzo"><svg viewBox="0 0 930 560" style="min-width:730px" role="img" aria-label="Flujo de mitigación de un DDoS: la botnet inunda el router de borde; el router envía muestras de flujos al detector; el detector activa la protección; el centro de limpieza anuncia por BGP la dirección atacada; el tráfico se desvía al centro de limpieza, que descarta lo malicioso y entrega solo lo legítimo a la víctima; al terminar el ataque se retira el anuncio">
+  
+  <rect x="10" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-nube" x="20" y="26" width="32" height="32" class="ico"/><text x="58" y="40" class="t t-b">Botnet</text><text x="58" y="57" class="t t-s t-m">miles de equipos</text>
+  <rect x="165" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-router-core" x="175" y="26" width="32" height="32" class="ico"/><text x="213" y="40" class="t t-b">Router</text><text x="213" y="57" class="t t-s t-m">de borde</text>
+  <rect x="325" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-monitor" x="335" y="26" width="32" height="32" class="ico"/><text x="373" y="47" class="t t-b">Detector</text>
+  <rect x="485" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-servidor" x="495" y="26" width="32" height="32" class="ico"/><text x="533" y="40" class="t t-b">Centro de</text><text x="533" y="57" class="t t-b">limpieza</text>
+  <rect x="645" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-servidor" x="655" y="26" width="32" height="32" class="ico"/><text x="693" y="40" class="t t-b">Víctima</text><text x="693" y="57" class="t t-s t-m">203.0.113.10</text>
+  <line x1="75" y1="70" x2="75" y2="545" class="vida"/>
+  <line x1="230" y1="70" x2="230" y2="545" class="vida"/>
+  <line x1="390" y1="70" x2="390" y2="545" class="vida"/>
+  <line x1="550" y1="70" x2="550" y2="545" class="vida"/>
+  <line x1="710" y1="70" x2="710" y2="545" class="vida"/>
+
+  
+  <line x1="75" y1="108" x2="228" y2="116" class="ln s-red" style="stroke-width:5" marker-end="url(#fl-red)"/>
+  <text x="84" y="100" class="t t-s">① 40 Gbps de basura</text>
+  <line x1="230" y1="124" x2="708" y2="132" class="ln s-red ln-d" style="stroke-width:3" marker-end="url(#fl-red)"/>
+  <text x="400" y="148" class="t t-s t-m">el enlace de 10 Gbps se ahoga</text>
+
+  
+  <line x1="230" y1="180" x2="388" y2="188" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="238" y="174" class="t t-s">② Muestras de flujos</text>
+  <rect x="320" y="200" width="140" height="38" rx="8" class="caja"/>
+  <text x="390" y="216" text-anchor="middle" class="t t-s">③ Salto anormal</text><text x="390" y="231" text-anchor="middle" class="t t-s">hacia .10</text>
+  <line x1="390" y1="256" x2="548" y2="264" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="398" y="250" class="t t-s">④ Proteger .10</text>
+
+  
+  <line x1="550" y1="292" x2="232" y2="300" class="ln s-red" style="stroke-width:2.6" marker-end="url(#fl-red)"/>
+  <text x="248" y="318" class="t t-s"><tspan class="t-mono">BGP</tspan> ⑤ «Para llegar a .10, pasa por mí»</text>
+  <line x1="75" y1="340" x2="228" y2="348" class="ln s-red" style="stroke-width:5" marker-end="url(#fl-red)"/>
+  <line x1="230" y1="352" x2="548" y2="360" class="ln s-red" style="stroke-width:5" marker-end="url(#fl-red)"/>
+  <text x="240" y="344" class="t t-s">⑥ Todo el tráfico de .10 se desvía</text>
+  <rect x="480" y="372" width="140" height="38" rx="8" class="caja"/>
+  <text x="550" y="388" text-anchor="middle" class="t t-s">⑦ Descarta la basura</text><text x="550" y="403" text-anchor="middle" class="t t-s">deja lo legítimo</text>
+  <line x1="550" y1="428" x2="708" y2="436" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="560" y="452" class="t t-s">⑧ Solo tráfico limpio</text>
+
+  
+  <line x1="550" y1="488" x2="232" y2="496" class="ln s-red ln-d" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="248" y="520" class="t t-s"><tspan class="t-mono">BGP</tspan> ⑨ Fin del ataque: se retira el desvío</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M820 94v60" class="ln s-red" style="stroke-width:3"/><text x="830" y="124">ATAQUE</text>
+    <path d="M820 168v100" class="ln s-apl" style="stroke-width:3"/><text x="830" y="212">DETECTAR</text><text x="830" y="226" class="t-m">segundos</text>
+    <path d="M820 282v176" class="ln s-red" style="stroke-width:3"/><text x="830" y="362">DESVIAR</text><text x="830" y="376" class="t-m">y limpiar</text>
+    <path d="M820 476v52" class="ln s-red" style="stroke-width:3"/><text x="830" y="506">RETIRAR</text>
+  </g>
+</svg></div><figcaption><b>Cómo se detiene un DDoS con un centro de limpieza.</b> La botnet inunda la red; el detector, que mira muestras del tráfico de los routers de borde, nota el salto y avisa. El operador anuncia por BGP que el tráfico hacia la víctima entre por el centro de limpieza, que descarta lo malicioso y devuelve solo lo legítimo. Cuando el ataque termina, el desvío se retira.</figcaption></figure><div class="prose"><h3>Suplantación y equipos vulnerables</h3><p>La <b>suplantación</b> (<i>spoofing</i>) es mandar paquetes con una dirección de origen falsa, como un sobre con remitente inventado. Se usa para esconder al atacante y para los ataques de <b>reflexión</b>: el atacante le hace preguntas cortas a miles de servidores mal configurados poniendo como remitente la dirección de la víctima, y todos le responden a ella con respuestas grandes. Un operador responsable filtra en su red los paquetes que salen con direcciones que no le pertenecen; esa buena práctica se conoce como BCP 38 y la promueven iniciativas como MANRS.</p><p>Los <b>equipos vulnerables</b> son la otra gran puerta: un router con una falla de software conocida y sin actualizar, una interfaz de gestión abierta a Internet o una clave de fábrica que nadie cambió. Por eso los equipos del operador se gestionan desde una <b>red de gestión separada</b>, a la que no se llega desde Internet, y se mantienen al día.</p></div></section>
+<section><h2>Seguridad de los equipos de la casa</h2><div class="prose"><p>El operador tiene cientos de miles de equipos en casas de clientes: ONT, routers Wi-Fi y decodificadores. Son la parte de la red más numerosa y la menos vigilada, y por eso las botnets los buscan.</p><p>Las reglas básicas para un parque de equipos seguro:</p><ul><li><b>Sin claves de fábrica iguales.</b> Cada equipo sale con su propia clave de Wi-Fi y de administración, impresa en su etiqueta.</li><li><b>Gestión cerrada.</b> La página de administración del equipo no se ve desde Internet, y la gestión remota del ACS (capítulo 28) usa canales cifrados y autenticados.</li><li><b>Firmware al día.</b> El ACS permite actualizar miles de equipos por lotes, con piloto, como en el capítulo 30.</li><li><b>Autenticación en la red.</b> La OLT solo acepta ONT autorizadas, identificadas por su número de serie o una clave, y el BNG solo da servicio a quien RADIUS reconoce (capítulo 20). Así se evita que alguien conecte un equipo robado o clonado.</li><li><b>Vigilar lo raro.</b> Un equipo de cliente que de pronto manda tráfico a miles de destinos probablemente está infectado. Detectarlo y avisar al cliente protege a todos.</li></ul></div></section>
+<section><h2>Datos de clientes y privacidad</h2><div class="prose"><p>Un telco sabe mucho de sus clientes: su nombre y documento, su dirección, su número de cuenta, cuánto paga, cuándo se conecta y, en algunos sistemas, hasta la clave de su Wi-Fi. Esos datos son útiles para atenderlo bien y, en manos equivocadas, peligrosos: sirven para estafas, suplantación de identidad o simple acoso.</p><p>Los principios para cuidarlos son pocos y sencillos:</p><ul><li><b>Mínimo necesario.</b> Se recoge y se muestra solo lo que hace falta para la tarea. Al agente que cambia un plan no le hace falta ver el historial de navegación.</li><li><b>Cifrado.</b> Los datos viajan y se guardan cifrados, sobre todo los más sensibles, como claves y datos de pago.</li><li><b>Quién y para qué.</b> Cada consulta tiene un motivo de trabajo. Mirar la cuenta de un vecino o de una persona famosa «por curiosidad» es una falta grave, aunque el sistema lo permita.</li><li><b>Cuidado con la verificación de identidad.</b> Muchas estafas empiezan con una llamada a atención al cliente haciéndose pasar por el titular para cambiar un dato o pedir una clave. Las preguntas de verificación existen por eso.</li><li><b>Retención y borrado.</b> Los datos se guardan el tiempo que exige la ley y el negocio, no para siempre.</li></ul></div><figure class="fig fig-comparacion" id="32-diagrama-7"><div class="lienzo"><svg viewBox="0 0 830 370" style="min-width:660px" role="img" aria-label="Qué dato ve cada rol: el agente ve nombre, dirección y estado de la ONT; el soporte de segundo nivel además puede ver la clave del Wi-Fi y el historial de conexiones, con ticket y registro; cobranza ve nombre y dirección y solo los últimos dígitos de la tarjeta; el ingeniero ve el estado de la ONT y el historial con registro; nadie ve lo que el cliente navega">
+  <g class="t t-s t-b" text-anchor="middle"><text x="320.0" y="30">Agente</text><text x="460.0" y="30">Soporte N2</text><text x="600.0" y="30">Cobranza</text><text x="740.0" y="30">Ingeniero</text></g>
+  <text x="16" y="74" class="t t-s t-b">Nombre y dirección</text>
+  <rect x="258" y="46" width="124" height="40" rx="7" class="d-sis"/><text x="320.0" y="71" text-anchor="middle" class="t t-s t-b">✓ lo ve</text>
+  <rect x="398" y="46" width="124" height="40" rx="7" class="d-sis"/><text x="460.0" y="71" text-anchor="middle" class="t t-s t-b">✓ lo ve</text>
+  <rect x="538" y="46" width="124" height="40" rx="7" class="d-sis"/><text x="600.0" y="71" text-anchor="middle" class="t t-s t-b">✓ lo ve</text>
+  <rect x="678" y="46" width="124" height="40" rx="7" class="caja ln-d"/><text x="740.0" y="71" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <text x="16" y="122" class="t t-s t-b">Estado de la ONT y señal</text>
+  <rect x="258" y="94" width="124" height="40" rx="7" class="d-sis"/><text x="320.0" y="119" text-anchor="middle" class="t t-s t-b">✓ lo ve</text>
+  <rect x="398" y="94" width="124" height="40" rx="7" class="d-sis"/><text x="460.0" y="119" text-anchor="middle" class="t t-s t-b">✓ lo ve</text>
+  <rect x="538" y="94" width="124" height="40" rx="7" class="caja ln-d"/><text x="600.0" y="119" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="678" y="94" width="124" height="40" rx="7" class="d-sis"/><text x="740.0" y="119" text-anchor="middle" class="t t-s t-b">✓ lo ve</text>
+  <text x="16" y="170" class="t t-s t-b">Clave del Wi-Fi</text>
+  <rect x="258" y="142" width="124" height="40" rx="7" class="caja ln-d"/><text x="320.0" y="167" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="398" y="142" width="124" height="40" rx="7" class="d-sis ln-d"/><text x="460.0" y="160" text-anchor="middle" class="t t-s t-b">con ticket</text><text x="460.0" y="175" text-anchor="middle" class="t t-xs t-m">Y QUEDA REGISTRADO</text>
+  <rect x="538" y="142" width="124" height="40" rx="7" class="caja ln-d"/><text x="600.0" y="167" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="678" y="142" width="124" height="40" rx="7" class="caja ln-d"/><text x="740.0" y="167" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <text x="16" y="218" class="t t-s t-b">Datos de la tarjeta</text>
+  <rect x="258" y="190" width="124" height="40" rx="7" class="caja ln-d"/><text x="320.0" y="215" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="398" y="190" width="124" height="40" rx="7" class="caja ln-d"/><text x="460.0" y="215" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="538" y="190" width="124" height="40" rx="7" class="d-sis ln-d"/><text x="600.0" y="208" text-anchor="middle" class="t t-s t-b">en parte</text><text x="600.0" y="223" text-anchor="middle" class="t t-xs t-m">ÚLTIMOS 4 DÍGITOS</text>
+  <rect x="678" y="190" width="124" height="40" rx="7" class="caja ln-d"/><text x="740.0" y="215" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <text x="16" y="260" class="t t-s t-b">Historial de conexiones</text><text x="16" y="275" class="t t-xs t-m">CUÁNDO Y DESDE QUÉ IP</text>
+  <rect x="258" y="238" width="124" height="40" rx="7" class="caja ln-d"/><text x="320.0" y="263" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="398" y="238" width="124" height="40" rx="7" class="d-sis ln-d"/><text x="460.0" y="256" text-anchor="middle" class="t t-s t-b">con ticket</text><text x="460.0" y="271" text-anchor="middle" class="t t-xs t-m">Y QUEDA REGISTRADO</text>
+  <rect x="538" y="238" width="124" height="40" rx="7" class="caja ln-d"/><text x="600.0" y="263" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="678" y="238" width="124" height="40" rx="7" class="d-sis ln-d"/><text x="740.0" y="256" text-anchor="middle" class="t t-s t-b">con ticket</text><text x="740.0" y="271" text-anchor="middle" class="t t-xs t-m">Y QUEDA REGISTRADO</text>
+  <text x="16" y="308" class="t t-s t-b">Lo que el cliente navega</text><text x="16" y="323" class="t t-xs t-m">SECRETO DE LAS COMUNICACIONES</text>
+  <rect x="258" y="286" width="124" height="40" rx="7" class="caja ln-d"/><text x="320.0" y="311" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="398" y="286" width="124" height="40" rx="7" class="caja ln-d"/><text x="460.0" y="311" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="538" y="286" width="124" height="40" rx="7" class="caja ln-d"/><text x="600.0" y="311" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <rect x="678" y="286" width="124" height="40" rx="7" class="caja ln-d"/><text x="740.0" y="311" text-anchor="middle" class="t t-s t-m">no lo ve</text>
+  <text x="16" y="355" class="t t-s t-m">Cada rol ve solo lo que su trabajo necesita. Lo que el cliente navega no lo ve nadie.</text>
+</svg></div><figcaption><b>Qué dato ve cada rol.</b> Las filas son datos de un cliente y las columnas, cuatro roles de ejemplo. Un cuadro lleno quiere decir que ese rol ve el dato; uno punteado, que lo ve solo en parte o con un ticket que lo justifique, y que la consulta queda registrada; uno vacío, que no lo ve. La última fila está vacía para todos: lo que el cliente navega no lo mira nadie.</figcaption></figure></section>
+<section><h2>Accesos por rol y trazabilidad</h2><div class="prose"><p>En un telco cientos de personas usan los mismos sistemas, pero no todas necesitan lo mismo. El <b>control de acceso por rol</b> (<b>RBAC</b>) asigna permisos a funciones, no a personas: el rol «agente de atención» puede ver el estado de la conexión y reiniciar el equipo; el rol «soporte de segundo nivel» puede además cambiar el Wi-Fi; el rol «ingeniero de red» puede cambiar configuraciones de la OLT. Cuando una persona cambia de puesto, cambia de rol, y sus permisos cambian con él. Es el <b>principio de mínimo privilegio</b>: cada uno puede hacer lo que su trabajo requiere y nada más.</p><p>Junto a los roles, tres prácticas completan el cuadro:</p><ul><li><b>Identidad fuerte.</b> Cuentas personales, nunca compartidas, con un segundo factor (un código en el celular) para entrar a los sistemas críticos.</li><li><b>Puerta única a los equipos.</b> Los ingenieros no entran a los routers desde su computadora, sino a través de un servidor intermedio, llamado <b>bastión</b> o <i>jump server</i>, que verifica quién es y registra todo lo que hace.</li><li><b>Registro de auditoría.</b> Cada consulta y cada cambio queda anotado: quién, qué, sobre qué cliente o equipo, cuándo y desde dónde. El registro se guarda donde nadie puede editarlo, ni siquiera los administradores.</li></ul></div><figure class="fig fig-arquitectura" id="32-diagrama-5"><div class="lienzo"><svg viewBox="0 0 960 420" style="min-width:760px" role="img" aria-label="Arquitectura de accesos por rol: el agente, el soporte de segundo nivel y el ingeniero de red entran por un mismo control de identidad con segundo factor que les asigna su rol; los agentes y el soporte llegan a la consola de operación, que actúa sobre la ONT de la casa a través del ACS; los ingenieros llegan a la OLT, el BNG y el core solo a través del bastión; todas las acciones quedan en un registro de auditoría inmutable que revisa el auditor y que dispara alertas">
+  <rect x="180" y="14" width="470" height="392" rx="12" class="d-sis"/>
+  <rect x="660" y="14" width="160" height="392" rx="12" class="d-oper"/>
+  <rect x="830" y="14" width="120" height="392" rx="12" class="d-casa"/>
+  <text x="90" y="34" text-anchor="middle" class="t t-xs t-b t-m">PERSONAS Y ROLES</text>
+  <text x="415" y="34" text-anchor="middle" class="t t-xs t-b k-sis">SISTEMAS</text>
+  <text x="740" y="34" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  <text x="890" y="34" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+
+  
+  <path d="M164 75L198 160M164 145L198 168M164 215L198 176" class="ln" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <path d="M340 160L378 92M340 184L378 250" class="ln" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <path d="M530 66H890V98" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="560" y="60" class="t t-xs t-m">VÍA ACS (TR-069)</text>
+  <path d="M530 262H645V118" class="ln s-apl" style="stroke-width:2"/>
+  <path d="M645 118H658M645 196H658M645 274H658" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="540" y="256" class="t t-xs t-m">SSH</text>
+  <path d="M270 194V318M380 104H362V318M455 286V318" class="ln ln-d" style="stroke-width:1.6" marker-end="url(#fl)"/>
+  <path d="M164 345H198" class="ln" style="stroke-width:1.6" marker-end="url(#fl)"/>
+
+  
+  <rect x="14" y="52" width="150" height="46" rx="10" class="caja"/><use href="#i-persona" x="20" y="60" width="28" height="28" class="ico"/><text x="54" y="72" class="t t-s t-b">Agente</text><text x="54" y="87" class="t t-xs t-m">VER Y REINICIAR</text>
+  <rect x="14" y="122" width="150" height="46" rx="10" class="caja"/><use href="#i-persona" x="20" y="130" width="28" height="28" class="ico"/><text x="54" y="142" class="t t-s t-b">Soporte N2</text><text x="54" y="157" class="t t-xs t-m">+ WI-FI Y CLAVES</text>
+  <rect x="14" y="192" width="150" height="46" rx="10" class="caja"/><use href="#i-persona" x="20" y="200" width="28" height="28" class="ico"/><text x="54" y="212" class="t t-s t-b">Ingeniero</text><text x="54" y="227" class="t t-xs t-m">CONFIGURA LA RED</text>
+  <rect x="14" y="322" width="150" height="46" rx="10" class="caja"/><use href="#i-persona" x="20" y="330" width="28" height="28" class="ico"/><text x="54" y="342" class="t t-s t-b">Auditor</text><text x="54" y="357" class="t t-xs t-m">SOLO LECTURA</text>
+
+  
+  <rect x="200" y="140" width="140" height="54" rx="10" class="caja"/><use href="#i-llave" x="208" y="151" width="30" height="30" class="ico"/><text x="244" y="162" class="t t-s t-b">Identidad</text><text x="244" y="177" class="t t-s t-b">y roles</text><text x="244" y="189" class="t t-xs t-m">+ 2.º FACTOR</text>
+  <rect x="380" y="60" width="150" height="54" rx="10" class="caja"/><use href="#i-monitor" x="388" y="71" width="30" height="30" class="ico"/><text x="424" y="83" class="t t-s t-b">Consola de</text><text x="424" y="98" class="t t-s t-b">operación</text>
+  <rect x="380" y="232" width="150" height="54" rx="10" class="caja"/><use href="#i-candado" x="388" y="243" width="30" height="30" class="ico"/><text x="424" y="255" class="t t-s t-b">Bastión</text><text x="424" y="270" class="t t-xs t-m">PUERTA ÚNICA</text>
+  <rect x="200" y="320" width="430" height="56" rx="10" class="c-apl"/><use href="#i-factura" x="210" y="332" width="30" height="30" class="ico"/>
+  <text x="248" y="342" class="t t-s t-b">Registro de auditoría (nadie puede editarlo)</text>
+  <text x="248" y="360" class="t t-s t-mono">quién · qué · sobre quién · cuándo · desde dónde</text>
+  <text x="415" y="396" text-anchor="middle" class="t t-xs t-m">→ ALERTAS AUTOMÁTICAS Y REVISIÓN PERIÓDICA</text>
+
+  
+  <rect x="660" y="94" width="150" height="48" rx="10" class="caja"/><use href="#i-olt" x="668" y="103" width="30" height="30" class="ico"/><text x="706" y="123" class="t t-s t-b">OLT</text>
+  <rect x="660" y="172" width="150" height="48" rx="10" class="caja"/><use href="#i-router-core" x="668" y="181" width="30" height="30" class="ico"/><text x="706" y="201" class="t t-s t-b">BNG</text>
+  <rect x="660" y="250" width="150" height="48" rx="10" class="caja"/><use href="#i-router-core" x="668" y="259" width="30" height="30" class="ico"/><text x="706" y="279" class="t t-s t-b">Core</text>
+  <rect x="840" y="100" width="100" height="70" rx="10" class="caja"/><use href="#i-ont" x="873" y="106" width="34" height="34" class="ico"/><text x="890" y="158" text-anchor="middle" class="t t-s t-b">ONT</text>
+</svg></div><figcaption><b>Accesos por rol y registro de auditoría.</b> A la izquierda, personas con distintos roles. Todas entran por el mismo control de identidad, con segundo factor, que les asigna sus permisos. Desde ahí llegan a las consolas de operación o, a través del bastión, a los equipos de red. Cada acción, en cualquier punto, deja una línea en el registro de auditoría, que alimenta las alertas y las revisiones periódicas.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región usa una consola de operación para gestionar los equipos de sus clientes. Un agente de primer nivel puede ver si la ONT está en línea y reiniciarla, pero no puede ver la clave del Wi-Fi: esa función está reservada a un rol de soporte, y cada vez que alguien la consulta, la consola registra quién fue, de qué cliente, a qué hora y con qué ticket. Lo mismo ocurre con cada cambio de configuración. Cuando un cliente reclama que alguien cambió el nombre de su red sin su permiso, el operador puede responder con certeza qué pasó: si fue el propio cliente desde la app, un agente con un ticket abierto o nadie. Y la revisión mensual de los registros detecta consultas que no tienen un ticket que las justifique.</p></div></section>
+<section><h2>Respuesta a incidentes</h2><div class="prose"><p>Por más defensas que haya, algún incidente de seguridad va a ocurrir: un equipo infectado, una cuenta robada, una base de datos expuesta. Lo que distingue a una organización madura es <b>tener un plan antes</b>, igual que un edificio tiene un plan de evacuación antes del incendio.</p><p>Los marcos más usados, como la guía del NIST de Estados Unidos, ordenan la respuesta en fases:</p><ol class="steps"><li><span><b>Preparar.</b> Tener el equipo, las herramientas, los contactos y el plan escritos y practicados.</span></li><li><span><b>Detectar y analizar.</b> Notar algo raro (una alerta, un aviso de un cliente) y confirmar si es un incidente real y de qué tamaño.</span></li><li><span><b>Contener.</b> Detener el daño: aislar un equipo, bloquear una cuenta, cortar un acceso. Primero se frena, después se investiga a fondo.</span></li><li><span><b>Erradicar y recuperar.</b> Eliminar la causa (el programa malicioso, la clave filtrada) y volver a la normalidad con cuidado.</span></li><li><span><b>Aprender.</b> Revisar qué pasó sin buscar culpables y cambiar lo necesario para que no se repita.</span></li></ol><p>En los operadores grandes, esta tarea la coordina un <b>SOC</b> (centro de operaciones de seguridad), primo del NOC del capítulo 31: el NOC vigila que la red funcione; el SOC, que nadie la esté usando mal.</p></div><figure class="fig fig-flujo" id="32-diagrama-4"><div class="lienzo"><svg viewBox="0 0 930 560" style="min-width:730px" role="img" aria-label="Flujo de respuesta a un incidente de seguridad: una alerta muestra que una cuenta de soporte consulta cientos de clientes de madrugada; el equipo de seguridad analiza y confirma el incidente; pide al área dueña del sistema bloquear la cuenta; el área informa qué datos se vieron; seguridad informa a dirección y legal, que avisan al regulador y a los clientes si la ley lo exige; luego se cambian claves y se revisan accesos; al final una revisión sin culpables deja mejoras">
+  
+  <rect x="10" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-monitor" x="20" y="26" width="32" height="32" class="ico"/><text x="58" y="40" class="t t-b">Alertas</text><text x="58" y="57" class="t t-s t-m">monitoreo</text>
+  <rect x="165" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-candado" x="175" y="26" width="32" height="32" class="ico"/><text x="213" y="40" class="t t-b">Seguridad</text><text x="213" y="57" class="t t-s t-m">SOC</text>
+  <rect x="325" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-servidor" x="335" y="26" width="32" height="32" class="ico"/><text x="373" y="40" class="t t-b">Área dueña</text><text x="373" y="57" class="t t-s t-m">del sistema</text>
+  <rect x="485" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-persona" x="495" y="26" width="32" height="32" class="ico"/><text x="533" y="40" class="t t-b">Dirección</text><text x="533" y="57" class="t t-s t-m">y legal</text>
+  <rect x="645" y="14" width="130" height="56" rx="10" class="caja"/><use href="#i-factura" x="655" y="26" width="32" height="32" class="ico"/><text x="693" y="40" class="t t-b">Regulador</text><text x="693" y="57" class="t t-s t-m">y clientes</text>
+  <line x1="75" y1="70" x2="75" y2="545" class="vida"/>
+  <line x1="230" y1="70" x2="230" y2="545" class="vida"/>
+  <line x1="390" y1="70" x2="390" y2="545" class="vida"/>
+  <line x1="550" y1="70" x2="550" y2="545" class="vida"/>
+  <line x1="710" y1="70" x2="710" y2="545" class="vida"/>
+
+  
+  <line x1="75" y1="108" x2="228" y2="116" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="84" y="100" class="t t-s">① 600 consultas a las 3 a. m.</text>
+  <rect x="160" y="130" width="140" height="38" rx="8" class="caja"/>
+  <text x="230" y="146" text-anchor="middle" class="t t-s">② ¿Es normal? No:</text><text x="230" y="161" text-anchor="middle" class="t t-s t-b">es un incidente</text>
+
+  
+  <line x1="230" y1="198" x2="388" y2="206" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="238" y="192" class="t t-s">③ Bloquear la cuenta ya</text>
+  <line x1="390" y1="228" x2="232" y2="236" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="240" y="252" class="t t-s">④ Bloqueada; estos datos se vieron</text>
+
+  
+  <line x1="230" y1="286" x2="548" y2="294" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="240" y="280" class="t t-s">⑤ Informe: alcance y riesgo</text>
+  <line x1="550" y1="318" x2="708" y2="326" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="560" y="342" class="t t-s">⑥ Aviso, si la ley lo exige</text>
+
+  
+  <line x1="230" y1="380" x2="388" y2="388" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="238" y="374" class="t t-s">⑦ Cambiar claves, revisar</text>
+  <line x1="390" y1="410" x2="232" y2="418" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="240" y="434" class="t t-s">⑧ Sistema limpio y vigilado</text>
+
+  
+  <line x1="230" y1="474" x2="548" y2="482" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="240" y="468" class="t t-s">⑨ Revisión sin culpables: qué cambiar</text>
+  <text x="240" y="504" class="t t-s t-m">alertas más finas, roles más estrechos, capacitación</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M820 94v80" class="ln s-apl" style="stroke-width:3"/><text x="830" y="128">DETECTAR</text><text x="830" y="142" class="t-m">y analizar</text>
+    <path d="M820 186v72" class="ln s-apl" style="stroke-width:3"/><text x="830" y="224">CONTENER</text><text x="830" y="238" class="t-m">primero frenar</text>
+    <path d="M820 272v76" class="ln s-apl" style="stroke-width:3"/><text x="830" y="308">NOTIFICAR</text>
+    <path d="M820 366v74" class="ln s-apl" style="stroke-width:3"/><text x="830" y="398">ERRADICAR</text><text x="830" y="412" class="t-m">y recuperar</text>
+    <path d="M820 456v56" class="ln s-apl" style="stroke-width:3"/><text x="830" y="488">APRENDER</text>
+  </g>
+  <text x="20" y="540" class="t t-xs t-m" transform="rotate(-90 20 540)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Respuesta a un incidente de seguridad.</b> Una alerta muestra que una cuenta de soporte consulta cientos de clientes a deshoras. El equipo de seguridad confirma que no es normal y bloquea la cuenta; el área dueña del sistema revisa qué datos se vieron; dirección y legal deciden a quién avisar, incluidos el regulador y los clientes afectados si la ley lo exige. Al final, la revisión deja cambios concretos.</figcaption></figure></section>
+<section><h2>Regulación y cumplimiento</h2><div class="prose"><p>Los telcos son de las empresas más reguladas, y la seguridad no es la excepción. Aunque las reglas cambian de un país a otro, casi todas las legislaciones de la región piden cosas parecidas:</p><ul><li><b>Protección de datos personales.</b> Leyes que dicen qué datos se pueden recoger, para qué, por cuánto tiempo y qué derechos tiene el cliente para consultarlos, corregirlos o pedir que se borren.</li><li><b>Secreto de las comunicaciones.</b> El operador transporta las comunicaciones de sus clientes, pero no puede mirarlas ni entregarlas a nadie sin una orden de una autoridad competente.</li><li><b>Aviso de incidentes.</b> En muchos países hay que avisar al regulador, y a veces a los clientes, cuando se filtran datos o hay una caída grave del servicio.</li><li><b>Continuidad del servicio.</b> Obligaciones de disponibilidad, planes ante emergencias y, en algunos casos, prioridad para servicios de emergencia.</li></ul><p>Cumplir no es solo evitar multas. Las auditorías obligan a revisar que los controles existan y funcionen. El capítulo 47 vuelve sobre la regulación con más detalle.</p></div><div class="ml"><b>En la práctica</b><p>Si trabajas en un telco, manejas datos de clientes, aunque sea solo su nombre y su dirección. Los controles que a veces parecen trabas (no poder ver la clave del Wi-Fi, tener que justificar una consulta con un ticket, pedir datos de verificación a quien llama) existen para evitar estafas, filtraciones y multas. Si recibes una llamada o un correo que te pide saltarte uno de esos pasos con urgencia, sospecha: es la forma más común de engaño. Y si ves algo raro, avísalo a seguridad: un aviso temprano vale más que cualquier investigación.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Cuáles son las tres cosas que protege un telco?</summary><p>Su red y sus equipos, los datos de sus clientes y la continuidad del servicio.</p></details><details><summary>¿Por qué el agujero negro (blackhole) detiene un DDoS pero no salva a la víctima?</summary><p>Porque descarta todo el tráfico hacia la dirección atacada, el malo y el bueno: el resto de la red se salva, pero la víctima queda desconectada igual.</p></details><details><summary>¿Qué es la suplantación (spoofing) y cómo ayuda un operador a frenarla?</summary><p>Mandar paquetes con una dirección de origen falsa. El operador filtra los paquetes que salen de su red con direcciones que no le pertenecen (BCP 38).</p></details><details><summary>¿Qué significa el principio de mínimo privilegio?</summary><p>Que cada persona tiene solo los permisos que su trabajo requiere, asignados por su rol, y nada más.</p></details><details><summary>¿Para qué sirve el registro de auditoría?</summary><p>Para saber quién consultó o cambió qué, sobre qué cliente, cuándo y desde dónde, y así detectar abusos y responder reclamos con certeza.</p></details><details><summary>En la respuesta a un incidente, ¿qué se hace primero: investigar a fondo o contener?</summary><p>Contener: primero se frena el daño (aislar, bloquear) y después se investiga y se corrige la causa.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Ataque_de_denegaci%C3%B3n_de_servicio" target="_blank" rel="noopener">Ataque de denegación de servicio (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.incibe.es/empresas/blog/ataques-ddos" target="_blank" rel="noopener">Ataques DDoS: qué son y cómo protegerse (INCIBE) <small>lectura</small></a><a class="vid" href="https://csrc.nist.gov/pubs/sp/800/61/r3/final" target="_blank" rel="noopener">Guía de respuesta a incidentes NIST SP 800-61 (en inglés) <small>lectura</small></a><a class="vid" href="https://manrs.org/" target="_blank" rel="noopener">MANRS: buenas prácticas de seguridad para operadores de red (en inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$,bindOut}=window.Lab;
+  const CAP=10, RESTO=6, VICT=0.3, ESCALA=60;
+  let def='nada';
+  const pct=v=>Math.round(v*100)+' %';
+  function barra(el,segs,cap){
+    el.innerHTML=segs.map(([v,c])=>'<i class="'+c+'" style="width:'+(v/ESCALA*100)+'%"></i>').join('')+(cap?'<span class="c32-cap" style="left:'+(CAP/ESCALA*100)+'%"></span>':'');
+  }
+  function dibujar(){
+    const A=+$('#c32-at').value;
+    let entra={r:RESTO,v:VICT,a:A}, nota='';
+    if(def==='negro'){entra={r:RESTO,v:0,a:0};}
+    if(def==='limpieza'){entra={r:RESTO,v:VICT*0.99,a:A*0.01};}
+    const total=entra.r+entra.v+entra.a, f=total>CAP?CAP/total:1;
+    let sale={r:entra.r*f,v:entra.v*f,a:entra.a*f};
+    if(def==='router'){sale.a=sale.a*0.1;}
+    barra($('#c32-p1'),[[entra.r,'ok'],[entra.v,'vi'],[entra.a,'at']],true);
+    barra($('#c32-p2'),[[sale.r,'ok'],[sale.v,'vi'],[sale.a,'at']],true);
+    const p1=sale.r/RESTO, p2=sale.v/VICT;
+    $('#c32-v1').textContent=pct(p1);$('#c32-v2').textContent=pct(p2);
+    $('#c32-r1').className=p1>0.95?'bien':'mal';$('#c32-r2').className=p2>0.95?'bien':'mal';
+    if(A===0) nota='Sin ataque, el enlace va al '+Math.round((RESTO+VICT)/CAP*100)+' % y todos navegan bien. Sube el tamaño del ataque.';
+    else if(def==='nada') nota=total>CAP?'El ataque de '+A+' Gbps no cabe en el enlace de 10 Gbps: se descarta tráfico al azar y sufren todos los clientes, no solo la víctima. Prueba una defensa.':'El ataque todavía cabe en el enlace. Molesta, pero no ahoga a nadie. Súbelo.';
+    else if(def==='router') nota=total>CAP?'El filtro de tu router descarta el ataque, pero llega tarde: el enlace ya se llenó antes de llegar al router. Para que sirva, hay que filtrar antes del enlace, en el proveedor o en un centro de limpieza.':'Mientras el ataque cabe en el enlace, el filtro del router alcanza.';
+    else if(def==='negro') nota='El proveedor descarta todo lo que va hacia la víctima antes del enlace: los demás clientes se salvan, pero la víctima queda desconectada. El atacante logró su objetivo.';
+    else nota='El centro de limpieza separa el ataque antes del enlace y devuelve solo el tráfico legítimo: se salvan todos, la víctima también. Es la defensa más fina y la más costosa.';
+    $('#c32-nota').textContent=nota;
+  }
+  bindOut('#c32-at',v=>v+' Gbps');
+  $('#c32-at').addEventListener('input',dibujar);
+  document.querySelectorAll('#c32-def button').forEach(b=>b.addEventListener('click',()=>{
+    def=b.dataset.d;document.querySelectorAll('#c32-def button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));dibujar();}));
+  dibujar();
+})();
+</script>
+</body>
+</html>

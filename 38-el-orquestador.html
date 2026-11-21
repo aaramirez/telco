@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>El orquestador · Cómo funciona un telco</title>
+<meta name="description" content="Entre el negocio y la red hace falta un traductor que convierta «el cliente contrató 600 megas» en las órdenes exactas a cada sistema de red, en el orden correcto, y que sepa deshacer si algo falla.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="38-el-orquestador">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 38 DE 49</span><h1>El orquestador: cómo una orden se vuelve configuración</h1><p class="lede">Entre el negocio y la red hace falta un traductor que convierta «el cliente contrató 600 megas» en las órdenes exactas a cada sistema de red, en el orden correcto, y que sepa deshacer si algo falla.</p></header>
+<section><div class="prose"><p>Una vendedora cierra una venta: «plan de 600 megas, con Wi-Fi incluido, en la calle Los Pinos 123». En el sistema de ventas eso es una línea y un botón verde. En la red, en cambio, esa misma venta exige que media docena de sistemas hagan algo distinto: que el inventario aparte un puerto en una caja de la calle, que la plataforma de la OLT registre el equipo que se va a instalar, que RADIUS cree la cuenta con la velocidad correcta, que el servidor que configura los equipos prepare el nombre y la clave del Wi-Fi. Y todo en un orden preciso, porque algunos pasos dependen de otros.</p><p>Alguien tiene que traducir la frase del negocio a esa lista de tareas técnicas, repartirlas, esperar las respuestas y decidir qué hacer cuando algo sale mal. Ese alguien es un sistema, y se llama <b>orquestador</b>. Este capítulo cuenta qué hace, por qué existe y por qué, cuando un alta «se queda pegada», casi siempre es ahí donde hay que mirar.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un director de orquesta no toca ningún instrumento. Tiene la partitura completa y le dice a cada músico qué tocar y cuándo: los violines entran primero, los vientos después, y si el oboe se equivoca, el director decide si repiten el compás o si siguen. El público solo escucha la música; el director es el único que ve la obra entera.</p></div><figure class="fig fig-capas" id="38-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 250" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el orquestador, entre la orden del negocio y la red">
+  <text x="20" y="24" class="t t-xs t-b t-m">SISTEMAS DEL TELCO</text>
+  <g class="apagado"><rect x="20" y="36" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="57" class="t t-s t-b">Canales: app, web, tiendas y atención</text></g>
+  <g class=""><rect x="20" y="74" width="300" height="32" rx="7" class="d-sis"/><text x="34" y="95" class="t t-s t-b">BSS: catálogo, CRM, órdenes, factura y cobro</text></g>
+  <g class=""><rect x="20" y="112" width="300" height="32" rx="7" class="d-inet"/><text x="34" y="133" class="t t-s t-b">Integración y orquestación</text></g>
+  <g class=""><rect x="20" y="150" width="300" height="32" rx="7" class="d-oper"/><text x="34" y="171" class="t t-s t-b">OSS: inventario, aprovisionamiento y fallas</text></g>
+  <g class=""><rect x="20" y="188" width="300" height="32" rx="7" class="d-casa"/><text x="34" y="209" class="t t-s t-b">Red: acceso, core y equipos del cliente</text></g>
+  <text x="350" y="24" class="t t-xs t-b t-m">CADENA DE VALOR</text>
+  <g class="apagado"><rect x="350" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="58" text-anchor="middle" class="t t-s t-b">Demanda</text></g>
+  <g class="apagado"><rect x="447" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="58" text-anchor="middle" class="t t-s t-b">Cobertura</text></g>
+  <g class="apagado"><rect x="544" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="58" text-anchor="middle" class="t t-s t-b">Red</text></g>
+  <g class="apagado"><rect x="641" y="36" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="58" text-anchor="middle" class="t t-s t-b">Ventas</text></g>
+  <g class=""><rect x="350" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="104" text-anchor="middle" class="t t-s t-b">Órdenes</text></g>
+  <g class="apagado"><rect x="447" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="104" text-anchor="middle" class="t t-s t-b">Agenda</text></g>
+  <g class="apagado"><rect x="544" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="104" text-anchor="middle" class="t t-s t-b">Instalación</text></g>
+  <g class=""><rect x="641" y="82" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="104" text-anchor="middle" class="t t-s t-b">Activación</text></g>
+  <g class="apagado"><rect x="350" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="150" text-anchor="middle" class="t t-s t-b">Operación</text></g>
+  <g class="apagado"><rect x="447" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="150" text-anchor="middle" class="t t-s t-b">Soporte</text></g>
+  <g class="apagado"><rect x="544" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="150" text-anchor="middle" class="t t-s t-b">Facturación</text></g>
+  <g class="apagado"><rect x="641" y="128" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="150" text-anchor="middle" class="t t-s t-b">Cobranza</text></g>
+  <g class="apagado"><rect x="350" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="394.5" y="196" text-anchor="middle" class="t t-s t-b">Retención</text></g>
+  <g class="apagado"><rect x="447" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="491.5" y="196" text-anchor="middle" class="t t-s t-b">Monetización</text></g>
+  <g class="apagado"><rect x="544" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="588.5" y="196" text-anchor="middle" class="t t-s t-b">Datos e IA</text></g>
+  <g class="apagado"><rect x="641" y="174" width="89" height="36" rx="18" class="d-oper"/><text x="685.5" y="196" text-anchor="middle" class="t t-s t-b">Gobierno</text></g>
+  <text x="375" y="238" text-anchor="middle" class="t t-s t-m">Este capítulo: el orquestador, entre la orden del negocio y la red</text>
+</svg></div><figcaption><b>Dónde estamos.</b> El orquestador vive en la capa de integración, entre el BSS (donde nace la orden) y el OSS y la red (donde se ejecuta). En la cadena de valor trabaja en dos eslabones: cuando entra la orden y cuando se activa el servicio.</figcaption></figure></section>
+<section><h2>Por qué no conectar todo con todo</h2><div class="prose"><p>Imagina un operador pequeño que está empezando. Tiene un sistema de ventas, una OLT y un servidor RADIUS. La forma más rápida de automatizar es conectar el sistema de ventas directamente con cada uno: cuando se vende un plan, el sistema de ventas le habla a la OLT y le habla a RADIUS. Funciona.</p><p>Al año, el operador agrega una app para clientes, un portal para técnicos y un sistema de cobranza que suspende a los morosos. También compra OLT de un segundo fabricante y pone un servidor para configurar los routers de los clientes, el <b>ACS</b> (servidor de autoconfiguración, el capítulo 28 lo explica). Si cada sistema que «pide» se conecta con cada sistema que «ejecuta», el número de conexiones se multiplica: cuatro que piden por cinco que ejecutan son veinte integraciones. Cada una se programó distinto, cada una sabe un poco de la red y ninguna sabe qué hicieron las demás.</p><p>A eso los ingenieros le dicen, con cariño, <b>espagueti</b>. Los síntomas son conocidos:</p><ul><li>Cambiar de fabricante de OLT obliga a tocar todos los sistemas que le hablaban a la vieja.</li><li>Una misma regla («un plan de 600 megas lleva este perfil») está escrita en cuatro lugares, y en uno quedó desactualizada.</li><li>Cuando algo falla, nadie sabe quién dio la orden ni en qué paso se quedó.</li></ul><p>La salida es poner a alguien en el medio. Los que piden le hablan solo a él, con un idioma de negocio; él les habla a los que ejecutan, cada uno en su idioma técnico. Las conexiones pasan de multiplicarse a sumarse.</p></div><figure class="fig fig-comparacion" id="38-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 350" style="min-width:680px" role="img" aria-label="Comparación: a la izquierda cuatro sistemas del negocio conectados directamente con cinco sistemas de red, veinte integraciones; a la derecha todos conectados a un orquestador, nueve integraciones">
+  <rect x="6" y="8" width="432" height="334" rx="12" class="caja"/>
+  <text x="222" y="32" text-anchor="middle" class="t t-xs t-b t-m">TODO CON TODO</text>
+  <line x1="66" y1="80" x2="55" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="66" y1="80" x2="139" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="66" y1="80" x2="223" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="66" y1="80" x2="307" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="66" y1="80" x2="391" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="170" y1="80" x2="55" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="170" y1="80" x2="139" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="170" y1="80" x2="223" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="170" y1="80" x2="307" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="170" y1="80" x2="391" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="274" y1="80" x2="55" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="274" y1="80" x2="139" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="274" y1="80" x2="223" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="274" y1="80" x2="307" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="274" y1="80" x2="391" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="378" y1="80" x2="55" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="378" y1="80" x2="139" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="378" y1="80" x2="223" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="378" y1="80" x2="307" y2="250" class="ln" style="stroke-width:1.1"/>
+  <line x1="378" y1="80" x2="391" y2="250" class="ln" style="stroke-width:1.1"/>
+  <rect x="18" y="46" width="96" height="34" rx="7" class="d-sis"/><text x="66" y="67" text-anchor="middle" class="t t-s t-b">CRM</text>
+  <rect x="122" y="46" width="96" height="34" rx="7" class="d-sis"/><text x="170" y="67" text-anchor="middle" class="t t-s t-b">App</text>
+  <rect x="226" y="46" width="96" height="34" rx="7" class="d-sis"/><text x="274" y="67" text-anchor="middle" class="t t-s t-b">Portal técnico</text>
+  <rect x="330" y="46" width="96" height="34" rx="7" class="d-sis"/><text x="378" y="67" text-anchor="middle" class="t t-s t-b">Cobranza</text>
+  <rect x="17" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="55" y="271" text-anchor="middle" class="t t-s t-b">OLT A</text>
+  <rect x="101" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="139" y="271" text-anchor="middle" class="t t-s t-b">OLT B</text>
+  <rect x="185" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="223" y="271" text-anchor="middle" class="t t-s t-b">ACS</text>
+  <rect x="269" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="307" y="271" text-anchor="middle" class="t t-s t-b">RADIUS</text>
+  <rect x="353" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="391" y="271" text-anchor="middle" class="t t-s t-b">Inventario</text>
+  <text x="222" y="314" text-anchor="middle" class="t t-b k-sis">4 × 5 = 20 integraciones</text>
+  <text x="222" y="332" text-anchor="middle" class="t t-s t-m">la misma regla repetida en varios sistemas</text>
+  <rect x="456" y="8" width="432" height="334" rx="12" class="caja"/>
+  <text x="672" y="32" text-anchor="middle" class="t t-xs t-b t-m">CON ORQUESTADOR</text>
+  <line x1="516" y1="80" x2="672" y2="150" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="620" y1="80" x2="672" y2="150" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="724" y1="80" x2="672" y2="150" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="828" y1="80" x2="672" y2="150" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="672" y1="190" x2="505" y2="250" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="672" y1="190" x2="589" y2="250" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="672" y1="190" x2="673" y2="250" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="672" y1="190" x2="757" y2="250" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="672" y1="190" x2="841" y2="250" class="ln s-apl" style="stroke-width:1.8"/>
+  <rect x="468" y="46" width="96" height="34" rx="7" class="d-sis"/><text x="516" y="67" text-anchor="middle" class="t t-s t-b">CRM</text>
+  <rect x="572" y="46" width="96" height="34" rx="7" class="d-sis"/><text x="620" y="67" text-anchor="middle" class="t t-s t-b">App</text>
+  <rect x="676" y="46" width="96" height="34" rx="7" class="d-sis"/><text x="724" y="67" text-anchor="middle" class="t t-s t-b">Portal técnico</text>
+  <rect x="780" y="46" width="96" height="34" rx="7" class="d-sis"/><text x="828" y="67" text-anchor="middle" class="t t-s t-b">Cobranza</text>
+  <rect x="467" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="505" y="271" text-anchor="middle" class="t t-s t-b">OLT A</text>
+  <rect x="551" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="589" y="271" text-anchor="middle" class="t t-s t-b">OLT B</text>
+  <rect x="635" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="673" y="271" text-anchor="middle" class="t t-s t-b">ACS</text>
+  <rect x="719" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="757" y="271" text-anchor="middle" class="t t-s t-b">RADIUS</text>
+  <rect x="803" y="250" width="76" height="34" rx="7" class="d-oper"/><text x="841" y="271" text-anchor="middle" class="t t-s t-b">Inventario</text>
+  <rect x="587" y="150" width="170" height="40" rx="9" class="d-inet"/><text x="672" y="175" text-anchor="middle" class="t t-b">Orquestador</text>
+  <text x="672" y="314" text-anchor="middle" class="t t-b k-casa">4 + 5 = 9 integraciones</text>
+  <text x="672" y="332" text-anchor="middle" class="t t-s t-m">cada regla de negocio vive en un solo lugar</text>
+</svg></div><figcaption><b>Todo con todo o con un director en el medio.</b> A la izquierda, cuatro sistemas que piden conectados directamente a cinco que ejecutan: veinte integraciones que se cruzan. A la derecha, los mismos sistemas, pero todos hablan con el orquestador: nueve integraciones, y cada regla de negocio vive en un solo lugar.</figcaption></figure></section>
+<section><h2>Órdenes de negocio frente a comandos técnicos</h2><div class="prose"><p>El sistema de ventas no debería saber qué es un <i>GEM port</i> ni en qué puerto de qué tarjeta de la OLT está el cliente. Lo que sabe es lo que el cliente compró. Por eso las órdenes que llegan al orquestador hablan el idioma del negocio: <b>alta</b>, <b>cambio de plan</b>, <b>suspensión</b>, <b>reconexión</b>, <b>baja</b>, <b>cambio de equipo</b>. Cada orden trae el cliente, el producto y algunos datos, como el número de serie del equipo que se va a instalar.</p><p>El orquestador tiene un <b>catálogo técnico</b> que dice en qué se convierte cada producto. Así, «Plan 600» no es un texto: es un perfil de velocidad en RADIUS, un perfil de tráfico en la OLT y una plantilla de configuración en el ACS. Con ese catálogo, el orquestador <b>descompone</b> la orden en tareas.</p><div class="tbl"><table><thead><tr><th>Lo que pide el negocio</th><th>Lo que hace el orquestador</th></tr></thead><tbody><tr><td>Alta del plan 600 en Los Pinos 123</td><td>Reserva un puerto en la caja más cercana; registra la ONT por su número de serie en la OLT; crea la cuenta en RADIUS con el perfil de 600 megas; deja lista en el ACS la configuración del Wi-Fi</td></tr><tr><td>Cambio a plan 1000</td><td>Cambia el perfil en RADIUS y avisa al BNG para que aplique la nueva velocidad sin cortar la sesión</td></tr><tr><td>Suspensión por falta de pago</td><td>Pide a RADIUS que la sesión pase al «jardín cerrado», donde solo se ve la página de pago</td></tr><tr><td>Baja del servicio</td><td>Borra la ONT de la OLT, la cuenta de RADIUS y la configuración del ACS, y libera el puerto en el inventario</td></tr></tbody></table></div><p>Fíjate en la diferencia de tamaño: una línea a la izquierda, cuatro tareas en sistemas distintos a la derecha. Esa traducción es el corazón del trabajo. La industria la estudió en documentos como el TR-131 del Broadband Forum, que describe cómo separar lo que pide el negocio de cómo lo ejecuta la red.</p></div></section>
+<section><h2>Pasos, dependencias y reintentos</h2><div class="prose"><p>Las tareas de una orden no se pueden disparar todas a la vez. Algunas dependen de otras: no tiene sentido registrar la ONT en la OLT si todavía no sabes en qué puerto de la red va a estar, y no conviene avisarle al sistema de ventas que «el servicio está activo» hasta que todos los pasos terminaron. Otras, en cambio, son independientes: la cuenta de RADIUS y la configuración del ACS pueden prepararse al mismo tiempo.</p><p>El orquestador guarda cada tipo de orden como una <b>receta</b>: una lista de pasos con sus dependencias. Algunos productos del mercado la dibujan como un diagrama de cajas y flechas; otros la escriben como código. En todos los casos el orquestador sigue la receta, marca cada paso como pendiente, en curso, terminado o fallido, y no avanza a un paso hasta que los que necesita estén listos.</p><p>Y los sistemas fallan. No siempre por algo grave: la OLT puede estar ocupada procesando otras órdenes, la red de gestión puede tener un microcorte, el servidor RADIUS puede tardar más de lo normal. Por eso el orquestador distingue dos clases de error:</p><ul><li><b>Transitorio</b>: «ahora no puedo, intenta después». El orquestador <b>reintenta</b> el paso, esperando un poco más cada vez (un segundo, luego cinco, luego treinta) para no saturar al sistema que ya está apurado.</li><li><b>Definitivo</b>: «esto no se puede hacer». Por ejemplo, la OLT responde que ese número de serie ya está registrado para otro cliente. Reintentar no sirve; hay que parar y decidir qué hacer.</li></ul><p>Para que reintentar sea seguro, cada paso tiene que poder repetirse sin causar daño. Si el orquestador manda «crea la cuenta del cliente 4521» dos veces porque la primera respuesta se perdió, el resultado debe ser una sola cuenta, no dos. A esa propiedad los ingenieros la llaman <b>idempotencia</b>, una palabra fea para una idea simple: pedir lo mismo dos veces deja todo igual que pedirlo una.</p></div><div class="lab" id="38-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Director de orquesta</h3></div><p class="hint">Ejecuta un alta paso a paso. Después elige un paso que falle, decide si la falla es pasajera o definitiva y si el orquestador sabe deshacer lo hecho, y mira qué queda en cada sistema y qué dice el registro de la orden.</p><style>
+#c38-orq{display:grid;gap:14px;min-width:0}
+#c38-orq select{width:100%;min-width:0}
+#c38-orq .opciones label{min-width:0}
+#c38-orq .c38-pasos{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+#c38-orq .c38-pasos li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font:500 .88rem var(--f-display)}
+#c38-orq .c38-pasos li.actual{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+#c38-orq .c38-n{font:700 .8rem var(--f-mono);color:var(--muted)}
+#c38-orq .c38-sis{display:block;font-size:.76rem;color:var(--muted)}
+#c38-orq .c38-est{font:700 .72rem var(--f-display);letter-spacing:.04em;text-transform:uppercase;padding:3px 7px;border-radius:5px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+#c38-orq .c38-est.ok{color:var(--good);border-color:var(--good);background:var(--good-soft)}
+#c38-orq .c38-est.reint{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+#c38-orq .c38-est.falla{color:var(--warm);border-color:var(--warm);background:var(--warm-soft)}
+#c38-orq .c38-est.deshecho{color:var(--ink);border-style:dashed}
+#c38-orq .c38-sistemas{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:8px}
+#c38-orq .c38-sistemas div{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;gap:2px;font:500 .84rem var(--f-display);background:var(--card)}
+#c38-orq .c38-sistemas b{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+#c38-orq .c38-sistemas div.huerfano{border-color:var(--warm);background:var(--warm-soft)}
+#c38-orq .c38-sistemas div.huerfano span::after{content:" · huérfano";color:var(--warm);font-weight:700}
+#c38-orq .c38-log{max-height:220px;overflow:auto;font-size:.8rem}
+#c38-orq .c38-log span{white-space:normal}
+#c38-orq h4{margin:0;font:700 .78rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+</style>
+<div id="c38-orq">
+  <div class="opciones">
+    <label>Paso que falla
+      <select id="c38-paso">
+        <option value="0">Ninguno: todo sale bien</option>
+        <option value="1">② Reservar puerto (inventario)</option>
+        <option value="2">③ Crear cuenta (RADIUS)</option>
+        <option value="3" selected>④ Registrar la ONT (OLT)</option>
+        <option value="4">⑤ Configuración del Wi-Fi (ACS)</option>
+      </select></label>
+    <label>Tipo de falla
+      <select id="c38-tipo">
+        <option value="pasajera">Pasajera: se arregla al reintentar</option>
+        <option value="caida">Pasajera, pero el sistema sigue caído</option>
+        <option value="definitiva" selected>Definitiva: no tiene arreglo</option>
+      </select></label>
+    <label>Si la orden falla, el orquestador
+      <select id="c38-comp">
+        <option value="1" selected>Deshace lo hecho (compensa)</option>
+        <option value="0">No deshace nada</option>
+      </select></label>
+  </div>
+  <div class="btns">
+    <button type="button" class="primary" id="c38-sig">Siguiente paso</button>
+    <button type="button" id="c38-todo">Ejecutar todo</button>
+    <button type="button" id="c38-rei">Empezar de nuevo</button>
+  </div>
+  <ol class="c38-pasos" id="c38-lista" aria-label="Pasos de la orden de alta"></ol>
+  <h4>Qué quedó en cada sistema</h4>
+  <div class="c38-sistemas" id="c38-sis"></div>
+  <p class="hint" id="c38-exp" aria-live="polite"></p>
+  <h4>Registro de la orden ORD-2291</h4>
+  <div class="readout c38-log" id="c38-log" aria-label="Registro de la orden"></div>
+</div></div></section>
+<section><h2>Deshacer lo hecho (compensación)</h2><div class="prose"><p>Supón que el alta ya creó la cuenta en RADIUS y reservó el puerto en el inventario, y en el tercer paso la OLT responde con un error definitivo. ¿Qué pasa con lo que ya se hizo?</p><p>Si nadie lo deshace, quedan <b>huérfanos</b>: una cuenta de RADIUS sin cliente activo, un puerto reservado que nadie va a usar y que el inventario muestra como ocupado. Uno no importa. Mil, acumulados durante un año, son cajas que figuran llenas estando vacías, ventas rechazadas «por falta de cobertura» donde sí había puertos y auditorías imposibles.</p><p>En una base de datos esto se resuelve con una transacción: o se hace todo, o no se hace nada. Pero aquí cada paso ocurre en un sistema distinto, de un fabricante distinto, y no existe un botón que deshaga todos a la vez. La solución es que cada paso de la receta venga con su <b>paso inverso</b>: si «crear cuenta en RADIUS» tiene éxito y más adelante algo falla, el orquestador ejecuta «borrar cuenta en RADIUS». A eso se le llama <b>compensación</b>, y los pasos inversos se ejecutan en el orden contrario al original, como quien desarma un mueble empezando por la última pieza que puso.</p><p>Después de compensar, el orquestador devuelve la orden al sistema de ventas como <b>fallida</b>, con un motivo legible («el número de serie ya está registrado en otra OLT»). Una persona corrige el dato y vuelve a lanzar la orden, que empieza desde cero sobre una red limpia.</p></div><figure class="fig fig-flujo" id="38-diagrama-4"><div class="lienzo"><svg viewBox="0 0 900 600" style="min-width:700px" role="img" aria-label="Flujo del alta con orquestador: el CRM pide el alta; el orquestador reserva un puerto, crea la cuenta en RADIUS, registra la ONT en la OLT con un reintento y deja la configuración en el ACS; si la OLT rechaza el registro, el orquestador borra la cuenta, libera el puerto y devuelve la orden como fallida">
+  <rect x="14" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-persona" x="20" y="25" width="28" height="28" class="ico"/>
+  <text x="52" y="45" class="t t-s t-b">CRM</text>
+  <line x1="70" y1="66" x2="70" y2="580" class="vida"/>
+  <rect x="144" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-monitor" x="150" y="25" width="28" height="28" class="ico"/>
+  <text x="182" y="38" class="t t-s t-b">Orques-</text><text x="182" y="53" class="t t-s t-b">tador</text>
+  <line x1="200" y1="66" x2="200" y2="580" class="vida"/>
+  <rect x="274" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-monitor" x="280" y="25" width="28" height="28" class="ico"/>
+  <text x="312" y="45" class="t t-s t-b">Inventario</text>
+  <line x1="330" y1="66" x2="330" y2="580" class="vida"/>
+  <rect x="394" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-llave" x="400" y="25" width="28" height="28" class="ico"/>
+  <text x="432" y="45" class="t t-s t-b">RADIUS</text>
+  <line x1="450" y1="66" x2="450" y2="580" class="vida"/>
+  <rect x="514" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-olt" x="520" y="25" width="28" height="28" class="ico"/>
+  <text x="552" y="38" class="t t-s t-b">Plataforma</text><text x="552" y="53" class="t t-s t-b">de OLT</text>
+  <line x1="570" y1="66" x2="570" y2="580" class="vida"/>
+  <rect x="634" y="14" width="112" height="52" rx="10" class="caja"/><use href="#i-servidor" x="640" y="25" width="28" height="28" class="ico"/>
+  <text x="672" y="45" class="t t-s t-b">ACS</text>
+  <line x1="690" y1="66" x2="690" y2="580" class="vida"/>
+  <line x1="70" y1="96" x2="198" y2="104" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="80" y="90" class="t t-s">① Alta: plan 600</text>
+  <line x1="200" y1="134" x2="328" y2="142" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="210" y="128" class="t t-s">② Reserva un puerto</text>
+  <text x="338" y="146" class="t t-s t-b k-casa">✓</text>
+  <line x1="200" y1="172" x2="448" y2="180" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="210" y="166" class="t t-s">③ Crea la cuenta con perfil 600</text>
+  <text x="458" y="184" class="t t-s t-b k-casa">✓</text>
+  <line x1="200" y1="210" x2="568" y2="218" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="210" y="204" class="t t-s">④ Registra la ONT por su número de serie</text>
+  <line x1="570" y1="240" x2="202" y2="248" class="ln " style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="380" y="234" class="t t-s t-m">ocupada, intenta luego</text>
+  <line x1="200" y1="276" x2="568" y2="284" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="210" y="270" class="t t-s">④ Reintento, 5 segundos después</text>
+  <text x="578" y="288" class="t t-s t-b k-casa">✓</text>
+  <line x1="200" y1="314" x2="688" y2="322" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="210" y="308" class="t t-s">⑤ Deja lista la configuración del Wi-Fi</text>
+  <text x="698" y="326" class="t t-s t-b k-casa">✓</text>
+  <line x1="200" y1="350" x2="72" y2="358" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="78" y="344" class="t t-s">⑥ Orden completa</text>
+  <line x1="28" y1="384" x2="760" y2="384" class="ln ln-d"/><rect x="250" y="374" width="250" height="20" rx="4" class="caja"/><text x="375" y="388" text-anchor="middle" class="t t-xs t-b k-sis">SI EN ④ LA OLT DICE QUE NO</text>
+  <line x1="200" y1="420" x2="568" y2="428" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="210" y="414" class="t t-s">④ Registra la ONT por su número de serie</text>
+  <line x1="570" y1="448" x2="202" y2="456" class="ln " style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="360" y="442" class="t t-s t-b k-sis">✗ esa serie ya está registrada</text>
+  <line x1="200" y1="486" x2="448" y2="494" class="ln s-apl" style="stroke-width:2;stroke-dasharray:6 4" marker-end="url(#fl-apl)"/>
+  <text x="210" y="480" class="t t-s">⑦ Borra la cuenta</text>
+  <line x1="200" y1="522" x2="328" y2="530" class="ln s-apl" style="stroke-width:2;stroke-dasharray:6 4" marker-end="url(#fl-apl)"/>
+  <text x="212" y="516" class="t t-s">⑧ Libera el puerto</text>
+  <line x1="200" y1="556" x2="72" y2="564" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="76" y="550" class="t t-s">⑨ Fallida, con motivo</text>
+  <text x="212" y="590" class="t t-s t-m">Nada quedó a medias: la red está limpia para reintentar la orden</text>
+  <g class="t t-xs t-b">
+    <path d="M776 86v20" class="ln s-apl" style="stroke-width:3"/><text x="786" y="100" class="k-apl">RECIBIR</text>
+    <path d="M776 124v198" class="ln s-apl" style="stroke-width:3"/><text x="786" y="210" class="k-apl">EJECUTAR</text><text x="786" y="224" class="t-m">4 pasos</text><text x="786" y="238" class="t-m">+ 1 reintento</text>
+    <path d="M776 340v20" class="ln s-apl" style="stroke-width:3"/><text x="786" y="354" class="k-apl">CONFIRMAR</text>
+    <path d="M776 410v46" class="ln s-apl" style="stroke-width:3"/><text x="786" y="436" class="k-sis">FALLA</text>
+    <path d="M776 476v62" class="ln s-apl" style="stroke-width:3;stroke-dasharray:6 4"/><text x="786" y="502" class="k-apl">COMPENSAR</text><text x="786" y="516" class="t-m">orden inverso</text>
+    <path d="M776 546v20" class="ln s-apl" style="stroke-width:3"/><text x="786" y="560" class="k-apl">AVISAR</text>
+  </g>
+  <text x="14" y="300" class="t t-xs t-m" transform="rotate(-90 14 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El alta con orquestador, y la vuelta atrás.</b> Arriba, el camino feliz: la orden llega del CRM, el orquestador reserva el puerto en el inventario, crea la cuenta en RADIUS, registra la ONT en la OLT y deja la configuración en el ACS. Abajo, lo que pasa si la OLT rechaza el paso ④ después de un reintento: el orquestador deshace en orden inverso lo que ya había hecho (⑦ y ⑧, flechas punteadas) y devuelve la orden como fallida, con el motivo. El tiempo corre hacia abajo.</figcaption></figure><div class="prose"><p>No todo se puede deshacer, y el orquestador tiene que saberlo. Un correo de bienvenida ya enviado no se «des-envía»: se compensa con otro correo. Por eso los pasos que tocan al cliente, como avisarle o cobrarle, se dejan para el final, cuando todo lo técnico ya funcionó.</p></div></section>
+<section><h2>APIs hacia arriba, protocolos hacia abajo</h2><div class="prose"><p>El orquestador tiene dos caras. Hacia arriba, hacia el negocio, ofrece una <b>API</b>: una puerta de entrada con reglas claras, por donde el CRM, la app del cliente o el portal del técnico mandan órdenes y preguntan cómo van. Suele ser una API web (el capítulo 9 explica qué es) y muchos operadores siguen modelos publicados por la industria, como las APIs abiertas del TM Forum para órdenes de servicio, para que cualquier sistema nuevo sepa cómo hablarle.</p><p>Hacia abajo, hacia la red, el orquestador habla el idioma de cada sistema:</p><ul><li>A la <b>plataforma de gestión de las OLT</b> le pide registrar, mover o borrar una ONT. Según el fabricante, eso es una API, NETCONF (un protocolo estándar para configurar equipos, capítulo 30) o los viejos comandos de texto TL1.</li><li>Al <b>ACS</b> le deja la configuración del router del cliente: nombre y clave del Wi-Fi, usuario de la conexión. El ACS la aplicará con TR-069 o USP cuando el equipo se conecte (capítulos 28 y 41).</li><li>A <b>RADIUS</b> le crea o modifica la cuenta y el perfil de velocidad, normalmente escribiendo en su base de datos o en su API; y cuando hace falta aplicar un cambio en caliente, le pide al BNG un CoA (un «cambio de autorización», capítulo 20).</li><li>Al <b>DHCP</b> o al gestor de direcciones le reserva una IP fija si el plan la incluye.</li><li>Al <b>inventario</b> le reserva y libera puertos, y le avisa qué quedó instalado dónde (capítulos 36 y 37).</li></ul></div><figure class="fig fig-esquema" id="38-diagrama-3"><div class="lienzo"><svg viewBox="0 0 900 484" style="min-width:700px" role="img" aria-label="El orquestador en el medio: arriba CRM, app, portal técnico y cobranza le piden órdenes por una API; abajo él le habla a inventario, plataforma de OLT, ACS, DHCP y RADIUS; y estos configuran la OLT, la ONT y el BNG con NETCONF o TL1, OMCI, TR-069 o USP, DHCP y RADIUS">
+  <rect x="10" y="10" width="880" height="96" rx="12" class="d-sis"/><text x="24" y="30" class="t t-xs t-b k-sis">SISTEMAS QUE PIDEN (BSS Y CANALES)</text>
+  <line x1="145" y1="92" x2="450" y2="140" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="345" y1="92" x2="450" y2="140" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="545" y1="92" x2="450" y2="140" class="ln s-apl" style="stroke-width:1.8"/>
+  <line x1="745" y1="92" x2="450" y2="140" class="ln s-apl" style="stroke-width:1.8"/>
+  <rect x="55" y="40" width="180" height="52" rx="9" class="caja"/><use href="#i-monitor" x="65" y="50" width="30" height="30" class="ico"/><text x="105" y="62" class="t t-s t-b">CRM</text><text x="105" y="78" class="t t-xs t-m">ventas y clientes</text>
+  <rect x="255" y="40" width="180" height="52" rx="9" class="caja"/><use href="#i-celular" x="265" y="50" width="30" height="30" class="ico"/><text x="305" y="62" class="t t-s t-b">App</text><text x="305" y="78" class="t t-xs t-m">del cliente</text>
+  <rect x="455" y="40" width="180" height="52" rx="9" class="caja"/><use href="#i-persona" x="465" y="50" width="30" height="30" class="ico"/><text x="505" y="62" class="t t-s t-b">Portal</text><text x="505" y="78" class="t t-xs t-m">del técnico</text>
+  <rect x="655" y="40" width="180" height="52" rx="9" class="caja"/><use href="#i-factura" x="665" y="50" width="30" height="30" class="ico"/><text x="705" y="62" class="t t-s t-b">Cobranza</text><text x="705" y="78" class="t t-xs t-m">suspende y reconecta</text>
+  <rect x="290" y="140" width="320" height="60" rx="10" class="d-inet"/><text x="450" y="164" text-anchor="middle" class="t t-b">Orquestador</text><text x="450" y="185" text-anchor="middle" class="t t-s t-m">recetas · catálogo técnico · reintentos · registro</text>
+  <g class="t t-s"><text x="626" y="162" class="k-apl t-b">↑ Hacia arriba: una API de órdenes</text><text x="626" y="182" class="t-m">↓ Hacia abajo: el idioma de cada sistema</text></g>
+  <rect x="10" y="212" width="880" height="128" rx="12" class="d-oper"/><text x="24" y="230" class="t t-xs t-b k-oper">SISTEMAS QUE EJECUTAN (OSS)</text>
+  <line x1="450" y1="200" x2="110" y2="256" class="ln s-apl" style="stroke-width:1.6"/>
+  <line x1="450" y1="200" x2="280" y2="256" class="ln s-apl" style="stroke-width:1.6"/>
+  <line x1="450" y1="200" x2="450" y2="256" class="ln s-apl" style="stroke-width:1.6"/>
+  <line x1="450" y1="200" x2="620" y2="256" class="ln s-apl" style="stroke-width:1.6"/>
+  <line x1="450" y1="200" x2="790" y2="256" class="ln s-apl" style="stroke-width:1.6"/>
+  <rect x="35" y="256" width="150" height="74" rx="9" class="caja"/><use href="#i-monitor" x="45" y="266" width="28" height="28" class="ico"/><text x="81" y="285" class="t t-s t-b">Inventario</text><text x="45" y="310" class="t t-xs t-m">puertos y cajas</text>
+  <rect x="205" y="256" width="150" height="74" rx="9" class="caja"/><use href="#i-olt" x="215" y="266" width="28" height="28" class="ico"/><text x="251" y="285" class="t t-s t-b">Plataforma OLT</text><text x="215" y="310" class="t t-xs t-m">registro de ONT</text>
+  <rect x="375" y="256" width="150" height="74" rx="9" class="caja"/><use href="#i-servidor" x="385" y="266" width="28" height="28" class="ico"/><text x="421" y="285" class="t t-s t-b">ACS</text><text x="385" y="310" class="t t-xs t-m">configura el router</text>
+  <text x="385" y="324" class="t t-xs t-m">nombre y clave Wi-Fi</text>
+  <rect x="545" y="256" width="150" height="74" rx="9" class="caja"/><use href="#i-guia" x="555" y="266" width="28" height="28" class="ico"/><text x="591" y="285" class="t t-s t-b">DHCP</text><text x="555" y="310" class="t t-xs t-m">direcciones IP</text>
+  <text x="555" y="324" class="t t-xs t-m">IP fija del plan</text>
+  <rect x="715" y="256" width="150" height="74" rx="9" class="caja"/><use href="#i-llave" x="725" y="266" width="28" height="28" class="ico"/><text x="761" y="285" class="t t-s t-b">RADIUS</text><text x="725" y="310" class="t t-xs t-m">cuentas y velocidad</text>
+  <text x="725" y="324" class="t t-xs t-m">quién puede navegar</text>
+  <text x="45" y="324" class="t t-xs t-m">reserva y libera</text>
+  <rect x="10" y="372" width="880" height="102" rx="12" class="d-casa"/><text x="24" y="392" class="t t-xs t-b k-casa">LA RED</text>
+  <line x1="280" y1="330" x2="280" y2="402" class="ln s-enl" style="stroke-width:1.8" marker-end="url(#fl-enl)"/><text x="290" y="362" class="t t-xs t-b k-enl">NETCONF · TL1</text>
+  <line x1="450" y1="330" x2="512" y2="402" class="ln s-apl" style="stroke-width:1.8" marker-end="url(#fl-apl)"/><text x="462" y="362" text-anchor="end" class="t t-xs t-b k-apl">TR-069 · USP</text>
+  <line x1="620" y1="330" x2="560" y2="402" class="ln s-red" style="stroke-width:1.8" marker-end="url(#fl-red)"/><text x="604" y="362" class="t t-xs t-b k-red">DHCP</text>
+  <line x1="790" y1="330" x2="790" y2="402" class="ln s-apl" style="stroke-width:1.8" marker-end="url(#fl-apl)"/><text x="800" y="362" class="t t-xs t-b k-apl">RADIUS · CoA</text>
+  <rect x="205" y="404" width="150" height="54" rx="9" class="caja"/><use href="#i-olt" x="213" y="415" width="30" height="30" class="ico"/><text x="251" y="428" class="t t-s t-b">OLT</text><text x="251" y="444" class="t t-xs t-m">de la central</text>
+  <rect x="460" y="404" width="150" height="54" rx="9" class="caja"/><use href="#i-ont" x="468" y="415" width="30" height="30" class="ico"/><text x="506" y="428" class="t t-s t-b">ONT</text><text x="506" y="444" class="t t-xs t-m">casa del cliente</text>
+  <rect x="715" y="404" width="150" height="54" rx="9" class="caja"/><use href="#i-router-core" x="723" y="415" width="30" height="30" class="ico"/><text x="761" y="428" class="t t-s t-b">BNG</text><text x="761" y="444" class="t t-xs t-m">abre la sesión</text>
+  <line x1="355" y1="431" x2="460" y2="431" class="ln s-fis" style="stroke-width:3"/><text x="407" y="423" text-anchor="middle" class="t t-xs t-b k-enl">OMCI</text><text x="407" y="450" text-anchor="middle" class="t t-xs t-m">por la fibra</text>
+</svg></div><figcaption><b>El orquestador en el medio.</b> Arriba, los sistemas que piden (CRM, app, portal técnico, cobranza) entran por una sola API de órdenes. Abajo, los que ejecutan, cada uno con su idioma: la plataforma de OLT, el ACS, RADIUS con el BNG, el DHCP y el inventario. El rótulo de cada línea dice en qué protocolo habla el orquestador con ese sistema.</figcaption></figure><div class="prose"><p>Hay una regla de diseño importante detrás de este dibujo: <b>el orquestador no reemplaza a los sistemas de abajo</b>. No sabe aplicar la configuración del Wi-Fi bit por bit; eso lo hace el ACS. No sabe cómo la OLT ordena la luz de cada casa; eso lo hace la OLT. El orquestador sabe <i>qué</i> pedir, <i>a quién</i> y <i>en qué orden</i>. Igual que el director, que no toca el violín.</p></div></section>
+<section><h2>Abstraer al fabricante</h2><div class="prose"><p>Un operador rara vez tiene un solo fabricante de OLT. Compra al que ofreció mejor precio ese año, hereda equipos de una empresa que adquirió o pone un modelo distinto en una zona rural. Cada fabricante tiene su propia forma de decir «registra esta ONT con este perfil»: uno con comandos de texto, otro con NETCONF, otro con su propia API.</p><p>Si el sistema de ventas tuviera que saber eso, cada fabricante nuevo sería un proyecto de meses. El orquestador lo evita con <b>adaptadores</b>: piezas pequeñas, una por fabricante, que traducen una orden genérica («registrar ONT, serie tal, perfil 600, puerto tal») al dialecto de cada equipo. Para el resto de la empresa, todas las OLT son iguales.</p></div><figure class="fig fig-esquema" id="38-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:700px" role="img" aria-label="Una orden genérica del orquestador pasa por tres adaptadores y sale como comandos de texto, un documento NETCONF o una llamada a una API, según el fabricante de cada OLT">
+  <rect x="14" y="96" width="232" height="132" rx="10" class="d-inet"/><text x="28" y="118" class="t t-xs t-b k-inet">ORDEN GENÉRICA</text>
+  <text x="28" y="144" class="t t-s t-mono">registrar ONT</text>
+  <text x="28" y="164" class="t t-s t-mono">serie:  ABCD1A2B3C4D</text>
+  <text x="28" y="184" class="t t-s t-mono">perfil: plan 600</text>
+  <text x="28" y="204" class="t t-s t-mono">puerto: OLT-3 1/2/5</text>
+  <path d="M246 162 C 266 162, 266 62, 290 62" class="ln s-apl" style="stroke-width:1.8" marker-end="url(#fl-apl)"/>
+  <rect x="294" y="38" width="132" height="48" rx="9" class="caja"/><text x="360" y="58" text-anchor="middle" class="t t-s t-b">Adaptador A</text><text x="360" y="74" text-anchor="middle" class="t t-xs t-m">fabricante A</text>
+  <line x1="426" y1="62" x2="462" y2="62" class="ln s-enl" style="stroke-width:1.8" marker-end="url(#fl-enl)"/>
+  <rect x="466" y="20" width="330" height="84" rx="9" class="caja"/><text x="478" y="40" class="t t-s t-b">Comandos de texto</text><text x="784" y="40" text-anchor="end" class="t t-xs t-m">CLI o TL1</text>
+  <text x="478" y="66" class="t t-s t-mono">ont add 1/2/5 sn ABCD1A2B3C4D</text>
+  <text x="478" y="84" class="t t-s t-mono">ont profile 1/2/5 plan-600</text>
+  <line x1="796" y1="62" x2="822" y2="62" class="ln s-enl" style="stroke-width:1.8" marker-end="url(#fl-enl)"/>
+  <use href="#i-olt" x="828" y="40" width="34" height="34" class="ico"/><text x="845" y="88" text-anchor="middle" class="t t-xs t-m">OLT A</text>
+  <path d="M246 162 C 266 162, 266 166, 290 166" class="ln s-apl" style="stroke-width:1.8" marker-end="url(#fl-apl)"/>
+  <rect x="294" y="142" width="132" height="48" rx="9" class="caja"/><text x="360" y="162" text-anchor="middle" class="t t-s t-b">Adaptador B</text><text x="360" y="178" text-anchor="middle" class="t t-xs t-m">fabricante B</text>
+  <line x1="426" y1="166" x2="462" y2="166" class="ln s-enl" style="stroke-width:1.8" marker-end="url(#fl-enl)"/>
+  <rect x="466" y="124" width="330" height="84" rx="9" class="caja"/><text x="478" y="144" class="t t-s t-b">Documento NETCONF</text><text x="784" y="144" text-anchor="end" class="t t-xs t-m">XML estándar</text>
+  <text x="478" y="170" class="t t-s t-mono">&lt;ont&gt;&lt;serie&gt;ABCD1A2B3C4D&lt;/serie&gt;</text>
+  <text x="478" y="188" class="t t-s t-mono">  &lt;perfil&gt;plan-600&lt;/perfil&gt;&lt;/ont&gt;</text>
+  <line x1="796" y1="166" x2="822" y2="166" class="ln s-enl" style="stroke-width:1.8" marker-end="url(#fl-enl)"/>
+  <use href="#i-olt" x="828" y="144" width="34" height="34" class="ico"/><text x="845" y="192" text-anchor="middle" class="t t-xs t-m">OLT B</text>
+  <path d="M246 162 C 266 162, 266 270, 290 270" class="ln s-apl" style="stroke-width:1.8" marker-end="url(#fl-apl)"/>
+  <rect x="294" y="246" width="132" height="48" rx="9" class="caja"/><text x="360" y="266" text-anchor="middle" class="t t-s t-b">Adaptador C</text><text x="360" y="282" text-anchor="middle" class="t t-xs t-m">fabricante C</text>
+  <line x1="426" y1="270" x2="462" y2="270" class="ln s-enl" style="stroke-width:1.8" marker-end="url(#fl-enl)"/>
+  <rect x="466" y="228" width="330" height="84" rx="9" class="caja"/><text x="478" y="248" class="t t-s t-b">Llamada a una API</text><text x="784" y="248" text-anchor="end" class="t t-xs t-m">web, en JSON</text>
+  <text x="478" y="274" class="t t-s t-mono">POST /onts</text>
+  <text x="478" y="292" class="t t-s t-mono">{"sn":"ABCD1A2B3C4D","perfil":600}</text>
+  <line x1="796" y1="270" x2="822" y2="270" class="ln s-enl" style="stroke-width:1.8" marker-end="url(#fl-enl)"/>
+  <use href="#i-olt" x="828" y="248" width="34" height="34" class="ico"/><text x="845" y="296" text-anchor="middle" class="t t-xs t-m">OLT C</text>
+  <text x="130" y="262" text-anchor="middle" class="t t-s t-m">igual para todos</text><text x="130" y="278" text-anchor="middle" class="t t-s t-m">los fabricantes</text>
+</svg></div><figcaption><b>Una orden, tres dialectos.</b> La misma orden genérica del orquestador pasa por el adaptador de cada fabricante y sale convertida en lo que entiende cada OLT: comandos de texto, un documento NETCONF o una llamada a una API. Agregar un fabricante es escribir un adaptador nuevo, no cambiar el CRM.</figcaption></figure><div class="prose"><p>Los productos del mercado resuelven esto de distintas formas. Hay plataformas de gestión de OLT que ya hablan con varios fabricantes y ofrecen una API única hacia arriba (SmartOLT es un ejemplo conocido en la región; también hay alternativas de los propios fabricantes y de terceros). Hay orquestadores comerciales y de código abierto, y hay operadores que construyen el suyo con herramientas de flujos de trabajo de uso general. La idea es siempre la misma: el detalle del fabricante queda encerrado en un solo lugar.</p></div></section>
+<section><h2>Trazabilidad de cada orden</h2><div class="prose"><p>Cuando un cliente llama porque «me instalaron ayer y no tengo Internet», la primera pregunta es: ¿la orden terminó? Para responderla en segundos, el orquestador guarda la <b>historia completa</b> de cada orden: cuándo llegó, de quién, qué pasos ejecutó, qué le pidió a cada sistema, qué le respondieron, cuántas veces reintentó y qué deshizo.</p><p>Esa historia se ve más o menos así:</p><div class="tbl"><table><thead><tr><th>Hora</th><th>Paso</th><th>Sistema</th><th>Resultado</th></tr></thead><tbody><tr><td>09:14:02</td><td>Orden ORD-2291 recibida: alta plan 600</td><td>CRM</td><td>Aceptada</td></tr><tr><td>09:14:03</td><td>Reservar puerto en caja CT-08</td><td>Inventario</td><td>Listo</td></tr><tr><td>09:14:03</td><td>Crear cuenta con perfil 600</td><td>RADIUS</td><td>Listo</td></tr><tr><td>09:14:04</td><td>Registrar ONT por número de serie</td><td>Plataforma OLT</td><td>Ocupada, reintento en 5 s</td></tr><tr><td>09:14:09</td><td>Registrar ONT por número de serie</td><td>Plataforma OLT</td><td>Listo</td></tr><tr><td>09:14:10</td><td>Dejar configuración de Wi-Fi</td><td>ACS</td><td>Listo</td></tr><tr><td>09:14:10</td><td>Avisar al CRM</td><td>CRM</td><td>Orden completa</td></tr></tbody></table></div><p>Cada pedido a otro sistema lleva el mismo <b>número de orden</b>, así que un ingeniero puede buscarlo en los registros de la OLT o de RADIUS y encontrar exactamente qué pasó. Además, el orquestador expone el estado de la orden por su API: el agente de atención ve «registrada en la OLT, esperando que el técnico conecte la fibra» en vez de un genérico «en proceso».</p><p>Y la historia sirve también para aprender. Si la mitad de las órdenes fallidas de un mes se cayeron en el mismo paso, el problema no es de los técnicos ni de los clientes: hay algo que arreglar en ese sistema o en la receta.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región ordenó su arquitectura con una regla simple: los sistemas del negocio (CRM, app, portal de técnicos, cobranza) solo pueden hablar con el orquestador, nunca directamente con la red. El orquestador, a su vez, habla con tres sistemas de abajo: la plataforma que gestiona las OLT de todos sus fabricantes, el ACS que configura los routers de los clientes y RADIUS, que autoriza las sesiones y define la velocidad. Cuando más tarde reemplazó una plataforma de gestión de OLT por otra, solo tuvo que cambiar un adaptador del orquestador; ventas, cobranza y la app ni se enteraron.</p></div><div class="ml"><b>En la práctica</b><p>Cuando alguien dice «es solo un botón en el CRM», ahora sabes lo que hay detrás: una orden que el orquestador convierte en cuatro o cinco pedidos a sistemas distintos, en orden y con reintentos. Si un alta, un cambio de plan o una reconexión «no se aplicó», no adivines: busca la orden en el orquestador y mira en qué paso quedó y qué respondió ese sistema. Eso dice si hay que corregir un dato (un número de serie mal escrito), esperar (un sistema lento) o escalar (una plataforma caída).</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué conectar cada sistema del negocio directamente con cada sistema de la red se vuelve un problema?</summary><p>Porque las integraciones se multiplican (cuatro sistemas que piden y cinco que ejecutan son veinte), las reglas quedan repetidas en varios lugares y nadie ve la orden completa cuando algo falla.</p></details><details><summary>¿Qué diferencia hay entre una orden de negocio y un comando técnico?</summary><p>La orden dice lo que el cliente compró («alta del plan 600»); los comandos son lo que cada sistema de red tiene que hacer para cumplirla (perfil en RADIUS, registro en la OLT, configuración en el ACS).</p></details><details><summary>Si la OLT responde «estoy ocupada», ¿qué hace el orquestador? ¿Y si responde «esa ONT ya pertenece a otro cliente»?</summary><p>En el primer caso es una falla transitoria: reintenta esperando cada vez un poco más. En el segundo es definitiva: deja de reintentar, deshace lo hecho y devuelve la orden como fallida con el motivo.</p></details><details><summary>¿Qué es la compensación y por qué hace falta?</summary><p>Es ejecutar el paso inverso de cada paso ya hecho, en orden contrario, cuando la orden falla a mitad de camino. Sin ella quedan recursos huérfanos, como cuentas sin cliente o puertos reservados que nadie usa.</p></details><details><summary>¿Para qué sirven los adaptadores por fabricante?</summary><p>Para que una orden genérica se traduzca al dialecto de cada equipo en un solo lugar; así agregar o cambiar un fabricante no obliga a tocar el CRM ni los demás sistemas.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://www.broadband-forum.org/pdfs/tr-131-1-0-0.pdf" target="_blank" rel="noopener">TR-131: requisitos de la gestión de acceso de banda ancha (Broadband Forum, PDF) <small>lectura</small></a><a class="vid" href="https://www.redhat.com/es/topics/automation/what-is-orchestration" target="_blank" rel="noopener">¿Qué es la orquestación? (Red Hat) <small>lectura</small></a><a class="vid" href="https://learn.microsoft.com/es-es/azure/architecture/patterns/saga" target="_blank" rel="noopener">El patrón Saga: transacciones repartidas en varios servicios (Microsoft Learn) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const PASOS=[
+    {n:'Recibir la orden: alta del plan 600',s:'CRM → orquestador'},
+    {n:'Reservar un puerto en la caja CT-08',s:'Inventario',r:'inv',undo:'Liberar el puerto',fallo:'no quedan puertos libres en la caja CT-08'},
+    {n:'Crear la cuenta con perfil 600',s:'RADIUS',r:'rad',undo:'Borrar la cuenta',fallo:'el perfil «plan 600» no existe en RADIUS'},
+    {n:'Registrar la ONT por su número de serie',s:'Plataforma de OLT',r:'olt',undo:'Borrar la ONT de la OLT',fallo:'esa serie ya está registrada en otra OLT'},
+    {n:'Dejar lista la configuración del Wi-Fi',s:'ACS',r:'acs',undo:'Borrar la configuración',fallo:'el ACS no reconoce ese modelo de equipo'},
+    {n:'Avisar al CRM que la orden terminó',s:'Orquestador → CRM'}
+  ];
+  const SIS=[['inv','Inventario','puerto CT-08/5 reservado','puerto CT-08/5 libre'],
+             ['rad','RADIUS','cuenta con perfil 600','sin cuenta'],
+             ['olt','OLT','ONT registrada','sin ONT'],
+             ['acs','ACS','Wi-Fi listo para aplicar','sin configuración']];
+  const ESPERAS=[1,5,30];
+  let eventos=[],vistos=0,timer=null;
+
+  function armar(){
+    const falla=+q('#c38-paso').value, tipo=q('#c38-tipo').value, comp=q('#c38-comp').value==='1';
+    const ev=[];let t=0,hechos=[];
+    const add=(o)=>{ev.push(Object.assign({t},o));};
+    add({p:0,est:'ok',txt:'Orden recibida del CRM. Hay 4 pasos que ejecutar.',exp:'El CRM manda una sola línea: «alta del plan 600». El orquestador busca la receta del alta y la descompone en pasos.'});
+    for(let i=1;i<=4;i++){
+      t+=1;
+      if(i!==falla){
+        hechos.push(i);
+        add({p:i,est:'ok',set:[PASOS[i].r,true],txt:PASOS[i].s+': '+PASOS[i].n.charAt(0).toLowerCase()+PASOS[i].n.slice(1)+'. Listo.',exp:'Paso '+(i+1)+' terminado en '+PASOS[i].s+'. El orquestador lo anota y pasa al siguiente.'});
+        continue;
+      }
+      if(tipo==='pasajera'){
+        add({p:i,est:'reint',txt:PASOS[i].s+' responde «ocupado, intenta luego». Reintento en '+ESPERAS[0]+' s.',exp:'Falla pasajera: el orquestador no se rinde ni deshace nada. Espera un poco y repite el mismo pedido. Como el paso es idempotente, repetirlo no duplica nada.'});
+        t+=ESPERAS[0];
+        hechos.push(i);
+        add({p:i,est:'ok',set:[PASOS[i].r,true],txt:PASOS[i].s+': reintento 1 aceptado. Listo.',exp:'Al reintentar, '+PASOS[i].s+' acepta el pedido. La orden sigue como si nada: el cliente ni se entera.'});
+        continue;
+      }
+      let motivo=PASOS[i].fallo;
+      if(tipo==='caida'){
+        for(let k=0;k<3;k++){
+          add({p:i,est:'reint',txt:PASOS[i].s+' no responde. Reintento '+(k+1)+' de 3 en '+ESPERAS[k]+' s.',exp:'El orquestador reintenta esperando cada vez más ('+ESPERAS.join(', ')+' segundos) para no saturar a un sistema que ya está en problemas.'});
+          t+=ESPERAS[k];
+        }
+        motivo=PASOS[i].s+' no respondió después de 3 reintentos';
+      }
+      add({p:i,est:'falla',txt:'FALLA DEFINITIVA en '+PASOS[i].s+': '+motivo+'.',exp:'Falla definitiva: reintentar no sirve. '+(hechos.length?'Pero ya se hicieron '+hechos.length+' paso(s) en otros sistemas. ¿Qué pasa con ellos?':'Por suerte, todavía no se había hecho nada en otros sistemas.')});
+      if(comp){
+        hechos.slice().reverse().forEach(h=>{t+=1;add({p:h,est:'deshecho',set:[PASOS[h].r,false],txt:'Compensación: '+PASOS[h].undo.toLowerCase()+' en '+PASOS[h].s+'.',exp:'Compensación: se deshace el paso '+(h+1)+' ('+PASOS[h].s+'). Los pasos se deshacen en orden inverso, empezando por el último que se hizo.'});});
+        t+=1;
+        add({p:5,est:'falla',fin:'fallida',txt:'Orden devuelta al CRM como FALLIDA. Motivo: '+motivo+'.',exp:'La orden vuelve al CRM como fallida, con un motivo que una persona puede entender y corregir. La red quedó limpia: se puede lanzar de nuevo.'});
+      }else{
+        t+=1;
+        add({p:5,est:'falla',fin:'fallida',txt:'Orden marcada como FALLIDA. Motivo: '+motivo+'. No se deshizo nada.',exp:hechos.length?'Sin compensación, lo que ya se hizo se queda en los sistemas: son recursos huérfanos (en naranja). Nadie los va a usar, pero ocupan puertos y cuentas, y el inventario deja de decir la verdad.':'No había nada que deshacer, así que esta vez no quedaron huérfanos. Prueba con una falla en un paso más avanzado.'});
+      }
+      return ev;
+    }
+    t+=1;
+    add({p:5,est:'ok',fin:'completa',txt:'Orden COMPLETA. El CRM ya puede agendar la instalación.',exp:'Todos los pasos terminaron. Ahora, cuando el técnico conecte la fibra, la OLT reconocerá la ONT y el ACS le aplicará el Wi-Fi (capítulo 40).'});
+    return ev;
+  }
+  function hora(s){const b=9*3600+14*60+2+s;const p=n=>String(n).padStart(2,'0');return p(Math.floor(b/3600))+':'+p(Math.floor(b/60)%60)+':'+p(b%60);}
+  function dibujar(){
+    const vis=eventos.slice(0,vistos), est={}, rec={inv:false,rad:false,olt:false,acs:false};
+    let ult=null,fin=null;
+    vis.forEach(e=>{est[e.p]=e.est;if(e.set)rec[e.set[0]]=e.set[1];ult=e;if(e.fin)fin=e.fin;});
+    const ROT={ok:'listo',reint:'reintentando',falla:'falló',deshecho:'deshecho'};
+    q('#c38-lista').innerHTML=PASOS.map((p,i)=>{
+      const s=est[i], cls=s||'', rot=s?ROT[s]:(fin?'no se ejecutó':'pendiente');
+      const extra=(i===5&&fin==='fallida')?'falló':rot;
+      return '<li class="'+(ult&&ult.p===i&&!fin?'actual':'')+'"><span class="c38-n">'+(i+1)+'</span><span>'+p.n+'<span class="c38-sis">'+p.s+'</span></span><span class="c38-est '+cls+'">'+extra+'</span></li>';
+    }).join('');
+    q('#c38-sis').innerHTML=SIS.map(([k,n,si,no])=>{
+      const huerf=fin==='fallida'&&rec[k];
+      return '<div class="'+(huerf?'huerfano':'')+'"><b>'+n+'</b><span>'+(rec[k]?si:no)+'</span></div>';
+    }).join('');
+    q('#c38-log').innerHTML=vis.length?vis.map(e=>'<span>'+hora(e.t)+'  '+(e.est==='falla'?'<b class="warn">':e.fin==='completa'?'<b class="ok">':'<b>')+e.txt+'</b></span>').join(''):'<span>(vacío: la orden todavía no llega)</span>';
+    const log=q('#c38-log');log.scrollTop=log.scrollHeight;
+    q('#c38-exp').textContent=ult?ult.exp:'Pulsa «Siguiente paso» para que el orquestador empiece. Cada pulsación es una acción suya.';
+    const termino=vistos>=eventos.length;
+    q('#c38-sig').disabled=termino;q('#c38-todo').disabled=termino;
+  }
+  function reiniciar(){clearInterval(timer);timer=null;eventos=armar();vistos=0;dibujar();}
+  q('#c38-sig').addEventListener('click',()=>{if(vistos<eventos.length){vistos++;dibujar();}});
+  q('#c38-todo').addEventListener('click',()=>{
+    clearInterval(timer);
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){vistos=eventos.length;dibujar();return;}
+    timer=setInterval(()=>{if(vistos>=eventos.length){clearInterval(timer);timer=null;return;}vistos++;dibujar();},450);
+  });
+  q('#c38-rei').addEventListener('click',reiniciar);
+  ['#c38-paso','#c38-tipo','#c38-comp'].forEach(s=>q(s).addEventListener('change',reiniciar));
+  reiniciar();
+})();
+</script>
+</body>
+</html>

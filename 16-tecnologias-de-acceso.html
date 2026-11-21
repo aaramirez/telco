@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tecnologías de acceso · Cómo funciona un telco</title>
+<meta name="description" content="Hay varias formas de llevar Internet a la casa (cobre, cable coaxial, radio, celular, satélite y fibra), y cada una implica una inversión, una calidad y un modelo de negocio distintos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="16-tecnologias-de-acceso">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 16 DE 49</span><h1>Tecnologías de acceso: cómo llega la red a la casa</h1><p class="lede">Hay varias formas de llevar Internet a la casa (cobre, cable coaxial, radio, celular, satélite y fibra), y cada una implica una inversión, una calidad y un modelo de negocio distintos.</p></header>
+<section><div class="prose"><p>En el capítulo 14 vimos que la red de un operador tiene tramos: acceso, agregación, core e interconexión. Este capítulo se detiene en el primero, el que llega a cada casa. Los ingenieros lo llaman <b>red de acceso</b> o <b>última milla</b>, aunque a veces mida diez metros y a veces cuarenta kilómetros.</p><p>Es el tramo más caro de toda la red. El core es una docena de routers en unos pocos edificios; el acceso es un cable, una antena o una caja por cada cliente, repartidos en miles de calles. Por eso la forma de construirlo define casi todo: cuánto hay que invertir, qué velocidad se puede vender, cuánto cuesta mantenerlo y contra quién se compite.</p></div><div class="analogia"><b>Imagínalo así</b><p>Llevar agua a un barrio: puedes aprovechar la tubería vieja que ya existe, mandar camiones cisterna o tender una tubería nueva más ancha que durará décadas. La tubería vieja sale barata pero da poco caudal; los camiones llegan a cualquier parte pero cada viaje es limitado; la tubería nueva cuesta mucho al principio y después casi no pide nada. Las tecnologías de acceso son esas mismas tres decisiones.</p></div><figure class="fig fig-capas" id="16-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la última milla, el medio físico que llega a la casa">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class=""><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class="apagado"><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la última milla, el medio físico que llega a la casa</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo trata la capa física y la de enlace del primer tramo del viaje: el medio por el que la señal sale de la casa y llega al primer equipo del operador. En FTTH ese tramo es la ONT, la fibra con sus splitters y la OLT; en las otras tecnologías, sus equivalentes.</figcaption></figure><div class="prose"><p>Hay seis grandes familias: el <b>cobre</b> de la línea telefónica, el <b>cable coaxial</b> de la televisión paga, la <b>radio</b> desde una torre, la <b>red celular</b>, el <b>satélite</b> y la <b>fibra hasta la casa</b>. Todas resuelven el mismo problema y todas terminan entregando lo mismo, paquetes IP; lo que cambia es el camino. El diagrama de abajo las pone una junto a otra.</p></div><figure class="fig fig-arquitectura" id="16-diagrama-4"><div class="lienzo"><svg viewBox="0 0 960 500" style="min-width:780px" role="img" aria-label="Seis arquitecturas de acceso, de la casa al primer equipo del operador: DSL por par de cobre hasta el DSLAM; cable HFC por coaxial hasta un nodo óptico y por fibra hasta el CMTS; inalámbrico fijo por radio hasta una torre; móvil 4G o 5G por radio hasta la estación base; satélite por radio hasta el satélite y de vuelta a una estación terrena; y FTTH por fibra con un splitter pasivo hasta la OLT. A la derecha, qué comparte cada cliente con sus vecinos">
+  <defs>
+    <symbol id="i16-antena" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="6" height="10" rx="1"/><path d="M10 13v8M6 21h8"/><path d="M16 6.2a3 3 0 0 1 0 3.6M18.5 4.5a6 6 0 0 1 0 7"/></g></symbol>
+    <symbol id="i16-torre" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21 12 6l4 15M9.4 15.8h5.2M10.6 11h2.8M8 21l6.3-5.2M16 21l-6.3-5.2"/><circle cx="12" cy="4.5" r="1.2"/><path d="M8.5 2.5a5 5 0 0 0 0 4M15.5 2.5a5 5 0 0 1 0 4"/></g></symbol>
+    <symbol id="i16-parabola" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a10 10 0 0 0 13 13z"/><path d="M10.5 11.5 16 6"/><circle cx="17" cy="5" r="1.3"/><path d="M8.5 15.5 7 21h6"/></g></symbol>
+    <symbol id="i16-satelite" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9.5" y="9" width="5" height="6" rx=".8"/><rect x="1.5" y="10" width="6" height="4"/><rect x="16.5" y="10" width="6" height="4"/><path d="M7.5 12h2M14.5 12h2M12 15v3"/><path d="M9.5 20a3.5 3.5 0 0 1 5 0"/></g></symbol>
+    <symbol id="i16-nodo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="1.6"/><path d="M7 12h3l1.5-3 2 6 1.5-3H17"/></g></symbol>
+  </defs>
+
+  
+  <rect x="160" y="32" width="142" height="418" rx="12" class="d-casa"/>
+  <rect x="640" y="32" width="170" height="418" rx="12" class="d-oper"/>
+  <text x="231" y="22" text-anchor="middle" class="t t-xs t-b k-casa">CASA DEL CLIENTE</text>
+  <text x="470" y="22" text-anchor="middle" class="t t-xs t-b t-m">CALLE, AIRE O ESPACIO</text>
+  <text x="725" y="22" text-anchor="middle" class="t t-xs t-b k-oper">RED DEL OPERADOR</text>
+  <text x="886" y="22" text-anchor="middle" class="t t-xs t-b t-m">QUÉ SE COMPARTE</text>
+
+  
+  <text x="16" y="72" class="t t-b">DSL</text><text x="16" y="88" class="t t-s t-m">cobre telefónico</text>
+  <line x1="292" y1="76" x2="650" y2="76" class="ln"/>
+  <text x="476" y="68" text-anchor="middle" class="t t-xs t-m">par de cobre · la velocidad cae con la distancia</text>
+  <rect x="168" y="50" width="124" height="52" rx="9" class="caja"/><use href="#i-router" x="174" y="62" width="28" height="28" class="ico"/><text x="208" y="80" class="t t-s t-b">Módem DSL</text>
+  <rect x="650" y="50" width="154" height="52" rx="9" class="caja"/><use href="#i-olt" x="656" y="62" width="28" height="28" class="ico"/><text x="692" y="74" class="t t-s t-b">DSLAM</text><text x="692" y="89" class="t t-xs t-m">central o gabinete</text>
+  <text x="824" y="72" class="t t-s">el DSLAM; el par</text><text x="824" y="87" class="t t-s">es de cada casa</text>
+
+  
+  <text x="16" y="140" class="t t-b">Cable HFC</text><text x="16" y="156" class="t t-s t-m">fibra + coaxial</text>
+  <line x1="292" y1="144" x2="398" y2="144" class="ln" style="stroke-width:2.4"/>
+  <text x="348" y="136" text-anchor="middle" class="t t-xs t-m">coaxial</text>
+  <line x1="544" y1="144" x2="650" y2="144" class="ln s-fis" style="stroke-width:3"/>
+  <text x="597" y="136" text-anchor="middle" class="t t-xs k-fis">fibra</text>
+  <rect x="168" y="118" width="124" height="52" rx="9" class="caja"/><use href="#i-router" x="174" y="130" width="28" height="28" class="ico"/><text x="208" y="148" class="t t-s t-b">Cablemódem</text>
+  <rect x="398" y="118" width="146" height="52" rx="9" class="caja"/><use href="#i16-nodo" x="403" y="130" width="28" height="28" class="ico"/><text x="435" y="142" class="t t-s t-b">Nodo óptico</text><text x="435" y="157" class="t t-xs t-m">y amplificadores</text>
+  <rect x="650" y="118" width="154" height="52" rx="9" class="caja"/><use href="#i-olt" x="656" y="130" width="28" height="28" class="ico"/><text x="692" y="142" class="t t-s t-b">CMTS</text><text x="692" y="157" class="t t-xs t-m">en la cabecera</text>
+  <text x="824" y="140" class="t t-s">el coaxial de todo</text><text x="824" y="155" class="t t-s">el nodo</text>
+
+  
+  <text x="16" y="208" class="t t-b">Inalámbrico fijo</text><text x="16" y="224" class="t t-s t-m">radio desde una torre</text>
+  <line x1="292" y1="212" x2="398" y2="212" class="ln ln-d" style="stroke-width:2"/>
+  <text x="348" y="204" text-anchor="middle" class="t t-xs t-m">radio con vista</text>
+  <line x1="544" y1="212" x2="650" y2="212" class="ln s-fis" style="stroke-width:3"/>
+  <text x="597" y="204" text-anchor="middle" class="t t-xs k-fis">fibra o radio</text>
+  <rect x="168" y="186" width="124" height="52" rx="9" class="caja"/><use href="#i16-antena" x="174" y="198" width="28" height="28" class="ico"/><text x="208" y="210" class="t t-s t-b">Antena CPE</text><text x="208" y="225" class="t t-xs t-m">en el techo</text>
+  <rect x="398" y="186" width="146" height="52" rx="9" class="caja"/><use href="#i16-torre" x="403" y="198" width="28" height="28" class="ico"/><text x="435" y="210" class="t t-s t-b">Torre</text><text x="435" y="225" class="t t-xs t-m">punto-multipunto</text>
+  <rect x="650" y="186" width="154" height="52" rx="9" class="caja"/><use href="#i-router-core" x="656" y="198" width="28" height="28" class="ico"/><text x="692" y="210" class="t t-s t-b">Router de</text><text x="692" y="225" class="t t-s t-b">agregación</text>
+  <text x="824" y="208" class="t t-s">el sector de la</text><text x="824" y="223" class="t t-s">torre</text>
+
+  
+  <text x="16" y="276" class="t t-b">Móvil 4G/5G</text><text x="16" y="292" class="t t-s t-m">la red celular</text>
+  <line x1="292" y1="280" x2="398" y2="280" class="ln ln-d" style="stroke-width:2"/>
+  <text x="348" y="272" text-anchor="middle" class="t t-xs t-m">radio celular</text>
+  <line x1="544" y1="280" x2="650" y2="280" class="ln s-fis" style="stroke-width:3"/>
+  <text x="597" y="272" text-anchor="middle" class="t t-xs k-fis">fibra</text>
+  <rect x="168" y="254" width="124" height="52" rx="9" class="caja"/><use href="#i-router" x="174" y="266" width="28" height="28" class="ico"/><text x="208" y="278" class="t t-s t-b">Router 4G/5G</text><text x="208" y="293" class="t t-xs t-m">con SIM</text>
+  <rect x="398" y="254" width="146" height="52" rx="9" class="caja"/><use href="#i16-torre" x="403" y="266" width="28" height="28" class="ico"/><text x="435" y="278" class="t t-s t-b">Estación</text><text x="435" y="293" class="t t-s t-b">base</text>
+  <rect x="650" y="254" width="154" height="52" rx="9" class="caja"/><use href="#i-router-core" x="656" y="266" width="28" height="28" class="ico"/><text x="692" y="284" class="t t-s t-b">Core móvil</text>
+  <text x="824" y="276" class="t t-s">la celda, con los</text><text x="824" y="291" class="t t-s">celulares</text>
+
+  
+  <text x="16" y="344" class="t t-b">Satélite</text><text x="16" y="360" class="t t-s t-m">GEO u órbita baja</text>
+  <path d="M292 352 L398 338" class="ln ln-d" style="stroke-width:2"/>
+  <path d="M544 338 L650 352" class="ln ln-d" style="stroke-width:2"/>
+  <text x="348" y="370" text-anchor="middle" class="t t-xs t-m">sube</text>
+  <text x="597" y="370" text-anchor="middle" class="t t-xs t-m">baja</text>
+  <rect x="168" y="322" width="124" height="52" rx="9" class="caja"/><use href="#i16-parabola" x="174" y="334" width="28" height="28" class="ico"/><text x="208" y="346" class="t t-s t-b">Antena</text><text x="208" y="361" class="t t-s t-b">satelital</text>
+  <rect x="398" y="314" width="146" height="52" rx="9" class="caja"/><use href="#i16-satelite" x="403" y="326" width="28" height="28" class="ico"/><text x="435" y="338" class="t t-s t-b">Satélite</text><text x="435" y="353" class="t t-xs t-m">550 a 36.000 km</text>
+  <rect x="650" y="322" width="154" height="52" rx="9" class="caja"/><use href="#i16-parabola" x="656" y="334" width="28" height="28" class="ico"/><text x="692" y="346" class="t t-s t-b">Estación</text><text x="692" y="361" class="t t-s t-b">terrena</text>
+  <text x="824" y="344" class="t t-s">el haz del satélite</text><text x="824" y="359" class="t t-s">en toda la zona</text>
+
+  
+  <text x="16" y="412" class="t t-b">FTTH</text><text x="16" y="428" class="t t-s t-m">fibra hasta la casa</text>
+  <line x1="292" y1="416" x2="398" y2="416" class="ln s-fis" style="stroke-width:3"/>
+  <text x="348" y="408" text-anchor="middle" class="t t-xs k-fis">fibra</text>
+  <line x1="544" y1="416" x2="650" y2="416" class="ln s-fis" style="stroke-width:3"/>
+  <text x="597" y="408" text-anchor="middle" class="t t-xs k-fis">fibra</text>
+  <rect x="168" y="390" width="124" height="52" rx="9" class="caja"/><use href="#i-ont" x="174" y="402" width="28" height="28" class="ico"/><text x="208" y="420" class="t t-s t-b">ONT</text>
+  <rect x="398" y="390" width="146" height="52" rx="9" class="caja"/><use href="#i-splitter" x="403" y="402" width="28" height="28" class="ico"/><text x="435" y="414" class="t t-s t-b">Splitter</text><text x="435" y="429" class="t t-xs t-m">sin electricidad</text>
+  <rect x="650" y="390" width="154" height="52" rx="9" class="caja"/><use href="#i-olt" x="656" y="402" width="28" height="28" class="ico"/><text x="692" y="414" class="t t-s t-b">OLT</text><text x="692" y="429" class="t t-xs t-m">en la central</text>
+  <text x="824" y="412" class="t t-s">el puerto PON de</text><text x="824" y="427" class="t t-s">la OLT</text>
+
+  
+  <g class="t t-xs t-m">
+    <line x1="168" y1="478" x2="196" y2="478" class="ln ln-d" style="stroke-width:2"/><text x="202" y="482">radio</text>
+    <line x1="260" y1="478" x2="288" y2="478" class="ln"/><text x="294" y="482">par de cobre</text>
+    <line x1="390" y1="478" x2="418" y2="478" class="ln" style="stroke-width:2.4"/><text x="424" y="482">coaxial</text>
+    <line x1="500" y1="478" x2="528" y2="478" class="ln s-fis" style="stroke-width:3"/><text x="534" y="482" class="k-fis">fibra (luz)</text>
+  </g>
+</svg></div><figcaption><b>Seis formas de llegar a la casa.</b> Cada fila es una tecnología. A la izquierda, sobre la franja de la casa, el equipo que el cliente tiene en su sala; en el medio, por dónde viaja la señal (la línea gruesa naranja es fibra, la delgada es cable de cobre o coaxial y la punteada es radio); a la derecha, sobre la franja del operador, el primer equipo que la recibe. Fíjate en que casi todas usan fibra en algún tramo: la diferencia está en qué tan cerca de la casa llega.</figcaption></figure></section>
+<section><h2>DSL sobre la línea telefónica</h2><div class="prose"><p>Durante un siglo, las compañías de teléfono tendieron un par de alambres de cobre trenzados hasta cada casa. Ese par se pensó para la voz, que ocupa una franja muy estrecha de frecuencias. A fines de los noventa alguien hizo la pregunta obvia: ¿y si por el mismo cable mandamos datos en frecuencias mucho más altas, que la voz no usa? Así nació el <b>DSL</b> (línea de abonado digital).</p><p>En la casa hay un <b>módem DSL</b>; en la central o en un gabinete de la calle, un equipo llamado <b>DSLAM</b> que recibe los pares de cobre de cientos de clientes y junta su tráfico hacia la red del operador. Un pequeño filtro separa la voz de los datos, y por eso se podía hablar por teléfono y navegar a la vez.</p><p>El problema del DSL es la física del cobre: cuanto más alta es la frecuencia, más se debilita la señal con la distancia. Las versiones de DSL son una carrera por usar frecuencias cada vez más altas, y cada una alcanza menos distancia:</p><ul><li><b>ADSL2+</b> llega a unos 20 Mbps de bajada si la casa está a pocos cientos de metros de la central, y cae a unos pocos megabits a tres o cuatro kilómetros.</li><li><b>VDSL2</b> alcanza del orden de 100 Mbps, pero solo con líneas de 300 a 500 metros. Por eso obliga a llevar fibra hasta un gabinete en la esquina y dejar el cobre solo para el último tramo (a esto se le llama <b>FTTC</b>, fibra hasta el gabinete).</li></ul><p>Además, la subida es mucho menor que la bajada (la «A» de ADSL significa asimétrico), los pares de un mismo cable se interfieren entre sí, y el cobre viejo se oxida y se moja. Con DSL, la velocidad no la decide el plan que se vende: la decide a cuántos metros de la central vive el cliente. Hoy la mayoría de los operadores de cobre están reemplazándolo por fibra.</p></div></section>
+<section><h2>Cable coaxial (HFC)</h2><div class="prose"><p>Las empresas de televisión por cable tendieron otro tipo de cable: el <b>coaxial</b>, el cable grueso y redondo que llega al televisor. Un coaxial aguanta frecuencias mucho más altas que el par telefónico, y por eso, cuando estas empresas quisieron vender Internet, partieron con ventaja.</p><p>Su red moderna se llama <b>HFC</b> (híbrida de fibra y coaxial): desde la cabecera del operador sale fibra hasta un <b>nodo óptico</b> en el barrio, y de ahí en adelante sigue coaxial, con amplificadores en los postes, hasta unos cientos de casas. En la casa hay un <b>cablemódem</b>; en la cabecera, un equipo llamado <b>CMTS</b> que dirige el tráfico de todos. El idioma que hablan es el estándar <b>DOCSIS</b>.</p><p>La versión más extendida hoy, <b>DOCSIS 3.1</b>, puede mover varios gigabits por segundo de bajada en un nodo. La clave está en esa palabra: <b>en un nodo</b>. Todas las casas colgadas del mismo coaxial comparten esa capacidad, y en la hora pico se nota. La subida es mucho más estrecha que la bajada, porque la red se diseñó para mandar canales de televisión hacia las casas, no al revés; por eso los planes de cable suelen ser muy asimétricos. La versión siguiente, DOCSIS 4.0, mejora la subida, pero exige renovar amplificadores y equipos.</p><p>Hay otro detalle operativo importante: los amplificadores de la calle son <b>equipos activos</b>, necesitan electricidad y se dañan. Cuando se va la luz en el barrio, el cable puede caerse aunque el cliente tenga respaldo en su casa. El capítulo 15 vuelve sobre esto.</p></div></section>
+<section><h2>Inalámbrico fijo</h2><div class="prose"><p>En una zona rural, tender un cable por cada casa puede costar más de lo que esa casa pagará en años. La alternativa es la <b>radio</b>: el operador pone una antena en una torre o un cerro, y cada cliente, una pequeña antena en su techo, apuntada a esa torre. A esto se le llama <b>inalámbrico fijo</b>: fijo porque la antena del cliente no se mueve.</p><p>En la casa hay una <b>antena con radio integrada</b> (la industria la llama <b>CPE</b>, equipo en las instalaciones del cliente) conectada por un cable de red al router Wi-Fi. En la torre, una radio de <b>punto a multipunto</b> atiende a decenas de clientes y se conecta con la red del operador por fibra o por otro enlace de radio.</p><p>Sus límites vienen de la física de la radio:</p><ul><li><b>Línea de vista.</b> Entre la antena del cliente y la torre no debe haber árboles, edificios ni cerros. Un árbol que crece puede bajar la velocidad de un cliente en una temporada.</li><li><b>Interferencia.</b> Muchas redes usan bandas de frecuencia <b>sin licencia</b> (como la de 5 GHz, la misma del Wi-Fi), que son gratuitas pero compartidas con cualquiera. Otras usan bandas licenciadas, más limpias pero que hay que pagar.</li><li><b>Capacidad compartida.</b> La radio de la torre reparte su capacidad entre todos los clientes de ese sector.</li></ul><p>A cambio, se despliega en días y con poca inversión. Por eso es la tecnología de muchos operadores pequeños y regionales, y una forma de llegar primero a una zona mientras llega la fibra.</p></div></section>
+<section><h2>Móvil: 4G y 5G como acceso a la casa</h2><div class="prose"><p>La red celular también puede ser el acceso de una casa. El cliente recibe un <b>router con una tarjeta SIM</b>, lo pone cerca de una ventana y comparte la conexión por Wi-Fi. Los operadores móviles lo venden como <b>Internet fijo inalámbrico</b> o <b>FWA</b> (acceso inalámbrico fijo, en inglés).</p><p>La ventaja es enorme: la red ya existe. No hay que tender nada; basta con enviar una caja por correo. El cliente la enchufa y navega.</p><p>La desventaja es que la casa <b>comparte la celda</b> con todos los celulares de alrededor. Una estación base 4G o 5G tiene una capacidad fija que reparte entre quienes están conectados en ese momento, y un hogar consume en una noche de películas lo que un celular gasta en semanas. Por eso la velocidad cambia mucho según la hora, la distancia a la antena y las paredes. Con <b>5G</b> en bandas medias (alrededor de 3,5 GHz) la capacidad y la latencia mejoran bastante; en bandas muy altas (ondas milimétricas) se logran velocidades de fibra, pero solo a pocos cientos de metros y con línea de vista. Para proteger a sus usuarios móviles, muchos operadores limitan cuántos clientes de FWA aceptan por celda.</p></div></section>
+<section><h2>Satélite: geoestacionario y de órbita baja</h2><div class="prose"><p>Cuando no hay cables, ni torres, ni cobertura celular, queda el cielo. El cliente pone una <b>antena satelital</b> apuntada hacia arriba, la señal sube a un satélite y baja a una <b>estación terrena</b> del operador, conectada a Internet por fibra.</p><p>Hay dos familias muy distintas, y la diferencia es la altura:</p><ul><li><b>Geoestacionarios (GEO).</b> Están a unos 36.000 km sobre el ecuador, una altura en la que giran al mismo ritmo que la Tierra y parecen quietos en el cielo. Tres satélites cubren casi todo el planeta y la antena se apunta una vez. Pero cada pedido sube y baja dos veces esa distancia: la ida y vuelta mínima supera el medio segundo, y en la práctica ronda los 600 ms. Navegar se siente lento aunque la velocidad sea buena, y las videollamadas y los juegos en línea sufren.</li><li><b>Órbita baja (LEO).</b> Están a unos 500 o 600 km, sesenta veces más cerca. La latencia baja a entre 25 y 60 ms, parecida a la de una red terrestre. A cambio, cada satélite pasa por el cielo en pocos minutos, así que hacen falta miles de ellos y una antena que siga su paso electrónicamente.</li></ul><p>En los dos casos, la capacidad de cada haz del satélite se comparte entre todos los clientes de esa zona, y la lluvia fuerte debilita la señal. El satélite es imbatible donde no llega nada más, y caro por cada megabit donde sí llega.</p></div></section>
+<section><h2>FTTH: fibra hasta la casa</h2><div class="prose"><p>La última familia es la que este libro sigue de punta a punta: la <b>fibra hasta el hogar</b> o <b>FTTH</b>. Un hilo de vidrio sale de la central, se divide con splitters en la calle y entra a cada casa, donde termina en la <b>ONT</b>. En la central, la <b>OLT</b> coordina a todas las ONT de una misma fibra. Esa red de vidrio sin electricidad se llama <b>PON</b> (red óptica pasiva) y los capítulos 17 y 18 la explican en detalle.</p><p>¿Por qué casi todos los operadores nuevos eligen fibra?</p><ul><li><b>Capacidad.</b> La luz en la fibra no se debilita con la frecuencia como en el cobre. Una fibra <b>GPON</b> lleva 2,5 Gbps de bajada y 1,25 Gbps de subida, compartidos entre las casas de ese splitter; una <b>XGS-PON</b> lleva 10 Gbps en cada sentido. Por eso la fibra permite planes <b>simétricos</b>, con la misma velocidad de subida que de bajada.</li><li><b>Distancia.</b> Funciona a 20 km de la central sin perder velocidad. No importa en qué cuadra vive el cliente.</li><li><b>Nada eléctrico en la calle.</b> Entre la central y la casa solo hay vidrio, cajas y splitters. No hay amplificadores que se dañen, ni baterías que robar, y un apagón en el barrio no afecta a la red de la calle.</li><li><b>Vida útil.</b> La fibra tendida hoy servirá más de 25 años. Para subir de velocidad no se cambia la calle: se cambian los equipos de los extremos, la OLT y la ONT, porque las nuevas generaciones de PON usan otros colores de luz sobre el mismo vidrio.</li></ul><p>El costo está al principio: tender fibra por postes o ductos, calle por calle, es la inversión más grande de un operador fijo. La fibra es la tubería nueva y ancha de la analogía.</p><p>Aunque los caminos sean tan distintos, por encima todos entregan lo mismo. Cada tecnología cambia solo las dos capas de abajo, la física y la de enlace; de la capa de red hacia arriba, el paquete IP, el TCP y la página web son idénticos. Por eso el capítulo 1 pudo contar el viaje de un clic sin decir por qué medio salía de la casa.</p></div><figure class="fig fig-capas" id="16-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 320" style="min-width:740px" role="img" aria-label="Capas de cada tecnología de acceso: aplicación, transporte y red son comunes a DSL, cable, inalámbrico fijo, móvil, satélite y FTTH; solo cambian la capa de enlace (PTM, DOCSIS, radio propietaria, PDCP y MAC de 3GPP, DVB-S2, GEM) y la física (cobre, coaxial, radio en 5 GHz, LTE y 5G NR, bandas Ku y Ka, luz en la fibra)">
+  
+  <g class="t t-s t-b" text-anchor="middle">
+    <text x="199" y="30">DSL</text><text x="325" y="30">Cable HFC</text><text x="451" y="30">Inalámbrico fijo</text>
+    <text x="577" y="30">Móvil 4G/5G</text><text x="703" y="30">Satélite</text><text x="829" y="30">FTTH</text>
+  </g>
+  
+  <g class="t t-b">
+    <text x="16" y="68" class="k-apl">Aplicación</text>
+    <text x="16" y="108" class="k-tra">Transporte</text>
+    <text x="16" y="148" class="k-red">Red</text>
+    <text x="16" y="212" class="k-enl">Enlace</text>
+    <text x="16" y="272" class="k-fis">Física</text>
+  </g>
+  
+  <rect x="140" y="46" width="748" height="34" rx="6" class="c-apl"/>
+  <text x="514" y="68" text-anchor="middle" class="t t-s">La web, el video, las apps y la voz · <tspan class="t-b">iguales en todas</tspan></text>
+  <rect x="140" y="86" width="748" height="34" rx="6" class="c-tra"/>
+  <text x="514" y="108" text-anchor="middle" class="t t-s">TCP y UDP · <tspan class="t-b">iguales en todas</tspan></text>
+  <rect x="140" y="126" width="748" height="34" rx="6" class="c-red"/>
+  <text x="514" y="148" text-anchor="middle" class="t t-s">IP (IPv4 e IPv6) · <tspan class="t-b">igual en todas</tspan></text>
+
+  <text x="514" y="182" text-anchor="middle" class="t t-xs t-b t-m">SOLO ESTAS DOS CAPAS CAMBIAN SEGÚN EL MEDIO ↓</text>
+
+  
+  <g class="t t-s" text-anchor="middle">
+    <rect x="140" y="190" width="118" height="52" rx="6" class="c-enl"/><text x="199" y="212">PTM-Ethernet</text><text x="199" y="228" class="t-m">sobre VDSL2</text>
+    <rect x="266" y="190" width="118" height="52" rx="6" class="c-enl"/><text x="325" y="212">DOCSIS</text><text x="325" y="228" class="t-m">(su MAC)</text>
+    <rect x="392" y="190" width="118" height="52" rx="6" class="c-enl"/><text x="451" y="212">Wi-Fi adaptado</text><text x="451" y="228" class="t-m">o propietario</text>
+    <rect x="518" y="190" width="118" height="52" rx="6" class="c-enl"/><text x="577" y="212">PDCP · RLC · MAC</text><text x="577" y="228" class="t-m">(estándar 3GPP)</text>
+    <rect x="644" y="190" width="118" height="52" rx="6" class="c-enl"/><text x="703" y="212">DVB-S2</text><text x="703" y="228" class="t-m">o propietario</text>
+    <rect x="770" y="190" width="118" height="52" rx="6" class="c-enl"/><text x="829" y="212">GEM / XGEM</text><text x="829" y="228" class="t-m">(GPON, XGS-PON)</text>
+  </g>
+  
+  <g class="t t-s" text-anchor="middle">
+    <rect x="140" y="250" width="118" height="52" rx="6" class="c-fis"/><text x="199" y="272">Señal eléctrica</text><text x="199" y="288" class="t-m">en par de cobre</text>
+    <rect x="266" y="250" width="118" height="52" rx="6" class="c-fis"/><text x="325" y="272">Señal eléctrica</text><text x="325" y="288" class="t-m">en coaxial</text>
+    <rect x="392" y="250" width="118" height="52" rx="6" class="c-fis"/><text x="451" y="272">Radio en 5 GHz</text><text x="451" y="288" class="t-m">u otras bandas</text>
+    <rect x="518" y="250" width="118" height="52" rx="6" class="c-fis"/><text x="577" y="272">Radio LTE</text><text x="577" y="288" class="t-m">o 5G NR</text>
+    <rect x="644" y="250" width="118" height="52" rx="6" class="c-fis"/><text x="703" y="272">Radio en bandas</text><text x="703" y="288" class="t-m">Ku y Ka</text>
+    <rect x="770" y="250" width="118" height="52" rx="6" class="c-fis"/><text x="829" y="272">Luz en la fibra</text><text x="829" y="288" class="t-m">1310 y 1490 nm</text>
+  </g>
+</svg></div><figcaption><b>Lo que cambia y lo que no.</b> Cada columna es una tecnología de acceso y cada fila, una capa. Las capas de aplicación, transporte y red son una sola franja común: IP funciona igual sobre cualquier medio. Solo cambian la capa de enlace (el «idioma» que hablan el equipo de la casa y el del operador) y la física (el medio y la señal). Los nombres en cada celda son los estándares de cada tecnología.</figcaption></figure></section>
+<section><h2>Comparación de costo, calidad y vida útil</h2><div class="prose"><p>Ninguna tecnología gana en todo. La tabla resume, de forma simplificada, en qué se diferencian. Los valores son rangos típicos de la industria, no promesas de ningún producto: la velocidad real depende de cada red, de cada plan y de cuántos la comparten.</p><div class="tbl"><table><thead><tr><th>Tecnología</th><th>Bajada típica</th><th>Latencia típica</th><th>Inversión por casa</th><th>Vida útil del medio</th></tr></thead><tbody><tr><td>DSL (ADSL2+, VDSL2)</td><td>5 a 100 Mbps según distancia</td><td>15 a 40 ms</td><td>Baja (el cobre ya existe)</td><td>Al final de su vida</td></tr><tr><td>Cable HFC (DOCSIS 3.1)</td><td>100 a 1.000 Mbps compartidos</td><td>10 a 30 ms</td><td>Media</td><td>15 a 20 años, con mejoras</td></tr><tr><td>Inalámbrico fijo</td><td>10 a 300 Mbps</td><td>5 a 30 ms</td><td>Baja</td><td>5 a 10 años (radios)</td></tr><tr><td>Móvil 4G/5G (FWA)</td><td>20 a 500 Mbps, variable</td><td>20 a 60 ms</td><td>Muy baja</td><td>Atada a la red móvil</td></tr><tr><td>Satélite GEO / LEO</td><td>20 a 200 Mbps</td><td>600 ms / 25 a 60 ms</td><td>Baja para el operador, alta en el espacio</td><td>5 a 15 años (satélites)</td></tr><tr><td>FTTH (GPON, XGS-PON)</td><td>100 a 2.000 Mbps, simétrica</td><td>2 a 10 ms</td><td>Alta al principio</td><td>Más de 25 años</td></tr></tbody></table></div><p>Hay tres conceptos de negocio detrás de esa tabla:</p><ul><li><b>CAPEX y OPEX.</b> El CAPEX es la inversión inicial (tender, comprar equipos); el OPEX es el gasto de cada mes (energía, mantenimiento, reparaciones). La fibra tiene el CAPEX más alto y el OPEX más bajo; la radio y el móvil, al revés.</li><li><b>Casa pasada y casa conectada.</b> Un operador de cable o de fibra invierte primero en «pasar» frente a cada casa, la quiera o no, y recupera la inversión solo con las que contratan. Por eso la <b>penetración</b> (qué porcentaje de casas pasadas se vuelven clientes) es la cifra que más mira la gerencia.</li><li><b>Compartido siempre.</b> Todas las tecnologías comparten algo: el nodo coaxial, el sector de la torre, la celda, el haz del satélite o el puerto PON. La diferencia es cuánta capacidad hay para repartir y entre cuántos. El capítulo 14 explica esa <b>sobresuscripción</b>.</li></ul><p>La velocidad que se vende y la que se usa no son lo mismo. Prueba el laboratorio para ver los rangos reales y la latencia de cada tecnología.</p></div><div class="lab" id="16-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Velocidades reales y latencias</h3></div><p class="hint">Elige qué mirar (bajada, subida o latencia) y ordena las tecnologías. Cada barra va del peor caso habitual al mejor caso; la marca es el valor típico. Lee la nota de abajo: explica por qué el número del anuncio casi nunca es el de la hora pico.</p><style>
+[id="16-lab-3"] .c16v-fila{display:grid;gap:4px;padding:8px 0;border-bottom:1px solid var(--line)}
+[id="16-lab-3"] .c16v-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font:600 .9rem var(--f-display)}
+[id="16-lab-3"] .c16v-cab b{font-family:var(--f-mono);font-weight:600;color:var(--accent);white-space:nowrap}
+[id="16-lab-3"] .c16v-pista{position:relative;height:18px;background:var(--paper);border-radius:9px;border:1px solid var(--line)}
+[id="16-lab-3"] .c16v-rango{position:absolute;top:3px;bottom:3px;border-radius:6px;background:var(--accent-soft);border:1px solid var(--accent)}
+[id="16-lab-3"] .c16v-tip{position:absolute;top:-3px;width:4px;height:22px;margin-left:-2px;border-radius:2px;background:var(--warm)}
+[id="16-lab-3"] .c16v-eje{position:relative;height:18px;font:500 .75rem var(--f-mono);color:var(--muted)}
+[id="16-lab-3"] .c16v-eje span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+[id="16-lab-3"] .c16v-ley{display:flex;flex-wrap:wrap;gap:6px 16px;font:500 .82rem var(--f-display);color:var(--muted)}
+[id="16-lab-3"] .c16v-ley i{display:inline-block;width:18px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+</style>
+<div class="btns" role="group" aria-label="Qué medir">
+  <button type="button" data-m="baja" aria-pressed="true">Bajada</button>
+  <button type="button" data-m="sube" aria-pressed="false">Subida</button>
+  <button type="button" data-m="lat" aria-pressed="false">Latencia</button>
+</div>
+<div class="btns" role="group" aria-label="Orden y momento del día">
+  <button type="button" id="c16v-orden" aria-pressed="true">Mejor primero</button>
+  <button type="button" id="c16v-pico" aria-pressed="false">Hora pico (21:00)</button>
+</div>
+<div class="c16v-ley"><span><i style="background:var(--accent-soft);border:1px solid var(--accent)"></i>rango habitual</span><span><i style="background:var(--warm)"></i>valor típico</span></div>
+<div id="c16v-filas"></div>
+<div class="c16v-eje" id="c16v-eje" aria-hidden="true"></div>
+<div class="readout" id="c16v-out" aria-live="polite"></div>
+<p class="hint">Valores aproximados de la industria, simplificados para comparar. La escala es logarítmica: cada marca vale diez veces la anterior.</p></div><div class="prose"><p>En la vida real, la decisión de qué tecnología usar en una zona no depende de cuál es «mejor», sino de dónde está, cuántas casas hay y cuánto se puede invertir. Una ciudad densa justifica fibra; un caserío disperso en la montaña quizá solo justifique radio o satélite.</p></div><div class="lab" id="16-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Comparador de tecnologías</h3></div><p class="hint">Mueve la distancia a la central, la cantidad de casas por kilómetro de calle y el horizonte de la inversión, y elige el presupuesto por casa. El laboratorio califica cada tecnología para esa zona y explica por qué la mejor opción cambia.</p><style>
+[id="16-lab-2"] .c16c-lista{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+[id="16-lab-2"] .c16c-lista li{display:grid;gap:4px}
+[id="16-lab-2"] .c16c-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font:600 .9rem var(--f-display)}
+[id="16-lab-2"] .c16c-cab b{font-family:var(--f-mono);font-weight:600;white-space:nowrap}
+[id="16-lab-2"] .c16c-barra{height:12px;background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+[id="16-lab-2"] .c16c-barra i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
+[id="16-lab-2"] li:first-child .c16c-barra i{background:var(--good)}
+[id="16-lab-2"] .c16c-por{font-size:.85rem;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){[id="16-lab-2"] .c16c-barra i{transition:none}}
+</style>
+<div class="ctls">
+  <label class="ctl">Distancia a la central <output id="c16c-dist-o"></output><input type="range" id="c16c-dist" min="0.5" max="40" step="0.5" value="3"></label>
+  <label class="ctl">Casas por kilómetro de calle <output id="c16c-dens-o"></output><input type="range" id="c16c-dens" min="2" max="150" step="1" value="80"></label>
+  <label class="ctl">Horizonte de la inversión <output id="c16c-hor-o"></output><input type="range" id="c16c-hor" min="3" max="30" step="1" value="15"></label>
+</div>
+<div class="btns" role="group" aria-label="Presupuesto por casa">
+  <button type="button" data-p="1" aria-pressed="false">Presupuesto bajo</button>
+  <button type="button" data-p="2" aria-pressed="true">Presupuesto medio</button>
+  <button type="button" data-p="4" aria-pressed="false">Presupuesto alto</button>
+</div>
+<div class="readout" id="c16c-out" aria-live="polite"></div>
+<ol class="c16c-lista" id="c16c-lista" aria-label="Tecnologías ordenadas por puntaje"></ol>
+<p class="hint">Modelo simplificado: supone que el cobre ya existe y que la red móvil ya cubre la zona, y que todo lo demás se construye desde cero. Los costos están en unidades relativas por casa (presupuesto bajo 1, medio 2, alto 4). Un estudio real usa costos de la zona, la competencia y cuántos clientes se espera ganar.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador regional que nació vendiendo Internet por radio en pueblos pequeños suele llegar, tarde o temprano, a la misma decisión: pasar a FTTH. La radio le permitió crecer rápido y con poco capital, pero cada árbol, cada lluvia y cada vecino con un router ruidoso se convertía en una llamada al centro de atención. Al tender fibra, la inversión por casa se multiplicó, pero las visitas técnicas por cliente bajaron, pudo vender planes simétricos y dejó de competir solo por precio. Hoy enfrenta al operador de cable de la ciudad, que mejora su red con DOCSIS más nuevo; a los operadores móviles, que ofrecen Internet fijo con una caja 5G que se instala sola; y en las zonas rurales, al satélite de órbita baja. Su argumento frente a todos es el mismo: una red que no se comparte con celulares, no depende de la luz de la calle y tiene subida igual a la bajada.</p></div><div class="ml"><b>En la práctica</b><p>Al vender, los argumentos ciertos convencen más que los adjetivos. Frente al cable: la fibra no tiene equipos eléctricos en la calle y ofrece la misma velocidad de subida que de bajada, clave para videollamadas y para subir archivos. Frente al 5G en casa: la capacidad de la fibra no se reparte con los celulares del barrio, así que no cae a la hora pico de la misma manera. Frente al satélite: la latencia de la fibra es de unos pocos milisegundos. Y frente al cobre: la velocidad no depende de la distancia a la central. Lo que no conviene decir es que la fibra «nunca se cae» o que «no se comparte»: un puerto PON también se comparte, y una fibra también se corta. Entender esto también explica las decisiones de inversión: por qué se construye fibra en una zona y no en otra, y por qué un plan cuesta lo que cuesta.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué con DSL dos vecinos del mismo plan pueden tener velocidades muy distintas?</summary><p>Porque la señal del cobre se debilita con la distancia: el que vive más lejos de la central o del gabinete recibe menos velocidad.</p></details><details><summary>¿Qué tienen en común un nodo de cable, una celda 5G y un puerto PON?</summary><p>Todos reparten una capacidad fija entre varios clientes; la diferencia es cuánta capacidad hay y entre cuántos se reparte.</p></details><details><summary>¿Por qué un satélite geoestacionario tiene una latencia tan alta aunque tenga buena velocidad?</summary><p>Porque está a unos 36.000 km: cada pedido sube y baja dos veces esa distancia, y la ida y vuelta supera el medio segundo.</p></details><details><summary>Una red de cable se cae en un apagón del barrio aunque el cliente tenga respaldo en casa. ¿Por qué no pasa lo mismo con la fibra?</summary><p>Porque el cable tiene amplificadores eléctricos en la calle y la red FTTH es pasiva: entre la central y la casa no hay nada que necesite electricidad.</p></details><details><summary>Si la fibra cuesta tanto de construir, ¿por qué los operadores la eligen?</summary><p>Porque dura más de 25 años, se mejora cambiando solo los equipos de los extremos, tiene poco mantenimiento y da la mayor capacidad; el costo alto es al principio.</p></details><details><summary>¿Qué capas cambian entre una conexión por cable y una por fibra?</summary><p>Solo la física y la de enlace. De IP hacia arriba todo funciona igual.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/L%C3%ADnea_de_abonado_digital" target="_blank" rel="noopener">Línea de abonado digital (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/DOCSIS" target="_blank" rel="noopener">DOCSIS (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Internet_por_sat%C3%A9lite" target="_blank" rel="noopener">Internet por satélite (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/FTTH" target="_blank" rel="noopener">FTTH (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const raiz=document.getElementById('16-lab-3');
+  const q=s=>raiz.querySelector(s);
+  // [mín, típico, máx], factor de la hora pico (cuánto queda de la velocidad típica)
+  const T=[
+    {n:'FTTH (fibra)',baja:[100,600,2000],sube:[100,500,2000],lat:[2,4,10],pico:.9,por:'el puerto PON se comparte, pero sobra capacidad'},
+    {n:'Cable HFC',baja:[100,400,1000],sube:[10,30,100],lat:[8,15,30],pico:.6,por:'todo el nodo comparte el mismo coaxial'},
+    {n:'Móvil 4G/5G en casa',baja:[20,120,500],sube:[5,20,60],lat:[20,35,60],pico:.45,por:'la celda se reparte con todos los celulares'},
+    {n:'Inalámbrico fijo',baja:[10,50,300],sube:[5,20,100],lat:[5,12,30],pico:.6,por:'el sector de la torre se reparte entre sus clientes'},
+    {n:'Satélite órbita baja',baja:[50,120,250],sube:[10,15,40],lat:[25,40,60],pico:.6,por:'el haz del satélite cubre a toda la zona'},
+    {n:'Satélite geoestacionario',baja:[20,50,150],sube:[3,5,10],lat:[550,620,750],pico:.6,por:'el haz es enorme y la distancia no cambia'},
+    {n:'DSL (cobre)',baja:[5,30,100],sube:[1,5,40],lat:[15,25,40],pico:.95,por:'el par de cobre es de cada casa; el límite es la distancia'}
+  ];
+  const NOMBRE={baja:'bajada',sube:'subida',lat:'latencia'};
+  let m='baja',mejor=true,pico=false;
+  const pos=(v,lo,hi)=>Math.max(0,Math.min(100,(Math.log10(v)-Math.log10(lo))/(Math.log10(hi)-Math.log10(lo))*100));
+  const nf=v=>v>=100?String(Math.round(v)):String(Math.round(v*10)/10).replace('.',',');
+  function valor(t){
+    const [a,b,c]=t[m];
+    if(!pico)return [a,b,c];
+    if(m==='lat'){const k=(1-t.pico)*30;return [a+k,b+k,c+k];}
+    return [a*t.pico,b*t.pico,c];
+  }
+  function dibujar(){
+    const lo=1,hi=m==='lat'?2000:3000,u=m==='lat'?' ms':' Mbps';
+    const filas=T.map(t=>({t,v:valor(t)}));
+    if(mejor)filas.sort((x,y)=>m==='lat'?x.v[1]-y.v[1]:y.v[1]-x.v[1]);
+    q('#c16v-filas').innerHTML=filas.map(f=>{
+      const a=pos(f.v[0],lo,hi),c=pos(f.v[2],lo,hi),b=pos(f.v[1],lo,hi);
+      return '<div class="c16v-fila"><div class="c16v-cab"><span>'+f.t.n+'</span><b>'+nf(f.v[1])+u+'</b></div>'+
+        '<div class="c16v-pista" role="img" aria-label="'+f.t.n+': de '+nf(f.v[0])+' a '+nf(f.v[2])+u+', típico '+nf(f.v[1])+u+'">'+
+        '<span class="c16v-rango" style="left:'+a+'%;width:'+Math.max(1,c-a)+'%"></span><span class="c16v-tip" style="left:'+b+'%"></span></div></div>';
+    }).join('');
+    const marcas=[1,10,100,1000];
+    q('#c16v-eje').innerHTML=marcas.map(v=>'<span style="left:'+pos(v,lo,hi)+'%;transform:translateX('+(pos(v,lo,hi)===0?0:pos(v,lo,hi)>99.9?-100:-50)+'%)">'+(v>=1000?(v/1000)+(m==='lat'?' s':' Gbps'):v+u)+'</span>').join('');
+    const orden=filas.slice().sort((x,y)=>m==='lat'?x.v[1]-y.v[1]:y.v[1]-x.v[1]);
+    const top=orden[0],ult=orden[orden.length-1];
+    const masCae=T.slice().sort((x,y)=>x.pico-y.pico)[0];
+    let txt='<span class="big">'+NOMBRE[m][0].toUpperCase()+NOMBRE[m].slice(1)+(pico?' a la hora pico':' en un momento tranquilo')+': gana '+top.t.n+' ('+nf(top.v[1])+u+')</span>';
+    if(m==='lat'){
+      txt+='<span>La latencia no depende del plan: es lo que tarda una ida y vuelta. '+ult.t.n+' tarda unas '+Math.round(ult.v[1]/top.v[1])+' veces más que '+top.t.n+', porque la señal sube y baja 36.000 km.</span>';
+    }else if(m==='sube'){
+      txt+='<span>La subida es la que usan las videollamadas y los respaldos en la nube. Fíjate en cuántas tecnologías suben diez veces menos de lo que bajan: solo la fibra suele ofrecer planes simétricos.</span>';
+    }else{
+      txt+='<span>Los anuncios dicen «hasta»: el extremo derecho de cada barra. Lo habitual es la marca naranja, y depende de la distancia, de las paredes y de cuántos comparten.</span>';
+    }
+    txt+=pico&&m==='lat'?'<span class="warn">A las 21:00 las redes más cargadas suman espera: '+masCae.n+' llega a '+nf(masCae.lat[1]+(1-masCae.pico)*30)+' ms típicos, porque los paquetes hacen fila en la celda.</span>'
+      :pico?'<span class="warn">A las 21:00 '+masCae.n+' pierde cerca del '+Math.round((1-masCae.pico)*100)+' % de su velocidad típica: '+masCae.por+'.</span>'
+             :'<span>Activa «Hora pico» para ver qué tecnologías sufren más cuando todo el barrio está conectado.</span>';
+    q('#c16v-out').innerHTML=txt;
+  }
+  raiz.querySelectorAll('[data-m]').forEach(b=>b.addEventListener('click',()=>{
+    m=b.dataset.m;raiz.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));dibujar();}));
+  q('#c16v-orden').addEventListener('click',e=>{mejor=!mejor;e.currentTarget.setAttribute('aria-pressed',String(mejor));dibujar();});
+  q('#c16v-pico').addEventListener('click',e=>{pico=!pico;e.currentTarget.setAttribute('aria-pressed',String(pico));dibujar();});
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const raiz=document.getElementById('16-lab-2');
+  const q=s=>raiz.querySelector(s);
+  const L=window.Lab;
+  let pres=2;
+  const coma=v=>String(Math.round(v*10)/10).replace('.',',');
+  // cada tecnología devuelve calidad (0 a 1), costo relativo por casa y vida útil en años
+  const T=[
+    {n:'FTTH (fibra)',vida:30,f:(d,k)=>({cal:1,costo:1+40/k+(d>20?0.6:0),nota:d>20?'a más de 20 km hace falta un nodo intermedio':''})},
+    {n:'Cable HFC',vida:20,f:(d,k)=>({cal:.8,costo:1.2+35/k,nota:'amplificadores eléctricos en la calle'})},
+    {n:'Inalámbrico fijo',vida:8,f:(d,k)=>({cal:k>80?.4:.5,costo:.4+8/k+(d>15?.5:0),nota:d>15?'hay que sumar torres para cubrir tanta distancia':(k>80?'tantas casas saturan el sector de la torre':'')})},
+    {n:'Móvil 4G/5G en casa',vida:10,f:(d,k)=>({cal:d>15?.28:(k>80?.45:.55),costo:.3+2/k,nota:d>15?'lejos de la ciudad la cobertura móvil es débil':(k>80?'la celda se llena con tantas casas':'')})},
+    {n:'Satélite órbita baja',vida:7,f:()=>({cal:.45,costo:.6,nota:''})},
+    {n:'Satélite geoestacionario',vida:7,f:()=>({cal:.2,costo:.5,nota:'latencia de más de medio segundo'})},
+    {n:'DSL (cobre)',vida:5,f:d=>({cal:d>4?0:(1-d/4)*.6,costo:.2,nota:d>4?'el cobre no llega a esa distancia':'el cobre está al final de su vida'})}
+  ];
+  function calcular(){
+    const d=+q('#c16c-dist').value,k=+q('#c16c-dens').value,h=+q('#c16c-hor').value;
+    return T.map(t=>{
+      const r=t.f(d,k);
+      const alcanza=Math.min(1,pres/r.costo), dura=Math.min(1,t.vida/h);
+      const pts=Math.round(100*Math.pow(r.cal,.7)*Math.sqrt(dura)*alcanza);
+      const por=[];
+      if(r.cal===0)por.push(r.nota);
+      else{
+        if(alcanza<1)por.push('cuesta '+coma(r.costo)+' por casa y tu presupuesto llega a '+pres);
+        else por.push('costo por casa '+coma(r.costo)+', dentro del presupuesto');
+        if(dura<1)por.push('dura unos '+t.vida+' de los '+h+' años que planeas');
+        if(r.nota)por.push(r.nota);
+      }
+      return {n:t.n,pts,por:por.join('; ')};
+    }).sort((a,b)=>b.pts-a.pts);
+  }
+  function dibujar(){
+    const r=calcular(),g=r[0],s=r[1];
+    q('#c16c-lista').innerHTML=r.map(x=>'<li><div class="c16c-cab"><span>'+x.n+'</span><b>'+x.pts+' / 100</b></div>'+
+      '<div class="c16c-barra" aria-hidden="true"><i style="width:'+x.pts+'%"></i></div><span class="c16c-por">'+x.por+'.</span></li>').join('');
+    const k=+q('#c16c-dens').value;
+    let porque;
+    if(g.n.startsWith('FTTH'))porque='Hay suficientes casas por kilómetro para repartir el costo de tender fibra, y la inversión dura más que tu horizonte.';
+    else if(g.n.startsWith('Satélite'))porque='Con tan pocas casas o tan lejos, ninguna red terrestre se paga; el satélite llega sin construir nada en la calle.';
+    else if(g.n.startsWith('Móvil'))porque='La red móvil ya existe y basta con enviar un router; con poca densidad, construir una red fija no se recupera.';
+    else if(g.n.startsWith('Inalámbrico'))porque='Una torre cubre muchas casas dispersas con poca inversión; sirve para llegar rápido mientras no se justifica la fibra.';
+    else if(g.n.startsWith('Cable'))porque='Cerca de la fibra, pero con equipos eléctricos en la calle y menos subida.';
+    else porque='El cobre ya está, pero su velocidad depende de la distancia y está al final de su vida.';
+    q('#c16c-out').innerHTML='<span class="big">Para esta zona gana '+g.n+' ('+g.pts+' puntos), seguida de '+s.n+' ('+s.pts+').</span><span>'+porque+'</span>'+
+      (k<10?'<span class="warn">Con menos de 10 casas por kilómetro, cada casa debe pagar sola su tramo de calle.</span>':'');
+  }
+  L.bindOut('#c16c-dist',v=>coma(v)+' km');
+  L.bindOut('#c16c-dens',v=>v+' casas');
+  L.bindOut('#c16c-hor',v=>v+' años');
+  ['#c16c-dist','#c16c-dens','#c16c-hor'].forEach(s=>q(s).addEventListener('input',dibujar));
+  raiz.querySelectorAll('[data-p]').forEach(b=>b.addEventListener('click',()=>{
+    pres=+b.dataset.p;raiz.querySelectorAll('[data-p]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));dibujar();}));
+  dibujar();
+})();
+</script>
+</body>
+</html>

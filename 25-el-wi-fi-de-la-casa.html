@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>El Wi-Fi de la casa · Cómo funciona un telco</title>
+<meta name="description" content="El Wi-Fi es el último tramo del viaje y el más frágil: es radio compartida dentro de una casa con paredes, vecinos y decenas de dispositivos, y cada generación (Wi-Fi 4, 5, 6, 6E y 7) agregó técnicas para llevar más datos a más equipos a la vez, siempre que el router y el dispositivo las soporten.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="25-el-wi-fi-de-la-casa">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 25 DE 49</span><h1>El Wi-Fi de la casa: de Wi-Fi 4 a Wi-Fi 7</h1><p class="lede">El Wi-Fi es el último tramo del viaje y el más frágil: es radio compartida dentro de una casa con paredes, vecinos y decenas de dispositivos, y cada generación (Wi-Fi 4, 5, 6, 6E y 7) agregó técnicas para llevar más datos a más equipos a la vez, siempre que el router y el dispositivo las soporten.</p></header>
+<section><div class="analogia"><b>Imagínalo así</b><p>Una sala donde todos hablan al mismo tiempo: las bandas son salas distintas (una grande pero ruidosa y otras más silenciosas pero de menor alcance), los canales son las mesas de conversación, y cada generación de Wi-Fi enseña a hablar más rápido y a atender a varias personas a la vez sin turnarse.</p></div><figure class="fig fig-capas" id="25-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: el Wi-Fi, los últimos metros del viaje, dentro de la casa">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class=""><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class="apagado"><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: el Wi-Fi, los últimos metros del viaje, dentro de la casa</text>
+</svg></div><figcaption><b>Dónde estamos.</b> El Wi-Fi ocupa solo las dos capas de abajo, la física (la radio) y la de enlace (quién habla y cuándo), en el tramo más corto del viaje: los pocos metros entre el celular y el router de la casa, que suele vivir dentro de la ONT o junto a ella.</figcaption></figure></section>
+<section><h2>Qué es el Wi-Fi: radio y la familia de normas 802.11</h2><div class="prose"><p>El Wi-Fi es una red local <b>por radio</b>: hace lo mismo que un cable Ethernet, pero por el aire. Las reglas técnicas las escribe el IEEE, la misma asociación de ingenieros que normalizó Ethernet, en una familia de normas que se llaman <b>802.11</b> seguidas de letras: 802.11n, 802.11ac, 802.11ax, 802.11be. Como esos nombres no los recuerda nadie, la <b>Wi-Fi Alliance</b>, el grupo de fabricantes que certifica que los equipos se entiendan entre sí, les puso números: Wi-Fi 4, 5, 6 y 7.</p><p>Que sea radio cambia todo. Un cable es un camino privado entre dos equipos; el aire es <b>uno solo y compartido</b>: lo usan tu router, tus dispositivos, los routers de los vecinos, el microondas y hasta el control del portón. Por eso el Wi-Fi funciona como una conversación educada: cada equipo <b>escucha antes de hablar</b> y, si el canal está ocupado, espera su turno. Y como el aire no es fiable, cada mensaje recibe una confirmación; si no llega, se repite.</p><p>El Wi-Fi solo reemplaza las dos capas de abajo. De la capa de red para arriba, todo es igual que con cable: IP, TCP, la web. Por eso un celular puede pasar del Wi-Fi a los datos móviles y seguir funcionando.</p></div><figure class="fig fig-capas" id="25-diagrama-8"><div class="lienzo"><svg viewBox="0 0 840 310" style="min-width:640px" role="img" aria-label="Capas del Wi-Fi: aplicación, transporte y red son las mismas con cable o con Wi-Fi; en la capa de enlace Ethernet se reemplaza por 802.11 MAC y en la física el cable se reemplaza por la radio">
+  <text x="290" y="34" text-anchor="middle" class="t t-b">Con cable</text><text x="510" y="34" text-anchor="middle" class="t t-b">Con Wi-Fi</text>
+  <text x="20" y="76" class="t t-b k-apl">Aplicación</text>
+  <rect x="200" y="50" width="420" height="40" rx="7" class="c-apl"/>
+  <text x="410.0" y="75" text-anchor="middle" class="t t-s">web, video, correo, DNS</text>
+  <text x="20" y="124" class="t t-b k-tra">Transporte</text>
+  <rect x="200" y="98" width="420" height="40" rx="7" class="c-tra"/>
+  <text x="410.0" y="123" text-anchor="middle" class="t t-s">TCP y UDP</text>
+  <text x="20" y="172" class="t t-b k-red">Red</text>
+  <rect x="200" y="146" width="420" height="40" rx="7" class="c-red"/>
+  <text x="410.0" y="171" text-anchor="middle" class="t t-s">IP: las mismas direcciones y routers</text>
+  <text x="20" y="220" class="t t-b k-enl">Enlace</text>
+  <rect x="200" y="194" width="180" height="40" rx="7" class="c-enl"/>
+  <text x="290.0" y="219" text-anchor="middle" class="t t-s">Ethernet (802.3)</text>
+  <rect x="400" y="194" width="220" height="40" rx="7" class="c-enl" style="stroke-width:2.4"/>
+  <text x="510.0" y="211" text-anchor="middle" class="t t-s"><tspan class="t-b">802.11 MAC:</tspan> turnos, confirmaciones,</text><text x="510.0" y="226" text-anchor="middle" class="t t-s">asociación y cifrado</text>
+  <text x="20" y="268" class="t t-b k-fis">Física</text>
+  <rect x="200" y="242" width="180" height="40" rx="7" class="c-fis"/>
+  <text x="290.0" y="267" text-anchor="middle" class="t t-s">cable de cobre o fibra</text>
+  <rect x="400" y="242" width="220" height="40" rx="7" class="c-fis" style="stroke-width:2.4"/>
+  <text x="510.0" y="267" text-anchor="middle" class="t t-s">radio: bandas, canales, MIMO</text>
+  <path d="M636 194h10v88h-10" class="ln" style="stroke-width:2"/>
+  <text x="656" y="230" class="t t-s t-b">Lo único que</text><text x="656" y="246" class="t t-s t-b">cambia el Wi-Fi</text><text x="656" y="262" class="t t-xs t-m">el aire en vez del cable</text>
+  <path d="M636 50h10v136h-10" class="ln" style="stroke-width:2"/><text x="656" y="114" class="t t-s t-b">Igual en los dos</text><text x="656" y="130" class="t t-xs t-m">por eso el celular pasa</text><text x="656" y="144" class="t t-xs t-m">del Wi-Fi al 4G sin problema</text>
+</svg></div><figcaption><b>Dónde vive 802.11.</b> A la izquierda, un equipo con cable; a la derecha, uno con Wi-Fi. Las tres capas de arriba son idénticas y las comparten. El Wi-Fi reemplaza solo la capa física (la radio, con sus bandas y canales) y la de enlace (los turnos, las confirmaciones, la asociación y el cifrado).</figcaption></figure></section>
+<section><h2>Las bandas: 2,4 GHz, 5 GHz y 6 GHz</h2><div class="prose"><p>El Wi-Fi usa tres porciones del espectro que se pueden usar sin licencia, llamadas <b>bandas</b>:</p><ul><li><b>2,4 GHz</b>: la más antigua. Llega más lejos y atraviesa mejor las paredes, pero es angosta (apenas 83,5 MHz) y está saturada: la usan todos los routers viejos, los audífonos inalámbricos y el microondas.</li><li><b>5 GHz</b>: unas seis veces más ancha. Lleva mucho más rápido, pero pierde más fuerza con cada pared.</li><li><b>6 GHz</b>: la nueva, habilitada para Wi-Fi 6E y Wi-Fi 7. En los países que la abrieron completa son 1.200 MHz, más que las otras dos juntas, y por ahora casi vacía. Alcanza algo menos que la de 5 GHz.</li></ul><p>Volviendo a la analogía: la banda de 2,4 GHz es el salón grande donde se oye desde lejos pero todos gritan; las de 5 y 6 GHz son salas más silenciosas y espaciosas, pero hay que estar más cerca para escuchar. Por eso los routers modernos emiten en varias bandas a la vez y tratan de llevar cada dispositivo a la mejor.</p></div><figure class="fig fig-esquema" id="25-diagrama-7"><div class="lienzo"><svg viewBox="0 0 900 330" style="min-width:680px" role="img" aria-label="Bandas y canales del Wi-Fi: en 2,4 GHz trece canales de 20 MHz que se solapan, con solo el 1, el 6 y el 11 libres entre sí; en 5 GHz seis canales de 80 MHz, cuatro de ellos compartidos con radares (DFS); en 6 GHz tres canales de 320 MHz; a la derecha, el ancho total de cada banda">
+  <text x="20" y="80" class="t t-b">2,4 GHz</text><text x="20" y="96" class="t t-xs t-m">CANALES DE 20 MHz</text>
+  <line x1="130" y1="100" x2="690" y2="100" class="ln"/>
+  <path d="M143.3 100Q143.3 48 210.0 48Q276.7 48 276.7 100" class="ln s-enl" style="stroke-width:2.6"/>
+  <text x="210.0" y="116" text-anchor="middle" class="t t-xs t-b k-enl">1</text>
+  <path d="M176.7 100Q176.7 48 243.3 48Q310.0 48 310.0 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="243.3" y="116" text-anchor="middle" class="t t-xs t-m">2</text>
+  <path d="M210.0 100Q210.0 48 276.7 48Q343.3 48 343.3 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="276.7" y="116" text-anchor="middle" class="t t-xs t-m">3</text>
+  <path d="M243.3 100Q243.3 48 310.0 48Q376.7 48 376.7 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="310.0" y="116" text-anchor="middle" class="t t-xs t-m">4</text>
+  <path d="M276.7 100Q276.7 48 343.3 48Q410.0 48 410.0 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="343.3" y="116" text-anchor="middle" class="t t-xs t-m">5</text>
+  <path d="M310.0 100Q310.0 48 376.7 48Q443.3 48 443.3 100" class="ln s-enl" style="stroke-width:2.6"/>
+  <text x="376.7" y="116" text-anchor="middle" class="t t-xs t-b k-enl">6</text>
+  <path d="M343.3 100Q343.3 48 410.0 48Q476.7 48 476.7 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="410.0" y="116" text-anchor="middle" class="t t-xs t-m">7</text>
+  <path d="M376.7 100Q376.7 48 443.3 48Q510.0 48 510.0 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="443.3" y="116" text-anchor="middle" class="t t-xs t-m">8</text>
+  <path d="M410.0 100Q410.0 48 476.7 48Q543.3 48 543.3 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="476.7" y="116" text-anchor="middle" class="t t-xs t-m">9</text>
+  <path d="M443.3 100Q443.3 48 510.0 48Q576.7 48 576.7 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="510.0" y="116" text-anchor="middle" class="t t-xs t-m">10</text>
+  <path d="M476.7 100Q476.7 48 543.3 48Q610.0 48 610.0 100" class="ln s-enl" style="stroke-width:2.6"/>
+  <text x="543.3" y="116" text-anchor="middle" class="t t-xs t-b k-enl">11</text>
+  <path d="M510.0 100Q510.0 48 576.7 48Q643.3 48 643.3 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="576.7" y="116" text-anchor="middle" class="t t-xs t-m">12</text>
+  <path d="M543.3 100Q543.3 48 610.0 48Q676.7 48 676.7 100" class="ln ln-d" style="stroke-width:1.2"/>
+  <text x="610.0" y="116" text-anchor="middle" class="t t-xs t-m">13</text>
+  <text x="20" y="166" class="t t-b">5 GHz</text><text x="20" y="182" class="t t-xs t-m">CANALES DE 80 MHz</text>
+  <line x1="130" y1="190" x2="690" y2="190" class="ln"/>
+  <rect x="148.0" y="144" width="60.0" height="46" rx="5" class="c-enl"/>
+  <text x="178.0" y="166" text-anchor="middle" class="t t-xs t-b">36–48</text>
+  <rect x="212.0" y="144" width="60.0" height="46" rx="5" class="c-enl" style="stroke-dasharray:4 3;fill-opacity:.55"/>
+  <text x="242.0" y="166" text-anchor="middle" class="t t-xs t-b">52–64</text><text x="242.0" y="180" text-anchor="middle" class="t t-xs t-m">DFS</text>
+  <rect x="404.0" y="144" width="60.0" height="46" rx="5" class="c-enl" style="stroke-dasharray:4 3;fill-opacity:.55"/>
+  <text x="434.0" y="166" text-anchor="middle" class="t t-xs t-b">100–112</text><text x="434.0" y="180" text-anchor="middle" class="t t-xs t-m">DFS</text>
+  <rect x="468.0" y="144" width="60.0" height="46" rx="5" class="c-enl" style="stroke-dasharray:4 3;fill-opacity:.55"/>
+  <text x="498.0" y="166" text-anchor="middle" class="t t-xs t-b">116–128</text><text x="498.0" y="180" text-anchor="middle" class="t t-xs t-m">DFS</text>
+  <rect x="532.0" y="144" width="60.0" height="46" rx="5" class="c-enl" style="stroke-dasharray:4 3;fill-opacity:.55"/>
+  <text x="562.0" y="166" text-anchor="middle" class="t t-xs t-b">132–144</text><text x="562.0" y="180" text-anchor="middle" class="t t-xs t-m">DFS</text>
+  <rect x="600.0" y="144" width="60.0" height="46" rx="5" class="c-enl"/>
+  <text x="630.0" y="166" text-anchor="middle" class="t t-xs t-b">149–161</text>
+  <text x="338.0" y="172" text-anchor="middle" class="t t-xs t-m">sin uso</text>
+  <text x="130" y="206" class="t t-xs t-m">DFS: el router primero escucha si hay un radar y, si aparece, se muda de canal</text>
+  <text x="20" y="266" class="t t-b">6 GHz</text><text x="20" y="282" class="t t-xs t-m">CANALES DE 320 MHz</text>
+  <line x1="130" y1="290" x2="690" y2="290" class="ln"/>
+  <rect x="141.3" y="244" width="145.3" height="46" rx="5" class="c-enl"/><text x="214.0" y="272" text-anchor="middle" class="t t-xs t-b">320 MHz</text>
+  <rect x="290.7" y="244" width="145.3" height="46" rx="5" class="c-enl"/><text x="363.3" y="272" text-anchor="middle" class="t t-xs t-b">320 MHz</text>
+  <rect x="440.0" y="244" width="145.3" height="46" rx="5" class="c-enl"/><text x="512.7" y="272" text-anchor="middle" class="t t-xs t-b">320 MHz</text>
+  <rect x="589.3" y="244" width="98.7" height="46" rx="5" class="caja ln-d"/><text x="638.7" y="272" text-anchor="middle" class="t t-xs t-m">canales menores</text>
+  <text x="130" y="306" class="t t-xs t-m">solo para Wi-Fi 6E y Wi-Fi 7 · en los países que abrieron la banda completa</text>
+  <text x="730" y="40" class="t t-xs t-b t-m">ANCHO TOTAL</text>
+  <rect x="730" y="70" width="10.4" height="22" rx="4" class="c-fis"/><text x="730" y="110" class="t t-s t-b">83,5 MHz</text>
+  <rect x="730" y="160" width="72.5" height="22" rx="4" class="c-fis"/><text x="730" y="200" class="t t-s t-b">≈ 500 a 700 MHz</text>
+  <rect x="730" y="260" width="150.0" height="22" rx="4" class="c-fis"/><text x="730" y="300" class="t t-s t-b">1.200 MHz</text>
+</svg></div><figcaption><b>Bandas y canales del Wi-Fi.</b> Cada fila es una banda con sus canales. En 2,4 GHz los canales de 20 MHz se pisan entre sí y solo tres no se tocan: el 1, el 6 y el 11. En 5 GHz caben varios canales de 80 MHz, algunos compartidos con radares (DFS). En 6 GHz caben hasta tres canales de 320 MHz. La barra de la derecha compara el ancho total de cada banda.</figcaption></figure></section>
+<section><h2>Canales, ancho de canal e interferencia de los vecinos</h2><div class="prose"><p>Cada banda se divide en <b>canales</b>: las mesas de la sala. Un router y sus dispositivos conversan en una sola mesa. El <b>ancho de canal</b> es el tamaño de la mesa: 20, 40, 80, 160 o 320 MHz. Un canal el doble de ancho lleva el doble de datos, pero hay menos canales de ese tamaño y es más fácil chocar con un vecino.</p><p>En 2,4 GHz los canales están numerados del 1 al 13, separados por solo 5 MHz, pero cada uno ocupa 20. Por eso se pisan, y los únicos que no se tocan son el 1, el 6 y el 11. Si tu vecino está en el 6, compartir el 6 con él es mejor que irte al 4: en el mismo canal los dos routers se escuchan y se turnan con educación; en un canal solapado se oyen como ruido y se arruinan los mensajes mutuamente.</p><p>En un edificio, decenas de redes compiten por los mismos canales. Cuando el aire está ocupado por otros, tu router tiene que esperar, aunque tu fibra esté libre. Es la causa número uno de «el Wi-Fi anda lento de noche». Pruébalo.</p></div><div class="lab" id="25-lab-6"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Elige el canal</h3></div><p class="hint">Estás en un departamento rodeado de vecinos. Cada curva es el Wi-Fi de un vecino, más alta cuanto más fuerte se oye. Elige el canal de tu router y mira cuánto tiempo de aire te queda y cuánto ruido recibes. Después cambia a 5 GHz.</p><div class="btns" role="group" aria-label="Banda">
+  <button type="button" data-c25cb="2.4" aria-pressed="true">2,4 GHz</button>
+  <button type="button" data-c25cb="5" aria-pressed="false">5 GHz (canales de 80 MHz)</button>
+</div>
+<div class="btns" role="group" aria-label="Canal de tu router" id="c25c-canales"></div>
+<canvas id="c25c-cv" aria-label="Espectro con las redes de los vecinos y la tuya"></canvas>
+<div class="legend"><span><i style="background:var(--accent)"></i>tu red</span><span><i style="background:var(--muted)"></i>redes de los vecinos</span><span>altura: intensidad en dBm</span></div>
+<div class="btns"><button type="button" id="c25c-mejor" class="primary">Buscar el mejor canal</button></div>
+<div class="readout" id="c25c-out" aria-live="polite"></div>
+<p class="hint" id="c25c-nota" aria-live="polite"></p></div></section>
+<section><h2>Wi-Fi 4 (802.11n): MIMO y varias antenas</h2><div class="prose"><p>Wi-Fi 4, de 2009, trajo la idea que todavía sostiene a las generaciones siguientes: <b>MIMO</b> (múltiples entradas y salidas). En vez de una antena, el router y el dispositivo usan varias, y aprovechan que la señal rebota en paredes y muebles y llega por caminos distintos. Con dos antenas de cada lado se pueden mandar dos <b>flujos espaciales</b> a la vez por el mismo canal, como dos conversaciones en la misma mesa que no se mezclan porque cada una viene de una dirección distinta.</p><p>También permitió juntar dos canales en uno de 40 MHz. Con eso, un equipo de dos flujos llega a 300 Mbps en teoría. Funciona en 2,4 y 5 GHz, aunque en 2,4 GHz los canales de 40 MHz casi nunca son buena idea: ocupan dos de las tres mesas libres.</p></div></section>
+<section><h2>Wi-Fi 5 (802.11ac): el salto a 5 GHz y los canales anchos</h2><div class="prose"><p>Wi-Fi 5, de 2013, se fue solo a la banda de 5 GHz y aprovechó su espacio: canales de <b>80 MHz</b> y hasta de 160 MHz. Además, enseñó a «hablar más denso» con una modulación llamada <b>256-QAM</b>, en la que cada símbolo de radio lleva 8 bits en vez de 6. Es como hablar más rápido: funciona si el que escucha está cerca y no hay ruido.</p><p>Con dos flujos y 80 MHz, un celular Wi-Fi 5 llega a 867 Mbps teóricos. Wi-Fi 5 también estrenó el <b>MU-MIMO</b> de bajada, que permite al router hablarle a varios dispositivos a la vez apuntando cada flujo hacia uno distinto. Pero seguía teniendo un límite: en cada momento, el canal entero se lo lleva un solo dispositivo.</p></div></section>
+<section><h2>Wi-Fi 6 y 6E (802.11ax): OFDMA, MU-MIMO, menos espera y la banda de 6 GHz</h2><div class="prose"><p>Wi-Fi 6, de 2019, no se pensó para la velocidad máxima sino para la <b>casa llena de dispositivos</b>. Su técnica estrella es <b>OFDMA</b>: divide el canal en porciones pequeñas y atiende a varios dispositivos en la misma transmisión, cada uno en su porción. Es como pasar de una mesa donde habla una persona a la vez a una mesa donde el anfitrión atiende a nueve a la vez con frases cortas. Para un mensaje grande no cambia mucho, pero para los cientos de mensajes pequeños de la casa moderna (cámaras, parlantes, enchufes inteligentes, el chat) reduce la espera.</p><p>Además suma:</p><ul><li><b>MU-MIMO</b> en los dos sentidos, de bajada y de subida.</li><li><b>1024-QAM</b>: 10 bits por símbolo, alrededor de un 25 % más rápido de cerca.</li><li><b>Coloreado de BSS</b>: cada red marca sus mensajes con un «color» para que el router pueda ignorar al vecino débil en vez de esperar.</li><li><b>Despertador programado</b> (TWT): los dispositivos a batería acuerdan cuándo despertarse, y duran más.</li></ul><p><b>Wi-Fi 6E</b> es Wi-Fi 6 con permiso para usar la banda de <b>6 GHz</b>: las mismas técnicas en una sala nueva, amplia y sin vecinos viejos. Míralo funcionar con treinta dispositivos.</p></div><div class="lab" id="25-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>La casa con 30 dispositivos</h3></div><p class="hint">Elige cuántos dispositivos quieren transmitir y qué tipo de tráfico tienen. Arriba, Wi-Fi 5 atiende por turnos; abajo, Wi-Fi 6 reparte el canal con OFDMA. Cada color es un dispositivo y el gris, el tiempo que se gasta en pedir turno y en las cabeceras.</p><div class="ctls">
+  <label class="ctl">Dispositivos que quieren transmitir <output id="c25o-n-o"></output><input type="range" id="c25o-n" min="1" max="30" step="1" value="30"></label>
+</div>
+<div class="btns" role="group" aria-label="Tipo de tráfico">
+  <button type="button" data-c25o="chico" aria-pressed="true">Mensajes pequeños: cámaras, parlantes, chat</button>
+  <button type="button" data-c25o="grande" aria-pressed="false">Descargas grandes: video y archivos</button>
+</div>
+<canvas id="c25o-cv" aria-label="Tiempo de aire del canal con Wi-Fi 5 por turnos y con Wi-Fi 6 con OFDMA"></canvas>
+<div class="readout" id="c25o-out" aria-live="polite"></div>
+<p class="hint" id="c25o-nota" aria-live="polite"></p></div></section>
+<section><h2>Wi-Fi 7 (802.11be): canales de 320 MHz y varias bandas a la vez (MLO)</h2><div class="prose"><p>Wi-Fi 7, certificado desde 2024, vuelve a subir la velocidad: canales de <b>320 MHz</b> en la banda de 6 GHz y <b>4096-QAM</b> (12 bits por símbolo). Un celular de dos flujos puede llegar en teoría a casi 5,8 Gbps.</p><p>Su novedad más útil es <b>MLO</b> (operación multienlace): el dispositivo se conecta a la vez por dos o tres bandas y reparte el tráfico entre ellas, o usa la que esté más libre en cada instante. Si el canal de 5 GHz se llena, el siguiente paquete sale por el de 6 GHz sin esperar. Eso baja la latencia y la hace más estable, algo que importa para los juegos, las videollamadas y la realidad virtual. También permite «perforar» un canal ancho y seguir usándolo aunque un vecino ocupe un pedacito.</p><p>La tabla interactiva resume las cinco generaciones y lo que se puede esperar de cada una en la vida real.</p></div><div class="lab" id="25-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Las generaciones del Wi-Fi</h3></div><p class="hint">Elige una generación, el ancho de canal, cuántas antenas tiene tu dispositivo y dónde estás. La tarjeta muestra la velocidad de la norma, la de tu enlace y la que verías en un test de velocidad.</p><style>
+[id="25-lab-2"] .c25g-tarjeta{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:10px}
+[id="25-lab-2"] .c25g-tarjeta div{background:var(--paper);border-radius:8px;padding:10px 12px;display:grid;gap:2px}
+[id="25-lab-2"] .c25g-tarjeta small{font:600 .72rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+[id="25-lab-2"] .c25g-tarjeta b{font:700 1.35rem var(--f-display)}
+[id="25-lab-2"] .c25g-tarjeta b.real{color:var(--good)}
+[id="25-lab-2"] tr.sel td{background:var(--accent-soft)}
+[id="25-lab-2"] td,[id="25-lab-2"] th{font-size:.86rem;padding:6px 8px}
+</style>
+<div class="btns" role="group" aria-label="Generación de Wi-Fi" id="c25g-gen"></div>
+<div class="opciones">
+  <label>Ancho de canal <select id="c25g-canal"></select></label>
+  <label>Antenas del dispositivo
+    <select id="c25g-ant">
+      <option value="1">1 (televisor o equipo económico)</option>
+      <option value="2" selected>2 (celular o notebook)</option>
+      <option value="4">4 (otro router o PC de escritorio)</option>
+    </select></label>
+  <label>Dónde estás
+    <select id="c25g-lugar">
+      <option value="1">En la misma habitación</option>
+      <option value="0.6" selected>Una pared de por medio</option>
+      <option value="0.3">Lejos, varias paredes</option>
+    </select></label>
+</div>
+<div class="c25g-tarjeta" aria-live="polite">
+  <div><small>Máximo de la norma</small><b id="c25g-max"></b><span class="hint" id="c25g-maxd"></span></div>
+  <div><small>Tu enlace de radio</small><b id="c25g-phy"></b><span class="hint">lo que muestra el celular</span></div>
+  <div><small>Test de velocidad</small><b class="real" id="c25g-real"></b><span class="hint">lo que de verdad llega</span></div>
+</div>
+<p class="hint" id="c25g-nota" aria-live="polite"></p>
+<div class="tbl"><table>
+  <thead><tr><th>Generación</th><th>Año</th><th>Bandas</th><th>Canal máximo</th><th>Técnicas clave</th></tr></thead>
+  <tbody id="c25g-tabla"></tbody>
+</table></div></div></section>
+<section><h2>Velocidad nominal frente a velocidad real: por qué nunca se ve la cifra de la caja</h2><div class="prose"><p>La caja del router dice «AX3000» o «BE9300». Ese número es la <b>suma</b> de las velocidades máximas de todas sus bandas, con todas sus antenas, en las mejores condiciones. Ningún dispositivo la ve, por varias razones que se van restando:</p><ol class="steps"><li><span>Un dispositivo usa <b>una banda a la vez</b> (salvo con MLO), así que la suma de bandas no aplica.</span></li><li><span>El celular tiene casi siempre <b>dos antenas</b>, no cuatro: la mitad de los flujos.</span></li><li><span>El aire se <b>comparte</b> y cada transmisión gasta tiempo en pedir turno, confirmaciones y cabeceras: de la velocidad de la radio, a la aplicación llega entre un 60 y un 70 %.</span></li><li><span>Con <b>distancia y paredes</b>, la radio baja a modulaciones más lentas.</span></li><li><span>Los <b>vecinos</b> y los demás dispositivos de la casa ocupan parte del tiempo de aire.</span></li></ol></div><figure class="fig fig-comparacion" id="25-diagrama-9"><div class="lienzo"><svg viewBox="0 0 860 330" style="min-width:640px" role="img" aria-label="De la cifra de la caja al test de velocidad: 2.976 Mbps en la caja, 2.402 en una banda, 1.201 con un celular de dos antenas, 780 tras turnos y cabeceras, 470 a dos paredes y 350 con vecinos">
+  <text x="20" y="32" class="t t-s t-b">La caja dice «AX3000»</text><text x="20" y="47" class="t t-xs t-m">suma de las dos bandas</text>
+  <rect x="300" y="20" width="466.2" height="28" rx="5" class="c-fis"/>
+  <text x="774.2" y="39" class="t t-s t-b">2.976 Mbps</text>
+  <text x="20" y="82" class="t t-s t-b">Una banda a la vez</text><text x="20" y="97" class="t t-xs t-m">5 GHz, 4 antenas, 160 MHz</text>
+  <rect x="300" y="70" width="466.2" height="28" rx="5" class="caja ln-d"/>
+  <rect x="300" y="70" width="376.3" height="28" rx="5" class="c-red"/>
+  <text x="774.2" y="89" class="t t-s t-b">2.402 Mbps</text>
+  <text x="20" y="132" class="t t-s t-b">Celular de 2 antenas</text><text x="20" y="147" class="t t-xs t-m">y canal de 80 MHz</text>
+  <rect x="300" y="120" width="376.3" height="28" rx="5" class="caja ln-d"/>
+  <rect x="300" y="120" width="188.2" height="28" rx="5" class="c-red"/>
+  <text x="684.3" y="139" class="t t-s t-b">1.201 Mbps</text>
+  <text x="20" y="182" class="t t-s t-b">Turnos y cabeceras</text><text x="20" y="197" class="t t-xs t-m">llega ~65 % a la aplicación</text>
+  <rect x="300" y="170" width="188.2" height="28" rx="5" class="caja ln-d"/>
+  <rect x="300" y="170" width="122.2" height="28" rx="5" class="c-red"/>
+  <text x="496.2" y="189" class="t t-s t-b">780 Mbps</text>
+  <text x="20" y="232" class="t t-s t-b">Dos paredes más lejos</text><text x="20" y="247" class="t t-xs t-m">modulación más lenta</text>
+  <rect x="300" y="220" width="122.2" height="28" rx="5" class="caja ln-d"/>
+  <rect x="300" y="220" width="73.6" height="28" rx="5" class="c-red"/>
+  <text x="430.2" y="239" class="t t-s t-b">470 Mbps</text>
+  <text x="20" y="282" class="t t-s t-b">Vecinos en el canal</text><text x="20" y="297" class="t t-xs t-m">el aire se comparte</text>
+  <rect x="300" y="270" width="73.6" height="28" rx="5" class="caja ln-d"/>
+  <rect x="300" y="270" width="54.8" height="28" rx="5" class="c-enl"/>
+  <text x="381.6" y="289" class="t t-s t-b">350 Mbps</text>
+</svg></div><figcaption><b>De la cifra de la caja al test de velocidad.</b> Cada barra resta un motivo, en un router «AX3000» y un celular Wi-Fi 6 de dos antenas. De 3.000 Mbps en la caja se pasa a unos 350 Mbps reales en una habitación con vecinos. Los valores son de ejemplo; en cada casa cambian.</figcaption></figure></section>
+<section><h2>El dispositivo también cuenta: un celular viejo no aprovecha un router nuevo</h2><div class="prose"><p>La conversación entre el router y el dispositivo siempre va a la velocidad <b>del que sabe menos</b>. Un router Wi-Fi 7 con un celular Wi-Fi 5 habla Wi-Fi 5. Un televisor inteligente con una sola antena y solo 2,4 GHz no pasará de unas decenas de megabits, aunque el plan de fibra sea de un gigabit.</p><p>Además, en la mayoría de las generaciones el aire se reparte por turnos: un equipo viejo y lento, que tarda mucho en mandar cada mensaje, ocupa el canal más tiempo y frena a los demás. Por eso, antes de culpar a la fibra o al router, conviene preguntar qué dispositivo usa el cliente para medir. Un test de velocidad con cable, directo en el router, es la única forma de medir el plan contratado sin el Wi-Fi de por medio.</p></div></section>
+<section><h2>Cómo se conecta un equipo: anuncio de la red, asociación y el saludo de cuatro pasos</h2><div class="prose"><p>Cuando eliges tu red en el celular, pasan cuatro cosas en menos de un segundo:</p><ol class="steps"><li><span><b>Descubrir.</b> El router anuncia su red unas diez veces por segundo con un mensaje llamado <i>beacon</i>: su nombre (SSID), sus bandas y qué seguridad usa. El celular también puede preguntar activamente con un <i>probe request</i>.</span></li><li><span><b>Unirse.</b> El celular se presenta (autenticación) y pide asociarse, contando qué sabe hacer: generación, antenas, anchos de canal. El router lo acepta y le da un número de asociado.</span></li><li><span><b>Acordar las claves.</b> El <b>saludo de cuatro pasos</b>: router y celular, que ya comparten una clave maestra derivada de la contraseña, intercambian dos números al azar y con ellos fabrican una clave nueva solo para esta conexión. Cada uno demuestra al otro que conoce la clave maestra sin enviarla, y el router entrega además la clave del grupo para los mensajes a todos. Desde ahí, todo va cifrado.</span></li><li><span><b>Pedir una dirección IP.</b> Recién ahora el celular habla IP: pide una dirección al servidor DHCP del router, como vimos en el capítulo 8.</span></li></ol></div><figure class="fig fig-flujo" id="25-diagrama-4"><div class="lienzo"><svg viewBox="0 0 840 790" style="min-width:640px" role="img" aria-label="Flujo de conexión a un Wi-Fi: beacon, probe request y response; autenticación y asociación; saludo de cuatro pasos con ANonce, SNonce y MIC, clave de grupo y confirmación; y los cuatro mensajes DHCP Discover, Offer, Request y Ack">
+  <rect x="60" y="14" width="180" height="56" rx="10" class="caja"/><use href="#i-celular" x="72" y="26" width="32" height="32" class="ico"/><text x="112" y="40" class="t t-b">Celular</text><text x="112" y="57" class="t t-s t-m">quiere conectarse</text>
+  <rect x="470" y="14" width="180" height="56" rx="10" class="caja"/><use href="#i-router" x="482" y="26" width="32" height="32" class="ico"/><text x="522" y="40" class="t t-b">Router Wi-Fi</text><text x="522" y="57" class="t t-s t-m">red «MiCasa»</text>
+  <line x1="150" y1="70" x2="150" y2="775" class="vida"/><line x1="560" y1="70" x2="560" y2="775" class="vida"/>
+  <line x1="560" y1="104" x2="152" y2="116" class="ln s-enl ln-d" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="210" y="98" class="t t-s"><tspan class="t-mono t-b">Beacon</tspan> ① «MiCasa», WPA3, 2,4 y 5 GHz (10 por segundo)</text>
+  <line x1="150" y1="144" x2="558" y2="156" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="160" y="138" class="t t-s"><tspan class="t-mono t-b">Probe Request</tspan> ② ¿Está «MiCasa»?</text>
+  <line x1="560" y1="180" x2="152" y2="192" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="210" y="174" class="t t-s"><tspan class="t-mono t-b">Probe Response</tspan> ③ Aquí estoy</text>
+  <line x1="150" y1="232" x2="558" y2="244" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="160" y="226" class="t t-s"><tspan class="t-mono t-b">Authentication</tspan> ④ Me presento (en WPA3: SAE)</text>
+  <line x1="560" y1="268" x2="152" y2="280" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="210" y="262" class="t t-s"><tspan class="t-mono t-b">Authentication</tspan> ⑤ Aceptado</text>
+  <line x1="150" y1="312" x2="558" y2="324" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="160" y="306" class="t t-s"><tspan class="t-mono t-b">Association Request</tspan> ⑥ Sé Wi-Fi 6, 2 antenas, 80 MHz</text>
+  <line x1="560" y1="348" x2="152" y2="360" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="210" y="342" class="t t-s"><tspan class="t-mono t-b">Association Response</tspan> ⑦ Asociado, eres el n.º 3</text>
+  <rect x="190.0" y="372" width="330" height="34" rx="8" class="c-enl"/><text x="355" y="386" text-anchor="middle" class="t t-xs">los dos ya tienen la clave maestra (PMK),</text><text x="355" y="399" text-anchor="middle" class="t t-xs">derivada de la contraseña</text>
+  <line x1="560" y1="436" x2="152" y2="448" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="210" y="430" class="t t-s"><tspan class="t-mono t-b">4-way</tspan> ⑧ ANonce: mi número al azar</text>
+  <line x1="150" y1="472" x2="558" y2="484" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="160" y="466" class="t t-s"><tspan class="t-mono t-b">4-way</tspan> ⑨ SNonce + MIC: el mío, y prueba de la clave</text>
+  <line x1="560" y1="508" x2="152" y2="520" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="210" y="502" class="t t-s"><tspan class="t-mono t-b">4-way</tspan> ⑩ Clave de grupo (GTK) + MIC</text>
+  <line x1="150" y1="544" x2="558" y2="556" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="160" y="538" class="t t-s"><tspan class="t-mono t-b">4-way</tspan> ⑪ Listo: todo cifrado desde aquí</text>
+  <use href="#i-candado" x="570" y="546" width="22" height="22" class="ico"/>
+  <line x1="150" y1="598" x2="558" y2="610" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="160" y="592" class="t t-s"><tspan class="t-mono t-b">DHCP Discover</tspan> ⑫ ¿Hay un servidor DHCP?</text>
+  <line x1="560" y1="634" x2="152" y2="646" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="210" y="628" class="t t-s"><tspan class="t-mono t-b">DHCP Offer</tspan> ⑬ Te ofrezco 192.168.1.23</text>
+  <line x1="150" y1="670" x2="558" y2="682" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="160" y="664" class="t t-s"><tspan class="t-mono t-b">DHCP Request</tspan> ⑭ La quiero</text>
+  <line x1="560" y1="706" x2="152" y2="718" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="210" y="700" class="t t-s"><tspan class="t-mono t-b">DHCP Ack</tspan> ⑮ Es tuya por 24 horas</text>
+  <text x="160" y="756" class="t t-s t-b">Conectado: ya puede navegar</text>
+  <g class="t t-xs t-b">
+    <path d="M680 96v100" class="ln s-enl" style="stroke-width:3"/><text x="690" y="144" class="k-enl">DESCUBRIR</text><text x="690" y="158" class="t-m">beacon y sondeo</text>
+    <path d="M680 224v140" class="ln s-enl" style="stroke-width:3"/><text x="690" y="292" class="k-enl">UNIRSE</text><text x="690" y="306" class="t-m">autenticar y asociar</text>
+    <path d="M680 428v132" class="ln s-enl" style="stroke-width:3"/><text x="690" y="492" class="k-enl">CLAVES</text><text x="690" y="506" class="t-m">de 4 pasos</text>
+    <path d="M680 590v132" class="ln s-apl" style="stroke-width:3"/><text x="690" y="654" class="k-apl">DIRECCIÓN IP</text><text x="690" y="668" class="t-m">DHCP, capítulo 8</text>
+  </g>
+  <text x="16" y="430" class="t t-xs t-m" transform="rotate(-90 16 430)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Conectarse a un Wi-Fi.</b> Arriba, el anuncio y el sondeo de la red; después, la autenticación y la asociación; luego, el saludo de cuatro pasos que fabrica las claves de cifrado (con WPA3, la autenticación usa SAE y la contraseña no puede adivinarse fuera de línea); al final, los cuatro mensajes DHCP que le dan al celular su dirección IP. Las flechas verdes son de la capa de enlace (802.11) y las rosadas, de aplicación (DHCP).</figcaption></figure></section>
+<section><h2>Seguridad: WEP, WPA2 y WPA3</h2><div class="prose"><p>La seguridad del Wi-Fi pasó por tres etapas:</p><ul><li><b>WEP</b> (1999) fue la primera y quedó rota a los pocos años: hoy se descifra en minutos. Un equipo que solo soporta WEP no debería usarse.</li><li><b>WPA2</b> (2004) usa cifrado AES y es sólida, con una debilidad: alguien que capture el saludo de cuatro pasos puede probar millones de contraseñas en su computadora, sin que el router se entere. Con una contraseña corta o de diccionario, la descubre.</li><li><b>WPA3</b> (2018) cambia el inicio por un intercambio llamado <b>SAE</b> que no deja nada que probar fuera de línea: cada intento de contraseña exige hablar con el router. Además, protege los mensajes de gestión y, si alguien descubre la contraseña después, no puede descifrar lo que grabó antes.</li></ul><p>Muchos routers usan un modo mixto WPA2/WPA3 para que los equipos viejos sigan conectando. Dos consejos que valen para cualquier cliente: una contraseña larga y desactivar el <b>WPS</b>, el botón de conexión rápida, que tiene fallas conocidas.</p></div></section>
+<section><h2>Cobertura: paredes, distancia y dónde poner el router</h2><div class="prose"><p>La señal del Wi-Fi se debilita con la distancia y con cada obstáculo. Se mide en <b>dBm</b>, un número negativo: −40 es excelente, alrededor de −65 alcanza para video y llamadas, y por debajo de −75 la conexión se vuelve lenta e inestable. Cada pared resta: una de yeso, unos 3 o 4 dB; una de ladrillo u hormigón, 10 o más; el metal (refrigeradores, espejos, ascensores) y el agua (peceras, el cuerpo humano) bloquean todavía más. Y la banda de 5 GHz pierde más que la de 2,4 con cada pared.</p><p>El problema típico es que el router queda donde entró la fibra: en una esquina, en el piso, dentro de un mueble. La regla práctica es la contraria: al <b>centro</b> de la casa, <b>en alto</b> y <b>a la vista</b>, lejos del microondas y de grandes objetos de metal. Ponlo a prueba en el plano.</p></div><div class="lab" id="25-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Mueve el router</h3></div><p class="hint">Arrastra el router por el plano (o usa los controles) y elige la banda. Los colores muestran la señal en cada punto de la casa. Mira cómo cambia la cobertura del dormitorio del fondo al llevar el router de la esquina al centro.</p><div class="btns" role="group" aria-label="Banda">
+  <button type="button" data-c25b="2.4" aria-pressed="false">2,4 GHz</button>
+  <button type="button" data-c25b="5" aria-pressed="true">5 GHz</button>
+  <button type="button" data-c25b="6" aria-pressed="false">6 GHz</button>
+</div>
+<div class="btns" role="group" aria-label="Lugares para el router">
+  <button type="button" data-c25p="0.7,8.3,1">Donde entra la fibra, dentro del mueble</button>
+  <button type="button" data-c25p="0.7,8.3,0">Donde entra la fibra, a la vista</button>
+  <button type="button" data-c25p="6.4,4.6,0">Al centro de la casa</button>
+</div>
+<canvas id="c25-plano" style="touch-action:none;cursor:grab" aria-label="Plano de la casa con la cobertura del Wi-Fi; el círculo es el router"></canvas>
+<div class="legend"><span><i style="background:var(--good)"></i>excelente</span><span><i style="background:var(--good);opacity:.45"></i>buena</span><span><i style="background:var(--c-fis)"></i>débil</span><span><i style="background:var(--warm)"></i>casi sin servicio</span><span><i style="background:var(--ink);border-radius:1px"></i>ladrillo</span><span><i style="background:var(--muted);border-radius:1px"></i>tabique</span></div>
+<div class="ctls">
+  <label class="ctl">Router: de izquierda a derecha <output id="c25-x-o"></output><input type="range" id="c25-x" min="0.3" max="11.7" step="0.1" value="0.7"></label>
+  <label class="ctl">Router: de abajo hacia arriba <output id="c25-y-o"></output><input type="range" id="c25-y" min="0.3" max="8.7" step="0.1" value="8.3"></label>
+</div>
+<div class="readout" id="c25-out" aria-live="polite"></div>
+<p class="hint" id="c25-nota" aria-live="polite"></p></div></section>
+<section><h2>Mesh, repetidores y EasyMesh</h2><div class="prose"><p>Cuando la casa es grande o tiene muchas paredes, un solo router no alcanza. Hay dos soluciones con resultados muy distintos.</p><p>Un <b>repetidor</b> escucha al router y repite lo que oye. Es barato, pero en su forma simple usa el mismo canal para hablar con el router y con los dispositivos: cada dato viaja dos veces por el aire, y la velocidad cae a la mitad o menos. Además crea una red con otro nombre o confunde a los dispositivos sobre a cuál conectarse.</p><p>Un sistema <b>mesh</b> (malla) usa varios nodos que forman una sola red con el mismo nombre, coordinados por un controlador. Los buenos sistemas mesh conectan los nodos entre sí por una banda dedicada o, mejor todavía, por cable, y deciden a qué nodo conviene conectar cada dispositivo. <b>EasyMesh</b> es la norma de la Wi-Fi Alliance que permite armar un mesh con equipos de distintas marcas, incluido el router que entrega el operador, y que el operador gestione toda la red de la casa desde sus sistemas.</p></div><figure class="fig fig-esquema" id="25-diagrama-10"><div class="lienzo"><svg viewBox="0 0 900 310" style="min-width:680px" role="img" aria-label="Repetidor frente a mesh: con un repetidor simple cada dato cruza dos veces el mismo canal y la velocidad se divide; con mesh los nodos se unen por un camino dedicado, forman una sola red y un controlador decide a qué nodo se conecta cada dispositivo">
+  <rect x="10" y="10" width="430" height="290" rx="12" class="caja"/><rect x="460" y="10" width="430" height="290" rx="12" class="caja"/>
+  <text x="225" y="34" text-anchor="middle" class="t t-xs t-b k-casa">REPETIDOR SIMPLE</text><text x="675" y="34" text-anchor="middle" class="t t-xs t-b k-casa">SISTEMA MESH</text>
+  <rect x="26" y="80" width="96" height="72" rx="10" class="caja"/><use href="#i-router" x="60" y="86" width="28" height="28" class="ico"/><text x="74" y="130" text-anchor="middle" class="t t-s t-b">Router</text><text x="74" y="144" text-anchor="middle" class="t t-xs t-m">canal 36</text>
+  <rect x="176" y="80" width="96" height="72" rx="10" class="caja"/><use href="#i-router" x="210" y="86" width="28" height="28" class="ico"/><text x="224" y="130" text-anchor="middle" class="t t-s t-b">Repetidor</text><text x="224" y="144" text-anchor="middle" class="t t-xs t-m">canal 36</text>
+  <rect x="326" y="80" width="96" height="72" rx="10" class="caja"/><use href="#i-celular" x="360" y="86" width="28" height="28" class="ico"/><text x="374" y="130" text-anchor="middle" class="t t-s t-b">Celular</text><text x="374" y="144" text-anchor="middle" class="t t-xs t-m"></text>
+  <line x1="122" y1="116" x2="172" y2="116" class="ln ln-d s-enl" style="stroke-width:2.4" marker-end="url(#fl-enl)"/><text x="147" y="106" text-anchor="middle" class="t t-s t-b">①</text>
+  <line x1="272" y1="116" x2="322" y2="116" class="ln ln-d s-enl" style="stroke-width:2.4" marker-end="url(#fl-enl)"/><text x="297" y="106" text-anchor="middle" class="t t-s t-b">②</text>
+  <text x="30" y="186" class="t t-xs t-b t-m">TIEMPO DE AIRE DEL CANAL 36</text>
+  <rect x="30" y="196" width="190" height="26" rx="5" class="c-enl"/><text x="125" y="213" text-anchor="middle" class="t t-xs">① router → repetidor</text>
+  <rect x="222" y="196" width="190" height="26" rx="5" class="c-enl" style="fill-opacity:.5"/><text x="317" y="213" text-anchor="middle" class="t t-xs">② repetidor → celular</text>
+  <text x="30" y="252" class="t t-s">El mismo dato ocupa el canal dos veces:</text><text x="30" y="268" class="t t-s t-b">la velocidad cae a la mitad o menos.</text>
+  <rect x="480" y="64" width="96" height="72" rx="10" class="caja"/><use href="#i-router" x="514" y="70" width="28" height="28" class="ico"/><text x="528" y="114" text-anchor="middle" class="t t-s t-b">Nodo principal</text><text x="528" y="128" text-anchor="middle" class="t t-xs t-m">controlador</text>
+  <rect x="770" y="64" width="96" height="72" rx="10" class="caja"/><use href="#i-router" x="804" y="70" width="28" height="28" class="ico"/><text x="818" y="114" text-anchor="middle" class="t t-s t-b">Nodo</text><text x="818" y="128" text-anchor="middle" class="t t-xs t-m">del fondo</text>
+  <line x1="576" y1="100" x2="770" y2="100" class="ln s-enl" style="stroke-width:3.4"/><text x="673" y="90" text-anchor="middle" class="t t-xs t-b k-enl">camino dedicado</text><text x="673" y="118" text-anchor="middle" class="t t-xs t-m">otra banda o un cable</text>
+  <rect x="480" y="180" width="96" height="72" rx="10" class="caja"/><use href="#i-celular" x="514" y="186" width="28" height="28" class="ico"/><text x="528" y="230" text-anchor="middle" class="t t-s t-b">Celular</text><text x="528" y="244" text-anchor="middle" class="t t-xs t-m">en la sala</text>
+  <rect x="770" y="180" width="96" height="72" rx="10" class="caja"/><use href="#i-celular" x="804" y="186" width="28" height="28" class="ico"/><text x="818" y="230" text-anchor="middle" class="t t-s t-b">Notebook</text><text x="818" y="244" text-anchor="middle" class="t t-xs t-m">en el fondo</text>
+  <line x1="528" y1="136" x2="528" y2="180" class="ln ln-d" style="stroke-width:2"/><line x1="818" y1="136" x2="818" y2="180" class="ln ln-d" style="stroke-width:2"/>
+  <text x="673" y="200" text-anchor="middle" class="t t-s t-b">Un solo nombre de red</text><text x="673" y="216" text-anchor="middle" class="t t-xs t-m">el controlador decide a qué</text><text x="673" y="229" text-anchor="middle" class="t t-xs t-m">nodo se conecta cada equipo</text>
+  <text x="673" y="284" text-anchor="middle" class="t t-xs t-m">EasyMesh: nodos de distintas marcas con un mismo controlador</text>
+</svg></div><figcaption><b>Repetidor frente a mesh.</b> Con un repetidor simple, cada dato cruza dos veces el mismo canal y la velocidad se divide. Con mesh, los nodos se unen por un camino dedicado (otra banda o un cable), forman una sola red y un controlador decide a qué nodo se conecta cada dispositivo.</figcaption></figure></section>
+<section><h2>Moverse por la casa sin cortarse (roaming 802.11k/v/r)</h2><div class="prose"><p>En el Wi-Fi, a diferencia de la red móvil, <b>el que decide cambiar de nodo es el dispositivo</b>, no la red. Y los dispositivos son tercos: muchos se aferran al primer nodo aunque ya estén lejos y haya otro al lado. Tres normas ayudan:</p><ul><li><b>802.11k</b>: el nodo le pasa al dispositivo una lista de vecinos, para que no tenga que buscar por todos los canales.</li><li><b>802.11v</b>: el nodo le <b>sugiere</b> al dispositivo que se cambie a otro mejor.</li><li><b>802.11r</b> (transición rápida): las claves se preparan de antemano, así el cambio no repite el saludo completo y dura unas decenas de milisegundos en vez de cientos. Una videollamada sobrevive al paseo por la casa.</li></ul><p>Con las tres, un mesh se parece al traspaso de la red móvil del capítulo 24, aunque la última palabra sigue siendo del dispositivo.</p></div><div class="caso"><b>Así lo hace un operador</b><p>En un operador FTTH típico, la mayoría de los reclamos de «Internet lento» terminan resolviéndose en el Wi-Fi, no en la fibra: la ONT entrega la velocidad completa, pero el router está en una esquina, el cliente se conecta en 2,4 GHz desde el otro extremo de la casa o comparte canal con veinte vecinos. Con la gestión remota del equipo (ver el capítulo 28), el agente puede ver la señal de cada dispositivo, su banda y su generación, cambiar el canal y descartar la fibra en minutos. Los operadores que pasan a entregar routers Wi-Fi 6 con mesh, gestionados de punta a punta, suelen ver menos llamadas por lentitud y menos visitas técnicas, porque la cobertura y la elección de canal se resuelven solas.</p></div><div class="ml"><b>En la práctica</b><p>Cuando un cliente dice «pagué 600 megas y me llegan 150», casi siempre es el Wi-Fi. Explicarlo ayuda: la cifra del plan se mide con cable; por Wi-Fi depende de la banda, la distancia, las paredes, los vecinos y del dispositivo. El orden práctico es medir con cable o junto al router para descartar la fibra, revisar en qué banda y con qué señal está el dispositivo, mover el router al centro, cambiar de canal y, si la casa es grande, ofrecer un mesh. Un router nuevo no ayuda si el problema es un dispositivo viejo, y un mesh sí ayuda si el problema son las paredes.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué los canales 1, 6 y 11 son los recomendados en 2,4 GHz?</summary><p>Porque son los únicos tres que no se solapan; los demás se pisan entre sí y se interfieren.</p></details><details><summary>¿Qué cambió Wi-Fi 6 con OFDMA?</summary><p>Permite atender a varios dispositivos en la misma transmisión, cada uno en una porción del canal, en vez de dar el canal completo a uno por turno.</p></details><details><summary>¿Para qué sirve el saludo de cuatro pasos?</summary><p>Para que el router y el dispositivo demuestren que conocen la contraseña sin enviarla y fabriquen una clave de cifrado nueva para esa conexión.</p></details><details><summary>¿Por qué un router «AX3000» nunca da 3.000 Mbps a un celular?</summary><p>Porque es la suma de todas sus bandas y antenas en condiciones ideales; el celular usa una banda, menos antenas, comparte el aire y pierde por distancia y paredes.</p></details><details><summary>¿Qué ventaja tiene WPA3 sobre WPA2?</summary><p>Con SAE no se puede adivinar la contraseña fuera de línea a partir de una conexión capturada, y protege los mensajes de gestión.</p></details><details><summary>¿Por qué un repetidor simple reduce la velocidad a la mitad?</summary><p>Porque usa el mismo canal para recibir del router y para retransmitir al dispositivo: cada dato viaja dos veces por el aire.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Wifi" target="_blank" rel="noopener">Wi-Fi (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/IEEE_802.11ax" target="_blank" rel="noopener">IEEE 802.11ax (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-7" target="_blank" rel="noopener">Wi-Fi CERTIFIED 7 (Wi-Fi Alliance, en inglés) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Wi-Fi_Protected_Access" target="_blank" rel="noopener">Wi-Fi Protected Access (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const L=window.Lab,$=L.$;
+  const BANDAS={
+    '2.4':{canales:[1,2,3,4,5,6,7,8,9,10,11],et:c=>String(c),
+      vec:[[1,-58],[1,-74],[3,-70],[4,-77],[6,-52],[6,-76],[8,-69],[9,-81],[11,-64],[11,-80]]},
+    '5':{canales:[36,52,100,116,132,149],et:c=>c+'–'+(c+12),
+      vec:[[36,-70],[36,-79],[52,-84],[149,-73]]}
+  };
+  const PROPIA=-50, PISO=-92, USO=0.22;
+  let banda='2.4', canal=4;
+  const dist=(a,b)=>banda==='2.4'?Math.abs(a-b):(a===b?0:99);
+  function evaluar(c){
+    const v=BANDAS[banda].vec; let co=0, interf=0, solap=0;
+    v.forEach(([cv,s])=>{
+      const d=dist(c,cv);
+      if(d===0&&s>-82)co++;
+      else if(d<5){solap++;interf+=Math.pow(10,(s+10*Math.log10((5-d)/5))/10);}
+    });
+    const ruido=10*Math.log10(Math.pow(10,PISO/10)+interf), sinr=PROPIA-ruido;
+    const aire=Math.max(0.1,1-USO*co);
+    const cal=sinr>=30?1:sinr>=10?0.2+(sinr-10)/20*0.8:sinr>=4?0.05+(sinr-4)/6*0.15:0.05;
+    return {co,solap,sinr,aire,cal,total:aire*cal};
+  }
+  function botones(){
+    const b=BANDAS[banda];
+    $('#c25c-canales').innerHTML=b.canales.map(c=>'<button type="button" data-c="'+c+'" aria-pressed="'+(c===canal)+'">'+b.et(c)+'</button>').join('');
+    $('#c25c-canales').querySelectorAll('button').forEach(x=>x.addEventListener('click',()=>{canal=+x.dataset.c;actualizar();}));
+  }
+  function dibujar(ctx,w,h){
+    const b=BANDAS[banda], F=L.frame(ctx,w,h,banda==='2.4'?{x0:2398,x1:2476,y0:-95,y1:-40,sx:10,sy:10}:{x0:0,x1:6,y0:-95,y1:-40,sx:1,sy:10});
+    const forma=(c,s,color,lw,fill)=>{
+      let a,z,a2,z2;
+      if(banda==='2.4'){const fc=2412+5*(c-1);a=fc-11;a2=fc-8;z2=fc+8;z=fc+11;}
+      else{const i=b.canales.indexOf(c);a=i+0.04;a2=i+0.1;z2=i+0.9;z=i+0.96;}
+      ctx.beginPath();ctx.moveTo(F.X(a),F.Y(-95));ctx.lineTo(F.X(a2),F.Y(s));ctx.lineTo(F.X(z2),F.Y(s));ctx.lineTo(F.X(z),F.Y(-95));
+      if(fill){ctx.globalAlpha=.18;ctx.fillStyle=color;ctx.fill();ctx.globalAlpha=1;}
+      ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.stroke();
+    };
+    F.clip();
+    b.vec.forEach(([c,s])=>forma(c,s,L.tok('--muted'),1.4,true));
+    forma(canal,PROPIA,L.tok('--accent'),3,true);
+    ctx.restore();
+    // etiquetas de canal en lugar de MHz
+    ctx.fillStyle=L.tok('--card');ctx.fillRect(0,F.p.t+F.ph+1,w,22);
+    ctx.font='11px '+L.tok('--f-mono');ctx.fillStyle=L.tok('--muted');ctx.textAlign='center';ctx.textBaseline='top';
+    if(banda==='2.4')b.canales.forEach(c=>{if(w>=520||c===1||c===6||c===11)ctx.fillText(String(c),F.X(2412+5*(c-1)),F.p.t+F.ph+5);});
+    else b.canales.forEach((c,i)=>ctx.fillText(w<520?String(c):b.et(c),F.X(i+0.5),F.p.t+F.ph+5));
+  }
+  const r=L.canvasWidget($('#c25c-cv'),w=>w<520?0.7:0.34,dibujar);
+  function actualizar(){
+    botones();r();
+    const e=evaluar(canal), et=BANDAS[banda].et(canal);
+    $('#c25c-out').innerHTML='<span>Canal '+et+': compartes turnos con <b>'+e.co+'</b> vecino(s) y se te solapan <b>'+e.solap+'</b></span>'+
+      '<span>Tiempo de aire para ti: <b class="'+(e.aire>0.7?'ok':'warn')+'">'+Math.round(e.aire*100)+' %</b> · relación señal/ruido: <b class="'+(e.sinr>=25?'ok':'warn')+'">'+Math.round(e.sinr)+' dB</b></span>'+
+      '<span>Rendimiento comparado con un canal limpio: <b class="big">'+Math.round(e.total*100)+' %</b></span>';
+    let nota;
+    if(banda==='5')nota=e.co?'Incluso compartido, en 5 GHz los canales de 80 MHz no se solapan a medias y los vecinos se oyen más débiles a través de las paredes.':'Canal limpio: en 5 GHz hay mucho más espacio y las paredes atenúan a los vecinos. Por eso conviene que los dispositivos que pueden usen esta banda.';
+    else if(e.solap&&e.sinr<20)nota='Mal lugar: los vecinos de canales cercanos no se escuchan contigo para turnarse; su señal te llega como ruido y arruina tus mensajes. Es peor que compartir un canal entero.';
+    else if(e.co)nota='Compartir el canal con vecinos es tolerable: todos se escuchan y se turnan, aunque te toca menos tiempo de aire. En 2,4 GHz los únicos canales que no se pisan son el 1, el 6 y el 11.';
+    else nota='Buen canal para este edificio.';
+    $('#c25c-nota').textContent=nota;
+  }
+  document.querySelectorAll('[data-c25cb]').forEach(b=>b.addEventListener('click',()=>{banda=b.dataset.c25cb;canal=banda==='2.4'?4:36;
+    document.querySelectorAll('[data-c25cb]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));actualizar();}));
+  $('#c25c-mejor').addEventListener('click',()=>{const cs=BANDAS[banda].canales;canal=cs.reduce((m,c)=>evaluar(c).total>evaluar(m).total?c:m,cs[0]);actualizar();});
+  actualizar();
+})();
+</script>
+<script>
+(function(){
+  const L=window.Lab,$=L.$;
+  const TURNO=0.1;               // ms que se gastan en pedir turno, preámbulo y confirmación
+  const DATO={chico:0.03,grande:1.2}; // ms de aire que ocupa el mensaje con el canal entero
+  const GRUPO=9;                 // dispositivos por transmisión OFDMA (porciones del canal)
+  const COLS=['--c-red','--c-enl','--c-tra','--c-apl','--c-fis','--accent'];
+  let tipo='chico';
+  function calcular(){
+    const n=+$('#c25o-n').value, d=DATO[tipo];
+    const w5=[];let t=0;
+    for(let i=0;i<n;i++){w5.push({i,ini:t,tur:TURNO,dat:d,y0:0,y1:1});t+=TURNO+d;}
+    const fin5=t;
+    const w6=[];t=0;
+    for(let g=0;g*GRUPO<n;g++){
+      const k=Math.min(GRUPO,n-g*GRUPO), dur=d*k;
+      for(let j=0;j<k;j++)w6.push({i:g*GRUPO+j,ini:t,tur:TURNO,dat:dur,y0:j/k,y1:(j+1)/k});
+      t+=TURNO+dur;
+    }
+    const fin6=t;
+    const prom=a=>a.reduce((s,b)=>s+b.ini+b.tur+b.dat,0)/a.length;
+    return {n,w5,w6,fin5,fin6,esp5:prom(w5),esp6:prom(w6)};
+  }
+  function dibujar(ctx,w,h){
+    const m=calcular(); ctx.clearRect(0,0,w,h);
+    const pl=w<520?54:78, pr=10, tmax=Math.max(m.fin5,m.fin6)*1.02, X=t=>pl+t/tmax*(w-pl-pr);
+    const filas=[{n:'Wi-Fi 5',s:'por turnos',b:m.w5,y:14},{n:'Wi-Fi 6',s:'OFDMA',b:m.w6,y:h/2+4}], alto=h/2-34;
+    ctx.font='700 13px '+L.tok('--f-display');ctx.textAlign='left';ctx.textBaseline='middle';
+    filas.forEach(f=>{
+      ctx.fillStyle=L.tok('--ink');ctx.font='700 '+(w<520?11:13)+'px '+L.tok('--f-display');ctx.fillText(f.n,4,f.y+alto/2-8);
+      ctx.fillStyle=L.tok('--muted');ctx.font='500 '+(w<520?10:11)+'px '+L.tok('--f-display');ctx.fillText(f.s,4,f.y+alto/2+8);
+      ctx.strokeStyle=L.tok('--line');ctx.strokeRect(pl,f.y,w-pl-pr,alto);
+      f.b.forEach(b=>{
+        const x0=X(b.ini),x1=X(b.ini+b.tur),x2=X(b.ini+b.tur+b.dat);
+        if(b.y0===0){ctx.fillStyle=L.tok('--line');ctx.fillRect(x0,f.y,Math.max(1,x1-x0),alto);}
+        ctx.fillStyle=L.tok(COLS[b.i%COLS.length]);
+        ctx.fillRect(x1,f.y+b.y0*alto+0.5,Math.max(1,x2-x1-0.6),(b.y1-b.y0)*alto-1);
+      });
+    });
+    // eje de tiempo
+    ctx.font='11px '+L.tok('--f-mono');ctx.fillStyle=L.tok('--muted');ctx.textAlign='center';ctx.textBaseline='top';
+    const pasos=[0.1,0.2,0.5,1,2,5,10,20],paso=pasos.find(p=>p/tmax*(w-pl-pr)>=60)||50;
+    for(let t=0;t<=tmax;t+=paso)ctx.fillText(L.short(t)+' ms',Math.max(pl+12,Math.min(w-pr-18,X(t))),h-16);
+    ctx.fillStyle=L.tok('--muted');ctx.textAlign='left';ctx.font='500 11px '+L.tok('--f-display');
+    ctx.fillText('↕ frecuencia (el canal)   → tiempo',pl,h/2-16);
+  }
+  const r=L.canvasWidget($('#c25o-cv'),w=>w<520?0.85:0.42,dibujar);
+  function texto(){
+    const m=calcular(), f=n=>L.fmt(n,n<10?2:1).replace('.',',');
+    $('#c25o-out').innerHTML='<span>Wi-Fi 5 atiende a los '+m.n+' en <b class="warn">'+f(m.fin5)+' ms</b> · espera promedio '+f(m.esp5)+' ms</span>'+
+      '<span>Wi-Fi 6 atiende a los '+m.n+' en <b class="ok">'+f(m.fin6)+' ms</b> · espera promedio '+f(m.esp6)+' ms</span>'+
+      '<span>Tiempo perdido en pedir turno: Wi-Fi 5 '+Math.round(m.n*TURNO/m.fin5*100)+' % · Wi-Fi 6 '+Math.round(Math.ceil(m.n/GRUPO)*TURNO/m.fin6*100)+' %</span>';
+    $('#c25o-nota').textContent=tipo==='chico'
+      ?'Con mensajes pequeños, Wi-Fi 5 gasta casi todo el tiempo en pedir turno: cada dispositivo ocupa el canal entero para decir muy poco. Wi-Fi 6 junta hasta '+GRUPO+' dispositivos en una sola transmisión, cada uno en su porción del canal, y paga el turno una sola vez. La casa espera mucho menos.'
+      :'Con descargas grandes la ganancia casi desaparece: los datos ocupan mucho más tiempo que los turnos, y repartir el canal en porciones no lo hace más ancho. OFDMA no aumenta la velocidad máxima: reduce la espera cuando hay muchos dispositivos con poco que decir.';
+  }
+  L.bindOut('#c25o-n',v=>String(v));
+  $('#c25o-n').addEventListener('input',()=>{r();texto();});
+  document.querySelectorAll('[data-c25o]').forEach(b=>b.addEventListener('click',()=>{tipo=b.dataset.c25o;document.querySelectorAll('[data-c25o]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));r();texto();}));
+  texto();
+})();
+</script>
+<script>
+(function(){
+  const $=window.Lab.$;
+  // velocidad por flujo espacial (Mbps) según ancho de canal, con la mejor modulación de cada norma
+  const G=[
+    {k:'4',n:'Wi-Fi 4',std:'802.11n',ano:2009,bandas:'2,4 y 5 GHz',max:'40 MHz',tec:'MIMO (hasta 4 flujos), 64-QAM',norma:600,q:'64-QAM',ss:{20:72.2,40:150}},
+    {k:'5',n:'Wi-Fi 5',std:'802.11ac',ano:2013,bandas:'5 GHz',max:'160 MHz',tec:'canales anchos, 256-QAM, MU-MIMO de bajada',norma:6933,q:'256-QAM',ss:{20:86.7,40:200,80:433.3,160:866.7}},
+    {k:'6',n:'Wi-Fi 6',std:'802.11ax',ano:2019,bandas:'2,4 y 5 GHz',max:'160 MHz',tec:'OFDMA, MU-MIMO de bajada y de subida, 1024-QAM, coloreado, TWT',norma:9608,q:'1024-QAM',ss:{20:143.4,40:286.8,80:600.5,160:1201}},
+    {k:'6E',n:'Wi-Fi 6E',std:'802.11ax',ano:2021,bandas:'2,4, 5 y 6 GHz',max:'160 MHz',tec:'lo mismo que Wi-Fi 6 en la banda nueva de 6 GHz',norma:9608,q:'1024-QAM',ss:{20:143.4,40:286.8,80:600.5,160:1201}},
+    {k:'7',n:'Wi-Fi 7',std:'802.11be',ano:2024,bandas:'2,4, 5 y 6 GHz',max:'320 MHz',tec:'canales de 320 MHz, 4096-QAM, MLO (varias bandas a la vez)',norma:46120,q:'4096-QAM',ss:{20:172.1,40:344.1,80:720.6,160:1441,320:2882}}
+  ];
+  const miles=n=>Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  const vel=m=>m>=1000?(m/1000).toFixed(m>=10000?0:1).replace('.',',')+' Gbps':miles(m)+' Mbps';
+  let gen=G[2];
+  $('#c25g-gen').innerHTML=G.map(g=>'<button type="button" data-g="'+g.k+'" aria-pressed="false">'+g.n+'</button>').join('');
+  $('#c25g-tabla').innerHTML=G.map(g=>'<tr data-g="'+g.k+'"><td><b>'+g.n+'</b><br><small>'+g.std+'</small></td><td>'+g.ano+'</td><td>'+g.bandas+'</td><td>'+g.max+'</td><td>'+g.tec+'</td></tr>').join('');
+  function canales(){
+    const tip={'4':40,'5':80,'6':80,'6E':160,'7':320}[gen.k], prev=+$('#c25g-canal').value;
+    const op=Object.keys(gen.ss).map(Number);
+    const elegido=op.includes(prev)?prev:tip;
+    $('#c25g-canal').innerHTML=op.map(c=>'<option value="'+c+'"'+(c===elegido?' selected':'')+'>'+c+' MHz</option>').join('');
+  }
+  function calcular(){
+    const c=+$('#c25g-canal').value, a=+$('#c25g-ant').value, lugar=+$('#c25g-lugar').value;
+    const phy=gen.ss[c]*a*lugar, real=phy*0.65;
+    $('#c25g-max').textContent=vel(gen.norma);
+    $('#c25g-maxd').textContent=(gen.k==='4'?'4':'8')+' flujos, canal máximo, '+gen.q;
+    $('#c25g-phy').textContent=vel(phy);
+    $('#c25g-real').textContent='≈ '+vel(real);
+    let nota='Tu dispositivo usa '+a+' de los '+(gen.k==='4'?4:8)+' flujos posibles y un canal de '+c+' MHz. ';
+    if(lugar<1)nota+='Con paredes de por medio la radio baja a modulaciones más simples y lentas. ';
+    nota+='De la velocidad de radio, a la aplicación llega alrededor del 65 %: el resto se va en turnos, confirmaciones y cabeceras.';
+    if(c>=160&&gen.k!=='7'&&gen.k!=='6E')nota+=' Ojo: en 5 GHz casi nunca hay espacio libre para un canal de 160 MHz.';
+    if(real>900)nota+=' A esta velocidad, el límite pasa a ser el plan de fibra.';
+    $('#c25g-nota').textContent=nota;
+    document.querySelectorAll('#c25g-tabla tr').forEach(tr=>tr.classList.toggle('sel',tr.dataset.g===gen.k));
+    document.querySelectorAll('#c25g-gen button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.g===gen.k?'true':'false'));
+  }
+  document.querySelectorAll('#c25g-gen button').forEach(b=>b.addEventListener('click',()=>{gen=G.find(g=>g.k===b.dataset.g);canales();calcular();}));
+  ['#c25g-canal','#c25g-ant','#c25g-lugar'].forEach(s=>$(s).addEventListener('change',calcular));
+  canales();calcular();
+})();
+</script>
+<script>
+(function(){
+  const L=window.Lab,$=L.$;
+  const AN=12, AL=9;
+  // paredes: [x1,y1,x2,y2,tipo]  tipo: t tabique, l ladrillo, m metal
+  const P=[[0,0,12,0,'l'],[12,0,12,9,'l'],[12,9,0,9,'l'],[0,9,0,0,'l'],
+    [0,4,2,4,'t'],[3,4,7,4,'t'],[5,0,5,1.6,'t'],[5,2.6,5,4,'t'],
+    [7,0,7,4.1,'l'],[7,5.1,7,6.4,'l'],[7,7.4,7,9,'l'],
+    [7,5,8,5,'t'],[9,5,12,5,'t'],
+    [11,7.9,11.7,7.9,'m'],[11,7.9,11,8.7,'m']];
+  const PERD={t:{2.4:3,5:5,6:6},l:{2.4:9,5:14,6:16},m:{2.4:18,5:22,6:24}};
+  const L1={2.4:40,5:46.4,6:47.9}, BASE={2.4:287,5:1201,6:2402};
+  const SALAS=[['Sala y comedor',3,6.6],['Cocina',9.5,7.2],['Dormitorio',2.4,2],['Baño',6,2.6],['Dormitorio del fondo',9.5,2.4]];
+  const FONDO=[10.5,1.6];
+  let banda=5, mueble=1;
+  function cruza(ax,ay,bx,by,cx,cy,dx,dy){
+    const d=(bx-ax)*(dy-cy)-(by-ay)*(dx-cx); if(Math.abs(d)<1e-9)return false;
+    const u=((cx-ax)*(dy-cy)-(cy-ay)*(dx-cx))/d, v=((cx-ax)*(by-ay)-(cy-ay)*(bx-ax))/d;
+    return u>0&&u<1&&v>0&&v<1;
+  }
+  function rssi(x,y){
+    const rx=+$('#c25-x').value, ry=+$('#c25-y').value, d=Math.max(0.5,Math.hypot(x-rx,y-ry));
+    let s=20-L1[banda]-28*Math.log10(d)-(mueble?6:0);
+    for(const w of P) if(cruza(rx,ry,x,y,w[0],w[1],w[2],w[3])) s-=PERD[w[4]][banda];
+    return s;
+  }
+  const frac=s=>s>=-55?1:s>=-65?0.6+(s+65)/10*0.4:s>=-72?0.3+(s+72)/7*0.3:s>=-80?(s+80)/8*0.3:0;
+  function dibujar(ctx,w,h){
+    ctx.clearRect(0,0,w,h);
+    const m=8, k=Math.min((w-2*m)/AN,(h-2*m)/AL), ox=(w-AN*k)/2, oy=(h-AL*k)/2;
+    const X=x=>ox+x*k, Y=y=>oy+(AL-y)*k;
+    const col={ex:L.tok('--good'),fi:L.tok('--c-fis'),ma:L.tok('--warm')};
+    const paso=w<520?0.3:0.2; let buenas=0,total=0;
+    for(let x=paso/2;x<AN;x+=paso)for(let y=paso/2;y<AL;y+=paso){
+      const s=rssi(x,y); total++; if(s>=-67)buenas++;
+      ctx.globalAlpha=s>=-60?.55:s>=-67?.25:s>=-75?.45:.4;
+      ctx.fillStyle=s>=-67?col.ex:s>=-75?col.fi:col.ma;
+      const xa=Math.round(X(x-paso/2)),xb=Math.round(X(x+paso/2)),ya=Math.round(Y(y+paso/2)),yb=Math.round(Y(y-paso/2));
+      ctx.fillRect(xa,ya,xb-xa,yb-ya);
+    }
+    ctx.globalAlpha=1;
+    for(const p of P){ctx.strokeStyle=p[4]==='t'?L.tok('--muted'):L.tok('--ink');ctx.lineWidth=p[4]==='t'?2:p[4]==='m'?5:4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(X(p[0]),Y(p[1]));ctx.lineTo(X(p[2]),Y(p[3]));ctx.stroke();}
+    ctx.font='600 '+(w<520?10:12)+'px '+L.tok('--f-display');ctx.fillStyle=L.tok('--ink');ctx.textAlign='center';ctx.textBaseline='middle';
+    SALAS.forEach(s=>ctx.fillText(s[0],X(s[1]),Y(s[2])));
+    ctx.fillText(w<520?'heladera':'refrigerador',X(9.9),Y(8.3));
+    const rx=+$('#c25-x').value, ry=+$('#c25-y').value;
+    ctx.fillStyle=L.tok('--accent');ctx.beginPath();ctx.arc(X(rx),Y(ry),w<520?8:10,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle=L.tok('--card');ctx.lineWidth=2;ctx.stroke();
+    ctx.strokeStyle=L.tok('--ink');ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(X(FONDO[0]),Y(FONDO[1]),5,0,Math.PI*2);ctx.stroke();
+    geo={X,Y,k,ox,oy};
+    return buenas/total;
+  }
+  let geo=null, cubierto=0;
+  const r=L.canvasWidget($('#c25-plano'),w=>w<520?0.78:0.72,(ctx,w,h)=>{cubierto=dibujar(ctx,w,h);});
+  function texto(){
+    const s=rssi(FONDO[0],FONDO[1]), real=BASE[banda]*frac(s)*0.65;
+    const cal=s>=-60?'excelente':s>=-67?'buena':s>=-75?'débil':'casi sin servicio';
+    $('#c25-out').innerHTML='<span>Casa con señal buena o mejor: <b class="big">'+Math.round(cubierto*100)+' %</b></span>'+
+      '<span>Dormitorio del fondo (el círculo vacío): <b class="'+(s>=-67?'ok':'warn')+'">'+Math.round(s)+' dBm, '+cal+'</b></span>'+
+      '<span>Velocidad esperable ahí con un celular Wi-Fi 6: <b>'+(real<5?'menos de 5':'≈ '+Math.round(real/10)*10)+' Mbps</b></span>';
+    let nota;
+    if(mueble)nota='El mueble le quita unos 6 dB a la señal en todas direcciones. Sácalo a la vista. ';
+    else nota='';
+    if(banda===2.4)nota+='La banda de 2,4 GHz llega más lejos y atraviesa mejor las paredes, pero su velocidad máxima es mucho menor y la comparte con los vecinos.';
+    else if(s<-72)nota+='En '+String(banda).replace('.',',')+' GHz cada pared de ladrillo resta '+PERD.l[banda]+' dB. Acercar el router al centro, o sumar un nodo mesh, es lo que resuelve el fondo de la casa.';
+    else nota+='Desde aquí la señal llega bien a casi toda la casa: en '+String(banda).replace('.',',')+' GHz eso significa mucha velocidad.';
+    $('#c25-nota').textContent=nota;
+  }
+  function todo(){r();texto();}
+  L.bindOut('#c25-x',v=>L.fmt(v,1).replace('.',',')+' m');L.bindOut('#c25-y',v=>L.fmt(v,1).replace('.',',')+' m');
+  let preset=false;
+  ['#c25-x','#c25-y'].forEach(id=>$(id).addEventListener('input',()=>{if(!preset)mueble=0;todo();}));
+  document.querySelectorAll('[data-c25b]').forEach(b=>b.addEventListener('click',()=>{banda=+b.dataset.c25b;document.querySelectorAll('[data-c25b]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));todo();}));
+  document.querySelectorAll('[data-c25p]').forEach(b=>b.addEventListener('click',()=>{const [x,y,mu]=b.dataset.c25p.split(',');mueble=+mu;preset=true;$('#c25-x').value=x;$('#c25-y').value=y;['#c25-x','#c25-y'].forEach(id=>$(id).dispatchEvent(new Event('input')));preset=false;}));
+  const cv=$('#c25-plano'); let arr=false;
+  function mover(e){if(!geo)return;const b=cv.getBoundingClientRect();const x=(e.clientX-b.left-geo.ox)/geo.k, y=9-(e.clientY-b.top-geo.oy)/geo.k;
+    $('#c25-x').value=Math.max(0.3,Math.min(11.7,x)).toFixed(1);$('#c25-y').value=Math.max(0.3,Math.min(8.7,y)).toFixed(1);mueble=0;
+    ['#c25-x','#c25-y'].forEach(id=>$(id).dispatchEvent(new Event('input')));}
+  cv.addEventListener('pointerdown',e=>{arr=true;cv.setPointerCapture(e.pointerId);mover(e);});
+  cv.addEventListener('pointermove',e=>{if(arr)mover(e);});
+  cv.addEventListener('pointerup',()=>{arr=false;});
+  todo();
+})();
+</script>
+</body>
+</html>

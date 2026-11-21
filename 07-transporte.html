@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Transporte · Cómo funciona un telco</title>
+<meta name="description" content="Una vez que el paquete llega a la máquina correcta, el puerto dice a qué programa va, y el protocolo de transporte decide si se garantiza la entrega (TCP) o se prioriza la rapidez (UDP).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="07-transporte">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 07 DE 49</span><h1>Transporte: TCP, UDP y puertos</h1><p class="lede">Una vez que el paquete llega a la máquina correcta, el puerto dice a qué programa va, y el protocolo de transporte decide si se garantiza la entrega (TCP) o se prioriza la rapidez (UDP).</p></header>
+<section><div class="prose"><p>En los capítulos anteriores vimos cómo un paquete encuentra el camino hasta la máquina correcta: la dirección IP lo lleva de una red a otra y los routers deciden por dónde. Pero llegar a la máquina no basta. En tu celular conviven a la vez el navegador, el WhatsApp, el correo, una llamada y la actualización de una app. Cuando llega un paquete, ¿a cuál de todos le toca?</p><p>Y hay una segunda pregunta. La red de paquetes no promete nada: un paquete se puede perder en un router congestionado, llegar dos veces o llegar después que otro que salió más tarde. ¿Quién se ocupa de eso? Las dos respuestas viven en la <b>capa de transporte</b>, el tema de este capítulo.</p></div><div class="analogia"><b>Imagínalo así</b><p>La dirección IP es la dirección del edificio; el <b>puerto</b> es el número de apartamento. El cartero solo necesita la dirección para llegar, pero sin el apartamento la carta no encuentra a su dueño. Y una vez en el edificio hay dos formas de mandar: la <b>carta certificada con acuse de recibo</b> (TCP), que tarda un poco más pero te avisa si se perdió y la vuelve a mandar, y la <b>postal</b> (UDP), que sale de inmediato, sin trámites, y si se pierde nadie se entera.</p></div><figure class="fig fig-capas" id="07-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la capa de transporte, que solo trabaja en los extremos (y en el NAT del router)">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class=""><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class=""><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class="apagado"><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class="apagado"><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class="apagado"><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la capa de transporte, que solo trabaja en los extremos (y en el NAT del router)</text>
+</svg></div><figcaption><b>Dónde estamos.</b> El transporte es la capa que solo miran los extremos: el celular y el servidor. Los routers del operador no la necesitan para mover paquetes. La única excepción en el camino es el router de la casa, que lee y cambia los puertos para hacer NAT.</figcaption></figure></section>
+<section><h2>Puertos: muchas conversaciones en una sola máquina</h2><div class="prose"><p>Un <b>puerto</b> es un número entre 0 y 65.535 que identifica a un programa dentro de una máquina. Cada paquete de transporte lleva dos: el <b>puerto de origen</b> (quién manda) y el <b>puerto de destino</b> (a quién va).</p><p>Los servidores esperan en números conocidos por todos, como una oficina pública que siempre atiende en la misma ventanilla. Un servidor web espera en el 443 (o en el 80, si no usa candado); un servidor de nombres, en el 53. El lado del cliente, en cambio, usa un número cualquiera que el sistema elige en el momento, casi siempre por encima de 49.152, y que dura lo que dura la conversación. Por eso tu celular puede tener diez pestañas abiertas con el mismo sitio: cada una usa un puerto de origen distinto y las respuestas no se mezclan.</p><p>Una conversación queda identificada por cinco datos: IP de origen, puerto de origen, IP de destino, puerto de destino y protocolo (TCP o UDP). A eso se le llama la <b>quíntupla</b>, y es lo que miran el router de la casa, los cortafuegos y los equipos que miden el tráfico.</p><div class="tbl"><table><thead><tr><th>Puerto</th><th>Protocolo</th><th>Para qué</th><th>Capítulo</th></tr></thead><tbody><tr><td>53</td><td>UDP y TCP</td><td>DNS, la guía de nombres</td><td>8</td></tr><tr><td>67 y 68</td><td>UDP</td><td>DHCP, pedir dirección al conectarse</td><td>8</td></tr><tr><td>123</td><td>UDP</td><td>NTP, la hora</td><td>8</td></tr><tr><td>80 y 443</td><td>TCP (443 también UDP)</td><td>La web, sin y con candado</td><td>9</td></tr><tr><td>25, 587, 993</td><td>TCP</td><td>Correo: envío y lectura</td><td>10</td></tr><tr><td>22</td><td>TCP</td><td>SSH, administrar equipos a distancia</td><td>10</td></tr><tr><td>5060</td><td>UDP y TCP</td><td>SIP, la señalización de la telefonía</td><td>22</td></tr></tbody></table></div><h3>El router de la casa y los puertos</h3><p>Hay un detalle que explica muchas cosas. Dentro de la casa, todos los equipos tienen direcciones privadas (<code>192.168.1.10</code>, <code>192.168.1.11</code>…), pero hacia Internet sale una sola dirección: la del router. Para que eso funcione, el router hace <b>NAT</b> (traducción de direcciones, que el capítulo 5 explica): cambia la dirección y el <b>puerto de origen</b> de cada paquete que sale, y anota el cambio en una tabla para saber a quién devolverle la respuesta.</p></div><figure class="fig fig-esquema" id="07-diagrama-7"><div class="lienzo"><svg viewBox="0 0 880 340" style="min-width:700px" role="img" aria-label="Puertos y NAT: en la casa, el navegador del celular usa el puerto 51000, la mensajería el 51200 y el navegador del computador también el 51000; el router los traduce a los puertos 40001, 40002 y 40003 de su dirección pública 198.51.100.7, que es lo único que ven los servidores en Internet">
+  
+  <rect x="10" y="10" width="290" height="320" rx="12" class="d-casa"/>
+  <text x="155" y="32" text-anchor="middle" class="t t-xs t-b k-casa">CASA · DIRECCIONES PRIVADAS</text>
+  <rect x="24" y="50" width="262" height="128" rx="10" class="caja"/>
+  <use href="#i-celular" x="34" y="58" width="30" height="30" class="ico"/>
+  <text x="70" y="72" class="t t-b">Celular</text><text x="70" y="88" class="t t-s t-mono t-m">192.168.1.10</text>
+  <rect x="40" y="104" width="230" height="26" rx="6" class="c-apl"/><text x="50" y="121" class="t t-s t-b">Navegador</text><text x="260" y="121" text-anchor="end" class="t t-s t-mono">puerto 51000</text>
+  <rect x="40" y="138" width="230" height="26" rx="6" class="c-apl"/><text x="50" y="155" class="t t-s t-b">Mensajería</text><text x="260" y="155" text-anchor="end" class="t t-s t-mono">puerto 51200</text>
+  <rect x="24" y="196" width="262" height="96" rx="10" class="caja"/>
+  <use href="#i-monitor" x="34" y="204" width="30" height="30" class="ico"/>
+  <text x="70" y="218" class="t t-b">Computador</text><text x="70" y="234" class="t t-s t-mono t-m">192.168.1.11</text>
+  <rect x="40" y="250" width="230" height="26" rx="6" class="c-apl"/><text x="50" y="267" class="t t-s t-b">Navegador</text><text x="260" y="267" text-anchor="end" class="t t-s t-mono">puerto 51000</text>
+
+  
+  <rect x="320" y="40" width="300" height="270" rx="12" class="caja"/>
+  <use href="#i-router" x="332" y="48" width="30" height="30" class="ico"/>
+  <text x="370" y="64" class="t t-b">Router de la casa</text><text x="370" y="80" class="t t-s t-m">tabla NAT</text>
+  <text x="340" y="98" class="t t-xs t-b t-m">ADENTRO</text><text x="482" y="98" class="t t-xs t-b t-m">AFUERA</text>
+  <rect x="332" y="104" width="276" height="26" rx="6" class="c-tra"/><text x="340" y="121" class="t t-s t-mono">192.168.1.10:51000</text><text x="465" y="121" class="t t-s">→</text><text x="482" y="121" class="t t-s t-mono t-b">198.51.100.7:40001</text>
+  <rect x="332" y="138" width="276" height="26" rx="6" class="c-tra"/><text x="340" y="155" class="t t-s t-mono">192.168.1.10:51200</text><text x="465" y="155" class="t t-s">→</text><text x="482" y="155" class="t t-s t-mono t-b">198.51.100.7:40002</text>
+  <rect x="332" y="250" width="276" height="26" rx="6" class="c-tra"/><text x="340" y="267" class="t t-s t-mono">192.168.1.11:51000</text><text x="465" y="267" class="t t-s">→</text><text x="482" y="267" class="t t-s t-mono t-b">198.51.100.7:40003</text>
+  <text x="470" y="200" text-anchor="middle" class="t t-s t-m">Dos equipos usan el 51000:</text>
+  <text x="470" y="216" text-anchor="middle" class="t t-s t-m">afuera quedan separados</text>
+  <text x="470" y="298" text-anchor="middle" class="t t-s">↩ Llega algo al 40001: la tabla dice «celular, 51000»</text>
+
+  
+  <line x1="270" y1="117" x2="330" y2="117" class="ln s-tra" marker-end="url(#fl-tra)"/>
+  <line x1="270" y1="151" x2="330" y2="151" class="ln s-tra" marker-end="url(#fl-tra)"/>
+  <line x1="270" y1="263" x2="330" y2="263" class="ln s-tra" marker-end="url(#fl-tra)"/>
+
+  
+  <rect x="640" y="10" width="230" height="320" rx="12" class="d-inet"/>
+  <text x="755" y="32" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <text x="755" y="48" text-anchor="middle" class="t t-s t-m">solo ven 198.51.100.7</text>
+  <rect x="656" y="84" width="200" height="66" rx="10" class="caja"/>
+  <use href="#i-servidor" x="666" y="94" width="30" height="30" class="ico"/>
+  <text x="704" y="108" class="t t-s t-b">www.ejemplo.com</text><text x="704" y="126" class="t t-s t-mono t-m">203.0.113.10:443</text>
+  <rect x="656" y="214" width="200" height="66" rx="10" class="caja"/>
+  <use href="#i-servidor" x="666" y="224" width="30" height="30" class="ico"/>
+  <text x="704" y="238" class="t t-s t-b">Mensajería</text><text x="704" y="256" class="t t-s t-mono t-m">203.0.113.20:443</text>
+  <line x1="610" y1="117" x2="654" y2="117" class="ln s-tra" marker-end="url(#fl-tra)"/>
+  <path d="M610 151 C630 151 630 240 654 240" class="ln s-tra" marker-end="url(#fl-tra)"/>
+  <path d="M610 263 C632 263 632 136 654 136" class="ln s-tra" marker-end="url(#fl-tra)"/>
+</svg></div><figcaption><b>Puertos y NAT en el router de la casa.</b> A la izquierda, tres programas de dos equipos de la casa, cada uno con su puerto. En el centro, la tabla del router: cada conversación que sale recibe un puerto propio en la dirección pública <code>198.51.100.7</code>. A la derecha, los servidores solo ven esa dirección pública. Cuando llega una respuesta al puerto 40001, el router busca en la tabla y sabe que es para el navegador del celular.</figcaption></figure><div class="prose"><p>De ahí sale la famosa frase «<b>abrir un puerto</b>». La tabla del router solo tiene entradas para conversaciones que empezaron desde adentro. Si alguien de afuera intenta iniciar una conversación, por ejemplo para ver una cámara de seguridad de la casa, el router no sabe a quién entregársela y la descarta. Abrir (o «redirigir») un puerto es escribir a mano una entrada fija: «todo lo que llegue al puerto 8080 mándalo a la cámara en <code>192.168.1.50</code>». Funciona, pero también deja esa puerta abierta para cualquiera, por eso conviene hacerlo con cuidado.</p></div></section>
+<section><h2>TCP: el saludo de tres pasos, el acuse y el reenvío</h2><div class="prose"><p><b>TCP</b> (protocolo de control de transmisión) es la carta certificada de Internet. Promete tres cosas: que todo lo que mandes <b>llega</b>, que llega <b>en orden</b> y que llega <b>sin errores</b>. Si un pedazo se pierde, TCP lo vuelve a mandar sin que el programa se entere. La web, el correo, las apps de banco y las descargas usan TCP, porque una página o un archivo con un pedazo faltante no sirven.</p><p>Para cumplir esa promesa, TCP hace tres cosas que la red no hace.</p><p><b>1. Saluda antes de hablar.</b> Antes de mandar datos, los dos extremos se ponen de acuerdo con el <b>saludo de tres pasos</b>:</p><ol class="steps"><li><span>El cliente manda un <b>SYN</b> («¿hablamos?, yo empiezo a contar desde este número»).</span></li><li><span>El servidor responde <b>SYN-ACK</b> («sí, recibí tu número, yo empiezo a contar desde este otro»).</span></li><li><span>El cliente confirma con un <b>ACK</b> («recibido, empecemos»).</span></li></ol><p>Ese saludo cuesta una ida y vuelta completa antes del primer byte útil. Desde un celular a un servidor en el mismo país eso son unos 20 milisegundos; a otro continente, más de 150.</p><p><b>2. Numera y acusa recibo.</b> TCP numera cada byte que manda (el <b>número de secuencia</b>). El que recibe contesta con un <b>acuse</b> (ACK) que dice «ya tengo todo hasta el byte tal, mándame el siguiente». Si el que envía no recibe el acuse a tiempo, supone que algo se perdió y lo <b>reenvía</b>. Si al que recibe le llegan pedazos desordenados, los guarda y los acomoda antes de pasárselos al programa.</p><p><b>3. Cierra con cortesía.</b> Al terminar, cada lado manda un <b>FIN</b> y espera el ACK del otro. Así ninguno cuelga dejando datos en el aire.</p></div><figure class="fig fig-flujo" id="07-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 680" style="min-width:660px" role="img" aria-label="Flujo TCP: saludo de tres pasos SYN, SYN-ACK y ACK; el celular pide una foto y el servidor manda tres segmentos, el segundo se pierde; el celular repite el acuse 1001, el servidor reenvía el segmento perdido y recibe el acuse 3001; cierre con FIN y ACK en cada sentido">
+  
+  <rect x="60" y="14" width="140" height="56" rx="10" class="caja"/><use href="#i-celular" x="72" y="26" width="32" height="32" class="ico"/><text x="112" y="40" class="t t-b">Celular</text><text x="112" y="57" class="t t-s t-m">puerto 51000</text>
+  <rect x="570" y="14" width="150" height="56" rx="10" class="caja"/><use href="#i-servidor" x="582" y="26" width="32" height="32" class="ico"/><text x="622" y="40" class="t t-b">Servidor</text><text x="622" y="57" class="t t-s t-m">puerto 443</text>
+  <line x1="130" y1="70" x2="130" y2="660" class="vida"/>
+  <line x1="645" y1="70" x2="645" y2="660" class="vida"/>
+
+  
+  <line x1="130" y1="104" x2="643" y2="118" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="140" y="98" class="t t-s"><tspan class="t-mono t-b">SYN</tspan> ① ¿Hablamos? Cuento desde 0</text>
+  <line x1="645" y1="140" x2="132" y2="154" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="635" y="134" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">SYN-ACK</tspan> ② Sí; yo cuento desde 0</text>
+  <line x1="130" y1="176" x2="643" y2="190" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="140" y="170" class="t t-s"><tspan class="t-mono t-b">ACK</tspan> ③ Listo, empecemos</text>
+
+  
+  <line x1="130" y1="226" x2="643" y2="240" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="140" y="220" class="t t-s"><tspan class="t-mono t-b">GET /foto</tspan> ④ Mándame la foto</text>
+  <line x1="645" y1="262" x2="132" y2="276" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="635" y="256" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">bytes 1–1000</tspan> ⑤</text>
+  <line x1="645" y1="294" x2="400" y2="301" class="ln s-apl ln-d" style="stroke-width:2"/>
+  <text x="635" y="288" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">bytes 1001–2000</tspan> ⑥</text>
+  <text x="386" y="307" text-anchor="middle" class="t t-b k-apl" style="font-size:18px">✕</text>
+  <text x="372" y="306" text-anchor="end" class="t t-s t-m">se pierde en un router lleno</text>
+  <line x1="645" y1="326" x2="132" y2="340" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="635" y="320" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">bytes 2001–3000</tspan> ⑦</text>
+
+  
+  <line x1="130" y1="366" x2="643" y2="380" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="140" y="360" class="t t-s"><tspan class="t-mono t-b">ACK 1001</tspan> ⑧ Tengo hasta el 1.000</text>
+  <line x1="130" y1="400" x2="643" y2="414" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="140" y="394" class="t t-s"><tspan class="t-mono t-b">ACK 1001</tspan> ⑨ Otra vez: me falta el 1.001 (tengo 2001–3000)</text>
+  <line x1="645" y1="436" x2="132" y2="450" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+  <text x="635" y="430" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">bytes 1001–2000</tspan> ⑩ Reenvío solo lo que faltó</text>
+  <line x1="130" y1="472" x2="643" y2="486" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="140" y="466" class="t t-s"><tspan class="t-mono t-b">ACK 3001</tspan> ⑪ Tengo todo, en orden</text>
+  <text x="140" y="502" class="t t-s t-b">La foto completa pasa al navegador</text>
+
+  
+  <line x1="130" y1="530" x2="643" y2="544" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="140" y="524" class="t t-s"><tspan class="t-mono t-b">FIN</tspan> ⑫ Terminé</text>
+  <line x1="645" y1="564" x2="132" y2="578" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="635" y="558" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">ACK</tspan> ⑬ Entendido</text>
+  <line x1="645" y1="598" x2="132" y2="612" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="635" y="592" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">FIN</tspan> ⑭ Yo también terminé</text>
+  <line x1="130" y1="632" x2="643" y2="646" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="140" y="626" class="t t-s"><tspan class="t-mono t-b">ACK</tspan> ⑮ Adiós</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M760 98v94" class="ln s-tra" style="stroke-width:3"/><text x="770" y="138" class="k-tra">SALUDO</text><text x="770" y="152" class="t-m">1 ida y vuelta</text>
+    <path d="M760 216v126" class="ln s-apl" style="stroke-width:3"/><text x="770" y="272" class="k-apl">DATOS</text><text x="770" y="286" class="t-m">pedido y</text><text x="770" y="300" class="t-m">respuesta</text>
+    <path d="M760 356v134" class="ln s-tra" style="stroke-width:3"/><text x="770" y="412" class="k-tra">REENVÍO</text><text x="770" y="426" class="t-m">1 ida y vuelta</text><text x="770" y="440" class="t-m">extra</text>
+    <path d="M760 520v128" class="ln s-tra" style="stroke-width:3"/><text x="770" y="578" class="k-tra">CIERRE</text><text x="770" y="592" class="t-m">FIN y ACK en</text><text x="770" y="606" class="t-m">cada sentido</text>
+  </g>
+  <text x="20" y="360" class="t t-xs t-m" transform="rotate(-90 20 360)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Una conversación TCP completa.</b> Arriba, el saludo de tres pasos. En el medio, el celular pide y el servidor manda la respuesta en tres segmentos de 1.000 bytes; el segundo se pierde (la cruz). El celular sigue acusando «tengo hasta el 1.001», y esos acuses repetidos le avisan al servidor que algo falta. El servidor reenvía solo ese segmento y el celular confirma todo. Abajo, el cierre con FIN y ACK en cada sentido.</figcaption></figure><div class="prose"><p>Una pérdida se puede descubrir de dos formas. La rápida: el que recibe repite el mismo acuse cada vez que le llega algo posterior al hueco, y al tercer acuse repetido el que envía reenvía sin esperar (se llama <b>retransmisión rápida</b>). La lenta: si no llegan más datos que provoquen acuses, el que envía espera a que venza un <b>temporizador</b>, que suele durar varias veces la ida y vuelta, y recién entonces reenvía. Esa espera es la que se nota como un «trabón».</p></div><div class="lab" id="07-lab-2"><div class="lab-title"><span class="tag">Laboratorio</span><h3>El saludo de tres pasos, con pérdidas</h3></div><p class="hint">Elige qué mensaje se pierde y mira cómo responde TCP: a veces reenvía en una ida y vuelta, a veces espera un temporizador largo y a veces la pérdida ni se nota. Con «pérdida al azar» puedes subir el porcentaje y repetir el envío.</p><style>
+[id="07-lab-2"]>*{min-width:0}
+[id="07-lab-2"] canvas{border:1px solid var(--line)}
+</style>
+<div class="opciones">
+  <label>Qué se pierde
+    <select id="c07-esc">
+      <option value="nada" selected>Nada</option>
+      <option value="syn">El SYN (primer paso del saludo)</option>
+      <option value="synack">El SYN-ACK (respuesta del servidor)</option>
+      <option value="ack">El ACK final del saludo</option>
+      <option value="medio">Un segmento del medio (el 2 de 6)</option>
+      <option value="ultimo">El último segmento (el 6 de 6)</option>
+      <option value="azar">Pérdida al azar</option>
+    </select></label>
+</div>
+<div class="ctls">
+  <div class="ctl"><label for="c07-rtt">Ida y vuelta (RTT)</label><output id="c07-rtt-o"></output><input type="range" id="c07-rtt" min="10" max="300" step="10" value="40"></div>
+  <div class="ctl"><label for="c07-p">Pérdida al azar</label><output id="c07-p-o"></output><input type="range" id="c07-p" min="0" max="40" step="1" value="10" disabled></div>
+</div>
+<div class="btns"><button type="button" id="c07-otra" disabled>Repetir con otra suerte</button></div>
+<div class="readout" id="c07-out" aria-live="polite"></div>
+<canvas id="c07-cv" role="img" aria-label="Diagrama de secuencia de la conexión TCP simulada entre el celular y el servidor"></canvas>
+<div class="legend"><span><i style="background:var(--c-tra)"></i>Saludo y acuses (TCP)</span><span><i style="background:var(--c-apl)"></i>Pedido y datos</span><span><i style="background:var(--warm)"></i>Mensaje perdido</span><span><i style="background:var(--good)"></i>La foto está completa</span></div>
+<p class="hint" id="c07-exp"></p></div><div class="prose"><p>TCP hace una cosa más, y muy importante para un operador: <b>controla la congestión</b>. No manda todo de golpe; empieza con poco, y si los acuses llegan bien, acelera. Si detecta pérdidas, lo interpreta como «la red está llena» y frena. Gracias a eso, millones de conexiones comparten los mismos enlaces sin derrumbarlos. La consecuencia práctica es que una conexión nueva tarda unas cuantas idas y vueltas en alcanzar su velocidad máxima, y que una red con pérdidas se siente lenta aunque tenga muchos megas.</p></div></section>
+<section><h2>UDP: rápido y sin garantías</h2><div class="prose"><p><b>UDP</b> (protocolo de datagramas de usuario) es la postal. No saluda, no numera, no acusa recibo y no reenvía. Toma lo que el programa le da, le pone los dos puertos, una longitud y una suma de control para detectar si se dañó, y lo manda. Si se pierde, nadie se entera; si llegan desordenados, se entregan desordenados.</p><p>Parece peor, pero para muchas cosas es mejor. Mira la diferencia en la cabecera, el pequeño sobre que cada protocolo le pone a los datos.</p></div><figure class="fig fig-esquema" id="07-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 400" style="min-width:720px" role="img" aria-label="Cabeceras comparadas: el segmento TCP tiene puertos de origen y destino, número de secuencia, número de acuse, longitud, banderas, ventana, suma de control, puntero urgente y opciones, al menos 20 bytes; el datagrama UDP solo tiene puertos, longitud y suma de control, 8 bytes">
+  
+  <text x="40" y="26" class="t t-b k-tra">Segmento TCP</text>
+  <text x="430" y="26" text-anchor="end" class="t t-s t-m">cabecera de 20 a 60 bytes</text>
+  <g class="t t-xs t-m"><text x="40" y="46">BIT 0</text><text x="240" y="46" text-anchor="middle">16</text><text x="430" y="46" text-anchor="end">31</text></g>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="40" y="54" width="195" height="34" rx="4" class="c-tra"/><text x="137" y="76" class="t-b">Puerto de origen</text>
+    <rect x="235" y="54" width="195" height="34" rx="4" class="c-tra"/><text x="332" y="76" class="t-b">Puerto de destino</text>
+    <rect x="40" y="88" width="390" height="34" rx="4" class="c-tra"/><text x="235" y="110">Número de secuencia · qué byte es el primero</text>
+    <rect x="40" y="122" width="390" height="34" rx="4" class="c-tra"/><text x="235" y="144">Número de acuse · «tengo todo hasta aquí»</text>
+    <rect x="40" y="156" width="50" height="34" rx="4" class="c-tra"/><text x="65" y="177" class="t-xs">LONG.</text>
+    <rect x="90" y="156" width="40" height="34" rx="4" class="c-tra"/><text x="110" y="177" class="t-xs">RES.</text>
+    <rect x="130" y="156" width="105" height="34" rx="4" class="c-tra"/><text x="182" y="170" class="t-b">Banderas</text><text x="182" y="184" class="t-xs">SYN ACK FIN RST</text>
+    <rect x="235" y="156" width="195" height="34" rx="4" class="c-tra"/><text x="332" y="177">Ventana · cuánto más cabe</text>
+    <rect x="40" y="190" width="195" height="34" rx="4" class="c-tra"/><text x="137" y="212">Suma de control</text>
+    <rect x="235" y="190" width="195" height="34" rx="4" class="c-tra"/><text x="332" y="212">Puntero urgente</text>
+    <rect x="40" y="224" width="390" height="34" rx="4" class="caja ln-d"/><text x="235" y="246" class="t-m">Opciones (0 a 40 bytes, si las hay)</text>
+    <rect x="40" y="266" width="390" height="62" rx="4" class="c-apl"/><text x="235" y="294" class="t-b">Datos de la aplicación</text><text x="235" y="312">(una parte de la página, del archivo…)</text>
+  </g>
+  <path d="M30 54v204" class="ln s-tra" style="stroke-width:2"/>
+  <text x="22" y="156" text-anchor="middle" class="t t-xs t-b k-tra" transform="rotate(-90 22 156)">CABECERA</text>
+
+  
+  <text x="490" y="26" class="t t-b k-tra">Datagrama UDP</text>
+  <text x="880" y="26" text-anchor="end" class="t t-s t-m">cabecera de 8 bytes</text>
+  <g class="t t-xs t-m"><text x="490" y="46">BIT 0</text><text x="690" y="46" text-anchor="middle">16</text><text x="880" y="46" text-anchor="end">31</text></g>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="490" y="54" width="195" height="34" rx="4" class="c-tra"/><text x="587" y="76" class="t-b">Puerto de origen</text>
+    <rect x="685" y="54" width="195" height="34" rx="4" class="c-tra"/><text x="782" y="76" class="t-b">Puerto de destino</text>
+    <rect x="490" y="88" width="195" height="34" rx="4" class="c-tra"/><text x="587" y="110">Longitud</text>
+    <rect x="685" y="88" width="195" height="34" rx="4" class="c-tra"/><text x="782" y="110">Suma de control</text>
+    <rect x="490" y="130" width="390" height="62" rx="4" class="c-apl"/><text x="685" y="158" class="t-b">Datos de la aplicación</text><text x="685" y="176">(un pedacito de voz, una pregunta DNS…)</text>
+  </g>
+  <path d="M480 54v68" class="ln s-tra" style="stroke-width:2"/>
+  <g class="t t-s">
+    <text x="490" y="224" class="t-b">Lo que UDP no tiene:</text>
+    <text x="490" y="244">✕ sin secuencia: no sabe si falta algo</text>
+    <text x="490" y="262">✕ sin acuse: nadie confirma que llegó</text>
+    <text x="490" y="280">✕ sin ventana: no frena si el otro se satura</text>
+    <text x="490" y="298">✕ sin saludo: el primer paquete ya lleva datos</text>
+  </g>
+  <text x="450" y="368" text-anchor="middle" class="t t-s t-m">Cada fila son 32 bits (4 bytes). Los dos empiezan por los puertos: lo primero que hay que saber es a qué programa va.</text>
+</svg></div><figcaption><b>El segmento TCP y el datagrama UDP, campo por campo.</b> Cada fila son 4 bytes. La cabecera de TCP ocupa al menos 20 bytes, porque carga los números de secuencia y de acuse, las banderas del saludo (SYN, ACK, FIN) y la ventana, que dice cuánto más puede recibir el otro lado. La de UDP ocupa 8: puertos, longitud y suma de control, nada más. Los dos llevan los puertos al principio, que es lo primero que hay que saber.</figcaption></figure><div class="prose"><p>Algunos campos de TCP merecen una palabra:</p><ul><li><b>Banderas.</b> Unos pocos bits que dicen qué tipo de segmento es: SYN abre, ACK confirma, FIN cierra, RST corta de golpe («no conozco esa conversación»).</li><li><b>Ventana.</b> Cuántos bytes más puede aceptar el que recibe antes de que se le llene la memoria. Es el freno que pone el receptor.</li><li><b>Suma de control.</b> Un número calculado con el contenido; si al llegar no coincide, el segmento se descarta como dañado.</li></ul></div></section>
+<section><h2>Cuándo se usa cada uno (web, voz, video, juegos)</h2><div class="prose"><p>La pregunta no es cuál es mejor, sino <b>qué le duele más a la aplicación: perder un pedazo o esperar</b>.</p><div class="tbl"><table><thead><tr><th>Aplicación</th><th>Transporte</th><th>Por qué</th></tr></thead><tbody><tr><td>Páginas web, apps, APIs</td><td>TCP (o QUIC)</td><td>Una página incompleta no sirve; mejor esperar el pedazo que falta</td></tr><tr><td>Descargas y correo</td><td>TCP</td><td>Un archivo con un byte malo está dañado</td></tr><tr><td>Llamadas de voz y videollamadas</td><td>UDP</td><td>Un pedacito de 20 milisegundos perdido apenas se nota; una pausa de medio segundo arruina la conversación</td></tr><tr><td>Juegos en línea</td><td>UDP</td><td>La posición del jugador de hace un segundo ya no le importa a nadie</td></tr><tr><td>Video bajo demanda (películas, series)</td><td>TCP o QUIC</td><td>El reproductor guarda varios segundos de adelanto y puede esperar un reenvío</td></tr><tr><td>Televisión en vivo del operador</td><td>UDP</td><td>Se manda a miles de televisores a la vez y no hay tiempo de reenviar</td></tr><tr><td>DNS, DHCP, NTP</td><td>UDP</td><td>Preguntas y respuestas cortas; si se pierden, el programa simplemente vuelve a preguntar</td></tr></tbody></table></div><p>Fíjate en la llamada. Si una llamada usara TCP y se perdiera un paquete, TCP retendría todo lo que viene detrás hasta recuperar el que falta, porque prometió entregar en orden. Tu interlocutor se quedaría congelado y después hablaría «atrasado». Con UDP, en cambio, ese pedacito se pierde, el programa lo disimula y la conversación sigue a tiempo. A ese efecto de TCP, en el que un paquete perdido bloquea a todos los que vienen detrás, se le llama <b>bloqueo de cabeza de fila</b>.</p></div><div class="lab" id="07-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>La misma llamada por TCP y por UDP</h3></div><p class="hint">Mueve la pérdida de paquetes y la distancia al otro lado. Arriba, la llamada por TCP: no pierde nada, pero se congela cada vez que espera un reenvío y se va atrasando. Abajo, por UDP: siempre a tiempo, con huecos pequeños donde se perdió algo.</p><style>
+[id="07-lab-3"]>*{min-width:0}
+</style>
+<div class="ctls">
+  <div class="ctl"><label for="c07l3-p">Paquetes perdidos</label><output id="c07l3-p-o"></output><input type="range" id="c07l3-p" min="0" max="15" step="0.5" value="3"></div>
+  <div class="ctl"><label for="c07l3-rtt">Ida y vuelta al otro lado</label><output id="c07l3-rtt-o"></output><input type="range" id="c07l3-rtt" min="20" max="300" step="10" value="80"></div>
+</div>
+<div class="btns"><button type="button" id="c07l3-otra">Otra llamada con la misma pérdida</button></div>
+<canvas id="c07l3-cv" role="img" aria-label="Línea de tiempo de cuatro segundos de llamada: lo que dice el otro, cómo se escucha por TCP y cómo se escucha por UDP"></canvas>
+<div class="legend"><span><i style="background:var(--muted)"></i>Lo que dice el otro</span><span><i style="background:var(--c-tra)"></i>Audio por TCP</span><span><i style="background:var(--c-apl)"></i>Audio por UDP</span><span><i style="background:var(--warm)"></i>Pérdida o congelamiento</span></div>
+<div class="readout" id="c07l3-out" aria-live="polite"></div>
+<p class="hint" id="c07l3-exp"></p></div></section>
+<section><h2>QUIC: lo nuevo</h2><div class="prose"><p>TCP tiene más de cuarenta años y dos problemas que hoy pesan. El primero: para abrir una página segura hay que hacer el saludo de TCP y <b>después</b> el saludo de cifrado (TLS, el candado del capítulo 9), uno detrás del otro. El segundo: el bloqueo de cabeza de fila. Una página moderna baja decenas de archivos por la misma conexión, y un solo paquete perdido detiene a todos.</p><p><b>QUIC</b> es la respuesta. Lo diseñó Google, lo estandarizó la IETF en 2021 y hoy lo usan los navegadores, YouTube, Google, Meta y muchas CDN; HTTP/3 viaja sobre él. La idea es ingeniosa: en lugar de cambiar TCP, que está grabado en el sistema operativo de miles de millones de equipos y en los routers del camino, QUIC viaja <b>dentro de UDP</b> y hace por su cuenta todo lo que hacía TCP: numera, acusa, reenvía y controla la congestión. Y además:</p><ul><li><b>Junta los dos saludos en uno.</b> El primer mensaje ya lleva la propuesta de cifrado, así que la conexión queda abierta y segura en una sola ida y vuelta. Si el celular ya había visitado ese servidor, puede mandar el pedido en el primer paquete (lo que se llama <b>0-RTT</b>).</li><li><b>Maneja varias corrientes independientes.</b> Cada archivo de la página va por su propio carril; si se pierde un paquete de la foto, el texto sigue llegando.</li><li><b>Sobrevive al cambio de red.</b> Una conexión TCP se rompe si cambia tu dirección IP, por ejemplo al pasar del Wi-Fi a los datos móviles. QUIC identifica la conexión con un número propio y sigue como si nada.</li><li><b>Cifra casi todo, incluso la cabecera.</b> Los equipos del camino ya no pueden leer los números de secuencia ni los acuses, como sí pueden con TCP.</li></ul></div><figure class="fig fig-flujo" id="07-diagrama-6"><div class="lienzo"><svg viewBox="0 0 900 500" style="min-width:740px" role="img" aria-label="Comparación: con TCP más TLS 1.3 hacen falta el saludo TCP y el saludo TLS, dos idas y vueltas, antes de pedir la página, que llega al final de la tercera; con QUIC el saludo de transporte y el de cifrado van juntos, el pedido sale tras una ida y vuelta y la página llega al final de la segunda">
+<text x="190" y="22" text-anchor="middle" class="t t-b">TCP + TLS 1.3</text><text x="190" y="38" text-anchor="middle" class="t t-s t-m">HTTP/1.1 y HTTP/2</text>
+<text x="650" y="22" text-anchor="middle" class="t t-b">QUIC</text><text x="650" y="38" text-anchor="middle" class="t t-s t-m">HTTP/3, dentro de UDP</text>
+<line x1="450" y1="10" x2="450" y2="490" class="ln ln-d"/>
+<rect x="30" y="50" width="100" height="40" rx="8" class="caja"/><use href="#i-celular" x="38" y="56" width="26" height="26" class="ico"/><text x="70" y="75" class="t t-s t-b">Celular</text>
+<rect x="250" y="50" width="100" height="40" rx="8" class="caja"/><use href="#i-servidor" x="256" y="56" width="26" height="26" class="ico"/><text x="288" y="75" class="t t-s t-b">Servidor</text>
+<line x1="80" y1="90" x2="80" y2="480" class="vida"/><line x1="300" y1="90" x2="300" y2="480" class="vida"/>
+<rect x="490" y="50" width="100" height="40" rx="8" class="caja"/><use href="#i-celular" x="498" y="56" width="26" height="26" class="ico"/><text x="530" y="75" class="t t-s t-b">Celular</text>
+<rect x="710" y="50" width="100" height="40" rx="8" class="caja"/><use href="#i-servidor" x="716" y="56" width="26" height="26" class="ico"/><text x="748" y="75" class="t t-s t-b">Servidor</text>
+<line x1="540" y1="90" x2="540" y2="480" class="vida"/><line x1="760" y1="90" x2="760" y2="480" class="vida"/>
+<line x1="80" y1="118" x2="298" y2="134" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="88" y="112" class="t t-s"><tspan class="t-mono t-b">SYN</tspan> ①</text>
+<line x1="300" y1="174" x2="82" y2="190" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="284" y="168" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">SYN-ACK</tspan> ②</text>
+<line x1="80" y1="230" x2="298" y2="246" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="88" y="224" class="t t-s"><tspan class="t-mono t-b">ACK + ClientHello</tspan> ③</text>
+<line x1="300" y1="286" x2="82" y2="302" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+<text x="284" y="280" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">ServerHello</tspan>, certificado ④</text>
+<line x1="80" y1="342" x2="298" y2="358" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="88" y="336" class="t t-s"><tspan class="t-mono t-b">Finished + GET /</tspan> ⑤</text>
+<line x1="300" y1="398" x2="82" y2="414" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="284" y="392" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> la página ⑥</text>
+<line x1="540" y1="118" x2="758" y2="134" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="548" y="112" class="t t-s"><tspan class="t-mono t-b">Initial + ClientHello</tspan> ①</text>
+<line x1="760" y1="174" x2="542" y2="190" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+<text x="744" y="168" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">ServerHello</tspan>, certificado ②</text>
+<line x1="540" y1="230" x2="758" y2="246" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="548" y="224" class="t t-s"><tspan class="t-mono t-b">Finished + GET /</tspan> ③</text>
+<line x1="760" y1="286" x2="542" y2="302" class="ln s-apl" style="stroke-width:2.6" marker-end="url(#fl-apl)"/>
+<text x="744" y="280" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">200 OK</tspan> la página ④</text>
+<line x1="40" y1="428" x2="420" y2="428" class="ln ln-d"/><text x="88" y="448" class="t t-s t-b">Página lista: 3 idas y vueltas</text>
+<line x1="500" y1="316" x2="880" y2="316" class="ln ln-d"/><text x="548" y="336" class="t t-s t-b">Página lista: 2 idas y vueltas</text>
+<g class="t t-xs t-b"><path d="M330 112v78" class="ln s-tra" style="stroke-width:3"/><text x="340" y="148" class="k-tra">TCP</text><text x="340" y="162" class="t-m">1 IDA Y VUELTA</text><path d="M330 224v78" class="ln s-apl" style="stroke-width:3"/><text x="340" y="260" class="k-apl">TLS</text><text x="340" y="274" class="t-m">1 IDA Y VUELTA</text><path d="M330 336v78" class="ln s-apl" style="stroke-width:3"/><text x="340" y="372" class="k-apl">HTTP</text><text x="340" y="386" class="t-m">1 IDA Y VUELTA</text><path d="M790 112v78" class="ln s-tra" style="stroke-width:3"/><text x="800" y="141" class="k-tra">QUIC + TLS</text><text x="800" y="155" class="t-m">JUNTOS:</text><text x="800" y="169" class="t-m">1 IDA Y VUELTA</text><path d="M790 224v78" class="ln s-apl" style="stroke-width:3"/><text x="800" y="260" class="k-apl">HTTP</text><text x="800" y="274" class="t-m">1 IDA Y VUELTA</text></g>
+<rect x="488" y="356" width="392" height="120" rx="10" class="caja"/>
+  <text x="504" y="380" class="t t-s t-b">Si ya visitó ese servidor (0-RTT)</text>
+  <text x="504" y="400" class="t t-s">El primer paquete lleva el pedido junto con el</text>
+  <text x="504" y="418" class="t t-s">saludo: la página llega en 1 ida y vuelta.</text>
+  <text x="504" y="444" class="t t-s t-m">Con un servidor a 150 ms de ida y vuelta:</text>
+  <text x="504" y="462" class="t t-s t-mono">TCP+TLS 450 ms · QUIC 300 ms · 0-RTT 150 ms</text>
+  <text x="20" y="300" class="t t-xs t-m" transform="rotate(-90 20 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>TCP más TLS frente a QUIC.</b> A la izquierda, la forma clásica: una ida y vuelta para el saludo TCP y otra para el saludo TLS antes de poder pedir la página, que llega al final de la tercera. A la derecha, QUIC: el saludo de transporte y el de cifrado van juntos, el pedido sale después de una sola ida y vuelta y la página llega al final de la segunda. Con un servidor a 150 milisegundos, son 150 milisegundos menos en cada visita.</figcaption></figure><div class="prose"><p>Ese último punto tiene un costo para los operadores. Con TCP, las herramientas de monitoreo podían medir la ida y vuelta y las pérdidas de cada conexión mirando los acuses. Con QUIC eso queda oculto, y los operadores tienen que medir la calidad de otras formas.</p></div></section>
+<section><h2>Latencia y por qué importa más que los megas</h2><div class="prose"><p>Hay dos números que describen una conexión y que suelen confundirse:</p><ul><li>El <b>ancho de banda</b> (los «megas» del plan) dice <b>cuánto</b> cabe por segundo: el ancho de la carretera.</li><li>La <b>latencia</b> dice <b>cuánto tarda</b> un paquete en ir y volver: el largo de la carretera. Se mide en milisegundos y se suele llamar <b>RTT</b> (tiempo de ida y vuelta) o, en el mundo de los juegos, <i>ping</i>.</li></ul><p>Abrir una página es, sobre todo, una cadena de idas y vueltas: el DNS, el saludo TCP, el saludo TLS, el pedido, y después varios pedidos más por cada archivo. Y TCP, recién abierta la conexión, manda poco y acelera de a poco, ida y vuelta tras ida y vuelta. Para una página típica, de unos pocos megabytes, el tiempo lo decide la latencia, no los megas: pasar de 300 a 900 megas apenas cambia nada, pero acercar el servidor de 150 a 15 milisegundos cambia todo. Eso ya lo viste en el cronómetro del capítulo 1.</p><p>Los megas sí mandan cuando se mueve mucho volumen de una vez: descargar un juego de 50 gigabytes, subir un respaldo a la nube, ver varias películas en 4K al mismo tiempo. Para casi todo lo demás, una conexión que responde rápido se siente mejor que una que tiene muchos megas y responde lento. Y hay una tercera variable que el capítulo 26 trata a fondo: el <b>jitter</b>, cuánto varía la latencia de un paquete a otro, que es lo que más daña una llamada.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador FTTH de la región administra sus equipos con una lista corta de puertos bien conocidos, y la mantiene cerrada para todo lo demás. Los routers y las OLT se administran por SSH (TCP 22), nunca por Telnet (TCP 23). El sistema de monitoreo los consulta por SNMP (UDP 161) y recibe sus alarmas en UDP 162. Los equipos mandan sus registros por syslog (UDP 514) y toman la hora por NTP (UDP 123). El BNG pregunta a RADIUS por UDP 1812 y le informa los consumos por UDP 1813. Los routers de los clientes reciben órdenes de su servidor de gestión por TR-069, que viaja sobre HTTPS, y escuchan los avisos de ese servidor en un puerto propio (TCP 7547), que solo debe aceptar conexiones desde la red de gestión. Cada uno de esos puertos es una puerta: se abre solo hacia quien tiene que entrar.</p></div><div class="ml"><b>En la práctica</b><p>Cuando una videollamada se congela pero una descarga termina perfecta, no es casualidad: la descarga va por TCP y puede darse el lujo de esperar los reenvíos; la llamada va por UDP y simplemente pierde esos pedacitos. Las dos sufren la misma red con pérdidas, pero cada una a su manera. Y cuando un cliente pide «abrir un puerto» para su cámara o su consola de juegos, está pidiendo una entrada fija en la tabla NAT de su router; si además el operador le da una dirección compartida (CGNAT, capítulo 5), esa entrada no alcanza, porque hay un segundo NAT en la red del operador que el cliente no controla.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Para qué sirve el puerto si ya existe la dirección IP?</summary><p>La IP lleva el paquete a la máquina; el puerto dice a qué programa de esa máquina le toca, como el número de apartamento dentro del edificio.</p></details><details><summary>¿Cuáles son los tres mensajes del saludo de TCP y cuánto cuesta en tiempo?</summary><p>SYN, SYN-ACK y ACK. Cuesta una ida y vuelta completa antes del primer dato útil.</p></details><details><summary>Si se pierde un segmento TCP en medio de una descarga, ¿qué pasa con el archivo?</summary><p>Nada malo: el receptor repite el acuse del último byte que tiene, el emisor reenvía el pedazo que falta y el programa recibe el archivo completo y en orden, solo un poco más tarde.</p></details><details><summary>¿Por qué las llamadas de voz usan UDP y no TCP?</summary><p>Porque en una llamada importa más llegar a tiempo que llegar completo. Con TCP un paquete perdido congela todo lo que viene detrás hasta que se reenvía; con UDP ese pedacito se pierde y la conversación sigue.</p></details><details><summary>¿Qué gana QUIC frente a TCP más TLS al abrir una página segura?</summary><p>Junta el saludo de transporte y el de cifrado en una sola ida y vuelta, evita que un paquete perdido bloquee a los demás archivos y sobrevive a un cambio de red.</p></details><details><summary>Un cliente pasa de 300 a 900 megas y dice que las páginas abren igual. ¿Por qué?</summary><p>Porque abrir una página depende sobre todo de la latencia y de cuántas idas y vueltas hacen falta; los megas extra solo se notan al mover mucho volumen.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://developer.mozilla.org/es/docs/Glossary/TCP" target="_blank" rel="noopener">TCP en el glosario de MDN <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Protocolo_de_datagramas_de_usuario" target="_blank" rel="noopener">Protocolo de datagramas de usuario (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/QUIC" target="_blank" rel="noopener">QUIC (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.rfc-editor.org/rfc/rfc9293" target="_blank" rel="noopener">RFC 9293: el estándar de TCP (IETF) <small>lectura técnica</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$,tok,canvasWidget,arrow}=window.Lab;
+  const N=6, SYN_RTO=1000, GAP=2;
+  let semilla=7;
+  function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  const EXPL={
+    nada:'Sin pérdidas: una ida y vuelta para el saludo, otra para el pedido, y los seis segmentos llegan seguidos con sus acuses.',
+    syn:'Se perdió el SYN. El celular no recibe respuesta y no sabe por qué: espera el temporizador inicial que fija el estándar (1 segundo) y repite. Por eso una pérdida en el saludo se nota tanto.',
+    synack:'Se perdió el SYN-ACK. Para el celular es igual que si se hubiera perdido su SYN: no recibe nada, espera 1 segundo y repite el saludo.',
+    ack:'Se perdió el ACK del saludo… y no pasó nada. El pedido GET que sale justo detrás también lleva la marca ACK, así que el servidor da el saludo por terminado.',
+    medio:'Se perdió el segmento 2. Los segmentos 3 a 6 siguen llegando y cada uno provoca un acuse repetido «tengo hasta el 1». Al tercer acuse repetido el servidor reenvía sin esperar: es la retransmisión rápida, y cuesta poco más de una ida y vuelta.',
+    ultimo:'Se perdió el último segmento. Como no viene nada detrás, no hay acuses repetidos que avisen: el servidor tiene que esperar a que venza su temporizador (en este laboratorio, 3 idas y vueltas, mínimo 200 ms) antes de reenviar.',
+    azar:'Cada mensaje, en cualquier sentido, se pierde con la probabilidad que elijas. Repite varias veces: con 2 % casi siempre sale limpio; con 20 % los temporizadores empiezan a mandar en el tiempo total. Aun así, la foto siempre llega completa.'
+  };
+  function simular(esc,rtt,p,seed){
+    const r=rng(seed), h=rtt/2, RTO=Math.max(200,3*rtt), M=[], esperas=[];
+    const pierde=(clave)=>esc==='azar'?r()<p:clave===({syn:'syn1',synack:'synack1',ack:'ack',medio:'d2-1',ultimo:'d6-1'}[esc]);
+    const msg=(de,txt,t,tipo,perdido)=>{const m={de,txt,t,llega:t+h,tipo,perdido};M.push(m);return m;};
+    let t=0, intento=1;
+    // saludo
+    while(intento<8){
+      const espera=SYN_RTO*Math.pow(2,intento-1);
+      const syn=msg('c',intento>1?'SYN (otra vez)':'SYN',t,'tra',pierde('syn'+intento));
+      if(syn.perdido){esperas.push([t,t+espera]);t+=espera;intento++;continue;}
+      const sa=msg('s','SYN-ACK',t+h,'tra',pierde('synack'+intento));
+      if(sa.perdido){esperas.push([t,t+espera]);t+=espera;intento++;continue;}
+      t+=rtt;break;
+    }
+    msg('c','ACK',t,'tra',pierde('ack'));
+    // pedido (se reenvía si se pierde)
+    let tg=t+GAP, k=1;
+    while(true){const g=msg('c',k>1?'GET /foto (otra vez)':'GET /foto',tg,'apl',pierde('get'+k));if(!g.perdido)break;esperas.push([tg,tg+RTO]);tg+=RTO;k++;if(k>8)break;}
+    // datos
+    const recibido=new Set(), sabe=new Set(), envios={};
+    let ts=tg+h, ronda=0, tFin=null;
+    let pend=[...Array(N)].map((_,i)=>i+1);
+    while(pend.length&&ronda<14){
+      ronda++;
+      const llegadas=[];
+      pend.forEach((s,i)=>{
+        envios[s]=(envios[s]||0)+1;
+        const m=msg('s','Datos '+s+(envios[s]>1?' (reenvío)':''),ts+i*GAP,'apl',pierde('d'+s+'-'+envios[s]));
+        if(!m.perdido)llegadas.push([m.llega,s]);
+      });
+      llegadas.sort((a,b)=>a[0]-b[0]);
+      const acks=[];
+      llegadas.forEach(([tl,s])=>{
+        recibido.add(s);
+        let cum=0;while(recibido.has(cum+1))cum++;
+        if(cum===N&&tFin===null)tFin=tl;
+        const rep=acks.length&&acks[acks.length-1].cum===cum&&cum<N;
+        const a=msg('c','ACK hasta '+cum+(rep?' (repetido)':''),tl+0.5,'tra',pierde('a'+M.length));
+        a.cum=cum;a.foto=new Set(recibido);acks.push(a);
+      });
+      // el servidor procesa los acuses que llegan
+      let dup=0, ult=-1, tRapida=null;
+      acks.filter(a=>!a.perdido).forEach(a=>{
+        a.foto.forEach(s=>sabe.add(s));
+        if(a.cum===ult){dup++;if(dup===3&&tRapida===null)tRapida=a.llega;}else{ult=a.cum;dup=0;}
+      });
+      pend=[...Array(N)].map((_,i)=>i+1).filter(s=>!sabe.has(s));
+      if(!pend.length)break;
+      const max=Math.max(0,...sabe);
+      const huecos=pend.filter(s=>s<max);
+      if(tRapida!==null&&huecos.length){pend=huecos;ts=tRapida+GAP;}
+      else{esperas.push([ts,ts+RTO]);ts=ts+RTO;}
+    }
+    if(tFin===null)tFin=ts;
+    return {M,esperas,tFin,rtt};
+  }
+  let S=null;
+  const cv=$('#c07-cv');
+  function layout(){
+    const tiempos=new Set();
+    S.M.forEach(m=>{tiempos.add(m.t);tiempos.add(m.llega);});
+    S.esperas.forEach(e=>{tiempos.add(e[0]);tiempos.add(e[1]);});
+    const ord=[...tiempos].sort((a,b)=>a-b), Y=new Map(), saltos=[];
+    let y=58, prev=null;
+    ord.forEach(t=>{
+      if(prev!==null){
+        const dt=t-prev;
+        const esp=S.esperas.find(e=>e[0]<=prev&&e[1]>=t&&dt>S.rtt*0.9);
+        y+=esp?42:(dt<1?7:16);
+        if(esp)saltos.push([Y.get(prev),y,esp[1]-esp[0]]);
+      }
+      Y.set(t,y);prev=t;
+    });
+    return {Y,alto:y+40,saltos};
+  }
+  let L=null;
+  function dibujar(ctx,w,h){
+    ctx.clearRect(0,0,w,h);
+    const xc=46, xs=w-46, ink=tok('--ink'), mut=tok('--muted');
+    ctx.font='700 13px '+tok('--f-display');ctx.fillStyle=ink;ctx.textBaseline='middle';
+    ctx.textAlign='center';ctx.fillText('Celular',xc,20);ctx.fillText('Servidor',xs,20);
+    ctx.strokeStyle=tok('--line');ctx.lineWidth=1.4;ctx.setLineDash([3,5]);
+    [xc,xs].forEach(x=>{ctx.beginPath();ctx.moveTo(x,34);ctx.lineTo(x,h-10);ctx.stroke();});
+    ctx.setLineDash([]);
+    L.saltos.forEach(([y0,y1,dt])=>{
+      ctx.fillStyle=tok('--paper');ctx.fillRect(xc+4,y0+8,xs-xc-8,y1-y0-22);
+      ctx.fillStyle=mut;ctx.font='600 11px '+tok('--f-display');ctx.textAlign='center';
+      ctx.fillText('⏱ sin respuesta: espera '+Math.round(dt)+' ms',(xc+xs)/2,y0+8+(y1-y0-22)/2);
+    });
+    ctx.font='11px '+tok('--f-mono');
+    S.M.forEach(m=>{
+      const col=m.perdido?tok('--warm'):tok(m.tipo==='tra'?'--c-tra':'--c-apl');
+      const x0=m.de==='c'?xc:xs, x1=m.de==='c'?xs:xc, y0=L.Y.get(m.t), y1=L.Y.get(m.llega);
+      if(m.perdido){
+        const xm=x0+(x1-x0)*0.45, ym=y0+(y1-y0)*0.45;
+        ctx.strokeStyle=col;ctx.lineWidth=2;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(xm,ym);ctx.stroke();ctx.setLineDash([]);
+        ctx.font='700 15px '+tok('--f-display');ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText('✕',xm,ym);
+        ctx.font='11px '+tok('--f-mono');
+      } else arrow(ctx,x0,y0,x1,y1,col,2);
+      const tw=ctx.measureText(m.txt).width, tx=m.de==='c'?xc+14:xs-14-tw;
+      ctx.fillStyle=tok('--card');ctx.globalAlpha=.85;ctx.fillRect(tx-2,y0-14,tw+4,13);ctx.globalAlpha=1;
+      ctx.fillStyle=m.perdido?col:ink;
+      ctx.textAlign='left';ctx.textBaseline='bottom';
+      ctx.fillText(m.txt,tx,y0-2);ctx.textBaseline='middle';
+    });
+    const yf=L.Y.get(S.tFin);
+    if(yf){ctx.beginPath();ctx.arc(xc,yf,6,0,Math.PI*2);ctx.fillStyle=tok('--good');ctx.fill();}
+  }
+  function correr(){
+    const esc=$('#c07-esc').value, rtt=+$('#c07-rtt').value, p=+$('#c07-p').value/100;
+    const azar=esc==='azar';$('#c07-p').disabled=!azar;$('#c07-otra').disabled=!azar;
+    S=simular(esc,rtt,p,semilla);L=layout();
+    const base=simular('nada',rtt,0,1).tFin;
+    const perd=S.M.filter(m=>m.perdido).length, reenv=S.M.filter(m=>/otra vez|reenvío/.test(m.txt)).length;
+    const extra=S.tFin-base;
+    $('#c07-out').innerHTML='<span class="big">Foto completa en '+Math.round(S.tFin)+' ms</span>'+
+      '<span>Sin pérdidas habría tardado '+Math.round(base)+' ms'+(extra>0.5?' · <b class="warn">+'+Math.round(extra)+' ms por las pérdidas</b>':'')+'</span>'+
+      '<span>Mensajes perdidos: '+perd+' · reenvíos: '+reenv+' · el navegador recibió los 6 segmentos, en orden</span>';
+    $('#c07-exp').textContent=EXPL[esc];
+    redib();
+  }
+  const redib=canvasWidget(cv,w=>L?L.alto/w:0.8,(ctx,w,h)=>{if(S)dibujar(ctx,w,h);});
+  ['#c07-esc','#c07-rtt','#c07-p'].forEach(s=>$(s).addEventListener('input',correr));
+  $('#c07-otra').addEventListener('click',()=>{semilla++;correr();});
+  const upd=()=>{$('#c07-rtt-o').textContent=$('#c07-rtt').value+' ms';$('#c07-p-o').textContent=$('#c07-p').value+' %';};
+  ['#c07-rtt','#c07-p'].forEach(s=>$(s).addEventListener('input',upd));upd();
+  correr();
+})();
+</script>
+<script>
+(function(){
+  const {$,tok,canvasWidget}=window.Lab;
+  const F=200, D=20, B=60; // 200 pedacitos de 20 ms = 4 segundos; 60 ms de colchón
+  let semilla=3;
+  function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  let R=null;
+  function calcular(){
+    const p=+$('#c07l3-p').value/100, rtt=+$('#c07l3-rtt').value, owd=rtt/2, r=rng(semilla);
+    const perdido=[], llegaTcp=[];
+    for(let i=0;i<F;i++){
+      const g=i*D, lost=r()<p; perdido.push(lost);
+      let a=g+owd;
+      if(lost){a=g+3*D+rtt+owd; while(r()<p)a+=Math.max(200,3*rtt);} // aviso por acuses repetidos y reenvío
+      llegaTcp.push(a);
+    }
+    // TCP entrega en orden: nadie pasa antes que el que falta
+    const tcp=[], congela=[]; let ent=0, prev=null;
+    for(let i=0;i<F;i++){
+      ent=Math.max(ent,llegaTcp[i]);
+      let t=prev===null?ent+B:Math.max(prev+D,ent);
+      if(prev!==null&&t>prev+D+0.1)congela.push([prev+D,t]);
+      tcp.push(t);prev=t;
+    }
+    const udp=[...Array(F)].map((_,i)=>i*D+owd+B);
+    const perd=perdido.filter(Boolean).length;
+    const tCong=congela.reduce((s,c)=>s+c[1]-c[0],0);
+    R={perdido,tcp,udp,congela,perd,tCong,atrasoTcp:tcp[F-1]-(F-1)*D,atrasoUdp:owd+B,rtt};
+  }
+  function dibujar(ctx,w,h){
+    if(!R)return;
+    ctx.clearRect(0,0,w,h);
+    const Tmax=Math.max(R.tcp[F-1],R.udp[F-1])+D+40, m=8, X=t=>m+t/Tmax*(w-2*m), fw=Math.max(1,X(D)-X(0));
+    const filas=[['Lo que dice el otro',30,'--muted'],['Se escucha por TCP',92,'--c-tra'],['Se escucha por UDP',154,'--c-apl']];
+    ctx.textBaseline='bottom';ctx.textAlign='left';
+    filas.forEach(([n,y])=>{ctx.font='600 12px '+tok('--f-display');ctx.fillStyle=tok('--ink');ctx.fillText(n,m,y-6);ctx.fillStyle=tok('--paper');ctx.fillRect(m,y,w-2*m,26);});
+    const warm=tok('--warm');
+    for(let i=0;i<F;i++){
+      ctx.fillStyle=tok('--muted');ctx.fillRect(X(i*D),30,fw,26);
+      ctx.fillStyle=tok('--c-tra');ctx.fillRect(X(R.tcp[i]),92,fw,26);
+      if(R.perdido[i]){ctx.fillStyle=warm;ctx.fillRect(X(R.udp[i])-1,150,Math.max(3,fw),34);}
+      else{ctx.fillStyle=tok('--c-apl');ctx.fillRect(X(R.udp[i]),154,fw,26);}
+    }
+    R.congela.forEach(([a,b])=>{
+      ctx.fillStyle=warm;ctx.globalAlpha=.22;ctx.fillRect(X(a),92,X(b)-X(a),26);ctx.globalAlpha=1;
+      ctx.fillRect(X(a),118,X(b)-X(a),3);
+    });
+    ctx.strokeStyle=tok('--line');ctx.fillStyle=tok('--muted');ctx.font='11px '+tok('--f-mono');ctx.textBaseline='top';ctx.textAlign='center';
+    for(let s=0;s*1000<=Tmax;s++){const x=X(s*1000);ctx.beginPath();ctx.moveTo(x,186);ctx.lineTo(x,192);ctx.stroke();ctx.fillText(s+' s',Math.min(Math.max(x,14),w-14),194);}
+  }
+  const fmtMs=v=>Math.round(v).toLocaleString('es')+' ms';
+  function actualizar(){
+    $('#c07l3-p-o').textContent=String($('#c07l3-p').value).replace('.',',')+' %';
+    $('#c07l3-rtt-o').textContent=$('#c07l3-rtt').value+' ms';
+    calcular();redib();
+    const pct=(R.perd/F*100).toFixed(1).replace('.',',');
+    $('#c07l3-out').innerHTML='<span class="big">En 4 segundos se perdieron '+R.perd+' de '+F+' paquetes de 20 ms</span>'+
+      '<span><b>TCP:</b> se oye todo, pero se congeló '+R.congela.length+' '+(R.congela.length===1?'vez':'veces')+' ('+fmtMs(R.tCong)+' en total) y al final va '+(R.atrasoTcp>R.atrasoUdp+5?'<b class="warn">'+fmtMs(R.atrasoTcp)+' atrasada</b>':fmtMs(R.atrasoTcp)+' atrasada')+'</span>'+
+      '<span><b>UDP:</b> faltan '+R.perd+' pedacitos ('+pct+' % del audio, como chasquidos) y el retraso se mantiene en <b class="ok">'+fmtMs(R.atrasoUdp)+'</b></span>';
+    $('#c07l3-exp').textContent=R.perd===0?'Sin pérdidas, las dos llamadas suenan igual: la diferencia entre TCP y UDP solo aparece cuando la red pierde algo.':
+      'Cada paquete perdido obliga a TCP a esperar el reenvío, al menos una ida y vuelta, y mientras tanto retiene todo lo que viene detrás. Ese atraso no se recupera: la conversación queda cada vez más «en diferido». UDP deja pasar el hueco y el programa lo disimula. Por eso la voz y las videollamadas usan UDP.';
+  }
+  const redib=canvasWidget($('#c07l3-cv'),w=>214/w,dibujar);
+  ['#c07l3-p','#c07l3-rtt'].forEach(s=>$(s).addEventListener('input',actualizar));
+  $('#c07l3-otra').addEventListener('click',()=>{semilla++;actualizar();});
+  actualizar();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Las plataformas de gestión en la práctica · Cómo funciona un telco</title>
+<meta name="description" content="Los conceptos de gestión se vuelven pantallas y flujos de trabajo: un gestor de OLT (como SmartOLT o el sistema del fabricante) autoriza y vigila las ONT, un ACS (como GenieACS o una plataforma comercial) configura el equipo de la casa y un NMS de monitoreo (como Zabbix o LibreNMS) vigila toda la red; cada uno tiene su flujo típico y juntos se integran con RADIUS y con los sistemas del negocio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="29-las-plataformas-de-gestion-en-la-practica">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 29 DE 49</span><h1>Las plataformas de gestión en la práctica: gestor de OLT, ACS y NMS</h1><p class="lede">Los conceptos de gestión se vuelven pantallas y flujos de trabajo: un gestor de OLT (como SmartOLT o el sistema del fabricante) autoriza y vigila las ONT, un ACS (como GenieACS o una plataforma comercial) configura el equipo de la casa y un NMS de monitoreo (como Zabbix o LibreNMS) vigila toda la red; cada uno tiene su flujo típico y juntos se integran con RADIUS y con los sistemas del negocio.</p></header>
+<section><div class="prose"><p>Los capítulos 27 y 28 explicaron los protocolos: SNMP, Syslog, OMCI, TR-069. Pero nadie en un operador trabaja «en SNMP». Trabaja en pantallas: una lista de ONT pendientes de autorizar, la ficha de un equipo con su señal óptica, un tablero con alarmas en rojo. Este capítulo baja los conceptos a esas pantallas y a los flujos de trabajo que soporte, el NOC y los técnicos de campo repiten todos los días.</p><p>Las herramientas que se nombran aquí son <b>ejemplos del mercado</b>, elegidos porque son conocidos y tienen documentación pública. Cada una tiene alternativas, y lo que importa es entender qué problema resuelve cada familia.</p></div><div class="analogia"><b>Imagínalo así</b><p>La central de una flota de taxis. Una oficina da de alta cada auto nuevo, le asigna placa y zona y sabe si está en servicio: es el gestor de OLT. Un mecánico ajusta a distancia la radio, el GPS y el taxímetro de cada taxi, y les instala las actualizaciones: es el ACS. Y una pantalla grande muestra en un mapa dónde está cada auto y avisa si alguno se detuvo demasiado tiempo: es el NMS de monitoreo.</p></div><figure class="fig fig-capas" id="29-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: las plataformas que vigilan y configuran la red y el equipo de la casa">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class=""><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class=""><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class=""><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: las plataformas que vigilan y configuran la red y el equipo de la casa</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Las plataformas de este capítulo vigilan y configuran casi todo el viaje: el gestor de OLT, la PON y las ONT; el ACS, el equipo de la casa y su Wi-Fi; el NMS, la OLT, el BNG, el core y los servidores. Todas son aplicaciones que le hablan a la red desde los sistemas del operador.</figcaption></figure></section>
+<section><h2>Tres familias de herramientas y qué resuelve cada una</h2><div class="prose"><p>En la gestión diaria de una red FTTH aparecen tres familias de plataformas. Cada una mira la red desde un ángulo distinto:</p><div class="tbl"><table><thead><tr><th>Familia</th><th>Qué resuelve</th><th>Habla con</th><th>Ejemplos del mercado</th></tr></thead><tbody><tr><td>Gestor de OLT</td><td>Autorizar ONT, asignar perfiles y VLAN, ver la señal óptica y las caídas</td><td>Las OLT (y, por OMCI, las ONT)</td><td>SmartOLT, los sistemas de cada fabricante de OLT</td></tr><tr><td>ACS</td><td>Configurar el equipo de la casa: Wi-Fi, conexión, firmware, diagnósticos</td><td>Las ONT y routers, por TR-069 o USP</td><td>GenieACS (código abierto), plataformas comerciales</td></tr><tr><td>NMS de monitoreo</td><td>Vigilar toda la red, guardar históricos, alarmar y avisar</td><td>Todo lo que hable SNMP, Syslog o una API</td><td>Zabbix, LibreNMS, PRTG, con tableros en Grafana</td></tr></tbody></table></div><p>Se solapan un poco: el gestor de OLT también alarma, el NMS también puede leer la potencia de una ONT, y algunos ACS muestran la señal óptica. Pero cada uno es el mejor en su tarea, y la mayoría de los operadores termina usando los tres.</p></div></section>
+<section><h2>El gestor de OLT: SmartOLT y los sistemas de cada fabricante</h2><div class="prose"><p>Cada fabricante de OLT ofrece su propio sistema de gestión. Conoce a fondo sus equipos: todas las tarjetas, todos los modelos de ONT de la marca, todas las alarmas. Suele instalarse en servidores del operador y se paga por licencia, a menudo según la cantidad de puertos o de ONT.</p><p>Junto a ellos existen gestores <b>multimarca</b>, que hablan con OLT de varios fabricantes y presentan todo con la misma pantalla. Un ejemplo conocido es <b>SmartOLT</b>, un servicio en la nube: el operador no instala nada, conecta sus OLT a la plataforma y gestiona desde el navegador. Hay otras opciones comerciales y desarrollos propios de algunos operadores que hacen lo mismo con las APIs de cada fabricante.</p><p>Lo que un gestor de OLT hace, cualquiera sea, se resume en cuatro tareas: <b>autorizar</b> ONT nuevas con su perfil y su VLAN; <b>mostrar el estado</b> de cada ONT (en línea, sin señal, sin energía); <b>medir</b> la potencia óptica y el tráfico; y <b>actuar</b> sobre una ONT puntual: reiniciarla, cambiarle el plan, desautorizarla cuando el cliente se da de baja.</p></div></section>
+<section><h2>Flujo de autorización de una ONT: aparece sin configurar, se identifica, recibe perfil y VLAN y queda en línea</h2><div class="prose"><p>Es el flujo más repetido en la vida de una red FTTH: ocurre en cada instalación. El técnico conecta la ONT en la casa del cliente y la enciende. La ONT se presenta a la OLT con su <b>número de serie</b>, pero la OLT no la deja trabajar hasta que alguien la autorice: es una medida de seguridad, para que nadie conecte un equipo cualquiera a la red.</p><ol class="steps"><li><span>La OLT detecta la ONT nueva en un puerto PON y la anota como «sin configurar».</span></li><li><span>El gestor de OLT lee esa lista y la muestra: número de serie, OLT, puerto y modelo.</span></li><li><span>Alguien de soporte, o el propio técnico desde una aplicación, elige la ONT y completa los datos: el cliente, el tipo de equipo, el perfil de velocidad y la <b>VLAN</b> de cada servicio.</span></li><li><span>El gestor traduce eso a órdenes para esa marca de OLT (por consola, SNMP o su API) y se las manda.</span></li><li><span>La OLT configura la ONT por OMCI: le crea sus contenedores, sus puertos y sus VLAN.</span></li><li><span>La ONT queda <b>en línea</b>. El gestor muestra su potencia óptica y el técnico confirma que está en rango antes de irse.</span></li></ol></div><figure class="fig fig-flujo" id="29-diagrama-2"><div class="lienzo"><svg viewBox="0 0 910 522" style="min-width:720px" role="img" aria-label="Flujo de autorización de una ONT: la ONT se presenta con su número de serie, la OLT la reporta sin configurar, la persona de soporte elige perfil, plan y VLAN, el gestor manda las órdenes a la OLT, la OLT configura la ONT por OMCI y el gestor confirma que está en línea con buena señal">
+  <rect x="20.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-persona" x="32.0" y="26" width="32" height="32" class="ico"/><text x="72.0" y="40" class="t t-b">Soporte</text><text x="72.0" y="57" class="t t-s t-m">o técnico</text>
+  <rect x="220.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-monitor" x="232.0" y="26" width="32" height="32" class="ico"/><text x="272.0" y="40" class="t t-b">Gestor</text><text x="272.0" y="57" class="t t-s t-m">de OLT</text>
+  <rect x="420.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-olt" x="432.0" y="26" width="32" height="32" class="ico"/><text x="472.0" y="40" class="t t-b">OLT</text><text x="472.0" y="57" class="t t-s t-m">puerto 0/1/3</text>
+  <rect x="610.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-ont" x="622.0" y="26" width="32" height="32" class="ico"/><text x="662.0" y="40" class="t t-b">ONT</text><text x="662.0" y="57" class="t t-s t-m">en la casa</text>
+  <line x1="100" y1="70" x2="100" y2="502" class="vida"/>
+  <line x1="300" y1="70" x2="300" y2="502" class="vida"/>
+  <line x1="500" y1="70" x2="500" y2="502" class="vida"/>
+  <line x1="690" y1="70" x2="690" y2="502" class="vida"/>
+  <line x1="690" y1="104" x2="502" y2="112" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="680" y="98" text-anchor="end" class="t t-s">① Me enciendo: serie DEMO0A1B2C3D</text>
+  <line x1="500" y1="146" x2="302" y2="154" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="490" y="140" text-anchor="end" class="t t-s">② ONT sin configurar en 0/1/3</text>
+  <line x1="300" y1="188" x2="102" y2="196" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="290" y="182" text-anchor="end" class="t t-s">③ Aparece en pendientes</text>
+  <line x1="100" y1="230" x2="298" y2="238" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="110" y="224" class="t t-s">④ Autorizar: cliente, perfil, plan y VLAN 10</text>
+  <line x1="300" y1="272" x2="498" y2="280" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="310" y="266" class="t t-s">⑤ Órdenes para esa marca (consola, SNMP o API)</text>
+  <line x1="500" y1="314" x2="688" y2="322" class="ln s-enl" style="stroke-width:2.4" marker-end="url(#fl-enl)"/>
+  <text x="360" y="308" class="t t-s"><tspan class="t-mono t-b">OMCI</tspan> ⑥ crea contenedor, puertos y VLAN</text>
+  <line x1="690" y1="356" x2="502" y2="364" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="680" y="350" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">OMCI</tspan> ⑦ listo</text>
+  <line x1="500" y1="398" x2="302" y2="406" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="490" y="392" text-anchor="end" class="t t-s">⑧ En línea · Rx −21,3 dBm</text>
+  <line x1="300" y1="440" x2="102" y2="448" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="290" y="434" text-anchor="end" class="t t-s">⑨ ✓ En línea, señal en rango</text>
+  <g class="t t-xs t-b">
+    <path d="M795.0 90V198" class="ln s-apl" style="stroke-width:3"/><text x="805.0" y="142.0" class="k-apl">DETECCIÓN</text><text x="805.0" y="156.0" class="t-m">sin configurar</text>
+    <path d="M795.0 216V282" class="ln s-apl" style="stroke-width:3"/><text x="805.0" y="247.0" class="k-apl">DECISIÓN</text><text x="805.0" y="261.0" class="t-m">perfil y VLAN</text>
+    <path d="M795.0 300V366" class="ln s-enl" style="stroke-width:3"/><text x="805.0" y="331.0" class="k-enl">CONFIGURACIÓN</text><text x="805.0" y="345.0" class="t-m">por OMCI</text>
+    <path d="M795.0 384V450" class="ln s-apl" style="stroke-width:3"/><text x="805.0" y="415.0" class="k-apl">VERIFICACIÓN</text><text x="805.0" y="429.0" class="t-m">señal óptica</text>
+  </g>
+  <text x="14" y="261.0" class="t t-xs t-m" transform="rotate(-90 14 261.0)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>Autorizar una ONT.</b> Cuatro participantes: la persona de soporte, el gestor de OLT, la OLT y la ONT; el tiempo corre hacia abajo. La ONT se presenta, la OLT la reporta como pendiente, la persona elige perfil y VLAN, el gestor le da la orden a la OLT, la OLT configura la ONT por OMCI y el gestor confirma que quedó en línea con buena señal.</figcaption></figure><div class="prose"><p>Desde ahí siguen otros dos flujos automáticos que el gestor de OLT no controla: la ONT llama al ACS para recibir su configuración (más abajo) y abre su sesión con el BNG, que pregunta a RADIUS si ese cliente existe y qué plan tiene (capítulo 20). Si la VLAN quedó mal elegida, la ONT aparece en línea en el gestor de OLT, con buena señal, y aun así el cliente no navega: su tráfico sale por una VLAN que no llega a su BNG.</p></div><div class="lab" id="29-lab-6"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Autoriza la ONT</h3></div><p class="hint">Elige una ONT de la lista de pendientes, completa el perfil, el plan y la VLAN, y autorízala. Mira los pasos que se disparan y el estado final. Prueba a elegir una VLAN que no corresponde a la zona de la OLT.</p><style>
+.c29-aut{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.c29-aut select,.c29-aut input[type=text]{width:100%;min-width:0;box-sizing:border-box}
+.c29-aut input[type=text]{font:500 .92rem var(--f-display);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+.c29-aut table{width:100%;border-collapse:collapse;font:500 .86rem var(--f-display)}
+.c29-aut th,.c29-aut td{padding:6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.c29-aut th{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.c29-aut td code{font-size:.8rem}
+.c29-aut .zona{font:500 .86rem var(--f-display);color:var(--muted)}
+.c29-aut ol.steps li span{font:500 .9rem var(--f-display)}
+.c29-aut .estado{font:700 1rem var(--f-display)}
+.c29-aut .estado.ok{color:var(--good)}
+.c29-aut .estado.mal{color:var(--warm)}
+@media (max-width:560px){.c29-aut .col-mod{display:none}}
+</style>
+<div class="c29-aut">
+  <div class="tbl"><table>
+    <caption class="zona" style="text-align:left;caption-side:top;padding-bottom:6px">ONT sin configurar detectadas por las OLT</caption>
+    <thead><tr><th>Elegir</th><th>Número de serie</th><th>OLT y puerto</th><th class="col-mod">Modelo</th></tr></thead>
+    <tbody id="c29-pend"></tbody>
+  </table></div>
+  <div class="opciones">
+    <label>Cliente (contrato)
+      <input type="text" id="c29-cli" value="Contrato 000123" spellcheck="false"></label>
+    <label>Tipo de equipo
+      <select id="c29-tipo">
+        <option value="router" selected>Con router y Wi-Fi (el ACS lo configura)</option>
+        <option value="bridge">Solo puente (el cliente pone su router)</option>
+      </select></label>
+    <label>Perfil de velocidad
+      <select id="c29-plan">
+        <option>300 Mbps</option><option selected>600 Mbps</option><option>900 Mbps</option>
+      </select></label>
+    <label>VLAN de Internet
+      <select id="c29-vlan">
+        <option value="100">100</option><option value="200">200</option><option value="300">300</option>
+      </select></label>
+  </div>
+  <p class="zona" id="c29-ficha"></p>
+  <div class="btns"><button type="button" class="primary" id="c29-ok">Autorizar</button></div>
+  <div aria-live="polite" id="c29-out" style="display:grid;gap:10px"></div>
+</div></div></section>
+<section><h2>Lo que muestra el gestor de OLT: señal óptica, estado, última caída y tráfico por puerto PON</h2><div class="prose"><p>La ficha de una ONT en un gestor de OLT tiene casi siempre los mismos datos, y conviene saber leerlos:</p><ul><li><b>Estado</b>: en línea, fuera de línea, sin autorizar.</li><li><b>Potencia óptica recibida</b> (Rx), en dBm. Es la medida estrella. Una ONT GPON suele trabajar bien entre −8 y −27 dBm; cerca de −28 empieza a fallar. Un valor que empeora de a poco anuncia una fibra doblada o un conector sucio.</li><li><b>Última caída y su causa</b>. Las dos más comunes se distinguen bien: <i>LOS</i> (<i>Loss of Signal</i>, pérdida de señal) quiere decir que la luz dejó de llegar, un problema de fibra; <i>dying gasp</i> quiere decir que la ONT avisó que se quedaba sin energía, normalmente un corte de luz en la casa o alguien que la desenchufó.</li><li><b>Tiempo en línea</b>, versión de firmware y modelo.</li><li><b>Tráfico</b> de la ONT y del puerto PON completo, para ver si un puerto se está llenando.</li></ul><p>Una lectura útil: si una sola ONT de un puerto cae con <i>dying gasp</i>, es un tema de esa casa. Si caen veinte ONT del mismo puerto con <i>LOS</i> al mismo tiempo, se cortó una fibra que las alimenta a todas. Es el tipo de razonamiento que el NOC automatiza (capítulo 31).</p></div></section>
+<section><h2>El ACS en la práctica: GenieACS y plataformas comerciales</h2><div class="prose"><p>El ACS es el servidor TR-069 del capítulo 28 convertido en herramienta de trabajo. <b>GenieACS</b> es un ejemplo de código abierto muy difundido: gratuito, con una interfaz web para buscar equipos y ver sus parámetros, una API para que otros sistemas le pidan tareas y un mecanismo de reglas para configurar equipos automáticamente. Del lado comercial hay varias plataformas de distintos proveedores, algunas de los mismos fabricantes de equipos, que agregan soporte, paneles de análisis del Wi-Fi, módulos para la aplicación del cliente y soporte de USP.</p><p>Las funciones que un operador usa a diario son parecidas en todos:</p><ul><li><b>Buscar</b> un equipo por número de serie, cliente o dirección IP y ver su ficha: modelo, firmware, última vez que llamó.</li><li><b>Leer y cambiar</b> parámetros: nombre y clave del Wi-Fi, canal, clientes conectados.</li><li><b>Acciones</b> con un botón: reiniciar, volver a valores de fábrica, ping o prueba de velocidad desde el equipo.</li><li><b>Firmware</b>: cargar una versión y programar su instalación en un grupo de equipos.</li><li><b>Reglas automáticas</b>: «a todo equipo nuevo de este modelo, aplícale esta configuración».</li></ul><p>En GenieACS esas reglas se llaman <i>presets</i>: una condición (qué equipo, qué evento) y lo que hay que hacer cuando se cumple. Las plataformas comerciales usan otros nombres, como perfiles o políticas, para la misma idea.</p></div></section>
+<section><h2>Flujo del ACS: el equipo se presenta, recibe su configuración inicial y queda con tareas programadas</h2><div class="prose"><p>Cuando una ONT nueva queda en línea, llama al ACS por primera vez. Lo que sigue es la «instalación sin tocar nada» del capítulo 40, vista desde el ACS:</p><ol class="steps"><li><span>La ONT manda un Inform con el evento <b>BOOTSTRAP</b>: «nunca hablé contigo». Incluye su número de serie, modelo y firmware.</span></li><li><span>El ACS busca qué reglas aplican a ese modelo y a ese evento.</span></li><li><span>Si hace falta, el ACS consulta a otro sistema a qué cliente pertenece ese número de serie, para saber su usuario de conexión y el nombre del Wi-Fi que eligió.</span></li><li><span>El ACS le manda la configuración inicial: la cuenta de conexión, el Wi-Fi, el intervalo de aviso periódico.</span></li><li><span>Si el firmware es viejo, le ordena descargar el nuevo. La ONT lo instala, se reinicia y vuelve a llamar.</span></li><li><span>A partir de ahí, la ONT llama sola cada cierto tiempo. En esas llamadas el ACS lee los datos que interesan (potencia, clientes del Wi-Fi) y ejecuta las tareas que se hayan programado.</span></li></ol></div><figure class="fig fig-flujo" id="29-diagrama-3"><div class="lienzo"><svg viewBox="0 0 920 704" style="min-width:720px" role="img" aria-label="Flujo del ACS con un equipo nuevo: Inform con BOOTSTRAP, el ACS busca reglas y consulta de quién es el equipo, envía la configuración inicial y el firmware nuevo, cierra la sesión; el equipo se reinicia, avisa que terminó y desde entonces llama cada hora para que el ACS lea datos y ejecute tareas">
+  <rect x="30.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-ont" x="42.0" y="26" width="32" height="32" class="ico"/><text x="82.0" y="40" class="t t-b">ONT</text><text x="82.0" y="57" class="t t-s t-m">equipo nuevo</text>
+  <rect x="340.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-servidor" x="352.0" y="26" width="32" height="32" class="ico"/><text x="392.0" y="40" class="t t-b">ACS</text><text x="392.0" y="57" class="t t-s t-m">reglas y tareas</text>
+  <rect x="630.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-monitor" x="642.0" y="26" width="32" height="32" class="ico"/><text x="682.0" y="40" class="t t-b">Orquestador</text><text x="682.0" y="57" class="t t-s t-m">u OSS</text>
+  <line x1="110" y1="70" x2="110" y2="684" class="vida"/>
+  <line x1="420" y1="70" x2="420" y2="684" class="vida"/>
+  <line x1="710" y1="70" x2="710" y2="684" class="vida"/>
+  <line x1="110" y1="104" x2="418" y2="112" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="120" y="98" class="t t-s"><tspan class="t-mono t-b">Inform</tspan> ① 0 BOOTSTRAP, 1 BOOT · serie, modelo</text>
+  <line x1="420" y1="144" x2="112" y2="152" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="410" y="138" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">InformResponse</tspan> ②</text>
+  <rect x="295.0" y="170" width="250" height="26" rx="6" class="caja"/><text x="420" y="188" text-anchor="middle" class="t t-s">③ ¿qué reglas aplican a este modelo?</text>
+  <line x1="420" y1="224" x2="708" y2="232" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="430" y="218" class="t t-s">④ ¿de quién es la serie DEMO0A1B…?</text>
+  <line x1="710" y1="264" x2="422" y2="272" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="700" y="258" text-anchor="end" class="t t-s">⑤ cliente, usuario PPPoE, nombre del Wi-Fi</text>
+  <line x1="110" y1="304" x2="418" y2="312" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="120" y="298" class="t t-s"><tspan class="t-mono t-b">POST vacío</tspan> ⑥</text>
+  <line x1="420" y1="344" x2="112" y2="352" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="410" y="338" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">SetParameterValues</tspan> ⑦ PPPoE, Wi-Fi, aviso cada hora</text>
+  <line x1="110" y1="384" x2="418" y2="392" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="120" y="378" class="t t-s">⑧ aplicado</text>
+  <line x1="420" y1="424" x2="112" y2="432" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="410" y="418" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">Download</tspan> ⑨ firmware V5.3</text>
+  <line x1="420" y1="464" x2="112" y2="472" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="410" y="458" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">HTTP 204</tspan> ⑩ fin de la sesión</text>
+  <rect x="25.0" y="490" width="170" height="26" rx="6" class="caja"/><text x="110" y="508" text-anchor="middle" class="t t-s">⑪ instala y se reinicia</text>
+  <line x1="110" y1="544" x2="418" y2="552" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="120" y="538" class="t t-s"><tspan class="t-mono t-b">Inform</tspan> ⑫ 1 BOOT, 7 TRANSFER COMPLETE</text>
+  <line x1="110" y1="584" x2="418" y2="592" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="120" y="578" class="t t-s"><tspan class="t-mono t-b">Inform</tspan> ⑬ 2 PERIODIC, una hora después</text>
+  <line x1="420" y1="624" x2="112" y2="632" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="410" y="618" text-anchor="end" class="t t-s">⑭ lee potencia y clientes; tareas programadas</text>
+  <g class="t t-xs t-b">
+    <path d="M815.0 90V154" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="120.0" class="k-apl">AVISO</text><text x="825.0" y="134.0" class="t-m">BOOTSTRAP</text>
+    <path d="M815.0 170V274" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="220.0" class="k-apl">BÚSQUEDA</text><text x="825.0" y="234.0" class="t-m">reglas y cliente</text>
+    <path d="M815.0 290V474" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="380.0" class="k-apl">PROVISIÓN</text><text x="825.0" y="394.0" class="t-m">configuración</text>
+    <path d="M815.0 490V554" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="520.0" class="k-apl">FIRMWARE</text><text x="825.0" y="534.0" class="t-m">nueva versión</text>
+    <path d="M815.0 570V634" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="600.0" class="k-apl">RUTINA</text><text x="825.0" y="614.0" class="t-m">cada hora</text>
+  </g>
+  <text x="14" y="352.0" class="t t-xs t-m" transform="rotate(-90 14 352.0)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El ACS configura un equipo nuevo.</b> Tres participantes: la ONT, el ACS y el sistema que sabe de quién es cada equipo. Arriba, la primera llamada con BOOTSTRAP y la configuración inicial; en el medio, la actualización de firmware; abajo, la rutina de cada hora, que el ACS aprovecha para leer datos y ejecutar tareas programadas.</figcaption></figure></section>
+<section><h2>El NMS de monitoreo: Zabbix, LibreNMS, PRTG y tableros en Grafana</h2><div class="prose"><p>El NMS de monitoreo es la pantalla grande de la analogía. No configura: <b>vigila</b>. Consulta cada equipo de la red cada pocos minutos, guarda los valores en una base histórica, los compara con umbrales y avisa cuando algo se sale de lo normal.</p><p>Algunos ejemplos del mercado:</p><ul><li><b>Zabbix</b>: de código abierto, muy flexible. Se organiza en plantillas por tipo de equipo, con datos a recolectar (<i>items</i>), condiciones de alarma (<i>triggers</i>) y acciones (avisar, abrir un ticket).</li><li><b>LibreNMS</b>: de código abierto, pensado para redes. Descubre solo los equipos y sus puertos por SNMP, dibuja gráficos de tráfico sin configurar casi nada y trae reglas de alerta listas.</li><li><b>PRTG</b>: comercial, con una interfaz muy amigable. Se organiza en «sensores» y se licencia por cantidad de sensores.</li><li><b>Grafana</b>: no recolecta datos; los <b>muestra</b>. Se conecta a la base de datos del NMS (o a otras) y arma tableros a medida. Muchos operadores usan Grafana como la cara visible del monitoreo, en las pantallas del NOC.</li></ul></div></section>
+<section><h2>Flujo de monitoreo: descubrir equipos, consultar por SNMP, comparar con umbrales, alarmar, avisar y abrir un ticket</h2><div class="prose"><p>El flujo de un NMS es un ciclo que no se detiene:</p><ol class="steps"><li><span><b>Descubrir</b>: el NMS recorre un rango de direcciones de gestión, encuentra los equipos que responden y aprende sus puertos.</span></li><li><span><b>Consultar</b>: cada pocos minutos, lee por SNMP los contadores y estados de cada equipo; además recibe los avisos que los equipos mandan solos.</span></li><li><span><b>Comparar</b>: cada valor se compara con su umbral. ¿El puerto está caído? ¿La ocupación pasa del 80 %? ¿La potencia de las ONT de un puerto bajó de −27 dBm?</span></li><li><span><b>Alarmar</b>: si se cruza un umbral, se abre un <b>problema</b> con su severidad.</span></li><li><span><b>Avisar</b>: el NMS manda un mensaje al NOC por correo o mensajería, y por una API abre un <b>ticket</b> en el sistema de incidentes.</span></li><li><span><b>Recuperar</b>: cuando el valor vuelve a la normalidad, el NMS cierra el problema y actualiza el ticket.</span></li></ol></div><figure class="fig fig-flujo" id="29-diagrama-4"><div class="lienzo"><svg viewBox="0 0 920 624" style="min-width:720px" role="img" aria-label="Flujo de monitoreo: el NMS consulta por SNMP la potencia de las ONT de un puerto, la compara con el umbral, abre un problema, avisa al NOC y crea un ticket por API; al normalizarse la medida, actualiza el ticket y avisa que se resolvió">
+  <rect x="20.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-olt" x="32.0" y="26" width="32" height="32" class="ico"/><text x="72.0" y="40" class="t t-b">OLT</text><text x="72.0" y="57" class="t t-s t-m">agente SNMP</text>
+  <rect x="220.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-monitor" x="232.0" y="26" width="32" height="32" class="ico"/><text x="272.0" y="40" class="t t-b">NMS</text><text x="272.0" y="57" class="t t-s t-m">monitoreo</text>
+  <rect x="430.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-celular" x="442.0" y="26" width="32" height="32" class="ico"/><text x="482.0" y="40" class="t t-b">Mensajería</text><text x="482.0" y="57" class="t t-s t-m">del NOC</text>
+  <rect x="630.0" y="14" width="160" height="56" rx="10" class="caja"/><use href="#i-factura" x="642.0" y="26" width="32" height="32" class="ico"/><text x="682.0" y="40" class="t t-b">Tickets</text><text x="682.0" y="57" class="t t-s t-m">incidentes</text>
+  <line x1="100" y1="70" x2="100" y2="604" class="vida"/>
+  <line x1="300" y1="70" x2="300" y2="604" class="vida"/>
+  <line x1="510" y1="70" x2="510" y2="604" class="vida"/>
+  <line x1="710" y1="70" x2="710" y2="604" class="vida"/>
+  <line x1="300" y1="104" x2="102" y2="112" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="290" y="98" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">GET</tspan> ① potencia, PON 0/2</text>
+  <line x1="100" y1="144" x2="298" y2="152" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="110" y="138" class="t t-s">② 5 ONT entre −29 y −31 dBm</text>
+  <rect x="200.0" y="170" width="200" height="26" rx="6" class="caja"/><text x="300" y="188" text-anchor="middle" class="t t-s">③ ¿menor que −27 dBm? Sí</text>
+  <rect x="185.0" y="210" width="230" height="26" rx="6" class="c-apl"/><text x="300" y="228" text-anchor="middle" class="t t-s">④ PROBLEMA: PON 0/2 degradado</text>
+  <line x1="300" y1="264" x2="508" y2="272" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="310" y="258" class="t t-s">⑤ «PON 0/2 degradado, 5 ONT»</text>
+  <line x1="300" y1="304" x2="708" y2="312" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="530" y="298" class="t t-s"><tspan class="t-mono t-b">API</tspan> ⑥ crear ticket, severidad alta</text>
+  <line x1="710" y1="344" x2="302" y2="352" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="700" y="338" text-anchor="end" class="t t-s">⑦ ticket 4521 abierto</text>
+  <rect x="420.0" y="370" width="180" height="26" rx="6" class="caja"/><text x="510" y="388" text-anchor="middle" class="t t-s">⑧ el NOC manda a campo</text>
+  <line x1="300" y1="424" x2="102" y2="432" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="290" y="418" text-anchor="end" class="t t-s"><tspan class="t-mono t-b">GET</tspan> ⑨ tras limpiar</text>
+  <line x1="100" y1="464" x2="298" y2="472" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="110" y="458" class="t t-s">⑩ entre −20 y −23 dBm</text>
+  <line x1="300" y1="504" x2="708" y2="512" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="530" y="498" class="t t-s">⑪ resuelto: actualizar ticket</text>
+  <line x1="300" y1="544" x2="508" y2="552" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="310" y="538" class="t t-s">⑫ «PON 0/2 normal»</text>
+  <g class="t t-xs t-b">
+    <path d="M815.0 90V154" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="120.0" class="k-apl">SONDEO</text><text x="825.0" y="134.0" class="t-m">cada 5 min</text>
+    <path d="M815.0 170V234" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="200.0" class="k-apl">EVALUACIÓN</text><text x="825.0" y="214.0" class="t-m">umbral</text>
+    <path d="M815.0 250V394" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="320.0" class="k-apl">ALARMA</text><text x="825.0" y="334.0" class="t-m">aviso y ticket</text>
+    <path d="M815.0 410V554" class="ln s-apl" style="stroke-width:3"/><text x="825.0" y="480.0" class="k-apl">RECUPERACIÓN</text><text x="825.0" y="494.0" class="t-m">cierre</text>
+  </g>
+  <text x="14" y="312.0" class="t t-xs t-m" transform="rotate(-90 14 312.0)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>De una medida a un ticket.</b> Participantes: la OLT, el NMS, la mensajería del NOC y el sistema de tickets; el tiempo corre hacia abajo. El NMS consulta, compara con el umbral, abre un problema, avisa y crea el ticket. Más abajo, cuando la medida vuelve a la normalidad, el mismo ciclo cierra el problema y actualiza el ticket.</figcaption></figure><div class="prose"><p>El arte está en los umbrales. Muy estrictos, y el NOC recibe cientos de alarmas que nadie mira; muy laxos, y el problema se descubre cuando llama el cliente. Pruébalo en el tablero.</p></div><div class="lab" id="29-lab-7"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Tablero del NOC</h3></div><p class="hint">Mueve el umbral de alarma de señal óptica y mira qué ONT se encienden en rojo. Activa la agrupación por puerto PON para ver cuándo muchas alarmas son, en realidad, un solo problema.</p><style>
+.c29-noc{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.c29-noc .chk{display:flex;align-items:center;gap:8px;font:600 .88rem var(--f-display)}
+.c29-noc .puerto{font:700 .78rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.c29-noc .puerto.grupo{color:var(--warm)}
+.c29-noc .fila{display:grid;grid-template-columns:4.6rem minmax(0,1fr) 5.4rem;gap:8px;align-items:center;font:500 .84rem var(--f-display);padding:2px 0}
+.c29-noc .barra{position:relative;height:14px;border-radius:4px;background:var(--paper);border:1px solid var(--line)}
+.c29-noc .barra i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--good)}
+.c29-noc .fila.al .barra i{background:var(--warm)}
+.c29-noc .barra b{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
+.c29-noc .fila span:last-child{font-family:var(--f-mono);text-align:right;white-space:nowrap}
+.c29-noc .fila.al span:last-child{color:var(--warm);font-weight:700}
+.c29-noc .fila.off span:last-child{color:var(--muted)}
+</style>
+<div class="c29-noc">
+  <div class="ctls">
+    <label class="ctl">Alarmar si la potencia recibida baja de <output id="c29-um-o"></output><input type="range" id="c29-um" min="-30" max="-20" step="0.5" value="-27"></label>
+  </div>
+  <label class="chk"><input type="checkbox" id="c29-agr"> Agrupar alarmas por puerto PON</label>
+  <div id="c29-lista" role="img" aria-label="Potencia óptica de cada ONT frente al umbral"></div>
+  <div class="readout" aria-live="polite"><div id="c29-cuenta"></div><div id="c29-lectura" style="font-family:var(--f-body)"></div></div>
+</div></div></section>
+<section><h2>Respaldos de configuración y registros centralizados (Oxidized, Graylog)</h2><div class="prose"><p>Dos herramientas más completan la caja: una que guarda <b>cómo estaba configurado</b> cada equipo y otra que junta <b>lo que dijo</b> cada equipo.</p><p>Para los respaldos, un ejemplo conocido de código abierto es <b>Oxidized</b>: se conecta cada cierto tiempo a cada router, switch y OLT, descarga su configuración y la guarda en un repositorio con historial de versiones. Si un equipo se daña, la configuración está a mano para cargarla en el reemplazo. Y si algo dejó de funcionar después de un cambio, se puede comparar línea por línea la configuración de hoy con la de ayer y ver exactamente qué cambió y cuándo. RANCID es una alternativa más antigua con la misma idea.</p><p>Para los registros, herramientas como <b>Graylog</b>, o la familia Elasticsearch y OpenSearch, reciben el Syslog de todos los equipos (capítulo 27), lo guardan, permiten buscarlo y disparan alertas: «avísame si alguien entra a una OLT fuera de horario», «avísame si un vecino de ruteo se cae». En una investigación, poder buscar en un solo lugar lo que dijeron cien equipos en la misma hora ahorra horas de trabajo.</p></div></section>
+<section><h2>Cómo se integran: APIs entre gestor de OLT, ACS, NMS, RADIUS y los sistemas del negocio</h2><div class="prose"><p>Usadas por separado, estas plataformas obligan a una persona a copiar datos de una pantalla a otra: el número de serie del sistema de órdenes al gestor de OLT, el usuario de conexión al ACS, el cliente a RADIUS. Cada copia es una oportunidad de error. Por eso la meta es <b>integrarlas</b> con APIs, de modo que un sistema le pida al otro lo que necesita.</p><p>El caso típico es el alta de un cliente: la venta queda en el sistema comercial (BSS), que genera una orden; un orquestador (capítulo 38) toma la orden y, por API, le pide al gestor de OLT que autorice la ONT, a RADIUS que cree el usuario con su plan y al ACS que deje lista la configuración del Wi-Fi. Del lado contrario, el NMS abre tickets en el sistema de incidentes y el gestor de OLT le informa al sistema de atención qué clientes están afectados por una caída.</p></div><figure class="fig fig-arquitectura" id="29-diagrama-5"><div class="lienzo"><svg viewBox="0 0 900 604" style="min-width:760px" role="img" aria-label="Arquitectura de integración: los sistemas del negocio generan la orden; el orquestador pide por API al gestor de OLT que autorice la ONT, a RADIUS que cree el usuario y al ACS que prepare el Wi-Fi; el NMS abre tickets y atención ve los clientes afectados; abajo, la red que cada plataforma gestiona">
+  
+  <rect x="10" y="10" width="880" height="112" rx="12" class="d-sis"/>
+  <rect x="10" y="134" width="880" height="96" rx="12" class="caja"/>
+  <rect x="10" y="242" width="880" height="112" rx="12" class="d-oper"/>
+  <rect x="10" y="366" width="880" height="138" rx="12" class="d-casa"/>
+  <text x="876" y="28" text-anchor="end" class="t t-xs t-b k-sis">SISTEMAS DEL NEGOCIO (BSS)</text>
+  <text x="876" y="152" text-anchor="end" class="t t-xs t-b t-m">ORQUESTACIÓN Y OSS</text>
+  <text x="876" y="260" text-anchor="end" class="t t-xs t-b k-oper">PLATAFORMAS DE GESTIÓN</text>
+  <text x="24" y="496" class="t t-xs t-b k-casa">LA RED Y LA CASA</text>
+
+  
+  <g class="t t-s t-b">
+    <rect x="30" y="38" width="190" height="70" rx="10" class="caja"/><use href="#i-persona" x="42" y="54" width="34" height="34" class="ico"/><text x="86" y="70">Ventas y CRM</text><text x="86" y="88" class="t-m" style="font-weight:400">contrato y cliente</text>
+    <rect x="250" y="38" width="190" height="70" rx="10" class="caja"/><use href="#i-factura" x="262" y="54" width="34" height="34" class="ico"/><text x="306" y="70">Facturación</text><text x="306" y="88" class="t-m" style="font-weight:400">cobro y suspensión</text>
+    <rect x="470" y="38" width="190" height="70" rx="10" class="caja"/><use href="#i-celular" x="482" y="54" width="34" height="34" class="ico"/><text x="526" y="70">App del cliente</text><text x="526" y="88" class="t-m" style="font-weight:400">Wi-Fi, reinicio</text>
+    <rect x="690" y="38" width="190" height="70" rx="10" class="caja"/><use href="#i-persona" x="702" y="54" width="34" height="34" class="ico"/><text x="746" y="70">Atención</text><text x="746" y="88" class="t-m" style="font-weight:400">clientes afectados</text>
+  </g>
+
+  
+  <g class="t t-s t-b">
+    <rect x="250" y="160" width="230" height="56" rx="10" class="caja"/><use href="#i-monitor" x="262" y="171" width="32" height="32" class="ico"/><text x="304" y="184">Orquestador</text><text x="304" y="202" class="t-m" style="font-weight:400">reparte cada orden</text>
+    <rect x="560" y="160" width="170" height="56" rx="10" class="caja"/><use href="#i-factura" x="572" y="171" width="32" height="32" class="ico"/><text x="614" y="184">Tickets</text><text x="614" y="202" class="t-m" style="font-weight:400">incidentes</text>
+    <rect x="745" y="160" width="135" height="56" rx="10" class="caja"/><use href="#i-guia" x="755" y="171" width="32" height="32" class="ico"/><text x="795" y="192">Inventario</text>
+  </g>
+
+  
+  <g class="t t-s t-b">
+    <rect x="24" y="268" width="160" height="72" rx="10" class="caja"/><use href="#i-olt" x="34" y="280" width="30" height="30" class="ico"/><text x="72" y="292">Gestor</text><text x="72" y="308">de OLT</text>
+    <rect x="196" y="268" width="160" height="72" rx="10" class="caja"/><use href="#i-servidor" x="206" y="280" width="30" height="30" class="ico"/><text x="244" y="300">ACS</text>
+    <rect x="368" y="268" width="160" height="72" rx="10" class="caja"/><use href="#i-llave" x="378" y="280" width="30" height="30" class="ico"/><text x="416" y="300">RADIUS</text>
+    <rect x="540" y="268" width="160" height="72" rx="10" class="caja"/><use href="#i-monitor" x="550" y="280" width="30" height="30" class="ico"/><text x="588" y="292">NMS y</text><text x="588" y="308">tableros</text>
+    <rect x="712" y="268" width="168" height="72" rx="10" class="caja"/><use href="#i-servidor" x="722" y="280" width="30" height="30" class="ico"/><text x="760" y="292">Respaldos</text><text x="760" y="308">y registros</text>
+  </g>
+
+  
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="40" y="398" width="140" height="80" rx="10" class="caja"/><use href="#i-olt" x="93" y="406" width="34" height="34" class="ico"/><text x="110" y="462">OLT</text>
+    <rect x="206" y="398" width="140" height="80" rx="10" class="caja"/><use href="#i-ont" x="259" y="406" width="34" height="34" class="ico"/><text x="276" y="462">ONT</text>
+    <rect x="378" y="398" width="140" height="80" rx="10" class="caja"/><use href="#i-router-core" x="431" y="406" width="34" height="34" class="ico"/><text x="448" y="462">BNG</text>
+    <rect x="550" y="398" width="140" height="80" rx="10" class="caja"/><use href="#i-router-core" x="603" y="406" width="34" height="34" class="ico"/><text x="620" y="462">Core</text>
+    <rect x="722" y="398" width="150" height="80" rx="10" class="caja"/><use href="#i-servidor" x="780" y="406" width="34" height="34" class="ico"/><text x="797" y="462">Todos los equipos</text>
+  </g>
+  <line x1="180" y1="438" x2="206" y2="438" class="ln s-fis" style="stroke-width:3"/>
+  <g class="t t-xs t-m">
+    <line x1="104" y1="340" x2="104" y2="398" class="ln"/><text x="110" y="374">CONSOLA O API</text>
+    <line x1="276" y1="340" x2="276" y2="398" class="ln"/><text x="282" y="374">TR-069</text>
+    <line x1="448" y1="340" x2="448" y2="398" class="ln"/><text x="454" y="374">RADIUS</text>
+    <line x1="620" y1="340" x2="620" y2="398" class="ln"/><text x="626" y="374">SNMP</text>
+    <line x1="797" y1="340" x2="797" y2="398" class="ln"/><text x="803" y="374">SSH, SYSLOG</text>
+  </g>
+
+  
+  <path d="M125 108V188H246" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="132" y="140" class="t t-b k-apl">①</text>
+  <line x1="280" y1="216" x2="110" y2="264" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="168" y="236" class="t t-b k-apl">②</text>
+  <line x1="400" y1="216" x2="444" y2="264" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="426" y="229" class="t t-b k-apl">③</text>
+  <line x1="330" y1="216" x2="282" y2="264" class="ln s-apl" style="stroke-width:2.4" marker-end="url(#fl-apl)"/>
+  <text x="312" y="246" class="t t-b k-apl">④</text>
+  <path d="M520 108V127H226V264" class="ln ln-d" marker-end="url(#fl)"/>
+  <path d="M440 216V236H812V220" class="ln ln-d" marker-end="url(#fl)"/>
+  
+  <line x1="640" y1="268" x2="640" y2="220" class="ln s-tra" style="stroke-width:2.4" marker-end="url(#fl-tra)"/>
+  <text x="648" y="248" class="t t-b k-tra">⑤</text>
+  <line x1="700" y1="160" x2="760" y2="112" class="ln s-tra" style="stroke-width:2.4" marker-end="url(#fl-tra)"/>
+  <text x="740" y="146" class="t t-b k-tra">⑥</text>
+
+  
+  <g class="t t-s">
+    <text x="20" y="530" class="t-b k-apl">Alta de un cliente:</text>
+    <text x="150" y="530">① la venta genera la orden · ② autorizar la ONT · ③ crear usuario y plan · ④ preparar el Wi-Fi</text>
+    <text x="20" y="554" class="t-b k-tra">Una alarma:</text>
+    <text x="150" y="554">⑤ el NMS abre un ticket · ⑥ atención ve qué clientes están afectados</text>
+    <text x="20" y="578" class="t-m">Punteadas: la app del cliente le pide cambios al ACS; el orquestador consulta el inventario.</text>
+  </g>
+</svg></div><figcaption><b>Cómo se conectan las plataformas.</b> Arriba, los sistemas del negocio; en el medio, el orquestador, que reparte cada orden; abajo, las plataformas de gestión y la red que gestionan. Cada línea es una API. Las flechas ① a ④ siguen el alta de un cliente, de la venta a la configuración de la ONT; ⑤ y ⑥, el camino de una alarma hasta atención al cliente.</figcaption></figure><div class="caso"><b>Así lo hace un operador</b><p>Un operador regional de fibra combina tres piezas. Un gestor de OLT en la nube, que usan soporte para autorizar ONT y los técnicos de campo, desde el celular, para confirmar la señal antes de cerrar una instalación. Un ACS, que usa atención al cliente para cambiar claves, reiniciar equipos y medir la velocidad desde la ONT, y que alimenta la aplicación del cliente. Y un NMS de código abierto con tableros en Grafana, que usa el NOC para vigilar las OLT, los enlaces y el core, y que abre tickets solo. Cada área sabe a cuál ir: la potencia óptica se mira en el gestor de OLT, el Wi-Fi en el ACS y la salud de la red en el NMS. El trabajo pendiente, como en casi todos los operadores, es la integración: que la orden de instalación llegue sola a las tres plataformas sin que nadie copie un número de serie a mano.</p></div></section>
+<section><h2>Comprar, usar en la nube o código abierto: costos y riesgos</h2><div class="prose"><p>Para cada familia hay tres caminos, y ninguno es gratis:</p><div class="tbl"><table><thead><tr><th>Camino</th><th>Ventajas</th><th>Costos y riesgos</th></tr></thead><tbody><tr><td>Sistema del fabricante</td><td>Conoce a fondo sus equipos; soporte del fabricante</td><td>Licencias; solo ve su marca; amarra al proveedor</td></tr><tr><td>Servicio en la nube (SaaS)</td><td>Se usa rápido, sin servidores propios; multimarca</td><td>Pago mensual por equipo; los datos viven afuera; depende de Internet y del proveedor</td></tr><tr><td>Código abierto</td><td>Sin licencias; se adapta a todo; comunidad grande</td><td>Exige personas que lo instalen, lo actualicen y lo aseguren; el soporte es propio o contratado</td></tr></tbody></table></div><p>La decisión depende del tamaño del operador y de su equipo técnico. Un operador pequeño suele empezar con servicios en la nube y herramientas abiertas fáciles de instalar. Uno grande tiende a combinar los sistemas de los fabricantes con plataformas abiertas a las que dedica un equipo propio. En todos los casos conviene mirar tres cosas antes de elegir: que tenga <b>API</b>, que se pueda <b>sacar la información</b> si un día se cambia de herramienta, y qué pasa con la operación si la plataforma <b>deja de estar disponible</b> una hora.</p></div><div class="ml"><b>En la práctica</b><p>Cada área usa su pantalla, y saber cuál evita vueltas. Soporte y campo: el gestor de OLT para autorizar, ver la señal óptica y la causa de la última caída. Atención al cliente: el ACS para el Wi-Fi, los reinicios, el firmware y la prueba de velocidad desde la ONT. NOC: el NMS y sus tableros para la salud de toda la red, los registros centralizados para investigar y los respaldos para volver atrás. Cuando un dato no aparece donde se lo busca, la pregunta es qué plataforma lo recolecta y si esa plataforma habla con ese equipo.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué hace un gestor de OLT que no hace un ACS?</summary><p>Autoriza las ONT en la PON, les asigna perfil y VLAN y muestra su señal óptica y sus caídas; el ACS configura la parte de router del equipo (Wi-Fi, conexión, firmware).</p></details><details><summary>Una ONT aparece en línea con buena señal, pero el cliente no navega. ¿Qué dato de la autorización conviene revisar?</summary><p>La VLAN de Internet: si no es la de la zona, el tráfico no llega al BNG correcto.</p></details><details><summary>¿Qué diferencia una caída por LOS de una por dying gasp?</summary><p>LOS es pérdida de la luz (un problema de fibra); dying gasp es el aviso de la ONT de que se quedó sin energía.</p></details><details><summary>¿Para qué sirve un preset en GenieACS?</summary><p>Para aplicar automáticamente una configuración a los equipos que cumplen una condición, por ejemplo a cada equipo nuevo que llama con BOOTSTRAP.</p></details><details><summary>¿Qué aporta Grafana si ya hay un NMS como Zabbix?</summary><p>Tableros a medida: Grafana no recolecta datos, los muestra, tomándolos del NMS o de otras bases.</p></details><details><summary>¿Por qué integrar las plataformas con APIs?</summary><p>Para que los datos pasen de un sistema a otro sin copiarlos a mano, lo que ahorra tiempo y evita errores como una serie o una VLAN mal escritas.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://docs.genieacs.com/en/latest/" target="_blank" rel="noopener">Documentación de GenieACS (inglés) <small>lectura</small></a><a class="vid" href="https://www.zabbix.com/documentation/current/es/manual" target="_blank" rel="noopener">Manual de Zabbix (español) <small>lectura</small></a><a class="vid" href="https://docs.librenms.org/" target="_blank" rel="noopener">Documentación de LibreNMS (inglés) <small>lectura</small></a><a class="vid" href="https://github.com/ytti/oxidized" target="_blank" rel="noopener">Oxidized: respaldos de configuración (GitHub, inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const ONT=[
+    {s:'DEMO0A1B2C3D',olt:'OLT-Centro',p:'0/1/3',m:'ONT doble banda',rx:-21.3,vlan:'100'},
+    {s:'DEMO5E6F7A8B',olt:'OLT-Norte',p:'0/2/7',m:'ONT doble banda',rx:-19.8,vlan:'200'},
+    {s:'TEST99887766',olt:'OLT-Centro',p:'0/1/5',m:'ONT puente',rx:-27.6,vlan:'100'}];
+  let elegida=0;
+  const coma=x=>x.toFixed(1).replace('.',',').replace('-','−');
+  function lista(){
+    const pend=ONT.map((o,i)=>[o,i]).filter(([o])=>!o.hecha);
+    if(!pend.find(([,i])=>i===elegida)&&pend.length)elegida=pend[0][1];
+    $('#c29-pend').innerHTML=pend.length?pend.map(([o,i])=>'<tr><td><input type="radio" name="c29-sel" value="'+i+'" aria-label="Elegir '+o.s+'"'+(i===elegida?' checked':'')+'></td><td><code>'+o.s+'</code></td><td>'+o.olt+' · '+o.p+'</td><td class="col-mod">'+o.m+'</td></tr>').join(''):'<tr><td colspan="4">No quedan ONT pendientes.</td></tr>';
+    const o=ONT[elegida];
+    $('#c29-ficha').textContent=pend.length?'Ficha de '+o.olt+': la VLAN de Internet de esta OLT es la '+o.vlan+'.':'';
+    $('#c29-ok').disabled=!pend.length;
+  }
+  $('#c29-pend').addEventListener('change',e=>{if(e.target.name==='c29-sel'){elegida=+e.target.value;lista();}});
+  $('#c29-ok').addEventListener('click',()=>{
+    const o=ONT[elegida],vlan=$('#c29-vlan').value,tipo=$('#c29-tipo').value,plan=$('#c29-plan').value,cli=($('#c29-cli').value.trim()||'(sin cliente)').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const vlanOk=vlan===o.vlan, debil=o.rx<-27;
+    const pasos=[
+      'El gestor manda a '+o.olt+' la orden de autorizar la serie '+o.s+' en el puerto '+o.p+', a nombre de «'+cli+'».',
+      'La OLT configura la ONT por OMCI: contenedor de subida, puertos y VLAN '+vlan+', con el perfil de '+plan+'.',
+      'La ONT queda en línea. Potencia recibida: '+coma(o.rx)+' dBm.',
+      tipo==='router'?'La ONT llama al ACS con el evento BOOTSTRAP y recibe su Wi-Fi y su usuario de conexión.':'Modo puente: la ONT no hace de router; el cliente conectará el suyo, y el ACS no lo gestiona.',
+      vlanOk?'El equipo abre su sesión: el BNG pregunta a RADIUS y el cliente navega a '+plan+'.':'El equipo intenta abrir su sesión, pero su tráfico sale por la VLAN '+vlan+', que no llega al BNG de esta zona. Nadie le contesta.'];
+    let estado,cls,nota;
+    if(!vlanOk){estado='En línea en el gestor, pero sin navegación';cls='mal';nota='La señal es buena y el gestor de OLT la muestra en verde, por eso este error cuesta encontrarlo. Hay que corregir la VLAN a la '+o.vlan+'.';}
+    else if(debil){estado='En línea, con señal en el límite';cls='mal';nota='Funciona, pero con '+coma(o.rx)+' dBm queda muy cerca del punto en que la ONT deja de entender la luz. El técnico debería limpiar o revisar el conector antes de cerrar la orden.';}
+    else{estado='En línea y navegando';cls='ok';nota='Señal en rango y VLAN correcta: la instalación se puede cerrar.';}
+    if(vlanOk)o.hecha=true;
+    $('#c29-out').innerHTML='<ol class="steps">'+pasos.map(p=>'<li><span>'+p+'</span></li>').join('')+'</ol>'+
+      '<div class="readout"><div class="estado '+cls+'">'+estado+'</div><div style="font-family:var(--f-body)">'+nota+'</div></div>';
+    lista();
+  });
+  lista();
+})();
+</script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  const MIN=-32,MAX=-14;
+  const D=[
+    ['0/1',[['ONT 1',-19.2],['ONT 2',-21.0],['ONT 3',-27.6],['ONT 4',-22.4],['ONT 5',-23.1]]],
+    ['0/2',[['ONT 6',-29.4],['ONT 7',-30.1],['ONT 8',-29.8],['ONT 9',-30.6],['ONT 10',-29.1]]],
+    ['0/3',[['ONT 11',-20.5],['ONT 12',null,'sin energía'],['ONT 13',-24.9],['ONT 14',null,'sin señal']]]];
+  const pct=v=>Math.max(0,Math.min(100,(v-MIN)/(MAX-MIN)*100));
+  const coma=v=>v.toFixed(1).replace('.',',').replace('-','−');
+  function pintar(){
+    const u=+$('#c29-um').value,agr=$('#c29-agr').checked;
+    $('#c29-um-o').textContent=coma(u)+' dBm';
+    let alarmas=0,grupos=[],html='';
+    D.forEach(([p,ont])=>{
+      const malas=ont.filter(o=>o[1]!==null&&o[1]<u).length,offs=ont.filter(o=>o[1]===null).length;
+      alarmas+=malas+ont.filter(o=>o[1]===null).length;
+      const grupo=agr&&malas>=3;
+      if(grupo)grupos.push([p,malas]);
+      html+='<div class="puerto'+(grupo?' grupo':'')+'"><span>Puerto PON '+p+'</span><span>'+(grupo?'1 alarma agrupada: '+malas+' ONT a la vez':[malas?malas+' bajo el umbral':'',offs?offs+' caídas':''].filter(Boolean).join(' · ')||'todo en rango')+'</span></div>';
+      ont.forEach(([n,v,txt])=>{
+        if(v===null){html+='<div class="fila off"><span>'+n+'</span><span class="barra"><b style="left:'+pct(u)+'%"></b></span><span>'+txt+'</span></div>';return;}
+        const al=v<u;
+        html+='<div class="fila'+(al?' al':'')+'"><span>'+n+'</span><span class="barra"><i style="width:'+pct(v)+'%"></i><b style="left:'+pct(u)+'%"></b></span><span>'+coma(v)+'</span></div>';
+      });
+    });
+    $('#c29-lista').innerHTML=html;
+    const tickets=agr?alarmas-grupos.reduce((a,[,m])=>a+m-1,0):alarmas;
+    $('#c29-cuenta').innerHTML='<span class="big">'+alarmas+' ONT con alarma</span> · '+tickets+' '+(tickets===1?'ticket':'tickets')+(agr?' (agrupando)':'');
+    let t;
+    if(u>-23) t='Umbral demasiado estricto: se encienden ONT que funcionan perfectamente. Con tantas alarmas falsas, el NOC deja de mirarlas.';
+    else if(u<-29.5) t='Umbral demasiado laxo: el puerto 0/2 está degradado y casi nadie lo ve. El problema se descubrirá cuando los clientes llamen.';
+    else if(!agr) t='Cinco ONT del puerto 0/2 están bajas a la vez: no son cinco problemas, es uno solo (una fibra doblada o un splitter sucio). Prueba a agrupar.';
+    else t='Agrupadas, las cinco alarmas del puerto 0/2 son una sola orden de trabajo para la fibra que las alimenta. La ONT 3 es un caso aislado: revisar su conector. Las ONT 12 y 14 no miden nada: una avisó que se quedó sin energía y la otra perdió la luz.';
+    $('#c29-lectura').textContent=t;
+  }
+  $('#c29-um').addEventListener('input',pintar);
+  $('#c29-agr').addEventListener('change',pintar);
+  pintar();
+})();
+</script>
+</body>
+</html>

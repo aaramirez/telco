@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Energía y respaldo · Cómo funciona un telco</title>
+<meta name="description" content="Una red de fibra es pasiva en la calle, pero los nodos, las OLT, los routers y el equipo de la casa necesitan electricidad, y la disponibilidad del servicio depende tanto de rectificadores, baterías y generadores como de la fibra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="15-energia-y-respaldo">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 15 DE 49</span><h1>Energía y respaldo: la red también necesita electricidad</h1><p class="lede">Una red de fibra es pasiva en la calle, pero los nodos, las OLT, los routers y el equipo de la casa necesitan electricidad, y la disponibilidad del servicio depende tanto de rectificadores, baterías y generadores como de la fibra.</p></header>
+<section><div class="prose"><p>Se habla mucho de la fibra, de la velocidad y de los routers, pero casi nunca de lo más básico: todos esos equipos funcionan con electricidad. Si se va la luz en la central y nadie lo previó, da igual que la fibra esté perfecta. La red se apaga.</p><p>Por eso un operador dedica tanto esfuerzo a la energía como a la red misma. Rectificadores, bancos de baterías, generadores, aire acondicionado y alarmas forman una segunda red, menos visible, que sostiene a la primera. Este capítulo la recorre: dónde hace falta energía, cómo se guarda, cuánto dura y cómo se sabe, desde el NOC, si un cliente se cayó por un corte de luz o por un corte de fibra.</p></div><div class="analogia"><b>Imagínalo así</b><p>Un hospital: la red eléctrica pública lo alimenta, pero tiene baterías que aguantan el primer corte, un generador que arranca solo y alguien que revisa que haya combustible. Nadie en el quirófano nota el apagón. Un nodo de telecomunicaciones bien diseñado funciona igual: el cliente no se entera de que en su zona se fue la luz.</p></div><figure class="fig fig-capas" id="15-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: la electricidad que mantiene encendidos los equipos activos, de la casa al core">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class="apagado"><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class=""><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class=""><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class=""><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class="apagado"><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: la electricidad que mantiene encendidos los equipos activos, de la casa al core</text>
+</svg></div><figcaption><b>Dónde estamos.</b> Este capítulo vive debajo de la capa física: no trata de cómo viaja la información, sino de la electricidad que mantiene encendidos los equipos que la mueven. Se encienden las estaciones activas del viaje del clic, la ONT, la OLT, el BNG y el core; la fibra y el splitter no consumen energía.</figcaption></figure></section>
+<section><h2>Dónde hace falta energía: nodos, central, gabinetes y la casa del cliente</h2><div class="prose"><p>En el capítulo 1 seguimos el viaje de un clic por más de una docena de equipos. Si los miramos con el ojo de un electricista, se dividen en dos grupos: los que <b>consumen energía</b> y los que no.</p><p>Los que no consumen son la fibra, los empalmes, los conectores y los splitters. Por eso la red de fibra en la calle se llama <b>pasiva</b>: un corte de luz en el barrio no la afecta. Es una de sus grandes ventajas frente a las redes de cobre o de cable coaxial, que necesitan amplificadores energizados en los postes.</p><p>Los que sí consumen están en cuatro lugares:</p><ul><li><b>La central o el data center</b>: el core, los BNG, los servidores de DNS y RADIUS y los sistemas del negocio. Pocos lugares, pero con mucho consumo y mucha importancia: si uno cae, cae una ciudad.</li><li><b>Los nodos o cabeceras de zona</b>: cuartos de equipos donde viven las OLT y los switches de agregación. Cada uno atiende a miles de clientes.</li><li><b>Los gabinetes de calle</b>, cuando el diseño pone equipos activos fuera de un edificio (un switch, una OLT pequeña o un radioenlace). Son los más expuestos al calor, la lluvia y el robo.</li><li><b>La casa del cliente</b>: la ONT y el router Wi-Fi. Consumen poco, unos 10 a 20 vatios, pero los paga y los enchufa el cliente, y el operador no controla esa electricidad.</li></ul><p>Cada lugar tiene una estrategia de respaldo distinta, porque su importancia y su costo son distintos. Un nodo que sirve a cinco mil casas merece baterías y generador; una ONT, en principio, depende de la luz de la casa.</p></div></section>
+<section><h2>Corriente alterna y continua: por qué los equipos de telecomunicaciones usan −48 V</h2><div class="prose"><p>La electricidad que llega por los postes es <b>corriente alterna</b> (AC): cambia de sentido 50 o 60 veces por segundo y llega a 110, 220 o más voltios. Es fácil de transportar a larga distancia, pero no se puede guardar. Una batería, en cambio, solo entrega <b>corriente continua</b> (DC), que va siempre en el mismo sentido.</p><p>Las centrales telefónicas resolvieron este problema hace más de un siglo de una forma que sigue vigente: los equipos funcionan directamente con la corriente continua de las baterías, a <b>−48 voltios</b>. Hay tres razones:</p><ol class="steps"><li><span><b>Las baterías se conectan directo, sin conversión.</b> Las baterías están siempre enchufadas a la misma barra que alimenta a los equipos. Si se va la luz, no hay que «pasar» a batería: ya estaban ahí. No hay ni un milisegundo de corte.</span></li><li><span><b>Es un voltaje seguro.</b> 48 voltios es lo bastante bajo para que un técnico trabaje con poco riesgo, y lo bastante alto para que los cables no tengan que ser enormes.</span></li><li><span><b>El signo menos protege los cables.</b> Se conecta a tierra el polo positivo y se deja negativo el otro. Así, la humedad corroe menos los conductores, algo que importaba mucho en los cables de cobre enterrados de la telefonía.</span></li></ol><p>La norma europea ETSI EN 300 132-2 fija cómo debe ser esa entrada de −48 V y entre qué márgenes debe funcionar un equipo. En la práctica, la barra trabaja cerca de −54 V con las baterías llenas y los equipos aguantan hasta unos −40 V cuando las baterías se vacían. En los data centers modernos también se usa corriente continua de alrededor de 400 V, descrita en la recomendación ITU-T L.1200, para perder menos energía en conversiones.</p></div><figure class="fig fig-arquitectura" id="15-diagrama-2"><div class="lienzo"><svg viewBox="0 0 960 400" style="min-width:760px" role="img" aria-label="Energía de un nodo: la red pública y el generador entran al tablero de transferencia automática; de ahí la corriente alterna va al aire acondicionado y a los rectificadores, que la convierten en −48 V continua sobre una barra a la que están conectadas las baterías, la OLT, los switches y los routers; una controladora envía las alarmas al NOC">
+  <defs>
+    <symbol id="i15-rayo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 5 13.5h6L10 22l8-11.5h-6z"/></g></symbol>
+    <symbol id="i15-gen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="1.6"/><circle cx="9" cy="12.5" r="3.5"/><path d="M7.4 12.6c.6-1 1.2-1 1.6 0s1 1 1.6 0"/><path d="M15 10h4M15 13h4M15 16h4M5 19v2.5M19 19v2.5M7 6V3.5h4V6"/></g></symbol>
+    <symbol id="i15-bat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="1.6"/><path d="M6.5 7V4.5h3V7M14.5 7V4.5h3V7"/><path d="M6.5 13.5h3M15 13.5h3M16.5 12v3"/></g></symbol>
+  </defs>
+
+  
+  <rect x="20" y="60" width="140" height="74" rx="10" class="caja"/>
+  <use href="#i15-rayo" x="28" y="72" width="32" height="32" class="ico"/>
+  <text x="66" y="90" class="t t-b">Red</text><text x="66" y="107" class="t t-b">pública</text>
+  <text x="28" y="125" class="t t-xs t-m">ALTERNA 220 V</text>
+  <rect x="20" y="180" width="140" height="74" rx="10" class="caja"/>
+  <use href="#i15-gen" x="28" y="192" width="32" height="32" class="ico"/>
+  <text x="66" y="210" class="t t-b">Generador</text><text x="66" y="227" class="t t-s t-m">diésel o gas</text>
+  <text x="28" y="245" class="t t-xs t-m">ARRANCA SOLO</text>
+
+  
+  <rect x="180" y="14" width="766" height="280" rx="12" class="d-oper"/>
+  <text x="196" y="34" class="t t-xs t-b k-oper">NODO DEL OPERADOR</text>
+
+  <path d="M160 97H184V140H198" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <path d="M160 217H184V176H198" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+
+  <rect x="200" y="120" width="130" height="76" rx="10" class="caja"/>
+  <text x="265" y="146" text-anchor="middle" class="t t-b">Transferencia</text>
+  <text x="265" y="164" text-anchor="middle" class="t t-s">automática (ATS)</text>
+  <text x="265" y="182" text-anchor="middle" class="t t-s t-m">elige la fuente</text>
+
+  <rect x="200" y="44" width="130" height="52" rx="10" class="caja"/>
+  <text x="265" y="66" text-anchor="middle" class="t t-s t-b">Aire acondicionado</text>
+  <text x="265" y="84" text-anchor="middle" class="t t-s t-m">solo con alterna</text>
+  <line x1="265" y1="120" x2="265" y2="99" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+
+  <line x1="330" y1="158" x2="367" y2="158" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+
+  <rect x="370" y="100" width="160" height="116" rx="10" class="caja"/>
+  <text x="450" y="122" text-anchor="middle" class="t t-b">Rectificadores</text>
+  <g class="t t-s" text-anchor="middle">
+    <rect x="380" y="134" width="32" height="44" rx="4" class="c-fis"/><text x="396" y="161">~/=</text>
+    <rect x="416" y="134" width="32" height="44" rx="4" class="c-fis"/><text x="432" y="161">~/=</text>
+    <rect x="452" y="134" width="32" height="44" rx="4" class="c-fis"/><text x="468" y="161">~/=</text>
+    <rect x="488" y="134" width="32" height="44" rx="4" class="caja ln-d"/><text x="504" y="161" class="t-m">+1</text>
+  </g>
+  <text x="450" y="200" text-anchor="middle" class="t t-s t-m">3 módulos + 1 de reserva</text>
+
+  <rect x="370" y="230" width="160" height="54" rx="10" class="caja"/>
+  <use href="#i15-bat" x="378" y="240" width="34" height="34" class="ico"/>
+  <text x="418" y="254" class="t t-b">Baterías</text>
+  <text x="418" y="272" class="t t-s t-m">cadenas de 4 × 12 V</text>
+
+  
+  <rect x="570" y="48" width="16" height="236" rx="4" class="c-fis"/>
+  <text x="578" y="42" text-anchor="middle" class="t t-s t-b k-fis">−48 V</text>
+  <line x1="530" y1="158" x2="566" y2="158" class="ln s-fis" style="stroke-width:3" marker-end="url(#fl-fis)"/>
+  <line x1="534" y1="257" x2="566" y2="257" class="ln s-fis" style="stroke-width:3" marker-start="url(#fl-fis)" marker-end="url(#fl-fis)"/>
+
+  <g>
+    <line x1="586" y1="78" x2="626" y2="78" class="ln s-fis" style="stroke-width:3" marker-end="url(#fl-fis)"/>
+    <line x1="586" y1="148" x2="626" y2="148" class="ln s-fis" style="stroke-width:3" marker-end="url(#fl-fis)"/>
+    <line x1="586" y1="218" x2="626" y2="218" class="ln s-fis" style="stroke-width:3" marker-end="url(#fl-fis)"/>
+    <rect x="630" y="50" width="150" height="56" rx="10" class="caja"/>
+    <use href="#i-olt" x="640" y="61" width="34" height="34" class="ico"/>
+    <text x="684" y="83" class="t t-b">OLT</text>
+    <rect x="630" y="120" width="150" height="56" rx="10" class="caja"/>
+    <use href="#i-router-core" x="640" y="131" width="34" height="34" class="ico"/>
+    <text x="684" y="145" class="t t-b">Switches de</text><text x="684" y="162" class="t t-b">agregación</text>
+    <rect x="630" y="190" width="150" height="56" rx="10" class="caja"/>
+    <use href="#i-router-core" x="640" y="201" width="34" height="34" class="ico"/>
+    <text x="684" y="215" class="t t-b">Routers</text><text x="684" y="232" class="t t-s t-m">y BNG</text>
+  </g>
+
+  
+  <g class="t t-s">
+    <text x="806" y="72" class="t-xs t-b t-m">LEYENDA</text>
+    <line x1="806" y1="96" x2="840" y2="96" class="ln" style="stroke-width:2"/><text x="848" y="100">alterna</text>
+    <line x1="806" y1="126" x2="840" y2="126" class="ln s-fis" style="stroke-width:3"/><text x="848" y="122">continua</text><text x="848" y="137">−48 V</text>
+    <line x1="806" y1="162" x2="840" y2="162" class="ln ln-d"/><text x="848" y="166">alarmas</text>
+    <text x="806" y="206" class="t-m">Las baterías están</text>
+    <text x="806" y="222" class="t-m">siempre conectadas:</text>
+    <text x="806" y="238" class="t-m">no hay corte al</text>
+    <text x="806" y="254" class="t-m">irse la luz.</text>
+  </g>
+
+  
+  <line x1="450" y1="284" x2="450" y2="318" class="ln ln-d"/>
+  <rect x="370" y="320" width="160" height="58" rx="10" class="caja"/>
+  <text x="450" y="344" text-anchor="middle" class="t t-b">Controladora</text>
+  <text x="450" y="362" text-anchor="middle" class="t t-s t-m">mide voltajes y sensores</text>
+  <line x1="530" y1="349" x2="756" y2="349" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="643" y="340" text-anchor="middle" class="t t-xs t-m">RED ELÉCTRICA · GENERADOR</text>
+  <text x="643" y="368" text-anchor="middle" class="t t-xs t-m">BATERÍA · CALOR · PUERTA</text>
+  <rect x="760" y="320" width="176" height="58" rx="10" class="caja"/>
+  <use href="#i-monitor" x="770" y="332" width="34" height="34" class="ico"/>
+  <text x="814" y="344" class="t t-b">NOC</text>
+  <text x="814" y="362" class="t t-s t-m">monitoreo 24 × 7</text>
+</svg></div><figcaption><b>La energía de un nodo.</b> De izquierda a derecha: la red eléctrica pública y el generador entran al tablero de transferencia, que elige una de las dos fuentes. Los rectificadores convierten esa corriente alterna en −48 V continua y la vuelcan a la barra, de la que cuelgan a la vez las baterías y los equipos. Si las dos fuentes de alterna fallan, las baterías siguen alimentando la barra sin ningún corte. Abajo, las alarmas que la controladora manda al NOC.</figcaption></figure></section>
+<section><h2>Rectificadores y bancos de baterías</h2><div class="prose"><p>El <b>rectificador</b> es la pieza que convierte la corriente alterna de la calle en la corriente continua de los equipos. En un nodo no hay uno solo: hay un armario con varios <b>módulos rectificadores</b> iguales que se reparten la carga. Si el nodo necesita tres módulos, se instalan cuatro; así, si uno se daña, los demás siguen sin que nadie lo note. A eso se le llama redundancia <b>N+1</b>. Los módulos se cambian en caliente, sin apagar nada.</p><p>El rectificador hace dos trabajos a la vez: alimenta a los equipos y mantiene las baterías cargadas al tope con una corriente pequeña y constante, la <b>carga de flotación</b>. Una <b>controladora</b> vigila todo: el voltaje de la barra, la temperatura, la corriente de cada módulo y el estado de las baterías.</p><p>Las <b>baterías</b> se agrupan en <b>cadenas</b> (o <i>strings</i>): cuatro bloques de 12 V en serie suman 48 V. Para tener más autonomía se ponen varias cadenas en paralelo. Su capacidad se mide en <b>amperios-hora</b> (Ah): una cadena de 100 Ah entrega, en teoría, 100 amperios durante una hora o 10 amperios durante diez horas.</p><p>Durante décadas se usaron baterías de <b>plomo-ácido selladas</b> (VRLA), las mismas de un auto pero diseñadas para estar años en flotación. Hoy avanzan las de <b>litio-ferrofosfato</b> (LiFePO4): pesan menos, duran más ciclos, toleran mejor el calor y traen su propia electrónica de control. Cuestan más al comprarlas, pero a lo largo de su vida suelen salir más baratas.</p><p>Hay una pieza de seguridad que conviene conocer: el <b>desconectador por bajo voltaje</b> (LVD). Cuando las baterías bajan hasta un límite, el sistema corta la carga para no dañarlas por descarga profunda. Ese es el momento en que el nodo se apaga de verdad.</p></div></section>
+<section><h2>Autonomía: cuántas horas aguanta un nodo sin luz</h2><div class="prose"><p>La <b>autonomía</b> es el tiempo que un nodo funciona solo con baterías. La cuenta básica es sencilla: la energía guardada dividida entre lo que consumen los equipos.</p><p>La energía guardada es el voltaje por los amperios-hora: dos cadenas de 100 Ah a 48 V guardan 2 × 100 × 48 = 9.600 vatios-hora (9,6 kWh). Si los equipos del nodo consumen 1.200 vatios, la cuenta ingenua da ocho horas.</p><p>La realidad da menos, por tres motivos:</p><ul><li><b>No se puede vaciar la batería del todo.</b> Para no destruirla, el LVD corta antes; en plomo-ácido se suele usar entre el 50 % y el 80 % de la capacidad.</li><li><b>Las baterías envejecen.</b> Una batería de cinco años puede guardar el 70 % de lo que guardaba nueva. Y el calor la envejece más rápido: como regla práctica, cada 10 °C por encima de 25 °C la vida de una batería de plomo se reduce a la mitad.</li><li><b>La conversión tiene pérdidas</b> y, cuando la descarga es rápida, la batería entrega menos de su capacidad nominal.</li></ul><p>En la práctica hay más factores, pero la idea es esta: la autonomía real puede ser la mitad de la teórica. Por eso los operadores definen una <b>autonomía objetivo</b> por tipo de sitio (por ejemplo, unas horas para un nodo de barrio con generador y más para uno sin él) y prueban las baterías periódicamente con descargas controladas. Haz tu propia cuenta en el laboratorio.</p></div><div class="lab" id="15-lab-4"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Calculadora de autonomía</h3></div><p class="hint">Mueve el consumo de los equipos, la capacidad y el número de cadenas de baterías, cuánto se permite descargarlas y su edad. La lectura muestra cuántas horas aguanta el nodo sin luz y qué te estás comiendo de la cuenta teórica.</p><div class="ctls">
+  <label class="ctl" for="c15-w">Consumo de los equipos <output id="c15-w-o"></output>
+    <input type="range" id="c15-w" min="200" max="5000" step="100" value="1200"></label>
+  <label class="ctl" for="c15-ah">Capacidad de cada cadena <output id="c15-ah-o"></output>
+    <input type="range" id="c15-ah" min="50" max="300" step="25" value="100"></label>
+  <label class="ctl" for="c15-n">Cadenas en paralelo <output id="c15-n-o"></output>
+    <input type="range" id="c15-n" min="1" max="6" step="1" value="2"></label>
+  <label class="ctl" for="c15-dod">Descarga permitida <output id="c15-dod-o"></output>
+    <input type="range" id="c15-dod" min="30" max="100" step="5" value="80"></label>
+  <label class="ctl" for="c15-edad">Edad de las baterías <output id="c15-edad-o"></output>
+    <input type="range" id="c15-edad" min="0" max="10" step="1" value="3"></label>
+  <label class="ctl" for="c15-t">Temperatura del cuarto <output id="c15-t-o"></output>
+    <input type="range" id="c15-t" min="20" max="45" step="5" value="25"></label>
+</div>
+<div class="readout" id="c15-res" aria-live="polite"></div>
+<div class="crono-bar" id="c15-bar" role="img" aria-label="En qué se va la energía guardada en las baterías"></div>
+<div class="crono-ley" id="c15-ley"></div>
+<p class="hint" id="c15-nota"></p></div></section>
+<section><h2>Generadores y transferencia automática</h2><div class="prose"><p>Las baterías ganan tiempo; el <b>generador</b> resuelve los cortes largos. Es un motor diésel o a gas que mueve un alternador y produce corriente alterna, como una pequeña central eléctrica propia.</p><p>Entre la red pública, el generador y los rectificadores está el <b>tablero de transferencia automática</b> (ATS, por sus siglas en inglés). Su trabajo es decidir de dónde sale la corriente alterna:</p><ol class="steps"><li><span>Detecta que la red pública falló y espera unos segundos para confirmar que no es un parpadeo.</span></li><li><span>Le da al generador la orden de arrancar.</span></li><li><span>Espera a que el generador estabilice su voltaje y su frecuencia, normalmente menos de un minuto.</span></li><li><span>Conmuta la carga al generador. Los rectificadores vuelven a trabajar y recargan las baterías.</span></li><li><span>Cuando vuelve la luz, espera varios minutos para asegurarse de que la red pública está estable, devuelve la carga y deja el generador girando en vacío un rato para que se enfríe antes de apagarse.</span></li></ol><p>Durante todo ese baile los equipos no sienten nada, porque las baterías sostienen la barra de −48 V. Sin baterías, cada arranque del generador sería un corte.</p></div><figure class="fig fig-flujo" id="15-diagrama-3"><div class="lienzo"><svg viewBox="0 0 960 620" style="min-width:740px" role="img" aria-label="Flujo de un corte de luz en un nodo: se va la luz, las baterías toman la carga sin corte y la controladora avisa al NOC; el ATS detecta la falla, arranca el generador y le pasa la carga; los rectificadores recargan las baterías; cuando vuelve la luz, el ATS espera, devuelve la carga a la red pública, se despejan las alarmas y el generador se apaga">
+  <defs>
+    <symbol id="i15f-rayo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 5 13.5h6L10 22l8-11.5h-6z"/></g></symbol>
+    <symbol id="i15f-bat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="1.6"/><path d="M6.5 7V4.5h3V7M14.5 7V4.5h3V7"/><path d="M6.5 13.5h3M15 13.5h3M16.5 12v3"/></g></symbol>
+    <symbol id="i15f-gen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="1.6"/><circle cx="9" cy="12.5" r="3.5"/><path d="M7.4 12.6c.6-1 1.2-1 1.6 0s1 1 1.6 0"/><path d="M15 10h4M15 13h4M15 16h4M5 19v2.5M19 19v2.5M7 6V3.5h4V6"/></g></symbol>
+  </defs>
+
+  
+  <rect x="37" y="14" width="136" height="56" rx="10" class="caja"/><use href="#i15f-rayo" x="47" y="26" width="30" height="30" class="ico"/><text x="85" y="40" class="t t-b">Red</text><text x="85" y="57" class="t t-b">eléctrica</text>
+  <rect x="197" y="14" width="136" height="56" rx="10" class="caja"/><use href="#i15f-bat" x="205" y="26" width="30" height="30" class="ico"/><text x="241" y="40" class="t t-b">Rectificador</text><text x="241" y="57" class="t t-b">y baterías</text>
+  <rect x="357" y="14" width="136" height="56" rx="10" class="caja"/><use href="#i15f-gen" x="365" y="26" width="30" height="30" class="ico"/><text x="401" y="40" class="t t-b">ATS y</text><text x="401" y="57" class="t t-b">generador</text>
+  <rect x="517" y="14" width="136" height="56" rx="10" class="caja"/><use href="#i-olt" x="525" y="26" width="30" height="30" class="ico"/><text x="561" y="40" class="t t-b">Equipos</text><text x="561" y="57" class="t t-s t-m">OLT y routers</text>
+  <rect x="677" y="14" width="136" height="56" rx="10" class="caja"/><use href="#i-monitor" x="685" y="26" width="30" height="30" class="ico"/><text x="721" y="47" class="t t-b">NOC</text>
+  <line x1="105" y1="70" x2="105" y2="570" class="vida"/>
+  <line x1="265" y1="70" x2="265" y2="570" class="vida"/>
+  <line x1="425" y1="70" x2="425" y2="570" class="vida"/>
+  <line x1="585" y1="70" x2="585" y2="570" class="vida"/>
+  <line x1="745" y1="70" x2="745" y2="570" class="vida"/>
+
+  
+  <line x1="105" y1="104" x2="263" y2="112" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="115" y="98" class="t t-s">① Se va la luz</text>
+  <line x1="265" y1="138" x2="583" y2="146" class="ln s-fis" style="stroke-width:2.6" marker-end="url(#fl-fis)"/>
+  <text x="275" y="132" class="t t-s">② Las baterías toman la carga: ningún corte</text>
+  <line x1="265" y1="170" x2="743" y2="178" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="275" y="164" class="t t-s">③ Alarma: falla de red eléctrica</text>
+
+  
+  <line x1="105" y1="214" x2="423" y2="222" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="115" y="208" class="t t-s">④ El ATS nota la falla y espera unos segundos</text>
+  <path d="M425 240h40v22h-38" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="473" y="256" class="t t-s">⑤ Arranca el generador</text>
+  <line x1="425" y1="290" x2="267" y2="298" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="415" y="284" text-anchor="end" class="t t-s">⑥ Le pasa la carga</text>
+  <line x1="425" y1="314" x2="743" y2="322" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="435" y="308" class="t t-s">⑦ Generador en marcha</text>
+
+  
+  <path d="M265 348h40v22h-38" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="313" y="364" class="t t-s">⑧ Recarga las baterías</text>
+  <text x="425" y="400" text-anchor="middle" class="t t-s t-m">El apagón puede durar minutos u horas: el NOC vigila el combustible.</text>
+
+  
+  <line x1="105" y1="430" x2="423" y2="438" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="115" y="424" class="t t-s">⑨ Vuelve la luz</text>
+  <path d="M425 452h40v22h-38" class="ln" style="stroke-width:2" marker-end="url(#fl)"/>
+  <text x="473" y="468" class="t t-s">⑩ Espera a que la red se estabilice</text>
+  <line x1="425" y1="498" x2="267" y2="506" class="ln s-fis" style="stroke-width:2" marker-end="url(#fl-fis)"/>
+  <text x="415" y="492" text-anchor="end" class="t t-s">⑪ Devuelve la carga a la red</text>
+  <line x1="425" y1="526" x2="743" y2="534" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="435" y="520" class="t t-s">⑫ Alarmas despejadas</text>
+  <text x="435" y="560" class="t t-s t-b">El generador se enfría en vacío y se apaga</text>
+
+  
+  <g class="t t-xs t-b">
+    <path d="M840 96v86" class="ln s-fis" style="stroke-width:3"/><text x="850" y="132" class="k-fis">CORTE</text><text x="850" y="146" class="t-m">0 segundos</text><text x="850" y="160" class="t-m">de interrupción</text>
+    <path d="M840 202v126" class="ln" style="stroke-width:3"/><text x="850" y="258">ARRANQUE</text><text x="850" y="272" class="t-m">10 a 60 segundos</text>
+    <path d="M840 344v66" class="ln s-fis" style="stroke-width:3"/><text x="850" y="372" class="k-fis">GENERADOR</text><text x="850" y="386" class="t-m">lo que dure</text><text x="850" y="400" class="t-m">el apagón</text>
+    <path d="M840 420v146" class="ln" style="stroke-width:3"/><text x="850" y="488">RETORNO</text><text x="850" y="502" class="t-m">5 a 15 minutos</text>
+  </g>
+  <text x="18" y="320" class="t t-xs t-m" transform="rotate(-90 18 320)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+
+  
+  <g class="t t-s">
+    <line x1="115" y1="600" x2="149" y2="600" class="ln s-fis" style="stroke-width:2.6"/><text x="157" y="604">energía</text>
+    <line x1="245" y1="600" x2="279" y2="600" class="ln" style="stroke-width:2"/><text x="287" y="604">orden de control</text>
+    <line x1="420" y1="600" x2="454" y2="600" class="ln s-apl" style="stroke-width:2"/><text x="462" y="604">alarma al NOC (gestión)</text>
+  </g>
+</svg></div><figcaption><b>Un corte de luz, paso a paso.</b> Cada flecha es un aviso o una orden entre las piezas del sistema, y el tiempo corre hacia abajo. La red pública falla; las baterías toman la carga al instante y la controladora avisa al NOC; el ATS arranca el generador y le pasa la carga; cuando vuelve la luz, la carga regresa a la red pública y el generador se apaga. A la derecha, cuánto dura cada fase.</figcaption></figure><div class="prose"><p>El generador tiene su propio talón de Aquiles: el <b>combustible</b>. Un tanque dura horas o días según su tamaño, y en un apagón largo alguien tiene que llevar más. Por eso los generadores se prueban con carga cada cierto tiempo, se vigila el nivel del tanque desde el NOC y se planifica la logística de reabastecimiento antes de la temporada de tormentas, no durante.</p></div></section>
+<section><h2>UPS y respaldo en la casa del cliente: por qué sin luz en casa no hay Internet</h2><div class="prose"><p>Del lado del cliente la historia es más simple y más frustrante. La ONT y el router Wi-Fi se enchufan a la luz de la casa. Si se va la luz en la casa, se apagan, aunque el nodo del operador siga encendido con sus baterías y la fibra esté intacta. Para el cliente, «no hay Internet»; para la red, simplemente esa ONT dejó de existir.</p><p>Hay tres opciones, de menor a mayor protección:</p><ul><li><b>Sin respaldo.</b> Es lo más común. El servicio se cae con la luz de la casa y vuelve solo cuando vuelve la luz.</li><li><b>Una UPS pequeña</b> (sistema de alimentación ininterrumpida). Es una batería con electrónica que se pone entre el enchufe y la ONT. Como la ONT y el router consumen poco, una UPS doméstica básica los mantiene una o varias horas.</li><li><b>Equipos con batería integrada o fuentes de 12 V con respaldo.</b> Algunos modelos de ONT, sobre todo los pensados para telefonía, aceptan una batería que mantiene viva al menos la línea de voz.</li></ul><p>Una trampa común: la UPS mantiene encendidos los equipos de la casa, pero si el apagón también tumbó un nodo sin respaldo, el cliente seguirá sin servicio. El respaldo tiene que existir en toda la cadena.</p></div><figure class="fig fig-comparacion" id="15-diagrama-6"><div class="lienzo"><svg viewBox="0 0 860 400" style="min-width:680px" role="img" aria-label="Comparación de respaldo en la casa del cliente: sin respaldo el servicio se apaga con la luz y no cuesta nada; una UPS pequeña mantiene ONT y router de una a cuatro horas con un costo moderado; una ONT con batería integrada mantiene al menos la voz varias horas con un costo mayor">
+  <defs>
+    <symbol id="i15c-ups" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="1.6"/><path d="M12.8 6 10 11h4l-2.8 5"/><path d="M9 19h6"/></g></symbol>
+    <symbol id="i15c-ontbat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="3" width="19" height="8" rx="1.4"/><path d="M6 7h.01M9 7h.01"/><rect x="5" y="14" width="14" height="7.5" rx="1.4"/><path d="M8 14v-1.5h2V14M14 14v-1.5h2V14M8.5 18h2M14 18h2M15 17v2"/></g></symbol>
+  </defs>
+  
+  <rect x="190" y="14" width="206" height="58" rx="10" class="caja"/>
+  <use href="#i-ont" x="200" y="26" width="34" height="34" class="ico"/>
+  <text x="244" y="40" class="t t-b">Sin respaldo</text><text x="244" y="57" class="t t-s t-m">lo más común</text>
+  <rect x="412" y="14" width="206" height="58" rx="10" class="caja"/>
+  <use href="#i15c-ups" x="422" y="26" width="34" height="34" class="ico"/>
+  <text x="466" y="40" class="t t-b">UPS pequeña</text><text x="466" y="57" class="t t-s t-m">entre enchufe y equipos</text>
+  <rect x="634" y="14" width="206" height="58" rx="10" class="caja"/>
+  <use href="#i15c-ontbat" x="644" y="26" width="34" height="34" class="ico"/>
+  <text x="688" y="40" class="t t-b">Batería integrada</text><text x="688" y="57" class="t t-s t-m">ONT o fuente con batería</text>
+
+  
+  <g class="t t-b">
+    <text x="20" y="112">Autonomía</text>
+    <text x="20" y="182">Costo para</text><text x="20" y="198">el cliente</text>
+    <text x="20" y="252">Qué sigue</text><text x="20" y="268">funcionando</text>
+    <text x="20" y="332">Cuándo</text><text x="20" y="348">conviene</text>
+  </g>
+  <path d="M20 146H840M20 222H840M20 302H840" class="ln"/>
+
+  
+  <g class="t t-s">
+    <rect x="204" y="96" width="180" height="18" rx="4" class="caja"/>
+    <rect x="204" y="96" width="3" height="18" rx="1" class="c-fis"/>
+    <text x="204" y="132">0 h: se apaga con la luz</text>
+    <rect x="426" y="96" width="180" height="18" rx="4" class="caja"/>
+    <rect x="426" y="96" width="68" height="18" rx="4" class="c-fis"/>
+    <text x="426" y="132">1 a 4 h para ONT y router</text>
+    <rect x="648" y="96" width="180" height="18" rx="4" class="caja"/>
+    <rect x="648" y="96" width="135" height="18" rx="4" class="c-fis"/>
+    <text x="648" y="132">4 a 8 h, a menudo solo voz</text>
+    <text x="828" y="90" text-anchor="end" class="t-xs t-m">ESCALA 0 A 8 H</text>
+  </g>
+
+  
+  <g class="t t-s">
+    <text x="204" y="182" class="t-b">Ninguno</text>
+    <text x="426" y="182" class="t-b">Moderado</text><text x="426" y="198" class="t-m">una UPS doméstica básica</text>
+    <text x="648" y="182" class="t-b">Mayor</text><text x="648" y="198" class="t-m">equipo especial y batería</text><text x="648" y="212" class="t-m">que se cambia cada pocos años</text>
+  </g>
+
+  
+  <g class="t t-s">
+    <text x="204" y="252">Nada: ni Internet,</text><text x="204" y="268">ni Wi-Fi, ni teléfono</text>
+    <text x="426" y="252">Internet, Wi-Fi y voz,</text><text x="426" y="268">si el nodo del operador</text><text x="426" y="284">también tiene respaldo</text>
+    <text x="648" y="252">Al menos la línea de voz;</text><text x="648" y="268">a veces también los datos</text>
+  </g>
+
+  
+  <g class="t t-s">
+    <text x="204" y="332">Hogar típico, zona con</text><text x="204" y="348">pocos apagones</text>
+    <text x="426" y="332">Teletrabajo, pequeños</text><text x="426" y="348">negocios, zonas con</text><text x="426" y="364">cortes frecuentes</text>
+    <text x="648" y="332">Teléfono de emergencia,</text><text x="648" y="348">alarmas, personas mayores</text>
+  </g>
+  <text x="20" y="390" class="t t-xs t-m">VALORES ORIENTATIVOS: DEPENDEN DEL CONSUMO DE LOS EQUIPOS Y DE LA BATERÍA</text>
+</svg></div><figcaption><b>Tres formas de respaldar al cliente.</b> Cada columna es una opción y cada fila, una pregunta: cuánto aguanta, cuánto cuesta y qué sigue funcionando durante un apagón en la casa. Las barras de autonomía son orientativas: dependen del consumo de los equipos y de la batería elegida.</figcaption></figure></section>
+<section><h2>Climatización: el calor también tumba equipos</h2><div class="prose"><p>Toda la energía que consumen los equipos termina convertida en calor. Una OLT grande, unos routers y unos rectificadores en un cuarto cerrado lo calientan en minutos. Si la temperatura sube demasiado, los equipos reducen su velocidad para protegerse, empiezan a fallar o se apagan solos.</p><p>Por eso los nodos tienen <b>aire acondicionado</b>, idealmente dos equipos que se turnan (otra vez N+1). Muchos usan además <b>enfriamiento libre</b> (<i>free cooling</i>): cuando afuera hace fresco, ventilan con aire exterior filtrado en vez de encender el compresor, lo que ahorra mucha energía. En los gabinetes de calle se usan ventiladores e intercambiadores de calor, porque al sol una caja metálica puede superar los 60 °C por dentro.</p><p>Hay una relación peligrosa que conviene recordar: en un apagón, el aire acondicionado no suele ir conectado a las baterías, porque las vaciaría en minutos. Así que, si el generador no arranca, el nodo empieza a calentarse mientras gasta sus baterías. Y una batería caliente rinde menos y envejece más rápido. El calor y la energía se vigilan juntos.</p></div></section>
+<section><h2>Monitorear la energía: alarmas de red eléctrica, batería baja y puerta abierta</h2><div class="prose"><p>Nadie puede ir a mirar cientos de nodos todos los días. Por eso la controladora de energía, el generador y los sensores del cuarto mandan <b>alarmas</b> al sistema de monitoreo del NOC, por SNMP (el protocolo de gestión que verás en el capítulo 27) o mediante contactos secos, que son simples interruptores que se abren o se cierran. Las más importantes son:</p><div class="tbl"><table><thead><tr><th>Alarma</th><th>Qué quiere decir</th><th>Qué tan urgente es</th></tr></thead><tbody><tr><td>Falla de red eléctrica</td><td>El nodo está sin luz pública y vive de baterías o del generador</td><td>Media: empieza a correr el reloj de la autonomía</td></tr><tr><td>Generador en marcha / falla de arranque</td><td>El generador tomó la carga, o debía y no lo hizo</td><td>Alta si no arrancó</td></tr><tr><td>Combustible bajo</td><td>Al generador le quedan pocas horas</td><td>Alta en apagones largos</td></tr><tr><td>Falla de rectificador</td><td>Un módulo se dañó; los demás cubren</td><td>Baja si hay N+1</td></tr><tr><td>Batería baja / descarga profunda</td><td>Se acerca el corte por bajo voltaje</td><td>Crítica: el nodo se apagará pronto</td></tr><tr><td>Temperatura alta</td><td>El cuarto se calienta</td><td>Alta: puede tumbar equipos</td></tr><tr><td>Puerta abierta</td><td>Alguien entró al nodo o al gabinete</td><td>Alta si no hay trabajo programado</td></tr></tbody></table></div><p>La alarma de <b>puerta abierta</b> parece menor, pero cruzada con el calendario de trabajos es la primera pista de una intrusión. Y la combinación «falla de red eléctrica» más «batería baja» es la cuenta regresiva más clara que tiene un NOC.</p></div></section>
+<section><h2>Corte de energía o corte de fibra: cómo distinguirlos</h2><div class="prose"><p>Cuando muchos clientes se caen a la vez, la primera pregunta del NOC es: ¿fue la luz o fue la fibra? La respuesta cambia todo: si es la fibra, hay que mandar una cuadrilla con equipo de empalme; si es la luz pública, no hay nada que reparar en la red y basta con esperar o informar.</p><p>La pista más valiosa la da la propia ONT. Cuando una ONT se queda sin energía, usa la última carga de sus condensadores para mandar un mensaje de despedida a la OLT: el <b>dying gasp</b> («último suspiro»). La OLT lo registra como «la ONT se apagó». En cambio, si la fibra se corta, la ONT no alcanza a decir nada: la OLT simplemente deja de recibir su luz y registra una <b>pérdida de señal</b> (LOS, por <i>loss of signal</i>).</p><p>Con eso, el patrón se lee así:</p><ul><li><b>Muchos dying gasp repartidos por varios splitters de una misma zona</b>: apagón en el barrio. La fibra está bien.</li><li><b>Muchas LOS a la vez, todas detrás del mismo splitter o del mismo puerto de la OLT</b>: corte de fibra en el tramo común.</li><li><b>Una OLT completa que deja de responder, precedida de «falla de red eléctrica» y «batería baja» en ese nodo</b>: se agotó el respaldo del nodo.</li><li><b>Una sola ONT con LOS</b>: problema de esa acometida o de ese conector, no de la red.</li></ul><p>El capítulo 45 cuenta cómo se automatiza esta lectura. Practícala en el laboratorio.</p></div><div class="lab" id="15-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Luz o fibra?</h3></div><p class="hint">Lee las alarmas de cada caso y decide si el origen es un corte de energía o un corte de fibra. La explicación te dice qué pista era la decisiva.</p><style>
+#\31 5-lab-5 .c15-red{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,128px),1fr));gap:10px}
+#\31 5-lab-5 .c15-spl{border:1px solid var(--line);border-radius:8px;padding:8px;display:grid;gap:6px;background:var(--paper)}
+#\31 5-lab-5 .c15-spl b{font:600 .78rem var(--f-display);color:var(--muted)}
+#\31 5-lab-5 .c15-onts{display:grid;grid-template-columns:repeat(4,22px);gap:5px}
+#\31 5-lab-5 .c15-onts i{width:22px;height:22px;border-radius:5px;display:grid;place-items:center;font:700 .7rem var(--f-mono);font-style:normal;border:1.5px solid var(--good);color:var(--good);background:var(--good-soft)}
+#\31 5-lab-5 .c15-onts i.d{border-color:var(--warm);color:var(--warm);background:var(--warm-soft)}
+#\31 5-lab-5 .c15-onts i.l{border-color:var(--c-red);color:var(--card);background:var(--c-red)}
+#\31 5-lab-5 .c15-onts i.x{border-color:var(--muted);color:var(--muted);background:var(--card);border-style:dashed}
+#\31 5-lab-5 .c15-ley{display:flex;flex-wrap:wrap;gap:6px 16px;font:500 .82rem var(--f-display)}
+#\31 5-lab-5 .c15-ley span{display:flex;align-items:center;gap:6px}
+#\31 5-lab-5 .c15-ley .c15-onts{grid-template-columns:22px}
+#\31 5-lab-5 .c15-log{margin:0;padding-left:0;list-style:none}
+</style>
+<div class="btns" id="c15-casos" role="group" aria-label="Casos"></div>
+<p id="c15-intro"></p>
+<div class="c15-red" id="c15-red" role="img" aria-label="Estado de las ONT detrás de cada splitter"></div>
+<div class="c15-ley">
+  <span><span class="c15-onts"><i>·</i></span>funciona</span>
+  <span><span class="c15-onts"><i class="d">D</i></span>dying gasp (se quedó sin energía)</span>
+  <span><span class="c15-onts"><i class="l">L</i></span>pérdida de señal (LOS)</span>
+  <span><span class="c15-onts"><i class="x">?</i></span>sin datos</span>
+</div>
+<div class="readout"><b>Alarmas del nodo y de la OLT</b><ul class="c15-log" id="c15-log"></ul></div>
+<div class="btns" role="group" aria-label="Tu diagnóstico">
+  <button type="button" id="c15-luz">Corte de energía</button>
+  <button type="button" id="c15-fib">Corte de fibra</button>
+</div>
+<div class="readout" id="c15-fb" aria-live="polite"><span>Elige tu diagnóstico.</span></div></div></section>
+<section><h2>Robo de baterías, cables y combustible</h2><div class="prose"><p>La energía tiene un problema que la fibra casi no tiene: <b>vale dinero en el mercado negro</b>. Las baterías de plomo se venden por el metal, los cables de cobre de las acometidas eléctricas y de las puestas a tierra también, y el diésel de los generadores se puede revender. En muchas ciudades de la región el robo es una de las principales causas de caídas de nodos.</p><p>Un robo de baterías es especialmente traicionero, porque no se nota hasta el siguiente corte de luz: el nodo funciona perfecto con la red pública y se apaga de golpe al primer apagón, sin autonomía alguna.</p><p>Las defensas combinan varias capas: alarmas de puerta y de movimiento, cámaras, gabinetes reforzados y jaulas, tornillería especial, baterías de litio que se bloquean si se desconectan de su sistema, marcas para rastrear los equipos y, sobre todo, la alarma que avisa en cuanto una cadena de baterías deja de estar conectada. También ayuda que la fibra en sí no tenga valor de reventa, algo que conviene que los vecinos sepan.</p></div></section>
+<section><h2>Energía solar y eficiencia: costo y sostenibilidad</h2><div class="prose"><p>La electricidad es uno de los mayores gastos de operación de un telco, después del personal. Por eso cada vatio cuenta, y por dos motivos: costo y huella de carbono.</p><p>Del lado de la <b>eficiencia</b>, las palancas más comunes son rectificadores de alta eficiencia, que pierden apenas un par de por ciento en la conversión; equipos de red nuevos, que mueven más datos con menos energía; modos de ahorro que apagan puertos sin uso; y el enfriamiento libre. En los data centers se mide la <b>PUE</b>: la energía total del sitio dividida entre la que consumen los equipos de tecnología. Una PUE de 1,5 quiere decir que por cada vatio útil se gasta medio vatio más en clima, conversiones e iluminación.</p><p>Del lado de la <b>generación</b>, los paneles solares tienen cada vez más sentido. En sitios aislados, sin red eléctrica confiable, un sistema solar con baterías de litio puede alimentar un nodo pequeño o un radioenlace sin depender del generador. En sitios urbanos se usan como sistema <b>híbrido</b>: el sol aporta de día, reduce la factura y alarga la autonomía, y la red pública y el generador cubren el resto. La inversión inicial es alta, pero en zonas con mucho sol y luz cara se recupera en pocos años.</p></div><div class="caso"><b>Así lo hace un operador</b><p>Después de un apagón en una zona, un operador FTTH de la región ve caer decenas de clientes en pocos segundos, todos con dying gasp y repartidos por varios splitters: la fibra está intacta y el nodo de la zona sigue funcionando con sus baterías. Esos clientes se recuperan solos cuando vuelve la luz a sus casas. El riesgo grande está en el nodo: si el apagón se alarga más que la autonomía y no hay generador, se caen miles de clientes de golpe, incluidos los que tienen UPS en casa. Por eso el operador prioriza: los nodos que atienden a más clientes, a clientes empresariales con acuerdos de disponibilidad o a hospitales, y los de zonas con apagones frecuentes, reciben generador, más horas de baterías y prioridad de combustible; los sitios pequeños se respaldan con baterías y un plan para llevar un generador portátil.</p></div><div class="ml"><b>En la práctica</b><p>Muchas caídas masivas no son fallas de la red sino de la electricidad, y por eso lo primero que pregunta el NOC es si hay luz en la zona. Saber leer el patrón de alarmas evita mandar una cuadrilla a buscar un corte de fibra que no existe, y permite que atención al cliente dé una respuesta cierta: «hay un apagón en su sector; el servicio volverá cuando vuelva la luz». También explica por qué la disponibilidad cuesta dinero: cada hora extra de autonomía en cada nodo es una inversión en baterías, generadores, combustible, mantenimiento y vigilancia.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Por qué un corte de luz en el barrio no afecta a la fibra ni a los splitters de la calle?</summary><p>Porque son pasivos: no usan electricidad. Solo los equipos activos (OLT, routers, ONT) necesitan energía.</p></details><details><summary>¿Qué ventaja tiene alimentar los equipos con −48 V de corriente continua?</summary><p>Las baterías están conectadas siempre a la misma barra que los equipos, así que cuando se va la luz toman la carga sin ningún corte. Además es un voltaje seguro y el signo negativo reduce la corrosión.</p></details><details><summary>Un nodo tiene 9,6 kWh de baterías y consume 1.200 W. ¿Aguantará ocho horas?</summary><p>Probablemente no: no se puede descargar la batería del todo, envejece con el tiempo y el calor, y hay pérdidas. La autonomía real puede ser cerca de la mitad de la teórica.</p></details><details><summary>¿Para qué sirven las baterías si el nodo ya tiene generador?</summary><p>Para cubrir los segundos o minutos que tarda el generador en arrancar y tomar la carga, y para sostener el nodo si el generador falla.</p></details><details><summary>Cincuenta ONT de distintos splitters de un barrio se caen a la vez con dying gasp. ¿Hay que mandar una cuadrilla de fibra?</summary><p>No. El dying gasp indica que las ONT se quedaron sin energía; repartidas en varios splitters apuntan a un apagón en la zona, no a un corte de fibra.</p></details><details><summary>¿Por qué un robo de baterías puede pasar inadvertido durante semanas?</summary><p>Porque mientras hay luz pública el nodo funciona normal; el problema aparece en el siguiente apagón, cuando no queda autonomía. Por eso se alarma la desconexión de las baterías.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Sistema_de_alimentaci%C3%B3n_ininterrumpida" target="_blank" rel="noopener">Sistema de alimentación ininterrumpida (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Bater%C3%ADa_de_plomo_y_%C3%A1cido" target="_blank" rel="noopener">Batería de plomo y ácido (Wikipedia) <small>lectura</small></a><a class="vid" href="https://en.wikipedia.org/wiki/Transfer_switch" target="_blank" rel="noopener">Interruptor de transferencia (Wikipedia, en inglés) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Power_usage_effectiveness" target="_blank" rel="noopener">Power usage effectiveness, PUE (Wikipedia) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const {$,bindOut}=window.Lab;
+  const V=48, EFIC=0.9;
+  const num=n=>n.toLocaleString('es',{maximumFractionDigits:1});
+  const horas=h=>{const t=Math.round(h*60);const H=Math.floor(t/60),M=t%60;return H+' h '+(M<10?'0':'')+M+' min';};
+  bindOut('#c15-w',v=>num(v)+' W');
+  bindOut('#c15-ah',v=>v+' Ah');
+  bindOut('#c15-n',v=>v===1?'1 cadena':v+' cadenas');
+  bindOut('#c15-dod',v=>v+' %');
+  bindOut('#c15-edad',v=>v===0?'nuevas':v===1?'1 año':v+' años');
+  bindOut('#c15-t',v=>v+' °C');
+  function calc(){
+    const w=+$('#c15-w').value, ah=+$('#c15-ah').value, n=+$('#c15-n').value,
+          dod=+$('#c15-dod').value/100, edad=+$('#c15-edad').value, T=+$('#c15-t').value;
+    // Edad efectiva: el calor la acelera (la vida se reduce a la mitad cada 10 °C sobre 25 °C).
+    const edadEf=edad*Math.pow(2,Math.max(0,T-25)/10);
+    const salud=Math.max(0.3,1-0.06*edadEf);
+    const E=V*ah*n;                       // Wh guardados con baterías nuevas
+    const perdEdad=E*(1-salud);
+    const perdDod=E*salud*(1-dod);
+    const util=E*salud*dod;
+    const perdConv=util*(1-EFIC);
+    const real=util*EFIC;
+    return {w,E,perdEdad,perdDod,perdConv,real,hTeo:E/w,hReal:real/w,salud,edadEf,edad,T,amp:w/V};
+  }
+  const PARTES=[
+    {k:'real',n:'Lo que de verdad usan los equipos',c:'var(--good)'},
+    {k:'perdDod',n:'Reserva que no se descarga',c:'var(--c-red)'},
+    {k:'perdEdad',n:'Capacidad perdida por envejecimiento',c:'var(--warm)'},
+    {k:'perdConv',n:'Pérdidas de conversión',c:'var(--muted)'}
+  ];
+  function dibujar(){
+    const r=calc();
+    let estado;
+    if(r.hReal<2) estado='<span class="warn">Muy poca autonomía: un apagón corto ya deja el nodo apagado.</span>';
+    else if(r.hReal<4) estado='<span class="warn">Alcanza para cubrir el arranque del generador o cortes breves, no un apagón largo sin generador.</span>';
+    else estado='<span class="ok">Autonomía holgada: cubre la mayoría de los apagones de unas horas.</span>';
+    $('#c15-res').innerHTML=
+      '<span class="big">Aguanta '+horas(r.hReal)+' sin luz</span>'+
+      '<span>Cuenta ingenua (batería nueva, vaciada entera): '+horas(r.hTeo)+'</span>'+
+      '<span>Energía guardada con baterías nuevas: '+num(r.E/1000)+' kWh · corriente de la carga: '+num(r.amp)+' A a 48 V</span>'+
+      estado;
+    $('#c15-bar').innerHTML=PARTES.map(p=>'<i style="width:'+(r[p.k]/r.E*100)+'%;background:'+p.c+'" title="'+p.n+'"></i>').join('');
+    $('#c15-ley').innerHTML=PARTES.map(p=>'<span><i style="background:'+p.c+'"></i>'+p.n+'<b>'+Math.round(r[p.k]/r.E*100)+' %</b></span>').join('');
+    let nota='La cuenta real da el '+Math.round(r.hReal/r.hTeo*100)+' % de la ingenua. ';
+    if(r.T>25&&r.edad>0) nota+='A '+r.T+' °C las baterías envejecen como si tuvieran '+num(r.edadEf)+' años en vez de '+r.edad+': el aire acondicionado también protege la autonomía. ';
+    nota+='Duplicar las cadenas duplica las horas; bajar el consumo a la mitad, también.';
+    $('#c15-nota').textContent=nota;
+  }
+  ['#c15-w','#c15-ah','#c15-n','#c15-dod','#c15-edad','#c15-t'].forEach(s=>$(s).addEventListener('input',dibujar));
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const {$}=window.Lab;
+  // Estado de 4 splitters × 8 ONT: '.' funciona, 'd' dying gasp, 'l' LOS, 'x' sin datos
+  const CASOS=[
+    {n:'Caso 1',intro:'A las 19:20 llaman varios clientes de un barrio.',
+     red:['d.dd.d.d','.dd.d.dd','dd.d..d.','d.d.dd.d'],
+     log:['19:20:03 · 19 ONT reportan dying gasp en 4 splitters','Nodo: sin alarmas de energía','OLT y puerto PON: funcionando'],
+     ok:'luz',exp:'Las ONT avisaron que se quedaban sin energía (dying gasp) y están repartidas por los cuatro splitters: es un apagón en las casas del barrio. El nodo sigue bien y la fibra está intacta. Volverán solas cuando vuelva la luz.'},
+    {n:'Caso 2',intro:'A las 10:47 se caen varios clientes de una misma calle.',
+     red:['........','........','llllllll','........'],
+     log:['10:47:12 · 8 ONT con LOS, todas en el splitter 3, en el mismo segundo','Nodo: sin alarmas de energía','OLT y puerto PON: funcionando'],
+     ok:'fib',exp:'Todas las ONT de un mismo splitter perdieron la señal a la vez y ninguna alcanzó a mandar dying gasp: la luz dejó de llegar. Es un corte de fibra en el tramo común entre el gabinete y ese splitter (por ejemplo, un cable arrancado por un camión).'},
+    {n:'Caso 3',intro:'A las 22:15 deja de responder una OLT completa con miles de clientes.',
+     red:['xxxxxxxx','xxxxxxxx','xxxxxxxx','xxxxxxxx'],
+     log:['18:02 · Nodo: falla de red eléctrica','18:03 · Nodo: generador, falla de arranque','21:40 · Nodo: batería baja','22:15 · OLT sin respuesta: no hay datos de sus ONT'],
+     ok:'luz',exp:'La secuencia lo dice todo: el nodo se quedó sin luz, el generador no arrancó y las baterías se agotaron tras unas cuatro horas. Se apagó la OLT, no hay fibra rota. Lo urgente es un generador portátil o el regreso de la luz, no una cuadrilla de empalme.'},
+    {n:'Caso 4',intro:'A las 03:30 se caen todos los clientes de un puerto PON.',
+     red:['llllllll','llllllll','llllllll','llllllll'],
+     log:['03:30:41 · 32 ONT con LOS en el puerto PON 1/3, en el mismo segundo','Nodo: sin alarmas de energía','OLT: funcionando; los demás puertos, normales'],
+     ok:'fib',exp:'Todas las ONT de un puerto perdieron la luz a la vez, sin dying gasp, y la OLT sigue encendida. El corte está en la fibra troncal entre la OLT y el primer splitter: un solo punto que afecta a todo el árbol.'},
+    {n:'Caso 5',intro:'A las 14:05 llama un solo cliente: no tiene Internet.',
+     red:['........','.....l..','........','........'],
+     log:['14:05:20 · 1 ONT con LOS en el splitter 2','Nodo: sin alarmas de energía','Vecinos del mismo splitter: funcionando'],
+     ok:'fib',exp:'Es un problema de fibra, pero solo de esa casa: la acometida, la roseta o un conector sucio o doblado. Si el cliente se hubiera quedado sin luz, la ONT habría mandado dying gasp en lugar de LOS.'},
+    {n:'Caso 6',intro:'A las 16:00 hay un apagón en media ciudad.',
+     red:['dd.d.ddd','d.dd.dd.','.ddd.d.d','dd..dd.d'],
+     log:['16:00:02 · 21 ONT reportan dying gasp en 4 splitters','16:00:02 · Nodo: falla de red eléctrica','16:00:40 · Nodo: generador en marcha','OLT y puerto PON: funcionando'],
+     ok:'luz',exp:'Corte de energía en dos niveles: las casas se quedaron sin luz (dying gasp repartidos) y el nodo también, pero el nodo pasó a baterías y luego al generador, así que la OLT sigue viva. Atención: los clientes con UPS siguen navegando gracias a ese respaldo del nodo. El NOC vigila el combustible.'}
+  ];
+  let actual=0;
+  function pintar(){
+    const c=CASOS[actual];
+    document.querySelectorAll('#c15-casos button').forEach((b,i)=>b.setAttribute('aria-pressed',i===actual?'true':'false'));
+    $('#c15-intro').textContent=c.intro;
+    $('#c15-red').innerHTML=c.red.map((s,i)=>'<div class="c15-spl"><b>Splitter '+(i+1)+'</b><div class="c15-onts">'+
+      s.split('').map(e=>e==='.'?'<i>·</i>':'<i class="'+e+'">'+({d:'D',l:'L',x:'?'})[e]+'</i>').join('')+'</div></div>').join('');
+    const cuenta={d:0,l:0,x:0};c.red.join('').split('').forEach(e=>{if(cuenta[e]!==undefined)cuenta[e]++;});
+    $('#c15-red').setAttribute('aria-label','ONT detrás de 4 splitters: '+cuenta.d+' con dying gasp, '+cuenta.l+' con pérdida de señal, '+cuenta.x+' sin datos');
+    $('#c15-log').innerHTML=c.log.map(l=>'<li>'+l+'</li>').join('');
+    $('#c15-fb').innerHTML='<span>Elige tu diagnóstico.</span>';
+    ['#c15-luz','#c15-fib'].forEach(s=>$(s).setAttribute('aria-pressed','false'));
+  }
+  function responder(r){
+    const c=CASOS[actual];
+    $('#c15-luz').setAttribute('aria-pressed',r==='luz'?'true':'false');
+    $('#c15-fib').setAttribute('aria-pressed',r==='fib'?'true':'false');
+    const bien=r===c.ok;
+    $('#c15-fb').innerHTML='<span class="'+(bien?'ok':'warn')+'">'+(bien?'¡Correcto! ':'No esta vez. ')+'Es un corte de '+(c.ok==='luz'?'energía':'fibra')+'.</span><span style="font-family:var(--f-body);white-space:normal">'+c.exp+'</span>';
+  }
+  $('#c15-casos').innerHTML=CASOS.map((c,i)=>'<button type="button" data-i="'+i+'">'+c.n+'</button>').join('');
+  document.querySelectorAll('#c15-casos button').forEach(b=>b.addEventListener('click',()=>{actual=+b.dataset.i;pintar();}));
+  $('#c15-luz').addEventListener('click',()=>responder('luz'));
+  $('#c15-fib').addEventListener('click',()=>responder('fib'));
+  pintar();
+})();
+</script>
+</body>
+</html>

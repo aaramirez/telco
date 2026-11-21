@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Routing · Cómo funciona un telco</title>
+<meta name="description" content="Los routers no reciben el mapa de Internet hecho: lo construyen conversando entre ellos con protocolos de routing, OSPF o IS-IS dentro de la red de un operador y BGP entre operadores, y usan ICMP para avisar y diagnosticar cuando algo no llega.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--muted)"/></marker>
+  <marker id="fl-apl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-apl)"/></marker>
+  <marker id="fl-tra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-tra)"/></marker>
+  <marker id="fl-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-red)"/></marker>
+  <marker id="fl-enl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-enl)"/></marker>
+  <marker id="fl-fis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--c-fis)"/></marker>
+</defs>
+<symbol id="i-celular" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="11" height="20" rx="2.2"/><path d="M10.5 18.5h3"/></g></symbol>
+<symbol id="i-router" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="1.6"/><path d="M7 13 5.5 6M17 13l1.5-7"/><path d="M7 16.5h.01M10 16.5h.01"/><path d="M9.5 6.5a3.5 3.5 0 0 1 5 0M8 4.6a6 6 0 0 1 8 0"/></g></symbol>
+<symbol id="i-ont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.6"/><path d="M8 12h.01M11 12h.01M14 12h.01"/><path d="M12 18v3.5"/><circle cx="12" cy="4.5" r="1.6"/></g></symbol>
+<symbol id="i-splitter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h7"/><path d="M9 12l6-7h7M9 12l6-2.3h7M9 12l6 2.3h7M9 12l6 7h7"/><circle cx="9" cy="12" r="1.4"/></g></symbol>
+<symbol id="i-olt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.6"/><path d="M3 9h18M3 15h18"/><path d="M6 6h.01M9 6h.01M6 12h.01M9 12h.01M6 18h.01M9 18h.01"/><path d="M14 6h4M14 12h4M14 18h4"/></g></symbol>
+<symbol id="i-router-core" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="9" ry="3.5"/><path d="M3 9v6c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5V9"/><path d="M9.5 8.2 7 9.6M14.5 8.2 17 9.6M9 9.6l3-1.4 3 1.4"/></g></symbol>
+<symbol id="i-nube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z"/></g></symbol>
+<symbol id="i-servidor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/></g></symbol>
+<symbol id="i-guia" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v16H6.5A1.5 1.5 0 0 0 5 20.5z"/><path d="M5 20.5A1.5 1.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 11.5h4"/></g></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M6 12l3-3 3 2 4-4"/></g></symbol>
+<symbol id="i-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 10.5h6M9 14h3"/></g></symbol>
+<symbol id="i-llave" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 1 3 6.6l-1.6 1.6-1.4-1.4-1.5 1.5 1.4 1.4-1.6 1.6a4 4 0 0 1-6.6-3l-2.7 2.7"/><path d="M14.7 9.3l-2 2"/></g></symbol>
+<symbol id="i-candado" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-persona" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+</svg>
+<div class="wrap" data-page="06-routing">
+<header class="topbar"><a class="brand" href="index.html">Cómo funciona un <b>telco</b></a><span class="eyebrow">De las redes a la cadena de valor</span></header>
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Ruta de aprendizaje"></nav>
+<main>
+<header class="page-head"><span class="num">CAPÍTULO 06 DE 49</span><h1>Routing: cómo los routers encuentran el camino (OSPF, IS-IS, BGP e ICMP)</h1><p class="lede">Los routers no reciben el mapa de Internet hecho: lo construyen conversando entre ellos con protocolos de routing, OSPF o IS-IS dentro de la red de un operador y BGP entre operadores, y usan ICMP para avisar y diagnosticar cuando algo no llega.</p></header>
+<section><div class="prose"><p>En el capítulo anterior vimos que cada paquete lleva la dirección IP de su destino, y que tu celular, cuando el destino está en otra red, se lo entrega a la puerta de enlace. ¿Y después? El router de la casa se lo pasa al del operador, ese a otro, y a otro, hasta llegar al servidor. En cada salto, un router decide en una fracción de microsegundo por cuál de sus cables sigue el viaje. Este capítulo cuenta cómo sabe hacerlo: quién le dibujó el mapa.</p></div><div class="analogia"><b>Imagínalo así</b><p>Las oficinas de correos de un país que se avisan entre sí qué calles están abiertas y cuánto se tarda por cada una (OSPF), y los acuerdos entre los correos de distintos países sobre qué cartas acepta llevar cada uno (BGP). Ninguna oficina conoce todo el recorrido de una carta: cada una sabe a qué oficina vecina pasársela.</p></div><figure class="fig fig-capas" id="06-diagrama-1"><div class="lienzo"><svg viewBox="0 0 750 230" style="min-width:560px" role="img" aria-label="Dónde estamos: Este capítulo: cómo los routers del operador y de Internet eligen el camino">
+  <text x="20" y="24" class="t t-xs t-b t-m">CAPAS</text>
+  <g class="apagado"><rect x="20" y="36" width="200" height="28" rx="6" class="c-apl"/><text x="34" y="55" class="t t-b">Aplicación</text></g>
+  <g class="apagado"><rect x="20" y="70" width="200" height="28" rx="6" class="c-tra"/><text x="34" y="89" class="t t-b">Transporte</text></g>
+  <g class=""><rect x="20" y="104" width="200" height="28" rx="6" class="c-red"/><text x="34" y="123" class="t t-b">Red</text></g>
+  <g class="apagado"><rect x="20" y="138" width="200" height="28" rx="6" class="c-enl"/><text x="34" y="157" class="t t-b">Enlace</text></g>
+  <g class="apagado"><rect x="20" y="172" width="200" height="28" rx="6" class="c-fis"/><text x="34" y="191" class="t t-b">Física</text></g>
+  <text x="250" y="24" class="t t-xs t-b t-m">TRAMOS DEL VIAJE</text>
+  <rect x="250" y="36" width="150" height="164" rx="10" class="d-casa"/>
+  <rect x="410" y="36" width="190" height="164" rx="10" class="d-oper"/>
+  <rect x="610" y="36" width="126" height="164" rx="10" class="d-inet"/>
+  <text x="325" y="56" text-anchor="middle" class="t t-xs t-b k-casa">CASA</text>
+  <text x="505" y="56" text-anchor="middle" class="t t-xs t-b k-oper">OPERADOR</text>
+  <text x="673" y="56" text-anchor="middle" class="t t-xs t-b k-inet">INTERNET</text>
+  <g class="apagado"><use href="#i-celular" x="262" y="80" width="34" height="34" class="ico"/><text x="279" y="134" text-anchor="middle" class="t t-s">Celular</text></g>
+  <g class="apagado"><use href="#i-router" x="308" y="80" width="34" height="34" class="ico"/><text x="325" y="134" text-anchor="middle" class="t t-s">Wi-Fi</text></g>
+  <g class="apagado"><use href="#i-ont" x="354" y="80" width="34" height="34" class="ico"/><text x="371" y="134" text-anchor="middle" class="t t-s">ONT</text></g>
+  <g class="apagado"><use href="#i-splitter" x="420" y="80" width="34" height="34" class="ico"/><text x="437" y="134" text-anchor="middle" class="t t-s">Splitter</text></g>
+  <g class="apagado"><use href="#i-olt" x="466" y="80" width="34" height="34" class="ico"/><text x="483" y="134" text-anchor="middle" class="t t-s">OLT</text></g>
+  <g class=""><use href="#i-router-core" x="512" y="80" width="34" height="34" class="ico"/><text x="529" y="134" text-anchor="middle" class="t t-s">BNG</text></g>
+  <g class=""><use href="#i-router-core" x="558" y="80" width="34" height="34" class="ico"/><text x="575" y="134" text-anchor="middle" class="t t-s">Core</text></g>
+  <g class=""><use href="#i-nube" x="621" y="80" width="34" height="34" class="ico"/><text x="638" y="134" text-anchor="middle" class="t t-s">Internet</text></g>
+  <g class="apagado"><use href="#i-servidor" x="674" y="80" width="34" height="34" class="ico"/><text x="691" y="134" text-anchor="middle" class="t t-s">Servidor</text></g>
+  <line x1="262" y1="164" x2="716" y2="164" class="ln ln-d" marker-end="url(#fl)"/>
+  <text x="493" y="222" text-anchor="middle" class="t t-s t-m">Este capítulo: cómo los routers del operador y de Internet eligen el camino</text>
+</svg></div><figcaption><b>Dónde estamos.</b> El routing es el trabajo de la capa de red en los equipos del medio del viaje: el BNG, los routers del core del operador y los de Internet. Los extremos, el celular y el servidor, casi no participan: solo le entregan el paquete a su puerta de enlace.</figcaption></figure></section>
+<section><h2>El router y la tabla de rutas</h2><div class="prose"><p>Un <b>router</b> es una máquina especializada en una sola pregunta: «este paquete va a tal dirección, ¿por cuál de mis salidas lo mando?». Para responderla consulta su <b>tabla de rutas</b>, una lista de destinos (escritos como bloques, con su prefijo) y, para cada uno, el siguiente router del camino (el <b>próximo salto</b>) y la salida que lleva a él.</p><p>El router no busca la dirección exacta: busca el bloque que la contiene. Y si varios bloques la contienen, gana <b>el más específico</b>, el de prefijo más largo. Es como el correo: una carta para «calle 5, número 12» va por la ruta de la calle 5 aunque también exista una regla general para toda la ciudad. Al final de la tabla casi siempre hay una ruta <code>0.0.0.0/0</code>, la <b>ruta por defecto</b>: «todo lo que no sepa dónde va, mándalo por aquí». Es la puerta de enlace del router.</p></div><figure class="fig fig-esquema" id="06-diagrama-8"><div class="lienzo"><svg viewBox="0 0 840 345" style="min-width:680px" role="img" aria-label="Tabla de rutas: un paquete para 203.0.113.77 coincide con la ruta por defecto 0.0.0.0/0, con 203.0.113.0/24 y con 203.0.113.64/26; gana la de prefijo más largo, /26, que sale por la interfaz 3 hacia el router C">
+  <rect x="20" y="14" width="330" height="44" rx="10" class="c-red"/>
+  <text x="34" y="41" class="t t-s">Llega un paquete para <tspan class="t-mono t-b">203.0.113.77</tspan></text>
+  <path d="M350 36h40v40" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <g class="t t-xs t-b t-m"><text x="60" y="104">DESTINO (BLOQUE)</text><text x="240" y="104">PRÓXIMO SALTO</text><text x="450" y="104">SALIDA</text><text x="560" y="104">DE DÓNDE SALIÓ</text><text x="720" y="104">¿LA CONTIENE?</text></g>
+  <line x1="20" y1="112" x2="820" y2="112" class="ln"/>
+  <g class="t t-s"><text x="60" y="142" class="t-mono">0.0.0.0/0</text><text x="240" y="142">198.51.100.1 · router A</text><text x="450" y="142">interfaz 1</text><text x="560" y="142">estática (por defecto)</text><text x="720" y="142" class="k-red">sí, /0</text></g>
+  <line x1="20" y1="156" x2="820" y2="156" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <g class="t t-s"><text x="60" y="180" class="t-mono">192.168.50.0/24</text><text x="240" y="180">198.51.100.5 · router B</text><text x="450" y="180">interfaz 2</text><text x="560" y="180">OSPF</text><text x="720" y="180" class="t-m">no</text></g>
+  <line x1="20" y1="194" x2="820" y2="194" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <g class="t t-s"><text x="60" y="218" class="t-mono">203.0.113.0/24</text><text x="240" y="218">198.51.100.5 · router B</text><text x="450" y="218">interfaz 2</text><text x="560" y="218">OSPF</text><text x="720" y="218" class="k-red">sí, /24</text></g>
+  <line x1="20" y1="232" x2="820" y2="232" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <rect x="20" y="234" width="800" height="34" rx="6" class="c-red"/>
+  <g class="t t-s t-b"><text x="60" y="256" class="t-mono">203.0.113.64/26</text><text x="240" y="256">198.51.100.9 · router C</text><text x="450" y="256">interfaz 3</text><text x="560" y="256">OSPF</text><text x="720" y="256" class="k-red">sí, /26 · gana</text></g>
+  <g class="t t-s"><text x="60" y="294" class="t-mono">198.51.100.0/24</text><text x="240" y="294">conectada directamente</text><text x="450" y="294">interfaz 1 a 3</text><text x="560" y="294">el propio router</text><text x="720" y="294" class="t-m">no</text></g>
+  <line x1="20" y1="308" x2="820" y2="308" class="ln" style="stroke-width:.6;opacity:.5"/>
+  <text x="30" y="257" class="t t-b k-red">→</text>
+  <text x="20" y="334" class="t t-s t-m">Gana el bloque más específico (prefijo más largo). La ruta /0 solo se usa si ninguna otra coincide.</text>
+</svg></div><figcaption><b>Una tabla de rutas y la regla del más específico.</b> Llega un paquete para <code>203.0.113.77</code>. Tres filas de la tabla lo contienen: la ruta por defecto <code>/0</code>, el bloque <code>/24</code> y el <code>/26</code>. Gana la de prefijo más largo, el <code>/26</code>, y el paquete sale por la interfaz 3 hacia el router C. Las columnas de la derecha dicen de dónde salió cada ruta: escrita a mano o aprendida de un protocolo.</figcaption></figure></section>
+<section><h2>Rutas estáticas frente a rutas aprendidas</h2><div class="prose"><p>Hay dos formas de llenar la tabla. La primera es a mano: alguien escribe «para llegar a tal red, pasa por tal router». Es una <b>ruta estática</b>. Es simple y predecible, y se usa mucho en los bordes: el router de una casa tiene una sola ruta estática, la ruta por defecto hacia el operador, y no necesita más.</p><p>El problema aparece cuando hay cientos de routers y miles de destinos, y cuando los cables se cortan. Una ruta estática no se entera de que el camino se cayó: sigue mandando paquetes al vacío hasta que alguien la cambie. Por eso las redes grandes usan <b>protocolos de routing</b>: los routers se hablan entre sí, se cuentan qué redes tienen y qué enlaces funcionan, y cada uno arma y corrige su tabla solo. Son las <b>rutas aprendidas</b>, o dinámicas.</p><p>Los protocolos de routing se dividen en dos familias según dónde trabajan. <b>Dentro</b> de la red de una misma organización se usan OSPF o IS-IS, que buscan el camino más rápido. <b>Entre</b> organizaciones distintas se usa BGP, que busca el camino que cumpla los acuerdos comerciales. Las dos secciones siguientes los recorren en ese orden.</p></div></section>
+<section><h2>OSPF: vecinos, saludos (hello), el mapa compartido y el camino más corto</h2><div class="prose"><p><b>OSPF</b> (abrir primero el camino más corto, por sus siglas en inglés) es el protocolo de routing interno más conocido. Su idea es elegante: que <b>todos los routers tengan el mismo mapa completo</b> de la red y que cada uno calcule, sobre ese mapa, el mejor camino a cada destino.</p><p>El flujo tiene cuatro momentos:</p><ol class="steps"><li><span><b>Saludos.</b> Cada router manda un mensaje <i>Hello</i> por cada enlace, cada 10 segundos. Así descubre a sus <b>vecinos</b> y comprueba que siguen vivos.</span></li><li><span><b>Intercambio del mapa.</b> Cuando dos vecinos se conocen, comparan qué partes del mapa tiene cada uno y se piden lo que les falta. Cada pieza del mapa es un <b>LSA</b> (anuncio del estado de un enlace): «soy el router B, tengo un enlace a C con costo 5 y uno a D con costo 10».</span></li><li><span><b>Inundación.</b> Cada LSA nuevo se reenvía a todos los vecinos, que lo reenvían a los suyos. En segundos, todos los routers tienen la misma base de datos: el mapa.</span></li><li><span><b>Cálculo.</b> Cada router corre sobre el mapa el algoritmo de <b>Dijkstra</b>, que encuentra el camino de menor <b>costo</b> total a cada destino, y con eso llena su tabla de rutas. El costo de un enlace lo pone el ingeniero; normalmente es menor cuanto más rápido es el enlace.</span></li></ol></div><figure class="fig fig-flujo" id="06-diagrama-2"><div class="lienzo"><svg viewBox="0 0 820 560" style="min-width:660px" role="img" aria-label="Flujo de OSPF entre dos routers vecinos: saludos Hello hasta verse, intercambio de descripciones de la base de datos, pedido y envío de los anuncios que faltan, confirmación, cálculo de rutas con Dijkstra y saludos periódicos">
+  <rect x="75.0" y="14" width="190" height="60" rx="10" class="caja"/><use href="#i-router-core" x="85.0" y="27" width="32" height="32" class="ico"/><text x="125.0" y="40" class="t t-b">Router A</text><text x="125.0" y="58" class="t t-xs t-m">costo hacia B: 10</text>
+  <rect x="465.0" y="14" width="190" height="60" rx="10" class="caja"/><use href="#i-router-core" x="475.0" y="27" width="32" height="32" class="ico"/><text x="515.0" y="40" class="t t-b">Router B</text><text x="515.0" y="58" class="t t-xs t-m">vecino de A</text>
+  <line x1="170" y1="74" x2="170" y2="546" class="vida"/>
+  <line x1="560" y1="74" x2="560" y2="546" class="vida"/>
+  <line x1="170" y1="110" x2="558" y2="122" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="180" y="102" class="t t-s"><tspan class="t-mono t-b">Hello</tspan> ① Soy A</text>
+  <text x="180" y="138" class="t t-xs t-m">cada 10 s, a todos los routers OSPF del enlace</text>
+  <line x1="560" y1="170" x2="172" y2="182" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="330" y="162" class="t t-s"><tspan class="t-mono t-b">Hello</tspan> ② Soy B, y te veo, A</text>
+  <text x="330" y="198" class="t t-xs t-m">ya son vecinos</text>
+  <line x1="170" y1="230" x2="558" y2="242" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="180" y="222" class="t t-s"><tspan class="t-mono t-b">DBD</tspan> ③ Este es el índice de mi mapa</text>
+  <text x="180" y="258" class="t t-xs t-m">B manda el suyo igual</text>
+  <line x1="170" y1="290" x2="558" y2="302" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="180" y="282" class="t t-s"><tspan class="t-mono t-b">LSR</tspan> ④ Me falta tu anuncio del enlace B–C</text>
+  <line x1="560" y1="340" x2="172" y2="352" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="300" y="332" class="t t-s"><tspan class="t-mono t-b">LSU</tspan> ⑤ Aquí va: B–C, costo 5</text>
+  <text x="300" y="368" class="t t-xs t-m">el anuncio (LSA) completo</text>
+  <line x1="170" y1="400" x2="558" y2="412" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="180" y="392" class="t t-s"><tspan class="t-mono t-b">LSAck</tspan> ⑥ Recibido</text>
+  <line x1="170" y1="500" x2="558" y2="512" class="ln s-red ln-d" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="180" y="492" class="t t-s"><tspan class="t-mono t-b">Hello</tspan> ⑧ Sigo aquí</text>
+  <text x="180" y="528" class="t t-xs t-m">si faltan 4 seguidos (40 s), el vecino se da por caído</text>
+  <g class="t t-xs t-b">
+    <path d="M716 98v102" class="ln s-red" style="stroke-width:3"/><text x="726" y="143" class="k-red">VECINOS</text><text x="726" y="157" class="t-m">Hello</text>
+    <path d="M716 220v200" class="ln s-red" style="stroke-width:3"/><text x="726" y="314" class="k-red">MAPA</text><text x="726" y="328" class="t-m">sincronizar la</text><text x="726" y="342" class="t-m">base de datos</text>
+    <path d="M716 436v32" class="ln " style="stroke-width:3"/><text x="726" y="446" class="t-m">CÁLCULO</text>
+    <path d="M716 484v56" class="ln s-red" style="stroke-width:3"/><text x="726" y="506" class="k-red">LATIDO</text><text x="726" y="520" class="t-m">para siempre</text>
+  </g>
+  <rect x="90" y="432" width="560" height="38" rx="8" class="c-red"/>
+  <text x="370" y="456" text-anchor="middle" class="t t-s"><tspan class="t-b">⑦ Mapa completo:</tspan> cada router corre Dijkstra y llena su tabla de rutas</text>
+  <text x="20" y="280" class="t t-xs t-m" transform="rotate(-90 20 280)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El flujo de OSPF entre dos routers vecinos.</b> Primero se saludan con <i>Hello</i> hasta verse los dos (① y ②). Después se describen sus bases de datos (③), se piden las piezas que les faltan (④), se las mandan (⑤) y confirman que las recibieron (⑥). Con el mapa completo, cada uno calcula sus rutas (⑦). Los saludos siguen para siempre, cada 10 segundos, como un latido.</figcaption></figure><div class="prose"><p>En una red grande, OSPF se divide en <b>áreas</b> para que el mapa no se vuelva inmanejable: cada área conoce su detalle y solo un resumen de las demás, y todas se conectan a un área central, el área 0.</p></div></section>
+<section><h2>Cuando se cae un enlace: convergencia</h2><div class="prose"><p>La gracia de un protocolo de routing es reaccionar cuando algo falla. Si se corta una fibra entre dos routers, pasa esto:</p><ol class="steps"><li><span><b>Detección.</b> Los routers de las dos puntas notan que el vecino ya no responde. Si la luz se apaga, lo saben al instante; si el enlace queda «medio vivo», esperan a que falten los saludos: 40 segundos con los valores por defecto. Por eso los operadores agregan <b>BFD</b>, un latido ultrarrápido que detecta la falla en menos de un segundo.</span></li><li><span><b>Aviso.</b> Cada uno inunda un LSA nuevo: «mi enlace con tal vecino ya no existe».</span></li><li><span><b>Recálculo.</b> Todos los routers corren otra vez Dijkstra con el mapa corregido.</span></li><li><span><b>Actualización.</b> Cada router reescribe su tabla y el tráfico toma el camino nuevo.</span></li></ol><p>Al tiempo que pasa desde la falla hasta que todos los routers vuelven a estar de acuerdo se le llama <b>convergencia</b>. Durante ese tiempo, algunos paquetes se pierden. En una red de operador bien ajustada, la convergencia baja de un segundo, y con técnicas de respaldo precalculado (<i>fast reroute</i>) baja a decenas de milisegundos: una llamada ni lo nota.</p></div><div class="lab" id="06-lab-3"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Se cae un enlace</h3></div><p class="hint">Corta enlaces de la red tocando sus botones y mira cómo OSPF recalcula el camino del BNG a la salida a Internet. Cambia la forma de detectar la falla y compara cuánto tiempo queda el tráfico sin camino.</p><style>
+.c06-ospf{display:grid;gap:14px;min-width:0}
+.c06-ospf .lienzo{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.c06-ospf svg{display:block;width:100%;max-width:660px;margin:0 auto;min-width:520px;height:auto;font-family:var(--f-display)}
+.c06-ospf select{width:100%}
+.c06-ospf .enl{stroke:var(--muted);stroke-width:2.5}
+.c06-ospf .enl.camino{stroke:var(--c-red);stroke-width:6}
+.c06-ospf .enl.cortado{stroke:var(--warm);stroke-dasharray:6 6;stroke-width:2.5}
+.c06-ospf .nodo{fill:var(--card);stroke:var(--ink);stroke-width:1.6}
+.c06-ospf .nodo.fin{fill:var(--c-red-s);stroke:var(--c-red)}
+.c06-ospf .tn{fill:var(--ink);font-size:14px;font-weight:700}
+.c06-ospf .ts{fill:var(--muted);font-size:11px}
+.c06-ospf .costo{fill:var(--card);stroke:var(--line)}
+.c06-ospf .tc{fill:var(--ink);font:600 12px var(--f-mono)}
+.c06-ospf .tx{fill:var(--warm);font-size:16px;font-weight:700}
+</style>
+<div class="c06-ospf">
+  <div class="lienzo"><svg id="c06-red" viewBox="0 0 620 300" role="img" aria-label="Red de seis routers con el costo de cada enlace y el camino elegido resaltado"></svg></div>
+  <div class="btns" id="c06-enl" role="group" aria-label="Cortar o reparar enlaces"></div>
+  <div class="opciones">
+    <label for="c06-det">Cómo se detecta la falla
+      <select id="c06-det">
+        <option value="40000">Esperar a que falten los saludos (40 s)</option>
+        <option value="150" selected>Latido rápido BFD (0,15 s)</option>
+        <option value="20">Se apaga la luz: la interfaz lo nota al instante</option>
+      </select></label>
+    <div class="btns" style="align-self:end"><button type="button" id="c06-rep">Reparar todo</button></div>
+  </div>
+  <div class="readout" id="c06-res" aria-live="polite"></div>
+  <div class="crono-ley" id="c06-ley"></div>
+</div></div></section>
+<section><h2>IS-IS: el primo que prefieren los operadores</h2><div class="prose"><p><b>IS-IS</b> (de sistema intermedio a sistema intermedio) nació en el mundo de las normas ISO, en paralelo a OSPF, y funciona con la misma idea: todos comparten el mapa y cada uno calcula el camino más corto con Dijkstra. Sus mensajes tienen otros nombres, pero el flujo es casi el mismo:</p><ol class="steps"><li><span>Los vecinos se saludan con <b>IIH</b> (hello de IS-IS) hasta verse los dos.</span></li><li><span>Cada router publica su pieza del mapa en un <b>LSP</b> (paquete de estado de enlace), que se inunda por toda la red.</span></li><li><span>Para comprobar que nadie se perdió nada, los routers se mandan cada tanto un índice de todo lo que tienen (<b>CSNP</b>), y quien note que le falta algo lo pide con un <b>PSNP</b>.</span></li><li><span>Con el mapa completo, cada uno calcula sus rutas.</span></li></ol><p>¿Por qué muchos operadores grandes lo prefieren? Por tres razones prácticas. IS-IS no viaja sobre IP sino directo sobre la capa de enlace, así que un error de direcciones IP no puede romper el propio protocolo de routing. Su formato es muy fácil de extender: le agregaron IPv6 y las funciones modernas del core del operador (capítulo 21) sin cambiar el protocolo. Y escala bien en redes con miles de routers, con solo dos niveles en lugar de muchas áreas. OSPF sigue siendo muy común en empresas y en operadores medianos; los dos hacen bien el trabajo.</p></div><figure class="fig fig-flujo" id="06-diagrama-9"><div class="lienzo"><svg viewBox="0 0 820 600" style="min-width:660px" role="img" aria-label="Flujo de IS-IS entre dos routers vecinos: saludos IIH hasta verse, cada uno inunda su LSP, el índice CSNP compara bases de datos, el PSNP pide la pieza que falta, llega el LSP y cada router calcula sus rutas">
+  <rect x="75.0" y="14" width="190" height="60" rx="10" class="caja"/><use href="#i-router-core" x="85.0" y="27" width="32" height="32" class="ico"/><text x="125.0" y="40" class="t t-b">Router A</text><text x="125.0" y="58" class="t t-xs t-m">nivel 2</text>
+  <rect x="465.0" y="14" width="190" height="60" rx="10" class="caja"/><use href="#i-router-core" x="475.0" y="27" width="32" height="32" class="ico"/><text x="515.0" y="40" class="t t-b">Router B</text><text x="515.0" y="58" class="t t-xs t-m">nivel 2</text>
+  <line x1="170" y1="74" x2="170" y2="586" class="vida"/>
+  <line x1="560" y1="74" x2="560" y2="586" class="vida"/>
+  <line x1="170" y1="110" x2="558" y2="122" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="180" y="102" class="t t-s"><tspan class="t-mono t-b">IIH</tspan> ① Hola, soy A</text>
+  <text x="180" y="138" class="t t-xs t-m">viaja directo sobre la capa de enlace, sin IP</text>
+  <line x1="560" y1="170" x2="172" y2="182" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="340" y="162" class="t t-s"><tspan class="t-mono t-b">IIH</tspan> ② Hola, soy B, y te veo</text>
+  <text x="340" y="198" class="t t-xs t-m">ya son vecinos (adyacencia)</text>
+  <line x1="170" y1="230" x2="558" y2="242" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="180" y="222" class="t t-s"><tspan class="t-mono t-b">LSP</tspan> ③ Mis enlaces: A–B 10, A–C 10</text>
+  <line x1="560" y1="280" x2="172" y2="292" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="300" y="272" class="t t-s"><tspan class="t-mono t-b">LSP</tspan> ④ Mis enlaces: B–A 10, B–D 5</text>
+  <line x1="560" y1="330" x2="172" y2="342" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="300" y="322" class="t t-s"><tspan class="t-mono t-b">CSNP</tspan> ⑤ Índice de todo lo que tengo</text>
+  <line x1="170" y1="380" x2="558" y2="392" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="180" y="372" class="t t-s"><tspan class="t-mono t-b">PSNP</tspan> ⑥ Me falta el LSP de D</text>
+  <line x1="560" y1="430" x2="172" y2="442" class="ln s-enl" style="stroke-width:2" marker-end="url(#fl-enl)"/>
+  <text x="340" y="422" class="t t-s"><tspan class="t-mono t-b">LSP</tspan> ⑦ Aquí va el de D</text>
+  <g class="t t-xs t-b">
+    <path d="M716 98v102" class="ln s-enl" style="stroke-width:3"/><text x="726" y="143" class="k-enl">VECINOS</text><text x="726" y="157" class="t-m">IIH</text>
+    <path d="M716 220v80" class="ln s-enl" style="stroke-width:3"/><text x="726" y="254" class="k-enl">INUNDAR</text><text x="726" y="268" class="t-m">LSP</text>
+    <path d="M716 320v130" class="ln s-enl" style="stroke-width:3"/><text x="726" y="379" class="k-enl">COMPARAR</text><text x="726" y="393" class="t-m">CSNP y PSNP</text>
+    <path d="M716 470v50" class="ln " style="stroke-width:3"/><text x="726" y="489" class="t-m">CÁLCULO</text>
+  </g>
+  <rect x="90" y="476" width="560" height="38" rx="8" class="c-red"/>
+  <text x="370" y="500" text-anchor="middle" class="t t-s"><tspan class="t-b">⑧ Mapa completo:</tspan> cada router corre Dijkstra y llena su tabla de rutas</text>
+  <text x="90" y="548" class="t t-s t-m">Mismo plan que OSPF: saludarse, compartir el mapa, calcular. Cambian los nombres y el transporte.</text>
+  <text x="20" y="300" class="t t-xs t-m" transform="rotate(-90 20 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El flujo de IS-IS.</b> Dos routers vecinos se saludan con IIH hasta verse (① y ②). Cada uno inunda su LSP con sus enlaces (③ y ④). El índice CSNP sirve para comparar bases de datos (⑤); si falta una pieza, se pide con un PSNP (⑥) y llega (⑦). Con el mapa completo, cada uno calcula sus rutas (⑧). Compárese con el flujo de OSPF: mismo plan, otros nombres.</figcaption></figure></section>
+<section><h2>Sistemas autónomos: cada operador es un país</h2><div class="prose"><p>OSPF e IS-IS sirven dentro de una red que administra una sola organización. Pero Internet son decenas de miles de redes de dueños distintos: operadores, empresas de contenido, universidades, nubes. Ninguno le va a mostrar su mapa interno a la competencia, ni aceptar que otro le diga por dónde mandar su tráfico.</p><p>Por eso Internet se organiza en <b>sistemas autónomos</b> (AS): cada red que tiene su propia política de routing hacia el mundo es un AS y recibe un número único, el <b>ASN</b>, del mismo registro regional que reparte las direcciones IP. Dentro de su AS, cada operador usa el protocolo interno que quiera. Entre AS, todos hablan el mismo idioma: BGP. Es como un país: adentro tiene sus propias carreteras y reglas de tránsito; en la frontera, se rige por tratados.</p></div><figure class="fig fig-arquitectura" id="06-diagrama-7"><div class="lienzo"><svg viewBox="0 0 920 420" style="min-width:740px" role="img" aria-label="Tres sistemas autónomos: el operador regional AS 64500 con su BNG, dos routers de core y un router de borde unidos por OSPF o IS-IS; un proveedor de tránsito AS 64501 y una empresa de contenido AS 64510. Entre los routers de borde, sesiones BGP: tránsito con el proveedor, peering con la empresa de contenido en un punto de intercambio, y el proveedor conectado también con la empresa de contenido">
+  
+  <rect x="10" y="14" width="470" height="372" rx="12" class="d-oper"/>
+  <rect x="560" y="14" width="350" height="170" rx="12" class="d-inet"/>
+  <rect x="560" y="216" width="350" height="170" rx="12" class="d-inet"/>
+  <text x="245" y="38" text-anchor="middle" class="t t-xs t-b k-oper">AS 64500 · OPERADOR REGIONAL</text>
+  <text x="735" y="38" text-anchor="middle" class="t t-xs t-b k-inet">AS 64501 · PROVEEDOR DE TRÁNSITO</text>
+  <text x="800" y="240" text-anchor="middle" class="t t-xs t-b k-inet">AS 64510 · EMPRESA DE CONTENIDO</text>
+
+  
+  <g class="ln">
+    <line x1="100" y1="200" x2="210" y2="120"/><line x1="100" y1="200" x2="210" y2="290"/>
+    <line x1="230" y1="120" x2="230" y2="290"/>
+    <line x1="250" y1="120" x2="380" y2="200"/><line x1="250" y1="290" x2="380" y2="200"/>
+    <line x1="660" y1="100" x2="820" y2="100"/>
+    <line x1="660" y1="300" x2="820" y2="300"/>
+  </g>
+  <g class="t t-xs t-m">
+    <text x="118" y="146">OSPF</text><text x="118" y="158">o IS-IS</text>
+    <text x="240" y="210">OSPF o IS-IS</text>
+    <text x="704" y="92">su propio IGP</text>
+    <text x="704" y="292">su propio IGP</text>
+  </g>
+
+  
+  <g class="t t-s t-b" text-anchor="middle">
+    <rect x="50" y="168" width="100" height="68" rx="10" class="caja"/><use href="#i-router-core" x="84" y="174" width="32" height="32" class="ico"/><text x="100" y="224">BNG</text>
+    <rect x="180" y="86" width="100" height="68" rx="10" class="caja"/><use href="#i-router-core" x="214" y="92" width="32" height="32" class="ico"/><text x="230" y="142">Core 1</text>
+    <rect x="180" y="256" width="100" height="68" rx="10" class="caja"/><use href="#i-router-core" x="214" y="262" width="32" height="32" class="ico"/><text x="230" y="312">Core 2</text>
+    <rect x="350" y="160" width="110" height="80" rx="10" class="c-red"/><use href="#i-router-core" x="389" y="166" width="32" height="32" class="ico"/><text x="405" y="216">Borde</text><text x="405" y="231" class="t-xs t-m">habla BGP</text>
+    
+    <rect x="600" y="66" width="100" height="68" rx="10" class="c-red"/><use href="#i-router-core" x="634" y="72" width="32" height="32" class="ico"/><text x="650" y="122">Borde</text>
+    <rect x="790" y="66" width="100" height="68" rx="10" class="caja"/><use href="#i-nube" x="824" y="72" width="32" height="32" class="ico"/><text x="840" y="122">Internet</text>
+    
+    <rect x="600" y="266" width="100" height="68" rx="10" class="c-red"/><use href="#i-router-core" x="634" y="272" width="32" height="32" class="ico"/><text x="650" y="322">Borde</text>
+    <rect x="790" y="266" width="100" height="68" rx="10" class="caja"/><use href="#i-servidor" x="824" y="272" width="32" height="32" class="ico"/><text x="840" y="322">Servidores</text>
+  </g>
+
+  
+  <line x1="460" y1="185" x2="600" y2="110" class="ln s-red" style="stroke-width:4"/>
+  <line x1="460" y1="215" x2="600" y2="290" class="ln s-red" style="stroke-width:4"/>
+  <line x1="680" y1="134" x2="680" y2="266" class="ln s-red" style="stroke-width:4"/>
+  <g class="t t-xs t-b k-red">
+    <text x="492" y="106">BGP</text><text x="492" y="118">tránsito</text><text x="492" y="130" class="t-m">(se paga)</text>
+    <text x="492" y="290">BGP</text><text x="492" y="302">peering</text><text x="492" y="314" class="t-m">en un IXP</text><text x="492" y="326" class="t-m">(gratis)</text>
+    <text x="690" y="204">BGP · tránsito</text>
+  </g>
+  <text x="20" y="410" class="t t-s t-m">Líneas finas: routing interno (OSPF o IS-IS). Líneas gruesas: sesiones BGP entre sistemas autónomos.</text>
+</svg></div><figcaption><b>OSPF adentro, BGP entre operadores.</b> Tres sistemas autónomos: el operador regional, un proveedor de tránsito y una empresa de contenido. Dentro de cada uno, sus routers se hablan con OSPF o IS-IS (líneas finas). En las fronteras, los routers de borde se hablan con BGP (líneas gruesas) y se cuentan qué direcciones alcanza cada uno.</figcaption></figure></section>
+<section><h2>BGP: sesiones, anuncios y políticas</h2><div class="prose"><p><b>BGP</b> (protocolo de pasarela de frontera) es el protocolo que mantiene unido a Internet. Dos routers de distintos AS que quieren intercambiar tráfico abren una <b>sesión BGP</b> entre ellos, una conversación permanente sobre TCP. Por esa sesión se dicen qué bloques de direcciones pueden alcanzar. El flujo es así:</p><ol class="steps"><li><span><b>Abrir la sesión.</b> Los dos routers abren una conexión TCP en el puerto 179 y se mandan un mensaje <b>OPEN</b> con su número de AS y sus parámetros.</span></li><li><span><b>Mantenerla viva.</b> Se mandan <b>KEEPALIVE</b> periódicos. Si dejan de llegar durante el tiempo acordado (normalmente 3 minutos), la sesión se da por muerta.</span></li><li><span><b>Anunciar rutas.</b> Con mensajes <b>UPDATE</b>, cada uno le dice al otro: «puedo llevar tráfico a <code>203.0.113.0/24</code>, y el camino pasa por estos AS». Esa lista de AS se llama <b>AS_PATH</b>, y cada AS que reenvía el anuncio le agrega su número adelante.</span></li><li><span><b>Retirar rutas.</b> Si un bloque deja de ser alcanzable, otro UPDATE lo retira.</span></li><li><span><b>Cerrar.</b> Ante un error, un mensaje <b>NOTIFICATION</b> explica el motivo y cierra la sesión; todas las rutas aprendidas por ella se borran.</span></li></ol></div><figure class="fig fig-flujo" id="06-diagrama-4"><div class="lienzo"><svg viewBox="0 0 860 600" style="min-width:680px" role="img" aria-label="Flujo de BGP entre dos operadores: conexión TCP al puerto 179, mensajes OPEN de cada lado, KEEPALIVE, anuncios UPDATE con el bloque y la lista de sistemas autónomos, retiro de una ruta con UPDATE y KEEPALIVE periódicos">
+  <rect x="65.0" y="14" width="210" height="60" rx="10" class="caja"/><use href="#i-router-core" x="75.0" y="27" width="32" height="32" class="ico"/><text x="115.0" y="40" class="t t-b">Borde AS 64500</text><text x="115.0" y="58" class="t t-xs t-m">operador regional</text>
+  <rect x="495.0" y="14" width="210" height="60" rx="10" class="caja"/><use href="#i-router-core" x="505.0" y="27" width="32" height="32" class="ico"/><text x="545.0" y="40" class="t t-b">Borde AS 64501</text><text x="545.0" y="58" class="t t-xs t-m">proveedor de tránsito</text>
+  <line x1="170" y1="74" x2="170" y2="586" class="vida"/>
+  <line x1="600" y1="74" x2="600" y2="586" class="vida"/>
+  <line x1="170" y1="110" x2="598" y2="122" class="ln s-tra" style="stroke-width:2" marker-end="url(#fl-tra)"/>
+  <text x="180" y="102" class="t t-s">① Conexión TCP al puerto 179</text>
+  <text x="180" y="138" class="t t-xs t-m">el saludo de tres pasos del capítulo 7</text>
+  <line x1="170" y1="170" x2="598" y2="182" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="180" y="162" class="t t-s"><tspan class="t-mono t-b">OPEN</tspan> ② Soy el AS 64500</text>
+  <line x1="600" y1="215" x2="172" y2="227" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="400" y="207" class="t t-s"><tspan class="t-mono t-b">OPEN</tspan> ③ Soy el AS 64501</text>
+  <line x1="170" y1="265" x2="598" y2="277" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="180" y="257" class="t t-s"><tspan class="t-mono t-b">KEEPALIVE</tspan> ④ Sesión establecida</text>
+  <text x="180" y="293" class="t t-xs t-m">el otro responde igual</text>
+  <line x1="170" y1="330" x2="598" y2="342" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="180" y="322" class="t t-s"><tspan class="t-mono t-b">UPDATE</tspan> ⑤ Llego a 203.0.113.0/24 · AS_PATH: 64500</text>
+  <line x1="600" y1="380" x2="172" y2="392" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="190" y="372" class="t t-s"><tspan class="t-mono t-b">UPDATE</tspan> ⑥ Llego a 198.51.100.0/24 · AS_PATH: 64501 64510</text>
+  <text x="190" y="408" class="t t-xs t-m">…y a todo el resto de Internet</text>
+  <line x1="170" y1="450" x2="598" y2="462" class="ln s-apl" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="180" y="442" class="t t-s"><tspan class="t-mono t-b">UPDATE</tspan> ⑦ Retiro 203.0.113.0/24</text>
+  <text x="180" y="478" class="t t-xs t-m">ese bloque ya no se alcanza por aquí</text>
+  <line x1="600" y1="530" x2="172" y2="542" class="ln s-apl ln-d" style="stroke-width:2" marker-end="url(#fl-apl)"/>
+  <text x="380" y="522" class="t t-s"><tspan class="t-mono t-b">KEEPALIVE</tspan> ⑧ Sigo aquí</text>
+  <text x="380" y="558" class="t t-xs t-m">cada 60 s; sin noticias en 180 s, la sesión cae</text>
+  <g class="t t-xs t-b">
+    <path d="M740 98v42" class="ln s-tra" style="stroke-width:3"/><text x="750" y="113" class="k-tra">TCP</text>
+    <path d="M740 160v130" class="ln s-apl" style="stroke-width:3"/><text x="750" y="219" class="k-apl">SESIÓN</text><text x="750" y="233" class="t-m">OPEN y</text><text x="750" y="247" class="t-m">KEEPALIVE</text>
+    <path d="M740 320v100" class="ln s-apl" style="stroke-width:3"/><text x="750" y="364" class="k-apl">ANUNCIOS</text><text x="750" y="378" class="t-m">UPDATE</text>
+    <path d="M740 440v50" class="ln s-apl" style="stroke-width:3"/><text x="750" y="459" class="k-apl">RETIRO</text>
+    <path d="M740 510v60" class="ln s-apl" style="stroke-width:3"/><text x="750" y="534" class="k-apl">LATIDO</text>
+  </g>
+
+  <text x="20" y="300" class="t t-xs t-m" transform="rotate(-90 20 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El flujo de BGP entre dos operadores.</b> Los routers de borde abren una conexión TCP (①) y se presentan con OPEN (② y ③). Los KEEPALIVE confirman la sesión (④). Después se anuncian rutas con UPDATE (⑤ y ⑥), con el bloque y la lista de AS por los que pasa. Cuando un bloque deja de estar disponible, un UPDATE lo retira (⑦). Los KEEPALIVE siguen mientras la sesión viva (⑧). BGP viaja como una aplicación sobre TCP; por eso sus flechas llevan el color de la capa de aplicación, aunque su trabajo sea de la capa de red.</figcaption></figure><div class="prose"><p>Lo que distingue a BGP es la <b>política</b>. Un operador no anuncia todo a todos ni acepta todo de todos: decide según contratos. Hay dos tipos de relación:</p><ul><li><b>Tránsito</b>: un operador le paga a otro más grande para que lo conecte con todo Internet. El proveedor de tránsito le anuncia todas las rutas del mundo y lleva su tráfico a cualquier parte.</li><li><b>Peering</b>: dos redes de tamaño parecido, o un operador y una empresa de contenido, acuerdan intercambiar el tráfico entre sus propios clientes, normalmente sin pagarse. Se conectan directo o en un <b>punto de intercambio de tráfico</b> (IXP), un lugar donde muchas redes se interconectan a la vez.</li></ul></div></section>
+<section><h2>Cómo elige BGP entre dos caminos</h2><div class="prose"><p>Un operador conectado a varios vecinos suele recibir varias rutas al mismo destino: una por el tránsito, otra por un peering, otra por un segundo tránsito. BGP elige <b>una sola</b> siguiendo una lista de criterios en orden; el primero que desempata, decide. En versión simplificada:</p><ol class="steps"><li><span><b>Preferencia local</b> (<i>local preference</i>) más alta. Es la decisión de negocio del propio operador: «prefiero el peering, que es gratis, al tránsito, que se paga por megabit». Manda sobre todo lo demás.</span></li><li><span><b>AS_PATH más corto</b>: el camino que cruza menos redes.</span></li><li><span><b>Origen</b> y <b>MED</b>: detalles técnicos que casi nunca deciden.</span></li><li><span><b>Ruta externa antes que interna</b>: mejor la aprendida directo de un vecino de otro AS.</span></li><li><span><b>Salida más cercana</b> dentro de la propia red.</span></li><li><span><b>Desempate final</b>: la ruta más antigua o el router de número más bajo.</span></li></ol><p>Fíjate que «el camino más rápido» no aparece en la lista. BGP no mide latencia ni capacidad: elige según la política y, si la política no dice nada, según cuántas redes hay que cruzar. Por eso a veces el tráfico entre dos países vecinos da la vuelta por otro continente: era el camino que los contratos preferían.</p></div><div class="lab" id="06-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>BGP elige: tránsito o peering</h3></div><p class="hint">El operador recibe dos rutas a la misma empresa de contenido: una por su proveedor de tránsito y otra por un peering. Cambia la preferencia local, alarga el camino y apaga el peering, y mira qué criterio decide en cada caso.</p><style>
+.c06-bgp{display:grid;gap:14px;min-width:0}
+.c06-bgp .rutas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.c06-bgp .ruta{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:3px;font-size:.92rem}
+.c06-bgp .ruta b{font-family:var(--f-display)}
+.c06-bgp .ruta code{font-size:.82rem}
+.c06-bgp .ruta.gana{border-color:var(--c-red);background:var(--c-red-s)}
+.c06-bgp .ruta.off{opacity:.4}
+.c06-bgp .ruta .tag{font:700 .7rem var(--f-display);letter-spacing:.1em;text-transform:uppercase;color:var(--c-red)}
+.c06-bgp .chk{display:flex;gap:8px;align-items:center;font:600 .86rem var(--f-display)}
+.c06-bgp .chk input{width:18px;height:18px;accent-color:var(--accent)}
+.c06-bgp tr.decide td{background:var(--c-red-s);font-weight:600}
+.c06-bgp tr.nollega td{color:var(--muted);opacity:.6}
+.c06-bgp td{font-size:.88rem}
+</style>
+<div class="c06-bgp">
+  <div class="ctls">
+    <div class="ctl"><label for="c06-lpt">Preferencia local del tránsito</label><output id="c06-lpt-o" for="c06-lpt"></output><input type="range" id="c06-lpt" min="50" max="200" step="10" value="100"></div>
+    <div class="ctl"><label for="c06-lpp">Preferencia local del peering</label><output id="c06-lpp-o" for="c06-lpp"></output><input type="range" id="c06-lpp" min="50" max="200" step="10" value="100"></div>
+    <div class="ctl"><label for="c06-pre">Veces que el contenido repite su AS en el peering</label><output id="c06-pre-o" for="c06-pre"></output><input type="range" id="c06-pre" min="0" max="3" step="1" value="0"></div>
+  </div>
+  <label class="chk" for="c06-peer"><input type="checkbox" id="c06-peer" checked> Sesión de peering activa en el punto de intercambio</label>
+  <div class="rutas" id="c06-rutas"></div>
+  <div class="tbl"><table><thead><tr><th>Criterio, en orden</th><th>Tránsito</th><th>Peering</th><th>Resultado</th></tr></thead><tbody id="c06-pasos"></tbody></table></div>
+  <div class="readout" id="c06-bgp-res" aria-live="polite"></div>
+</div></div><div class="caso"><b>Así lo hace un operador</b><p>Un operador regional tiene su propio bloque de direcciones y su número de AS, y se conecta a Internet por dos proveedores de tránsito distintos, por dos rutas de fibra que no comparten tramos. A los dos les anuncia sus bloques por BGP. Como prefiere que el tráfico de bajada entre por el proveedor más barato, alarga a propósito el camino que anuncia por el otro, repitiendo su propio número de AS (<i>AS-path prepending</i>). Un día se corta la fibra del proveedor principal: las sesiones BGP con él se caen, sus rutas se retiran, y en uno o dos minutos todo Internet aprende que para llegar a ese operador hay que entrar por el segundo proveedor. Los clientes notan un rato de lentitud y algunas conexiones que se reinician, pero no un corte. Además, el operador tiene peering en un punto de intercambio con las grandes empresas de contenido, así que el video y las redes sociales ni siquiera pasaban por los tránsitos.</p></div></section>
+<section><h2>Por qué un error de BGP puede tumbar medio Internet</h2><div class="prose"><p>BGP se basa en la confianza: cuando un vecino anuncia «puedo llegar a este bloque», en principio se le cree. Esa confianza tiene dos riesgos.</p><p>El primero es <b>anunciar lo que no es de uno</b>. En 2008, un operador de Asia quiso bloquear un gran sitio de videos dentro de su país y, por error, anunció las direcciones de ese sitio a todo Internet. Como su anuncio era más específico que el del dueño, buena parte del mundo le mandó el tráfico del sitio a él durante un par de horas. A esto se le llama <b>secuestro de rutas</b> (<i>route hijack</i>), y también puede ser intencional.</p><p>El segundo es <b>retirar lo que no se debía</b>. En 2021, una de las redes sociales más grandes del mundo, durante un mantenimiento, retiró por error los anuncios BGP de sus propias direcciones, incluidas las de sus servidores de DNS. Durante unas seis horas, su red simplemente dejó de existir para el resto de Internet, y sus propios empleados no podían entrar a los edificios porque las tarjetas dependían de la misma red.</p><p>Las defensas existen y se están extendiendo: filtrar lo que anuncian los clientes, y <b>RPKI</b>, un sistema de certificados que permite comprobar que quien anuncia un bloque está autorizado a hacerlo. Pero dependen de que todos los operadores las apliquen.</p></div></section>
+<section><h2>ICMP: ping, traceroute (el truco del TTL) y «destino inalcanzable»</h2><div class="prose"><p>Cuando algo falla en el camino, la red avisa con <b>ICMP</b> (protocolo de mensajes de control de Internet), que viaja dentro de IP. Es el sistema de avisos de la red: «no encontré ruta», «el paquete era demasiado grande», «se le acabó el tiempo de vida». Los mensajes más conocidos son:</p><ul><li><b>Eco y respuesta de eco</b>: la base de <code>ping</code>. «¿Estás ahí?» «Sí.» Mide si un equipo responde y cuánto tarda la ida y vuelta.</li><li><b>Destino inalcanzable</b>: un router que no tiene ruta al destino, o un equipo que no atiende en ese puerto, lo avisa al origen.</li><li><b>Tiempo excedido</b>: un router descartó un paquete porque su <b>TTL</b> llegó a cero.</li></ul><p>El TTL (tiempo de vida) es el campo de la cabecera IP que vimos en el capítulo 5. Arranca en un número, como 64, y cada router le resta 1. Si llega a 0, el router descarta el paquete y avisa con un ICMP de tiempo excedido. Sirve para que un paquete atrapado en un círculo no dé vueltas para siempre.</p><p><b>Traceroute</b> aprovecha ese aviso con un truco ingenioso. Manda un primer paquete con TTL 1: el primer router lo descarta y responde «tiempo excedido», y con eso revela su dirección. Después manda uno con TTL 2: llega un router más lejos. Y así, subiendo de a uno, hasta que responde el destino. El resultado es la lista de routers del camino con el tiempo de ida y vuelta a cada uno. Si un router está configurado para no responder, aparece como <code>* * *</code>, y no quiere decir que el camino esté roto.</p></div><figure class="fig fig-flujo" id="06-diagrama-10"><div class="lienzo"><svg viewBox="0 0 900 600" style="min-width:720px" role="img" aria-label="Flujo de ping y traceroute: ping manda un eco y recibe la respuesta; traceroute manda paquetes con TTL 1, 2 y 3; los routers 1 y 2 descartan los que llegan a TTL cero y avisan tiempo excedido; el tercero llega al servidor, que responde">
+  <rect x="25.0" y="14" width="170" height="60" rx="10" class="caja"/><use href="#i-celular" x="35.0" y="27" width="32" height="32" class="ico"/><text x="75.0" y="40" class="t t-b">Celular</text><text x="75.0" y="58" class="t t-xs t-m">origen</text>
+  <rect x="255.0" y="14" width="150" height="60" rx="10" class="caja"/><use href="#i-router-core" x="265.0" y="27" width="32" height="32" class="ico"/><text x="305.0" y="40" class="t t-b">Router 1</text><text x="305.0" y="58" class="t t-xs t-m">salto 1</text>
+  <rect x="455.0" y="14" width="150" height="60" rx="10" class="caja"/><use href="#i-router-core" x="465.0" y="27" width="32" height="32" class="ico"/><text x="505.0" y="40" class="t t-b">Router 2</text><text x="505.0" y="58" class="t t-xs t-m">salto 2</text>
+  <rect x="645.0" y="14" width="170" height="60" rx="10" class="caja"/><use href="#i-servidor" x="655.0" y="27" width="32" height="32" class="ico"/><text x="695.0" y="40" class="t t-b">Servidor</text><text x="695.0" y="58" class="t t-xs t-mono">203.0.113.10</text>
+  <line x1="110" y1="74" x2="110" y2="586" class="vida"/>
+  <line x1="330" y1="74" x2="330" y2="586" class="vida"/>
+  <line x1="530" y1="74" x2="530" y2="586" class="vida"/>
+  <line x1="730" y1="74" x2="730" y2="586" class="vida"/>
+  <line x1="110" y1="110" x2="728" y2="122" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="102" class="t t-s"><tspan class="t-mono t-b">ping</tspan> ① Eco: ¿estás ahí?</text>
+  <line x1="730" y1="160" x2="112" y2="172" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="360" y="152" class="t t-s">② Respuesta de eco: sí · 48 ms</text>
+  <line x1="110" y1="260" x2="328" y2="272" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="252" class="t t-s"><tspan class="t-mono t-b">TTL=1</tspan> ③</text>
+  <line x1="330" y1="310" x2="112" y2="322" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="302" class="t t-s">④ Tiempo excedido: soy el router 1 (el TTL llegó a 0)</text>
+  <line x1="110" y1="370" x2="528" y2="382" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="362" class="t t-s"><tspan class="t-mono t-b">TTL=2</tspan> ⑤</text>
+  <text x="120" y="398" class="t t-xs t-m">el router 1 lo baja a 1 y lo pasa</text>
+  <line x1="530" y1="430" x2="112" y2="442" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="422" class="t t-s">⑥ Tiempo excedido: soy el router 2</text>
+  <line x1="110" y1="480" x2="728" y2="492" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="120" y="472" class="t t-s"><tspan class="t-mono t-b">TTL=3</tspan> ⑦</text>
+  <text x="120" y="508" class="t t-xs t-m">llega al servidor con TTL 1</text>
+  <line x1="730" y1="540" x2="112" y2="552" class="ln s-red" style="stroke-width:2" marker-end="url(#fl-red)"/>
+  <text x="360" y="532" class="t t-s">⑧ El servidor responde: llegué</text>
+  <g class="t t-xs t-b">
+    <path d="M790 98v82" class="ln s-red" style="stroke-width:3"/><text x="800" y="133" class="k-red">PING</text><text x="800" y="147" class="t-m">1 ida y vuelta</text>
+    <path d="M790 250v310" class="ln s-red" style="stroke-width:3"/><text x="800" y="399" class="k-red">TRACEROUTE</text><text x="800" y="413" class="t-m">un TTL más</text><text x="800" y="427" class="t-m">en cada sonda</text>
+  </g>
+  <line x1="40" y1="214" x2="780" y2="214" class="ln ln-d"/>
+  <text x="20" y="300" class="t t-xs t-m" transform="rotate(-90 20 300)">EL TIEMPO CORRE HACIA ABAJO ↓</text>
+</svg></div><figcaption><b>El flujo de ping y de traceroute.</b> Arriba, <code>ping</code>: un eco de ida y una respuesta de vuelta (① y ②). Abajo, <code>traceroute</code>: un paquete con TTL 1 muere en el router 1, que avisa «tiempo excedido» (③ y ④); uno con TTL 2 muere en el router 2 (⑤ y ⑥); uno con TTL 3 llega al servidor, que responde (⑦ y ⑧). Cada aviso revela un router del camino.</figcaption></figure><div class="lab" id="06-lab-6"><div class="lab-title"><span class="tag">Laboratorio</span><h3>Traceroute paso a paso</h3></div><p class="hint">Manda sondas con TTL creciente y mira en qué router muere cada una, quién responde y cuánto tarda. Activa un router que no responde para ver de dónde salen los asteriscos.</p><style>
+.c06-tr{display:grid;gap:14px;min-width:0}
+.c06-tr .lienzo{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.c06-tr svg{display:block;width:100%;min-width:600px;height:auto;font-family:var(--f-display)}
+.c06-tr .ln{stroke:var(--line);stroke-width:3}
+.c06-tr .nodo{fill:var(--card);stroke:var(--ink);stroke-width:1.6}
+.c06-tr .nodo.visto{fill:var(--c-red-s);stroke:var(--c-red)}
+.c06-tr .nodo.mudo{fill:var(--paper);stroke:var(--muted);stroke-dasharray:4 3}
+.c06-tr .nodo.muere{stroke:var(--warm);stroke-width:3}
+.c06-tr .tn{fill:var(--ink);font-size:13px;font-weight:700}
+.c06-tr .ts{fill:var(--muted);font-size:11px}
+.c06-tr .pkt{fill:var(--warm)}
+.c06-tr .ttl{fill:var(--warm);font:700 12px var(--f-mono)}
+.c06-tr .vuelta{stroke:var(--c-red);stroke-width:2;stroke-dasharray:5 4;fill:none}
+.c06-tr .chk{display:flex;gap:8px;align-items:center;font:600 .86rem var(--f-display)}
+.c06-tr .chk input{width:18px;height:18px;accent-color:var(--accent)}
+.c06-tr td{font-family:var(--f-mono);font-size:.82rem;white-space:nowrap}
+.c06-tr td.q{font-family:var(--f-body);white-space:normal}
+</style>
+<div class="c06-tr">
+  <div class="lienzo"><svg id="c06-tr-svg" viewBox="0 0 760 150" role="img" aria-label="Camino del celular al servidor con siete saltos; el punto naranja es la sonda y el número encima, su TTL"></svg></div>
+  <div class="btns">
+    <button type="button" class="primary" id="c06-sig">Enviar sonda con TTL 1</button>
+    <button type="button" id="c06-todas">Enviar todas</button>
+    <button type="button" id="c06-reset">Reiniciar</button>
+  </div>
+  <label class="chk" for="c06-mudo"><input type="checkbox" id="c06-mudo"> El router del salto 6 no responde a ICMP</label>
+  <div class="readout" id="c06-tr-msg" aria-live="polite"></div>
+  <div class="tbl"><table><thead><tr><th>Salto</th><th>Dirección</th><th>Tres sondas</th><th>Quién es</th></tr></thead><tbody id="c06-tr-tab"></tbody></table></div>
+</div></div><div class="prose"><p>En IPv6, ICMP es todavía más importante: su versión, <b>ICMPv6</b>, lleva también el descubrimiento de vecinos que reemplaza a ARP. Por eso bloquear ICMP «por seguridad» sin pensarlo suele romper cosas.</p></div><div class="ml"><b>En la práctica</b><p>«Se cayó una ruta» quiere decir que un bloque de direcciones dejó de anunciarse, o que el camino por el que se llegaba a él desapareció. Por eso una falla lejos del país puede dejar sin acceso a ciertos sitios y no a otros: si se corta un cable submarino o se cae la sesión con un proveedor de tránsito, los sitios que el operador alcanzaba por ese camino quedan inaccesibles o lentos hasta que BGP encuentra otro, mientras que los que llegan por peering o por cachés locales siguen funcionando. Para atención al cliente, la pista es esa: si fallan algunos sitios y no todos, y les pasa a muchos clientes a la vez, el problema no está en la casa del cliente.</p></div><div class="quiz"><h3>Pruébate</h3><details><summary>¿Qué hace un router cuando dos filas de su tabla contienen la dirección de destino?</summary><p>Elige la más específica, la de prefijo más largo.</p></details><details><summary>¿Para qué sirven los mensajes <i>Hello</i> de OSPF?</summary><p>Para descubrir a los vecinos y comprobar que siguen vivos; si dejan de llegar, el router da el enlace por caído y avisa a toda la red.</p></details><details><summary>¿Qué es la convergencia y por qué importa?</summary><p>Es el tiempo que tarda la red en ponerse de acuerdo sobre los caminos nuevos después de una falla. Mientras dura, se pierden paquetes.</p></details><details><summary>¿Por qué se usa BGP entre operadores y no OSPF?</summary><p>Porque cada operador quiere decidir con sus propias políticas y contratos qué rutas anuncia y acepta, sin mostrarle su red interna a nadie. BGP está hecho para eso.</p></details><details><summary>Si BGP recibe dos rutas al mismo destino, una por tránsito y otra por peering, con la misma preferencia local, ¿cuál elige?</summary><p>La de AS_PATH más corto, el camino que cruza menos redes; casi siempre es la del peering.</p></details><details><summary>¿Cómo descubre traceroute los routers del camino?</summary><p>Manda paquetes con TTL 1, 2, 3…; cada router que deja el TTL en cero descarta el paquete y responde con un ICMP de tiempo excedido, revelando su dirección.</p></details></div><div class="vids"><span>Para saber más</span><a class="vid" href="https://es.wikipedia.org/wiki/Open_Shortest_Path_First" target="_blank" rel="noopener">Open Shortest Path First, OSPF (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Border_Gateway_Protocol" target="_blank" rel="noopener">Border Gateway Protocol, BGP (Wikipedia) <small>lectura</small></a><a class="vid" href="https://es.wikipedia.org/wiki/Traceroute" target="_blank" rel="noopener">Traceroute (Wikipedia) <small>lectura</small></a><a class="vid" href="https://www.manrs.org/" target="_blank" rel="noopener">MANRS: normas para un routing más seguro (en inglés) <small>lectura</small></a></div></section>
+<label class="got"><input type="checkbox" id="got"> Lo tengo claro</label>
+<nav class="pager" id="pager" aria-label="Capítulo anterior y siguiente"></nav>
+</main>
+</div>
+<footer><span>Material de formación sobre cómo funciona un operador de telecomunicaciones.</span><span>Código del sitio: <a href="https://github.com/aaramirez/telco" target="_blank" rel="noopener">github.com/aaramirez/telco</a></span></footer>
+</div>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const N={A:[60,150,'BNG'],B:[220,60,''],C:[220,240,''],D:[400,240,''],E:[400,60,''],F:[560,150,'Salida']};
+  const L=[['A','B',10],['A','C',10],['B','E',10],['E','F',10],['C','D',15],['D','F',10],['B','C',5],['E','D',5]];
+  const cort=new Set(); let ultimo=null, afectaUlt=false;
+  const k=l=>l[0]+l[1];
+  function dijkstra(){
+    const d={},p={},v=new Set();Object.keys(N).forEach(n=>d[n]=Infinity);d.A=0;
+    while(v.size<6){let u=null;for(const n in d)if(!v.has(n)&&(u===null||d[n]<d[u]))u=n;if(d[u]===Infinity)break;v.add(u);
+      L.forEach(l=>{if(cort.has(k(l)))return;const o=l[0]===u?l[1]:l[1]===u?l[0]:null;if(o&&d[u]+l[2]<d[o]){d[o]=d[u]+l[2];p[o]=u;}});}
+    if(d.F===Infinity)return null;
+    const c=['F'];while(c[0]!=='A')c.unshift(p[c[0]]);return {c,costo:d.F};
+  }
+  function enCamino(cam,l){if(!cam)return false;for(let i=0;i<cam.c.length-1;i++){const a=cam.c[i],b=cam.c[i+1];if((l[0]===a&&l[1]===b)||(l[0]===b&&l[1]===a))return true;}return false;}
+  function dibujar(){
+    const cam=dijkstra();let s='';
+    L.forEach(l=>{const [x1,y1]=N[l[0]],[x2,y2]=N[l[1]],c=cort.has(k(l))?'cortado':enCamino(cam,l)?'camino':'';
+      s+='<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" class="enl '+c+'"/>';});
+    L.forEach(l=>{const [x1,y1]=N[l[0]],[x2,y2]=N[l[1]],mx=(x1+x2)/2,my=(y1+y2)/2;
+      s+=cort.has(k(l))?'<text x="'+mx+'" y="'+(my+6)+'" text-anchor="middle" class="tx">✕</text>':'<rect x="'+(mx-15)+'" y="'+(my-11)+'" width="30" height="20" rx="5" class="costo"/><text x="'+mx+'" y="'+(my+4)+'" text-anchor="middle" class="tc">'+l[2]+'</text>';});
+    for(const n in N){const [x,y,t]=N[n];s+='<circle cx="'+x+'" cy="'+y+'" r="22" class="nodo '+(n==='A'||n==='F'?'fin':'')+'"/><text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" class="tn">'+n+'</text>';
+      if(t)s+='<text x="'+x+'" y="'+(y+40)+'" text-anchor="middle" class="ts">'+t+'</text>';}
+    q('#c06-red').innerHTML=s;
+    q('#c06-enl').innerHTML=L.map(l=>'<button type="button" data-k="'+k(l)+'" aria-pressed="'+cort.has(k(l))+'">'+(cort.has(k(l))?'Reparar ':'Cortar ')+l[0]+'–'+l[1]+'</button>').join('');
+    return cam;
+  }
+  function informar(cam,afecta){
+    const det=+q('#c06-det').value, saltos=cam?cam.c.length-1:5;
+    const t={det:det,aviso:5*saltos,spf:50,tabla:100};
+    const total=t.det+t.aviso+t.spf+t.tabla;
+    const f=ms=>ms>=1000?(ms/1000).toFixed(1).replace('.',',')+' s':Math.round(ms)+' ms';
+    let h=cam?'<div>Camino: <span class="big">'+cam.c.join(' → ')+'</span> · costo total '+cam.costo+'</div>':'<div class="warn">Sin camino: la salida quedó aislada. OSPF no puede inventar enlaces.</div>';
+    if(!cam){}
+    else if(ultimo===null)h+='<div>Corta un enlace para ver cómo reacciona la red.</div>';
+    else if(!afecta)h+='<div class="ok">Ese enlace no estaba en el camino: el tráfico no se enteró. OSPF igual actualizó el mapa en todos los routers.</div>';
+    else h+='<div class="'+(total>5000?'warn':'ok')+'">El tráfico estuvo sin camino durante unos '+f(total)+(total>5000?': una llamada se corta y un video se congela.':': casi nadie lo nota.')+'</div>';
+    q('#c06-res').innerHTML=h;
+    q('#c06-ley').innerHTML=(cam&&ultimo!==null&&afecta)?[['Detectar',t.det,'var(--warm)'],['Avisar a todos (LSA)',t.aviso,'var(--c-red)'],['Recalcular (Dijkstra)',t.spf,'var(--c-tra)'],['Reescribir la tabla',t.tabla,'var(--c-enl)']]
+      .map(x=>'<span><i style="background:'+x[2]+'"></i>'+x[0]+'<b>'+f(x[1])+'</b></span>').join(''):'';
+  }
+  q('#c06-enl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const key=b.dataset.k,l=L.find(x=>k(x)===key);
+    const antes=dijkstra(), corta=!cort.has(key);
+    if(corta)cort.add(key);else cort.delete(key);
+    ultimo=key;afectaUlt=corta&&enCamino(antes,l);const cam=dibujar();informar(cam,afectaUlt);
+    const nb=q('#c06-enl [data-k="'+key+'"]');if(nb)nb.focus();});
+  q('#c06-det').addEventListener('change',()=>informar(dijkstra(),afectaUlt));
+  q('#c06-rep').addEventListener('click',()=>{cort.clear();ultimo=null;afectaUlt=false;informar(dibujar(),false);});
+  informar(dibujar(),false);
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  function rutas(){
+    const pre=+q('#c06-pre').value;
+    return {t:{n:'Tránsito',lp:+q('#c06-lpt').value,path:['64501','64510'],ext:'externa',igp:20,on:true},
+            p:{n:'Peering',lp:+q('#c06-lpp').value,path:Array(pre+1).fill('64510'),ext:'externa',igp:10,on:q('#c06-peer').checked}};
+  }
+  function dibujar(){
+    ['lpt','lpp','pre'].forEach(i=>q('#c06-'+i+'-o').textContent=q('#c06-'+i).value);
+    const r=rutas(), T=r.t, P=r.p;
+    const C=[
+      ['1. Preferencia local más alta',T.lp,P.lp,(a,b)=>b.lp-a.lp],
+      ['2. AS_PATH más corto',T.path.length+' AS',P.path.length+' AS',(a,b)=>a.path.length-b.path.length],
+      ['3. Origen y MED','iguales','iguales',()=>0],
+      ['4. Externa antes que interna',T.ext,P.ext,()=>0],
+      ['5. Salida más cercana en la red propia','costo '+T.igp,'costo '+P.igp,(a,b)=>a.igp-b.igp]];
+    let gan=null, paso=-1;
+    if(!P.on){gan=T;}
+    else for(let i=0;i<C.length;i++){const d=C[i][3](T,P);if(d!==0){gan=d<0?T:P;paso=i;break;}}
+    q('#c06-pasos').innerHTML=C.map((c,i)=>{
+      let res,cls='';
+      if(!P.on){res=i===0?'solo hay una ruta':'';cls=i===0?'decide':'nollega';}
+      else if(paso===-1||i<paso)res='empate';
+      else if(i===paso){res='gana '+gan.n.toLowerCase();cls='decide';}
+      else{res='no se llega a mirar';cls='nollega';}
+      return '<tr class="'+cls+'"><td>'+c[0]+'</td><td>'+c[1]+'</td><td>'+(P.on?c[2]:'—')+'</td><td>'+res+'</td></tr>';}).join('');
+    q('#c06-rutas').innerHTML=[T,P].map(x=>'<div class="ruta '+(!x.on?'off':x===gan?'gana':'')+'">'+(x===gan?'<span class="tag">Ruta elegida</span>':'')+
+      '<b>Por el '+x.n.toLowerCase()+'</b><span>Destino: <code>198.51.100.0/24</code></span><span>AS_PATH: <code>'+(x.on?x.path.join(' '):'sin ruta: la sesión cayó')+'</code></span>'+
+      '<span>Preferencia local: '+x.lp+'</span></div>').join('');
+    let m;
+    if(!P.on)m='La sesión de peering se cayó y su ruta se retiró. Queda una sola: todo el tráfico va por el tránsito, que se paga por megabit.';
+    else if(paso===0)m='Decidió la preferencia local: la política del propio operador manda sobre la cantidad de redes del camino.';
+    else if(paso===1)m='Con la misma preferencia local, decidió el largo del AS_PATH: gana el camino que cruza menos redes'+(gan===P?'. Al operador le conviene: el peering no se paga.':'. Ojo: ahora el tráfico va por el tránsito, que se paga.');
+    else m='Hubo empate hasta el final y decidió la salida más cercana dentro de la propia red.';
+    q('#c06-bgp-res').innerHTML='<div class="big">Elige: '+gan.n.toLowerCase()+'</div><div>'+m+'</div>';
+  }
+  ['#c06-lpt','#c06-lpp','#c06-pre'].forEach(s=>q(s).addEventListener('input',dibujar));
+  q('#c06-peer').addEventListener('change',dibujar);
+  dibujar();
+})();
+</script>
+<script>
+(function(){
+  const q=s=>document.querySelector(s);
+  const H=[['192.168.1.1','router Wi-Fi de la casa',1],['100.64.0.1','BNG del operador',4],['198.51.100.1','core del operador',5],
+    ['198.51.100.9','borde del operador',6],['203.0.113.1','proveedor de tránsito',28],['203.0.113.33','router en otro país',45],['203.0.113.10','servidor de ejemplo.com',48]];
+  const X=i=>40+i*97, Y=62;
+  const menos=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let ttl=1, filas=[], ocupado=false, nodosVistos=new Set();
+  const mudo=()=>q('#c06-mudo').checked;
+  function base(extra){
+    let s='<line x1="'+X(0)+'" y1="'+Y+'" x2="'+X(7)+'" y2="'+Y+'" class="ln"/>';
+    s+='<circle cx="'+X(0)+'" cy="'+Y+'" r="20" class="nodo visto"/><text x="'+X(0)+'" y="'+(Y+4)+'" text-anchor="middle" class="tn">tú</text><text x="'+X(0)+'" y="'+(Y+38)+'" text-anchor="middle" class="ts">celular</text>';
+    H.forEach((h,i)=>{const x=X(i+1),cl=(i===5&&mudo())?'mudo':nodosVistos.has(i)?'visto':'';
+      s+='<circle cx="'+x+'" cy="'+Y+'" r="20" class="nodo '+cl+'" id="c06-n'+i+'"/><text x="'+x+'" y="'+(Y+5)+'" text-anchor="middle" class="tn">'+(i+1)+'</text>'+
+         '<text x="'+x+'" y="'+(Y+38)+'" text-anchor="middle" class="ts">'+(i===6?'servidor':'salto '+(i+1))+'</text>';});
+    q('#c06-tr-svg').innerHTML=s+(extra||'');
+  }
+  function tiempos(ms){return [0,1,2].map(()=>Math.max(1,Math.round(ms+(Math.random()*4-1)))+' ms').join('  ');}
+  function tabla(){
+    q('#c06-tr-tab').innerHTML=filas.length?filas.map(f=>'<tr><td>'+f[0]+'</td><td>'+f[1]+'</td><td>'+f[2]+'</td><td class="q">'+f[3]+'</td></tr>').join(''):
+      '<tr><td colspan="4" class="q">Todavía no mandaste ninguna sonda.</td></tr>';
+  }
+  function resultado(t){
+    const i=t-1, h=H[i], callado=(i===5&&mudo());
+    if(!callado)nodosVistos.add(i);
+    filas.push(callado?[t,'*','*  *  *','no respondió: filtra ICMP, pero dejó pasar el resto']:[t,h[0],tiempos(h[2]),h[1]]);
+    tabla();
+    let m;
+    if(i===6)m='TTL '+t+': la sonda llegó al servidor con TTL 1 de sobra. El servidor responde y traceroute termina: ya tienes el camino completo.';
+    else if(callado)m='TTL '+t+': '+(t-1)+' routers le restaron 1 cada uno y el del salto '+t+' la dejó en 0 y la descartó, pero no avisó. Por eso aparecen asteriscos. El camino no está roto: la siguiente sonda pasa por él sin problema.';
+    else m='TTL '+t+': '+(t===1?'el primer router':'los '+(t-1)+' routers anteriores le restaron 1 cada uno; el del salto '+t)+' la dejó en 0, la descartó y respondió «tiempo excedido» desde '+h[0]+'. Así se revela.';
+    q('#c06-tr-msg').textContent=m;
+    ttl=t+1;
+    const b=q('#c06-sig');
+    if(ttl>7){b.textContent='Camino completo';b.disabled=true;q('#c06-todas').disabled=true;}else b.textContent='Enviar sonda con TTL '+ttl;
+  }
+  function animar(t,fin){
+    const i=t-1;
+    if(menos){base();fin();return;}
+    ocupado=true;const dur=280*t, t0=performance.now();
+    function paso(now){
+      const k=Math.min(1,(now-t0)/dur), pos=k*t, x=X(0)+pos*97, quedan=Math.max(0,t-Math.floor(pos+1e-6));
+      if(k<1){base('<circle cx="'+x+'" cy="'+Y+'" r="7" class="pkt"/><text x="'+x+'" y="'+(Y-16)+'" text-anchor="middle" class="ttl">TTL '+quedan+'</text>');setTimeout(()=>paso(performance.now()),30);}
+      else{
+        const callado=(i===5&&mudo()), xr=X(t);
+        base('<text x="'+xr+'" y="'+(Y-30)+'" text-anchor="middle" class="ttl">'+(i===6?'llegó':'TTL 0 ✕')+'</text>'+
+          (callado?'':'<path d="M'+xr+' '+(Y+22)+' Q '+((xr+X(0))/2)+' '+(Y+80)+' '+X(0)+' '+(Y+22)+'" class="vuelta"/>'));
+        const n=q('#c06-n'+i);if(n)n.classList.add('muere');
+        ocupado=false;fin();
+      }
+    }
+    paso(performance.now());
+  }
+  function enviar(cb){if(ocupado||ttl>7)return;const t=ttl;animar(t,()=>{resultado(t);if(cb)cb();});}
+  q('#c06-sig').addEventListener('click',()=>enviar());
+  q('#c06-todas').addEventListener('click',function seguir(){if(ttl<=7)enviar(()=>setTimeout(seguir,menos?0:250));});
+  q('#c06-reset').addEventListener('click',()=>{if(ocupado)return;ttl=1;filas=[];nodosVistos.clear();base();tabla();
+    const b=q('#c06-sig');b.disabled=false;q('#c06-todas').disabled=false;b.textContent='Enviar sonda con TTL 1';
+    q('#c06-tr-msg').textContent='Listo para empezar. La primera sonda sale con TTL 1.';});
+  q('#c06-mudo').addEventListener('change',()=>{if(!ocupado)base();});
+  base();tabla();
+  q('#c06-tr-msg').textContent='Cada sonda sale con un TTL. Cada router le resta 1; el que la deja en 0 la descarta y avisa quién es.';
+})();
+</script>
+</body>
+</html>
