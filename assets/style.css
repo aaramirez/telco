@@ -44,8 +44,8 @@ code,.mono{font-family:var(--f-mono);font-size:.86em}
 .eyebrow{font-family:var(--f-display);font-weight:600;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 
 /* Hero */
-.hero{display:grid;gap:18px;padding-block:12px 34px;max-width:880px}
-.hero .lede{font-size:1.15rem;max-width:62ch;color:var(--ink)}
+.hero{display:grid;gap:18px;padding-block:12px 34px}
+.hero .lede{font-size:1.15rem;color:var(--ink)}
 .eq-hero{display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 10px;margin-top:8px;padding:22px 20px 16px;background:var(--card);border:1px solid var(--line);border-radius:12px}
 .eq-hero .op{font:400 clamp(2rem,6vw,3.4rem)/1 var(--f-body);color:var(--muted);padding-top:2px}
 .tk{display:grid;justify-items:center;gap:6px;text-decoration:none;color:var(--ink);padding:2px 6px 6px;border-radius:8px;transition:background .15s}
@@ -210,9 +210,9 @@ footer{margin-top:40px;font-size:.88rem;color:var(--muted);display:grid;gap:4px}
 .brand b{color:var(--accent)}
 .layout{margin-top:26px}
 .toc ol{position:relative}
-.page-head{display:grid;gap:10px;max-width:800px;padding-block:2px 4px}
+.page-head{display:grid;gap:10px;padding-block:2px 4px}
 .page-head .num{font:600 .8rem var(--f-mono);color:var(--accent);letter-spacing:.06em}
-.page-head .lede{font-size:1.12rem;max-width:64ch}
+.page-head .lede{font-size:1.12rem}
 main section>h2{font-size:clamp(1.3rem,2.6vw,1.65rem)}
 figure{margin:0}
 .fig{display:grid;gap:6px;min-width:0}
