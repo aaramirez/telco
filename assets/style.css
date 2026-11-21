@@ -71,10 +71,11 @@ code,.mono{font-family:var(--f-mono);font-size:.86em}
 @media (max-width:900px){
   .layout{grid-template-columns:minmax(0,1fr);gap:20px}
   .toc{top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);margin-inline:-16px;padding:8px 16px;border-bottom:1px solid var(--line)}
-  .toc ol{display:flex;overflow-x:auto;gap:4px;scrollbar-width:none}
-  .toc a{grid-template-columns:auto auto 12px;white-space:nowrap;padding:6px 10px;font-size:.88rem}
-  .toc .ck{width:10px;height:10px}
-  .toc .prog{display:none}
+  .toc .ruta>summary{display:flex;align-items:baseline;gap:10px;cursor:pointer;padding:4px 0}
+  .toc .ruta>summary .aqui{min-width:0;font-size:.92rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .toc .ruta>summary::after{content:"▾";margin-left:auto;color:var(--muted)}
+  .toc .ruta[open]>summary::after{content:"▴"}
+  .toc .ruta[open]{max-height:72vh;overflow-y:auto;padding-bottom:8px}
 }
 
 /* Secciones */
@@ -210,6 +211,23 @@ footer{margin-top:40px;font-size:.88rem;color:var(--muted);display:grid;gap:4px}
 .brand b{color:var(--accent)}
 .layout{margin-top:26px}
 .toc ol{position:relative}
+.toc details{border:0;border-radius:0;padding:0;background:none}
+.toc summary{color:inherit;font-weight:inherit}
+.toc{grid-template-columns:minmax(0,1fr)}
+.toc .ruta{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;min-width:0}
+.toc summary{list-style:none}
+.toc summary::-webkit-details-marker{display:none}
+.toc .ruta>summary{display:flex;align-items:baseline}
+@media (min-width:901px){.toc .ruta>summary{cursor:default;padding-bottom:4px}.toc .ruta>summary .aqui{display:none}}
+.toc .etapa>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-radius:7px;cursor:pointer;font-size:.8rem;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.toc .etapa>summary::before{content:"▸";display:inline-block;width:12px;transition:transform .15s}
+.toc .etapa[open]>summary::before{transform:rotate(90deg)}
+.toc .etapa>summary>span:first-child{flex:1}
+.toc .etapa>summary:hover{background:var(--card);color:var(--ink)}
+.toc .etapa[open]>summary{color:var(--ink)}
+.toc .etapa .cuenta{font:500 .72rem var(--f-mono);color:var(--muted)}
+.toc .etapa>ol{padding-left:6px;margin-bottom:6px}
+@media (prefers-reduced-motion: reduce){.toc .etapa>summary::before{transition:none}}
 .page-head{display:grid;gap:10px;padding-block:2px 4px}
 .page-head .num{font:600 .8rem var(--f-mono);color:var(--accent);letter-spacing:.06em}
 .page-head .lede{font-size:1.12rem}
