@@ -314,7 +314,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <svg viewBox="0 0 640 250" role="img" aria-label="Escalera de la luz: cuánta potencia queda después de cada elemento del camino" id="c37-esc"></svg>
 <div class="tbl"><table><thead><tr><th>Elemento del camino</th><th class="num">Pierde</th><th class="num">Queda</th></tr></thead><tbody id="c37-filas"></tbody></table></div>
 <div class="readout" id="c37t-out" aria-live="polite"></div>
-<p class="hint">Valores de ejemplo, redondeados de hojas de datos públicas: transmisor de la OLT +4 dBm; fibra 0,3 dB por kilómetro; empalme por fusión 0,05 dB; conector 0,5 dB; splitter 1:4, 7,4 dB; splitter 1:8, 10,7 dB (pérdidas máximas típicas de un splitter PLC). La ONT deja de funcionar por debajo de unos −28 dBm. El dBm mide potencia: cada 3 dB menos es la mitad de luz.</p>
+<p class="hint">Valores de ejemplo, redondeados de hojas de datos públicas: transmisor de la OLT +4 dBm; fibra 0,3 dB por kilómetro; empalme por fusión 0,05 dB; conector 0,5 dB; splitter 1:4, 7,3 dB; splitter 1:8, 10,5 dB (los mismos valores de hoja de datos del capítulo 17). La ONT deja de funcionar por debajo de unos −28 dBm. El dBm mide potencia: cada 3 dB menos es la mitad de luz.</p>
 </div></div></section>
 <section><h2>Impacto de un corte: qué clientes quedan sin servicio</h2><div class="prose"><p>La misma información, recorrida al revés, responde la pregunta más urgente del NOC: si se corta este cable aquí, <b>¿a quién afecta?</b> El GIS sigue todas las fibras que pasan por el punto del corte, todos los splitters que alimentan y todas las cajas terminales que cuelgan de ellos, hasta llegar a la lista de clientes.</p><p>Con esa lista, el NOC hace tres cosas a la vez: despacha a la <b>cuadrilla</b> (<i>field crew</i>), el equipo de técnicos, al punto exacto, avisa a atención al cliente para que responda «hay una falla en tu zona» antes de que lleguen las llamadas, y prioriza a los clientes empresa con acuerdos de servicio (<b>SLA</b>, <i>Service Level Agreements</i>, acuerdos de nivel de servicio), que fijan tiempos máximos de reparación. El capítulo 45 recorre ese proceso completo.</p></div><div class="lab" id="37-lab-5"><div class="lab-title"><span class="tag">Laboratorio</span><h3>¿Quién se queda sin servicio?</h3></div><p class="hint">Marca un corte en cualquier tramo de la red del barrio. El mapa ilumina los clientes afectados y cuenta cuántos son. Prueba cortar el cable troncal, un cable de distribución y una sola acometida.</p><div id="c37-corte">
 <style>
@@ -446,9 +446,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       {k:'tr',n:'Fibra troncal: '+c2(c.tr)+' km, hilo '+c.hiloT,l:m(c.tr*0.3)},
       {k:'int',n:'Empalmes intermedios del troncal ('+c.inter+')',l:m(c.inter*0.05)},
       {k:'e1',n:'Empalme de entrada al splitter',l:0.05},
-      {k:'sp1',n:'Splitter 1:4, salida '+c.sal,l:7.4},
+      {k:'sp1',n:'Splitter 1:4, salida '+c.sal,l:7.3},
       {k:'di',n:'Fibra de distribución: '+c2(c.di)+' km, hilo '+c.hiloD,l:m(c.di*0.3+0.05)},
-      {k:'sp2',n:'Splitter 1:8 en '+c.cto+', puerto '+c.pto,l:10.7},
+      {k:'sp2',n:'Splitter 1:8 en '+c.cto+', puerto '+c.pto,l:10.5},
       {k:'cto',n:'Conector del puerto de la caja',l:0.5},
       {k:'aco',n:'Acometida: '+Math.round(c.ac*1000)+' m',l:m(c.ac*0.3)},
       {k:'ros',n:'Roseta en la pared (conector)',l:0.5}];
