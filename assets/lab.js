@@ -89,12 +89,16 @@ function sync(){
     const grupos=ETAPAS.map(([k,rot])=>{const ps=PAGES.filter(p=>p[5]===k),hay=ps.some(p=>/^\d/.test(p[2]));
       return `<details class="etapa"${actual&&actual[5]===k?' open':''}><summary><span>${rot}</span>${hay?`<span class="cuenta" data-etapa-cuenta="${k}"></span>`:''}</summary><ol>${ps.map(item).join('')}</ol></details>`;}).join('');
     const escritorio=matchMedia('(min-width:901px)');
-    nav.innerHTML=`<details class="ruta"${escritorio.matches?' open':''}><summary><span class="eyebrow">Ruta</span><span class="aqui">${aqui}</span></summary>`+
+    const plegada=store.get('telco-ruta')==='0';
+    nav.innerHTML=`<details class="ruta"${escritorio.matches&&!plegada?' open':''}><summary><span class="eyebrow">Ruta</span><span class="aqui">${aqui}</span></summary>`+
       `<ol class="ini">${PAGES.filter(p=>p[5]===0).map(item).join('')}</ol>${grupos}`+
       '<div class="prog"><span>Tu avance: <b id="prog"></b></span><div class="bar"><i id="prog-bar"></i></div><span>Se guarda solo en este navegador.</span></div></details>';
     const ruta=nav.querySelector('.ruta');
-    escritorio.addEventListener('change',e=>{if(e.matches)ruta.open=true;});
-    ruta.querySelector('summary').addEventListener('click',e=>{if(escritorio.matches)e.preventDefault();});
+    const capa=nav.closest('.layout');
+    const marcar=()=>{if(capa)capa.classList.toggle('toc-cerrada',escritorio.matches&&!ruta.open);};
+    escritorio.addEventListener('change',e=>{ruta.open=e.matches&&store.get('telco-ruta')!=='0';marcar();});
+    ruta.addEventListener('toggle',()=>{if(escritorio.matches)store.set('telco-ruta',ruta.open?'1':'0');marcar();});
+    marcar();
   }
   const pg=$('#pager');
   if(pg){
@@ -104,6 +108,11 @@ function sync(){
   }
   const cb=$('#got');
   if(cb){cb.checked=isDone(page);cb.addEventListener('change',()=>{store.set('telco-'+page,cb.checked?'1':'0');sync();});}
+  // Portada: un enlace a #parte-N abre su etapa plegada
+  const etapaDe=h=>{const t=h&&h.length>1&&document.getElementById(decodeURIComponent(h.slice(1)));return t&&t.matches('details.stage')?t:null;};
+  const abrirAncla=()=>{const t=etapaDe(location.hash);if(t){t.open=true;t.scrollIntoView();}};
+  document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]'),t=a&&etapaDe(a.getAttribute('href'));if(t)t.open=true;});
+  window.addEventListener('hashchange',abrirAncla);abrirAncla();
   sync();
 })();
 
