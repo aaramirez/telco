@@ -387,3 +387,15 @@ section{grid-template-columns:minmax(0,1fr)}
 .lab>*{min-width:0}
 .fig .k-warm{fill:var(--warm)} .fig .s-warm{stroke:var(--warm)}
 .readout.texto{font-family:var(--f-body);white-space:normal}
+
+/* ---- Prácticas y preguntas para investigar ---- */
+.practica{border:1.5px dashed var(--good);border-radius:12px;padding:16px;display:grid;gap:10px;min-width:0;background:var(--card)}
+.practica-title{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.practica-title .tag{font:700 .7rem var(--f-display);letter-spacing:.12em;text-transform:uppercase;background:var(--good);color:var(--card);padding:3px 8px;border-radius:4px}
+.practica-title h3{font-size:1.05rem}
+.practica pre{max-width:100%;overflow-x:auto}
+.practica ol.steps,.practica ul{margin:0}
+.investiga{display:grid;gap:8px;border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--card)}
+.investiga h3{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.investiga ol{margin:0;padding-left:1.4em;display:grid;gap:8px}
+.investiga li small{display:block;color:var(--muted);font-size:.85rem;margin-top:2px}
